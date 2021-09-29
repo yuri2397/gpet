@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginResponse } from 'src/app/models/login-response';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -22,7 +23,14 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  constructor(private router: Router,private notification: NotificationService, private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private notification: NotificationService,
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
+    this.authService.alreadyConnect();
+  }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -36,15 +44,35 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(this.validateForm.value.email, this.validateForm.value.password)
       .subscribe({
-        next: (token) => {
-          console.log(token);
-          this.authService.setToken(token);
-          this.router.navigate(['/admin']);
+        next: (response: LoginResponse) => {
+          this.authService.setToken(response.token);
+          this.authService.setUser(response.user);
+          this.authService.setRoles(response.user.roles);
+          this.afterLogin(response);
+          this.isLoad = false;
         },
         error: (errors) => {
-          console.log(errors.error);
-          this.notification.createNotification("error", "Erreur", errors.error.message);
+          this.isLoad = false;
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
         },
       });
+  }
+  afterLogin(response: LoginResponse) {
+    let role!: string;
+    response.user.roles.forEach((r) => {
+      role = r.name;
+    });
+    switch (role) {
+      case 'super admin':
+        this.router.navigate(['/admin']);
+        break;
+      case 'editeur':
+        this.router.navigate(['/departement']);
+        break;
+    }
   }
 }

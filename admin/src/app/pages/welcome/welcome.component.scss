@@ -1,80 +1,87 @@
-:host {
-    display: flex;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.app-layout {
-    height: 100vh;
-}
-
-.menu-sidebar {
-    position: relative;
-    z-index: 10;
-    min-height: 100vh;
-    box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
-}
-
-.header-trigger {
-    height: 64px;
-    padding: 20px 24px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all .3s, padding 0s;
-}
-
-.trigger:hover {
-    color: #1890ff;
-}
-
-.sidebar-logo {
-    position: relative;
-    height: 64px;
-    padding-left: 24px;
-    overflow: hidden;
-    line-height: 64px;
-    background: #41729F;
-    transition: all .3s;
-}
-
-.sidebar-logo img {
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    vertical-align: middle;
-}
-
-.sidebar-logo h1 {
-    display: inline-block;
-    margin: 0 0 0 20px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-    vertical-align: middle;
-}
-
-nz-header {
-    padding: 0;
+$color1: #75789c;
+$color2: #6184a5;
+$color3: #41729f;
+body {
+    background-color: #eee;
     width: 100%;
-    z-index: 2;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.app-header {
-    position: relative;
-    height: 64px;
-    padding: 0;
-    background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+.loader {
+    width: 200px;
+    height: 200px;
 }
 
-nz-content {
-    margin: 24px;
+svg {
+    width: 90%;
+    fill: none;
 }
 
-.inner-content {
-    padding: 24px;
-    background: #fff;
-    height: 100%;
+.load {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 570;
+    stroke-width: 20px;
+    &.one {
+        stroke: $color3;
+        animation: load 1.5s infinite;
+    }
+    &.two {
+        stroke: $color2;
+        animation: load 1.5s infinite;
+        animation-delay: 0.1s;
+    }
+    &.three {
+        stroke: $color1;
+        animation: load 1.5s infinite;
+        animation-delay: 0.2s;
+    }
+}
+
+.point {
+    animation: bounce 1s infinite ease-in-out;
+    &.one {
+        fill: $color1;
+        animation-delay: 0s;
+    }
+    &.two {
+        fill: $color2;
+        animation-delay: 0.1s;
+    }
+    &.three {
+        fill: $color3;
+        animation-delay: 0.2s;
+    }
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes load {
+    0% {
+        stroke-dashoffset: 570;
+    }
+    50% {
+        stroke-dashoffset: 530;
+    }
+    100% {
+        stroke-dashoffset: 570;
+        transform: rotate(360deg);
+    }
 }

@@ -1,9 +1,12 @@
+import { Role } from './../models/role';
 import { User } from "../models/user";
 
 export class BaseHttp {
   private _host = "http://127.0.0.1:8000/";
   private _api = "http://127.0.0.1:8000/api/";
   protected _baseUrl!: string;
+  private _super_admin = "super admin";
+  private _editeur = "editeur";
   constructor() {}
 
   isLogIn(): boolean {
@@ -18,6 +21,22 @@ export class BaseHttp {
     };
   }
 
+  isAdmin():boolean{
+    let role: string = this.getRoles()[0].name;
+    if(role == this._super_admin){
+      return true;
+    }
+    return false;
+  }
+
+  isEditeur(): boolean{
+    let role: string = this.getRoles()[0].name;
+    if(role == this._editeur){
+      return true;
+    }
+    return false;
+  }
+
   get guestHeaders() {
     return {
       accept: "application/json",
@@ -29,8 +48,8 @@ export class BaseHttp {
     return sessionStorage.getItem("token");
   }
 
-  getRoles(): string[] {
-    return JSON.parse(sessionStorage.getItem("roles")!) as string[];
+  getRoles(): Role[] {
+    return JSON.parse(sessionStorage.getItem("roles")!) as Role[];
   }
 
   get baseUrl(): string {
@@ -53,7 +72,7 @@ export class BaseHttp {
     sessionStorage.setItem("user", JSON.stringify(user));
   }
 
-  setRoles(roles: string[]) {
+  setRoles(roles: Role[]) {
     sessionStorage.setItem("roles", JSON.stringify(roles));
   }
 
@@ -65,11 +84,12 @@ export class BaseHttp {
     return this._host;
   }
 
-  hasRole(role: string): boolean{
-    return this.getRoles().some((x) => x === role);
+  hasRole(role: Role): boolean{
+    return this.getRoles().some((x) => x.name === role.name);
   }
 
-  notify(from: string, align: string, message: string, color: string) {
 
+  clone(item: any){
+    throw new Error("Method clone unimplemented.");
   }
 }

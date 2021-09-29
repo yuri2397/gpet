@@ -16,7 +16,11 @@ class AuthController extends Controller
 
         if ($user != null && Hash::check($request->password, $user->password)) {
             $token = $user->createToken('Admin Password Grant Client')->accessToken;
-            return response()->json($token, 200);
+            $user->roles->pluck('name')->all();
+            return response()->json([
+                'token' => $token,
+                'user' => $user
+            ], 200);
         } else {
             $response = ["message" => "Email ou mot de password incorrect."];
             return response($response, 400);

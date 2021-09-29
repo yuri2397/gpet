@@ -1,26 +1,46 @@
+import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { AdminGuard } from './shared/admin.guard';
+import { DepartementComponent } from './pages/departement/departement.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { AdminComponent } from './admin/admin.component';
+import { AuthGuard } from './shared/auth.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/admin' },
+  { path: '', component: WelcomeComponent },
+
   { path: 'login', component: LoginComponent },
   {
     path: 'admin',
-    component: WelcomeComponent,
+    component: AdminComponent,
     children: [
       {
-        path: "",
+        path: '',
         loadChildren: () =>
-          import('./pages/welcome/welcome.module').then(m => m.WelcomeModule)
+          import('./admin/admin.module').then((m) => m.AdminModule),
       },
     ],
-  }
+    canActivate: [AuthGuard, AdminGuard],
+  },
+  {
+    path: 'departement',
+    component: DepartementComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./pages/departement/departement.module').then(
+            (m) => m.DepartementModule
+          ),
+      },
+    ],
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

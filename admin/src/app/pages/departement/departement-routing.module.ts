@@ -1,7 +1,6 @@
-import { ProfileComponent } from './../profile/profile.component';
+import { ProfileComponent } from '../profile/profile.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { WelcomeComponent } from './welcome.component';
 import { SettingComponent } from '../setting/setting.component';
 
 const routes: Routes = [
@@ -14,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class WelcomeRoutingModule {}
+export class DepartementRoutingModule {}
