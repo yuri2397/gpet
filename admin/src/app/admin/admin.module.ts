@@ -1,3 +1,7 @@
+import { SalleEditComponent } from './../pages/salle/salle-edit/salle-edit.component';
+import { DepartementCreateComponent } from './../pages/departement/departement-create/departement-create.component';
+import { DepartementEditComponent } from './../pages/departement/departement-edit/departement-edit.component';
+import { DepartementListComponent } from './../pages/departement/departement-list/departement-list.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,9 +24,12 @@ import { BatimentEditComponent } from '../pages/batiment/batiment-edit/batiment-
 import { BatimentListComponent } from '../pages/batiment/batiment-list/batiment-list.component';
 import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-
+import { SalleListComponent } from '../pages/salle/salle-list/salle-list.component';
+import { SalleCreateComponent } from '../pages/salle/salle-create/salle-create.component';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 @NgModule({
   imports: [
     FormsModule,
@@ -41,7 +48,9 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzButtonModule,
     NzModalModule,
     NzInputModule,
-  ],
+    NzSelectModule,
+    NzTagModule
+    ],
   declarations: [
     AdminComponent,
     BatimentEditComponent,
@@ -49,6 +58,12 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     BatimentCreateComponent,
     BatimentShowComponent,
     DashboardComponent,
+    DepartementListComponent,
+    DepartementEditComponent,
+    DepartementCreateComponent,
+    SalleListComponent,
+    SalleEditComponent,
+    SalleCreateComponent
   ],
   exports: [AdminComponent],
 })

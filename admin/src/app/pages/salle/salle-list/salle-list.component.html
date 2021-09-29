@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-header p-3 bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white">Liste des salles de classes</h5>
+                </div>
+                <div>
+                    <button (click)="openCreateModal()" mat-mini-fab color="default">
+            <mat-icon>add</mat-icon>
+          </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <nz-table [nzScroll]="{ x: '250px' }" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="salles">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Numéro</th>
+                        <th>capacité</th>
+                        <th>Département</th>
+                        <th>Batiment</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data">
+                        <td>
+                            <ng-container *ngIf="data.name != null; else noName">
+                                {{ data.name }}
+                            </ng-container>
+                            <ng-template #noName>
+                                <nz-tag [nzColor]="'red'">Non défini</nz-tag>
+
+                            </ng-template>
+                        </td>
+                        <td>{{ data.number }}</td>
+                        <td>{{ data.capacity }}</td>
+                        <td>{{ data.departement }}</td>
+                        <td>{{ data.batiment }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <div>
+                                    <button (click)="openEditModal(data)" mat-mini-fab color="primary">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                                </div>
+                                <div class="mx-3">
+                                    <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>

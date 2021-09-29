@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BatimentController;
-
+use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\SalleController;
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
@@ -23,4 +24,18 @@ Route::prefix("batiment")->middleware(['auth:api', 'role:super admin'])->group(f
     Route::post('create', [BatimentController::class, "store"]);
     Route::put('update/{id}', [BatimentController::class, "update"]);
     Route::delete('destroy/{id}', [BatimentController::class, "destroy"]);
+});
+
+Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->group(function () {
+    Route::get('', [DepartementController::class, "index"])->withoutMiddleware('role:super admin');
+    Route::post('create', [DepartementController::class, "store"]);
+    Route::put('update/{id}', [DepartementController::class, "update"]);
+    Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
+});
+
+Route::prefix("salle")->middleware(['auth:api', 'role:super admin'])->group(function () {
+    Route::get('', [SalleController::class, "index"])->withoutMiddleware('role:super admin');
+    Route::post('create', [SalleController::class, "store"]);
+    Route::put('update/{id}', [SalleController::class, "update"]);
+    Route::delete('destroy/{id}', [SalleController::class, "destroy"]);
 });
