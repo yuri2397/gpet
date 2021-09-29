@@ -13,4 +13,11 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 - Supprimer un dépatement
 - Modifier un dépatement
 
-![Capture d’écran de 2021-09-29 19-44-27](https://user-images.githubusercontent.com/58815209/135337959-c362055b-372a-4a45-b157-ba4ad65ea2b0.png)
+![Capture d’écran de 2021-09-29 23-16-05](https://user-images.githubusercontent.com/58815209/135361185-57f87700-af5d-40e7-81dc-5b05167e8e76.png)
+
+# DEPARTEMENT CLASSE
+- Ajouter une nouvelle class
+- Supprimer une classe
+- Modifier une classe
+
+![Capture d’écran de 2021-09-29 23-14-27](https://user-images.githubusercontent.com/58815209/135361124-1efeaab4-af5a-467e-b95b-ecbf91169552.png)
