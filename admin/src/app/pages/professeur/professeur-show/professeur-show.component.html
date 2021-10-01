@@ -1,0 +1,194 @@
+<div>
+    <div class="card">
+        <!-- TOP -->
+        <div *ngIf="!dataLoad" class="card-header bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button class="mx-2" (click)="onBack()" mat-mini-fab color="default">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+                </div>
+                <div>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="mx-1">
+                            <button mat-mini-fab color="default">
+                <mat-icon>print</mat-icon>
+              </button>
+                        </div>
+                        <div class="mx-1">
+                            <button mat-mini-fab color="accent">
+                <mat-icon>edit</mat-icon>
+              </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <ng-container *ngIf="!dataLoad && !errorServer">
+                <!-- MIDDLE -->
+                <div class="row mt-2">
+                    <div class="row justify-content-between align-items-top">
+                        <div class="col-xm-8 col-md-6 my-1">
+                            <nz-card class="shadow" [nzCover]="coverTemplate">
+                                <div class="mb-3">
+                                    <h5>
+                                        <nz-tag [nzColor]="'geekblue'">
+                                            <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
+                                        </nz-tag>
+                                        - {{ professeur.first_name }} {{ professeur.last_name }}
+                                    </h5>
+                                </div>
+                                <div class="my-2 h6">
+                                    Email :
+                                    <nz-tag [nzColor]="'purple'">{{ professeur.email }}</nz-tag>
+                                </div>
+                                <div class="my-2  h6">
+                                    Status :
+                                    <nz-tag [nzColor]="'gold'">{{ professeur.status }}</nz-tag>
+                                </div>
+                                <div class="my-2  h6">
+                                    Métier :
+                                    <nz-tag [nzColor]=" professeur.job == null ? 'red': 'blue'" [innerText]="professeur.job ?? 'Non définie'"></nz-tag>
+                                </div>
+                                <div class="my-2  h6">
+                                    En fonction :
+                                    <nz-tag [nzColor]="professeur.is_active == 1 ? 'green' : 'red'" [innerText]="professeur.is_active == 1 ? 'OUI' : 'NON'"></nz-tag>
+                                </div>
+                            </nz-card>
+                            <ng-template #coverTemplate>
+                                <img class="user-avatar" [src]="userProfilePath()" />
+                            </ng-template>
+                        </div>
+                        <div class="col-xm-5 col-md-6 my-1">
+                            <nz-card class="shadow">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12">
+                                        <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert><br>
+                                        <div class="my-2 h6">
+                                            Banque :
+                                            <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}</nz-tag>
+                                        </div>
+                                        <div class="my-2 h6">
+                                            Code de la banque :
+                                            <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}</nz-tag>
+                                        </div>
+                                        <div class="my-2 h6">
+                                            N° de compte :
+                                            <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}</nz-tag>
+                                        </div>
+                                        <div class="my-2  h6">
+                                            RIP :
+                                            <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}</nz-tag>
+                                        </div>
+                                        <div class="my-2  h6">
+                                            Clé :
+                                            <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key"></nz-tag>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-card>
+                        </div>
+                    </div>
+                </div>
+                <!-- BOTTOM -->
+                <div class="row my-3">
+                    <div class="col-12">
+                        <nz-card [nzTitle]="listTitle" class="shadow">
+                            <nz-table nzTableLayout="fixed" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="professeur.courses">
+                                <thead>
+                                    <tr>
+                                        <th> Code </th>
+                                        <th><b>Intitulé</b></th>
+                                        <th><b>Groupe</b></th>
+                                        <th><b>Service</b></th>
+                                        <th><b>Semestre</b></th>
+                                        <th><b>Classe</b></th>
+                                        <th><b>UE</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of basicTable.data">
+                                        <td>{{ data.acronym }}</td>
+                                        <td>{{ data.name }}</td>
+                                        <td>{{ data.groupe_number }}</td>
+                                        <td>{{ data.service }}</td>
+                                        <td>{{ data.semester }}</td>
+                                        <td>{{ data.classe }}</td>
+                                        <td>{{ data.ec}}</td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </nz-card>
+                        <ng-template #listTitle>
+                            <nz-alert nzType="info" nzMessage="Les des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}" nzShowIcon></nz-alert>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-12">
+                        <nz-card [nzTitle]="coursesDoTitle" class="shadow">
+                            <nz-table nzTableLayout="fixed" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professeur.coursesDo">
+                                <thead>
+                                    <tr>
+                                        <th> Code </th>
+                                        <th><b>Cours</b></th>
+                                        <th><b>Classe</b></th>
+                                        <th><b>Service</b></th>
+                                        <th><b>Nombre d'heures</b></th>
+                                        <th><b>Montant</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of courseDoTable.data">
+                                        <td>{{ data.acronym }}</td>
+                                        <td>{{ data.course }}</td>
+                                        <td>{{ data.classe }}</td>
+                                        <td>{{ data.service }}</td>
+                                        <td>{{ data.total_hours}} heures</td>
+                                        <td>{{ data.total_sales}} FCFA </td>
+                                    </tr>
+                                </tbody>
+                            </nz-table>
+                        </nz-card>
+                        <ng-template #coursesDoTitle>
+                            <h5>Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth() | date }}</h5>
+                        </ng-template>
+                    </div>
+                </div>
+            </ng-container>
+            <!-- SKELTON -->
+            <ng-template *ngIf="!errorServer && dataLoad">
+                <div class="row col-12">
+                    <nz-skeleton [nzParagraph]="{ rows: 1 }" [nzActive]="true"></nz-skeleton>
+                </div>
+                <div class="row justify-content-between align-items-top">
+                    <div class="col-xm-6 col-md-4 my-1">
+                        <nz-card>
+                            <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad" [nzAvatar]="true">
+                            </nz-skeleton>
+                        </nz-card>
+                    </div>
+                    <div class="col-xm-6 col-md-4 my-1">
+                        <nz-card>
+                            <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad">
+                            </nz-skeleton>
+                        </nz-card>
+                    </div>
+                    <div class="col-xm-3 col-md-4 my-1">
+                        <nz-card>
+                            <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad">
+                            </nz-skeleton>
+                        </nz-card>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <nz-skeleton [nzActive]="true"></nz-skeleton>
+                    </div>
+                </div>
+            </ng-template>
+            <app-error-server *ngIf="errorServer"></app-error-server>
+        </div>
+    </div>
+</div>

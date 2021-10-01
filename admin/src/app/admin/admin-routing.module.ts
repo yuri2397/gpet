@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProfileComponent } from '../pages/profile/profile.component';
 import { SettingComponent } from '../pages/setting/setting.component';
 import { SalleListComponent } from '../pages/salle/salle-list/salle-list.component';
+import { ProfesseurShowComponent } from '../pages/professeur/professeur-show/professeur-show.component';
+import { ProfesseurListComponent } from '../pages/professeur/professeur-list/professeur-list.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -13,6 +15,8 @@ const routes: Routes = [
   { path: 'batiments', component: BatimentListComponent },
   { path: 'departements', component: DepartementListComponent },
   { path: 'salles', component: SalleListComponent },
+  { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
+  { path: 'professeurs', component: ProfesseurListComponent },
 ];
 
 @NgModule({

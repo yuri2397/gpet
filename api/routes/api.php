@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BatimentController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\SalleController;
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
@@ -38,4 +39,13 @@ Route::prefix("salle")->middleware(['auth:api', 'role:super admin'])->group(func
     Route::post('create', [SalleController::class, "store"]);
     Route::put('update/{id}', [SalleController::class, "update"]);
     Route::delete('destroy/{id}', [SalleController::class, "destroy"]);
+});
+
+
+Route::prefix("professeur")->middleware(['auth:api', 'role:super admin'])->group(function () {
+    Route::get('', [ProfesseurController::class, "index"])->withoutMiddleware('role:super admin');
+    Route::get('show/{id}', [ProfesseurController::class, "show"])->withoutMiddleware('role:super admin');
+    Route::post('create', [ProfesseurController::class, "store"]);
+    Route::put('update/{id}', [ProfesseurController::class, "update"]);
+    Route::delete('destroy/{id}', [ProfesseurController::class, "destroy"]);
 });

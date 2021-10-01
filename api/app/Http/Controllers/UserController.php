@@ -31,6 +31,7 @@ class UserController extends Controller
             "first_name" => "required|min:2",
             "last_name" => "required|min:2",
             "email" => "required|email|unique:users,email",
+            "departement_id" => 'required|exists:departements,id',
             "roles" => "required|exists:roles,name",
         ]);
 
@@ -38,6 +39,7 @@ class UserController extends Controller
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
+        $user->departement_id = $request->departement_id;
         $user->password = bcrypt("bienvenue");
         $user->save();
         $user->assignRole($request->roles);
