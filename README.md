@@ -1,6 +1,13 @@
 ## GPET
 Application pour la gestion de emploi du temps et le payement des profs vacataires
 
+# CONNEXION
+- Email
+- Mot de passe
+
+![Capture d’écran de 2021-10-02 13-07-30](https://user-images.githubusercontent.com/58815209/135717611-a64013d3-a614-4f2f-aade-cd30f8631ea4.png)
+
+
 # BATIMENT CRUD
 - Ajouter un nouveau batiment
 - Supprimer un batiment
