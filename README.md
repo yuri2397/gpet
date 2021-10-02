@@ -22,14 +22,14 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 
 ![Capture d’écran de 2021-09-29 23-16-05](https://user-images.githubusercontent.com/58815209/135361185-57f87700-af5d-40e7-81dc-5b05167e8e76.png)
 
-# DEPARTEMENT CLASSE
+# CLASSES
 - Ajouter une nouvelle class
 - Supprimer une classe
 - Modifier une classe
 
 ![Capture d’écran de 2021-09-29 23-14-27](https://user-images.githubusercontent.com/58815209/135361124-1efeaab4-af5a-467e-b95b-ecbf91169552.png)
 
-# DEPARTEMENT PROFESSEURS
+# PROFESSEURS
 - Ajouter un nouveau professeur
 - Supprimer une professeur
 - Modifier une professeur
@@ -52,6 +52,18 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 
 ![Capture d’écran de 2021-10-01 00-06-29](https://user-images.githubusercontent.com/58815209/135546721-bc243c3c-3372-4081-b3a5-1c6aa6b07133.png)
 
+# Ajouter un nouveau professeur
+
+![Capture d’écran de 2021-10-01 21-01-15](https://user-images.githubusercontent.com/58815209/135732193-aacef2b4-8c14-4414-b34e-2c506d1c5081.png)
+
+# COURS
+- Ajouter un nouveau cour
+
+![Capture d’écran de 2021-10-02 21-24-07](https://user-images.githubusercontent.com/58815209/135732171-00bfb60a-2bcc-430a-95ed-bdf13c2e63c6.png)
+
+- Liste des cours
+
+![Capture d’écran de 2021-10-02 21-24-28](https://user-images.githubusercontent.com/58815209/135732181-3ae265bb-be79-4641-bace-abc904a3ba84.png)
 
 
 
