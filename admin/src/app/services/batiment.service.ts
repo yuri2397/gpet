@@ -9,8 +9,9 @@ import { BaseHttp } from '../shared/base-http';
 export class BatimentService extends BaseHttp {
 
   protected _baseUrl = 'batiment/';
-  constructor(private http: HttpClient) {
+  constructor(protected hc: HttpClient) {
     super();
+    this.http = hc;
   }
 
   findAll() {

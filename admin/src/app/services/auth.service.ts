@@ -9,8 +9,10 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class AuthService extends BaseHttp {
   protected _baseUrl = 'user/';
-  constructor(private http: HttpClient, private router: Router) {
+
+  constructor(protected hc: HttpClient,private router: Router) {
     super();
+    this.http = hc;
   }
 
   login(email: string, password: string) {

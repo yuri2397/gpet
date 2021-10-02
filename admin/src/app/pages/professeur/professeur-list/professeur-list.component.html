@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des département</h5>
                 </div>
-                <div *ngIf="canAddProfessor()">
+                <div>
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -41,16 +41,6 @@
                                 <div>
                                     <button (click)="showProfessor(data)" mat-mini-fab color="primary">
                     <mat-icon>visibility</mat-icon>
-                  </button>
-                                </div>
-                                <div *ngIf="canEditProfessor()" class="mx-3">
-                                    <button (click)="openEditModal(data)" mat-mini-fab color="accent">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                                </div>
-                                <div *ngIf="canDeleteProfessor()">
-                                    <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
-                    <mat-icon>delete</mat-icon>
                   </button>
                                 </div>
                             </div>

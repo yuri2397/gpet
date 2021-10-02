@@ -16,7 +16,7 @@
               </button>
                         </div>
                         <div class="mx-1">
-                            <button mat-mini-fab color="accent">
+                            <button (click)="openEditModal()" mat-mini-fab color="accent">
                 <mat-icon>edit</mat-icon>
               </button>
                         </div>
@@ -38,6 +38,10 @@
                                         </nz-tag>
                                         - {{ professeur.first_name }} {{ professeur.last_name }}
                                     </h5>
+                                </div>
+                                <div class="my-2 h6">
+                                    Département :
+                                    <nz-tag [nzColor]="'cyan'">{{ professeur.departement.name }}</nz-tag>
                                 </div>
                                 <div class="my-2 h6">
                                     Email :
@@ -112,48 +116,52 @@
                                         <td>{{ data.acronym }}</td>
                                         <td>{{ data.name }}</td>
                                         <td>{{ data.groupe_number }}</td>
-                                        <td>{{ data.service }}</td>
-                                        <td>{{ data.semester }}</td>
-                                        <td>{{ data.classe }}</td>
-                                        <td>{{ data.ec}}</td>
+                                        <td>{{ data.service.name }}</td>
+                                        <td>{{ data.semester.name }}</td>
+                                        <td>{{ data.classe.name }}</td>
+                                        <td>{{ data.ec.name }}</td>
                                     </tr>
                                 </tbody>
                             </nz-table>
                         </nz-card>
                         <ng-template #listTitle>
-                            <nz-alert nzType="info" nzMessage="Les des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}" nzShowIcon></nz-alert>
+                            <nz-alert nzType="info" nzMessage="Les des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}" nzShowIcon>
+                            </nz-alert>
                         </ng-template>
                     </div>
                 </div>
                 <div class="row my-5">
                     <div class="col-12">
-                        <nz-card [nzTitle]="coursesDoTitle" class="shadow">
-                            <nz-table nzTableLayout="fixed" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professeur.coursesDo">
-                                <thead>
-                                    <tr>
-                                        <th> Code </th>
-                                        <th><b>Cours</b></th>
-                                        <th><b>Classe</b></th>
-                                        <th><b>Service</b></th>
-                                        <th><b>Nombre d'heures</b></th>
-                                        <th><b>Montant</b></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of courseDoTable.data">
-                                        <td>{{ data.acronym }}</td>
-                                        <td>{{ data.course }}</td>
-                                        <td>{{ data.classe }}</td>
-                                        <td>{{ data.service }}</td>
-                                        <td>{{ data.total_hours}} heures</td>
-                                        <td>{{ data.total_sales}} FCFA </td>
-                                    </tr>
-                                </tbody>
-                            </nz-table>
-                        </nz-card>
-                        <ng-template #coursesDoTitle>
-                            <h5>Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth() | date }}</h5>
-                        </ng-template>
+                        <div class="shadow card">
+                            <div class="card-header bg-color">
+                                <h5 class="text-white">Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth() | date }}</h5>
+                            </div>
+                            <div class="card-body">
+                                <nz-table nzTableLayout="fixed" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professeur.coursesDo">
+                                    <thead>
+                                        <tr>
+                                            <th> Code </th>
+                                            <th><b>Cours</b></th>
+                                            <th><b>Classe</b></th>
+                                            <th><b>Service</b></th>
+                                            <th><b>Nombre d'heures</b></th>
+                                            <th><b>Montant</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of courseDoTable.data">
+                                            <td>{{ data.course.acronym }}</td>
+                                            <td>{{ data.course.name }}</td>
+                                            <td>{{ data.course.classe.name }}</td>
+                                            <td>{{ data.course.service.name }}</td>
+                                            <td>{{ data.total_hours}} heures</td>
+                                            <td>{{ data.total_sales}} FCFA </td>
+                                        </tr>
+                                    </tbody>
+                                </nz-table>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </ng-container>

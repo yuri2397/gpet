@@ -33,18 +33,6 @@ export class ProfesseurListComponent implements OnInit {
     this.findAll();
   }
 
-  canAddProfessor(){
-    return this.profService.isEditeur();
-  }
-
-  canDeleteProfessor(){
-    return this.profService.isEditeur();
-  }
-
-  canEditProfessor(){
-    return this.profService.isEditeur();
-  }
-
   findAll() {
     this.isLoad = true;
     this.profService.findAll().subscribe({
@@ -56,26 +44,6 @@ export class ProfesseurListComponent implements OnInit {
       error: (errors) => {
         this.isLoad = false;
       },
-    });
-  }
-
-  openEditModal(batiment: Professor) {
-    this.selectedProfessor = batiment;
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier le batiment',
-      nzContent: ProfesseurEditComponent,
-      nzComponentParams: {
-        professeur: this.profService.clone(batiment),
-      },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-    });
-
-    modal.afterClose.subscribe((data: Batiment | null) => {
-      if (data != null) {
-        this.findAll();
-      }
     });
   }
 
@@ -120,11 +88,12 @@ export class ProfesseurListComponent implements OnInit {
 
   openCreateModal() {
     const modal = this.modalService.create({
-      nzTitle: 'Ajouter un département',
+      nzTitle: 'AJOUTER UN PROFESSEUR',
       nzContent: ProfesseurCreateComponent,
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
+      nzWidth: "50em"
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {

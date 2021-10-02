@@ -16,7 +16,7 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->date("timestable_date")->default(now());
+            $table->date("timestable_date")->default(now())->nullable();
             $table->unsignedInteger("nb_students")->default(0);
 
             $table->unsignedBigInteger("departement_id")->nullable();

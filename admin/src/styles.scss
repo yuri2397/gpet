@@ -9,3 +9,17 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.scroll-table {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+table {
+    width: 100%;
+}
+
+.table-header-color {
+    background-color: #41729f;
+    color: white;
+}

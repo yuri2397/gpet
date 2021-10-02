@@ -19,11 +19,7 @@ class ProfesseurController extends Controller
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
-            $profs = Professor::all();
-            foreach ($profs as $p) {
-                $p->account;
-            }
-            return $profs;
+            return Professor::with('account')->orderBy('created_at', 'desc')->get();
         }
         return Professor::whereDerpartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
@@ -43,20 +39,19 @@ class ProfesseurController extends Controller
             'status' => 'required',
             'phone_number' => 'required',
             'account_number' => 'required',
+            'departement_id' => 'required|exists:departements,id',
             'rip' => 'required',
             'key' => 'required',
             'bank_id' => 'required|exists:banks,id'
         ]);
 
-        $user = User::find(auth()->id());
-
         $prof = new Professor;
         $prof->registration_number = $this->randomInt('professors', 'registration_number');
         $prof->first_name = $request->first_name;
-        $prof->departement_id = $user->departement_id;
         $prof->last_name = $request->last_name;
         $prof->email = $request->email;
         $prof->status = $request->status;
+        $prof->departement_id = $request->departement_id;
         $prof->phone_number = $request->phone_number;
         $prof->job = $request->job ?? null;
         $prof->save();
@@ -82,43 +77,26 @@ class ProfesseurController extends Controller
     {
         $prof = Professor::find($id);
         $prof->account;
+        $prof->departement;
         $prof->account->bank;
-        $prof->courses = $prof->courses()
-            ->join("semesters", 'semesters.id', 'courses.semester_id')
-            ->join("classes", 'classes.id', 'courses.classe_id')
-            ->join("e_c_s", 'e_c_s.id', 'courses.ec_id')
-            ->join("u_e_s", 'u_e_s.id', 'e_c_s.ue_id')
-            ->join("services", 'services.id', 'courses.service_id')
-            ->select(
-                "courses.*",
-                "services.name as service",
-                "e_c_s.name as ec",
-                "u_e_s.name as ue",
-                "classes.name as classe",
-                "semesters.name as semester",
-            )
-            ->get();
+        $prof->courses;
         $prof->coursesDo = $prof->coursesDo()
-            ->join("courses", "courses.id", "courses_has_professors.course_id")
-            ->join("classes", 'classes.id', 'courses.classe_id')
-            ->join("services", 'services.id', 'courses.service_id')
+            ->whereYear('courses_has_professors.date', date('Y'))
+            ->whereMonth('courses_has_professors.date', date('n') - 1)
             ->select(
-                "courses.acronym",
-                "services.id",
-                "services.name as service",
-                "classes.name as classe",
-                "courses.name as course",
-                DB::raw('SUM(courses_has_professors.amount) as total_sales'),
-                DB::raw('SUM(courses_has_professors.hours) as total_hours')
+                "courses_has_professors.course_id",
+                "courses_has_professors.professor_id",
+                "courses_has_professors.amount",
+                DB::raw('SUM(courses_has_professors.hours) as total_hours'),
+                DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
             )
             ->groupBy(
-                'courses.acronym',
-                "services.id",
-                "services.name",
-                "classes.name",
-                "courses.name"
+                'courses_has_professors.course_id',
+                "courses_has_professors.amount",
+                "courses_has_professors.professor_id",
             )
             ->get();
+
         return $prof;
     }
 
@@ -134,11 +112,33 @@ class ProfesseurController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|unique:professors,email',
+            'email' => 'required|exists:professors,email',
             'status' => 'required',
-            'phone_number' => 'required'
+            'phone_number' => 'required',
+            'account_number' => 'required',
+            "departement_id" => "required|exists:departements,id",
+            'rip' => 'required',
+            'key' => 'required',
+            'bank_id' => 'required|exists:banks,id'
         ]);
-        DB::table('professors')->whereId($id)->update($request->all());
+
+        Professor::whereId($id)->update([
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "email" => $request->email,
+            "status" => $request->status,
+            "phone_number" => $request->phone_number,
+            "job" => $request->job,
+            "departement_id" => $request->departement_id,
+        ]);
+
+        Account::whereProfessorId($id)->update([
+            "account_number" => $request->account_number,
+            "rip" => $request->rip,
+            "key" => $request->key,
+            "bank_id" => $request->bank_id,
+        ]);
+
         return $this->show($id);
     }
 
@@ -151,5 +151,26 @@ class ProfesseurController extends Controller
     public function destroy($id)
     {
         return response()->json(DB::table("professors")->whereId($id)->delete(), 200);
+    }
+
+    public function desableAccount(Request $request, $id)
+    {
+        $request->validate(['is_active' => 'required|boolean']);
+        $prof  = Professor::find($id);
+        $prof->is_active = $request->is_active;
+        $prof->save();
+        return $this->show($id);
+    }
+
+    public function search($data)
+    {
+        $user = User::find(auth()->id());
+        if ($user->hasRole("super admin")) {
+            return Professor::where("first_name", 'like', '%' . $data . '%')
+                ->orWhere('last_name', 'like', '%' . $data . '%')
+                ->orWhere('registration_number', 'like', '%' . $data . '%')
+                ->orderBy('created_at', 'desc')->get();
+        }
+        return Professor::whereDerpartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 }

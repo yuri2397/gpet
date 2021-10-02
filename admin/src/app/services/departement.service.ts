@@ -9,9 +9,11 @@ import { HttpClient } from '@angular/common/http';
 export class DepartementService extends BaseHttp{
 
   protected _baseUrl = 'departement/';
-  constructor(private http: HttpClient) {
+  constructor(protected hc: HttpClient) {
     super();
+    this.http = hc;
   }
+
 
   findAll() {
     return this.http.get<Departement[]>(this.api + this.baseUrl, {

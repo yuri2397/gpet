@@ -1,9 +1,12 @@
+import { Course } from "./course";
+import { Professor } from "./professor";
+
 export class CoursesDo {
-  acronym!: string;
-  id!: number;
-  service!: string;
-  classe!: string;
-  course!: string;
-  total_sales!: string;
-  total_hours!: string;
+  course_id!: number;
+    professor_id!: number;
+    amount!: number;
+    total_hours!: string;
+    total_sales!: string;
+    professor!:    Professor;
+    course!: Course;
 }

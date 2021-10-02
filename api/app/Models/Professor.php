@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,7 +19,7 @@ class Professor extends Model
 
     public function departement()
     {
-        return $this->hasOne(Departement::class);
+        return $this->belongsTo(Departement::class);
     }
 
     public function courses()

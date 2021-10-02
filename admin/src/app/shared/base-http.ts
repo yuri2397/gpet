@@ -1,12 +1,15 @@
 import { Role } from './../models/role';
-import { User } from "../models/user";
+import { User } from '../models/user';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { HttpClient } from '@angular/common/http';
 
 export class BaseHttp {
-  private _host = "http://127.0.0.1:8000/";
-  private _api = "http://127.0.0.1:8000/api/";
+  private _host = 'http://127.0.0.1:8000/';
+  private _api = 'http://127.0.0.1:8000/api/';
   protected _baseUrl!: string;
-  private _super_admin = "super admin";
-  private _editeur = "editeur";
+  private _super_admin = 'super admin';
+  private _editeur = 'editeur';
+  protected httpClient!: HttpClient;
   constructor() {}
 
   isLogIn(): boolean {
@@ -15,23 +18,38 @@ export class BaseHttp {
 
   get authorizationHeaders() {
     return {
-      accept: "application/json",
-      "content-type": "application/json",
-      authorization: "Bearer " + this.getToken(),
+      accept: 'application/json',
+      'content-type': 'application/json',
+      authorization: 'Bearer ' + this.getToken(),
     };
   }
 
-  isAdmin():boolean{
+  findSelectableList(tables: string[]) {
+    return this.http.post<any>(this.api + 'selectable',tables, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
+  }
+
+  get http() {
+    return this.httpClient;
+  }
+
+  set http(http) {
+    this.httpClient = http;
+  }
+
+  isAdmin(): boolean {
     let role: string = this.getRoles()[0].name;
-    if(role == this._super_admin){
+    if (role == this._super_admin) {
       return true;
     }
     return false;
   }
 
-  isEditeur(): boolean{
+  isEditeur(): boolean {
     let role: string = this.getRoles()[0].name;
-    if(role == this._editeur){
+    if (role == this._editeur) {
       return true;
     }
     return false;
@@ -39,41 +57,41 @@ export class BaseHttp {
 
   get guestHeaders() {
     return {
-      accept: "application/json",
-      "content-type": "application/json",
+      accept: 'application/json',
+      'content-type': 'application/json',
     };
   }
 
   getToken() {
-    return sessionStorage.getItem("token");
+    return sessionStorage.getItem('token');
   }
 
   getRoles(): Role[] {
-    return JSON.parse(sessionStorage.getItem("roles")!) as Role[];
+    return JSON.parse(sessionStorage.getItem('roles')!) as Role[];
   }
 
   get baseUrl(): string {
     return this._baseUrl;
   }
 
-  set baseUrl(baseUrl: string){
+  set baseUrl(baseUrl: string) {
     this._baseUrl = baseUrl;
   }
 
   getUser() {
-    return sessionStorage.getItem("user");
+    return sessionStorage.getItem('user');
   }
 
   setToken(token: string) {
-    sessionStorage.setItem("token", token);
+    sessionStorage.setItem('token', token);
   }
 
   setUser(user: User) {
-    sessionStorage.setItem("user", JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   setRoles(roles: Role[]) {
-    sessionStorage.setItem("roles", JSON.stringify(roles));
+    sessionStorage.setItem('roles', JSON.stringify(roles));
   }
 
   get api(): string {
@@ -84,12 +102,11 @@ export class BaseHttp {
     return this._host;
   }
 
-  hasRole(role: Role): boolean{
+  hasRole(role: Role): boolean {
     return this.getRoles().some((x) => x.name === role.name);
   }
 
-
-  clone(item: any){
-    throw new Error("Method clone unimplemented.");
+  clone(item: any) {
+    throw new Error('Method clone unimplemented.');
   }
 }

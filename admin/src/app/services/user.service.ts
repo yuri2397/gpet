@@ -8,8 +8,11 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class UserService extends BaseHttp {
   protected _baseUrl = 'user/';
-  constructor(private http: HttpClient) {
+  constructor(
+    protected hc: HttpClient,
+  ) {
     super();
+    this.http = hc;
   }
 
   currentUser() {

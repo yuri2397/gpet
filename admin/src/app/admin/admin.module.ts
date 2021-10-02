@@ -1,3 +1,13 @@
+import { CanDeleteComponent } from './../shared/ui/can-delete/can-delete.component';
+import { UserCreateComponent } from './../pages/user/user-create/user-create.component';
+import { UserShowComponent } from './../pages/user/user-show/user-show.component';
+import { UserListComponent } from './../pages/user/user-list/user-list.component';
+import { CourseShowComponent } from './../pages/course/course-show/course-show.component';
+import { CourseListComponent } from './../pages/course/course-list/course-list.component';
+import { CourseCreateComponent } from './../pages/course/course-create/course-create.component';
+import { ClasseCreateComponent } from './../pages/classe/classe-create/classe-create.component';
+import { ClasseShowComponent } from './../pages/classe/classe-show/classe-show.component';
+import { ClasseListComponent } from './../pages/classe/classe-list/classe-list.component';
 import { ErrorServerComponent } from './../shared/ui/error-server/error-server.component';
 import { ProfesseurEditComponent } from './../pages/professeur/professeur-edit/professeur-edit.component';
 import { ProfesseurCreateComponent } from './../pages/professeur/professeur-create/professeur-create.component';
@@ -42,11 +52,12 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { fr_FR, NZ_I18N } from 'ng-zorro-antd/i18n';
 import fr from '@angular/common/locales/fr';
 import localeFr from '@angular/common/locales/fr';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
-registerLocaleData(localeFr,fr);
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+
+registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
     FormsModule,
@@ -75,6 +86,7 @@ registerLocaleData(localeFr,fr);
     NzPageHeaderModule,
     NzAlertModule,
     NzEmptyModule,
+    NzTabsModule,
   ],
   declarations: [
     AdminComponent,
@@ -93,9 +105,19 @@ registerLocaleData(localeFr,fr);
     ProfesseurListComponent,
     ProfesseurCreateComponent,
     ProfesseurEditComponent,
-    ErrorServerComponent
+    ErrorServerComponent,
+    ClasseListComponent,
+    ClasseShowComponent,
+    ClasseCreateComponent,
+    CourseCreateComponent,
+    CourseListComponent,
+    CourseShowComponent,
+    UserListComponent,
+    UserShowComponent,
+    UserCreateComponent,
+    CanDeleteComponent
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'fr' }],
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],
 })
 export class AdminModule {}

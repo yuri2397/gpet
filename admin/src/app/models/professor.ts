@@ -1,6 +1,7 @@
 import { Account } from './account';
 import { CoursesDo } from './coures-do';
 import { Course } from './course';
+import { Departement } from './departement';
 
 export class Professor {
   id!: number;
@@ -16,7 +17,11 @@ export class Professor {
   created_at!: null;
   updated_at!: null;
   departement_id!: number;
+  departement!: Departement;
   coursesDo!: CoursesDo[];
   account!: Account;
   courses!: Course[];
+  constructor(){
+    this.account = new Account();
+  }
 }

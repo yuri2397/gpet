@@ -36,8 +36,8 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: 'salles',
-    title: 'Salle',
-    icon: 'ballot',
+    title: 'Salles',
+    icon: 'meeting_room',
     class: '',
     roles: ['super-admin'],
   },
@@ -49,7 +49,21 @@ export const ROUTES: RouteInfo[] = [
     roles: ['super-admin'],
   },
   {
-    path: 'admins',
+    path: 'classes',
+    title: 'Classes',
+    icon: 'school',
+    class: '',
+    roles: ['super-admin'],
+  },
+  {
+    path: 'courses',
+    title: 'Cours',
+    icon: 'ballot',
+    class: '',
+    roles: ['super-admin'],
+  },
+  {
+    path: 'users',
     title: 'Administrateurs',
     icon: 'manage_accounts',
     class: '',
@@ -96,7 +110,7 @@ export class AdminComponent implements OnInit {
   }
 
   selected(item: RouteInfo){
-    return "/admin/" + item.path == this.router.url ? true : false;
+    return this.router.url.indexOf(item.path) !== -1 ? true : false;
   }
 
   routerLink(item: RouteInfo){

@@ -1,15 +1,23 @@
+import { CourseDoService } from './course-do.service';
+import { CourseService } from './course.service';
+import { BankService } from './bank.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Professor } from '../models/professor';
 import { BaseHttp } from '../shared/base-http';
+import { DepartementService } from './departement.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfessorService extends BaseHttp {
   protected _baseUrl = 'professeur/';
-  constructor(private http: HttpClient) {
+  constructor(
+    protected hc: HttpClient,
+    private bankService: BankService,
+  ) {
     super();
+    this.http = hc;
   }
 
   findAll() {
@@ -17,6 +25,13 @@ export class ProfessorService extends BaseHttp {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
+  }
+
+  search(data: string){
+    return this.http.get<Professor[]>(this.api + this.baseUrl + 'search/' + data, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    })
   }
 
   find(id: number) {
@@ -35,8 +50,22 @@ export class ProfessorService extends BaseHttp {
     b.email = professor.email;
     b.avatar = professor.avatar;
     b.status = professor.status;
+    b.phone_number = professor.phone_number;
     b.job = professor.job;
     b.is_active = professor.is_active;
+    b.account.key = professor.account.key;
+    b.account.rip = professor.account.rip;
+    b.account.bank_id = professor.account.bank_id;
+    b.account.id = professor.account.id;
+    b.account.account_number = professor.account.account_number;
+    return b;
+  }
+
+  deepClone(professor: Professor) {
+    let b: Professor = this.clone(professor);
+    b.account.bank = this.bankService.clone(professor.account.bank);
+    b.courses = professor.courses;
+    b.coursesDo = professor.coursesDo;
     return b;
   }
 
@@ -47,10 +76,14 @@ export class ProfessorService extends BaseHttp {
         first_name: professor.first_name,
         last_name: professor.last_name,
         email: professor.email,
-        avatar: professor.avatar,
+        departement_id: professor.departement_id,
         status: professor.status,
-        job: professor.job,
-        is_active: professor.is_active,
+        phone_number: professor.phone_number,
+        job: professor.job ?? null,
+        rip: professor.account.rip,
+        account_number: professor.account.account_number,
+        bank_id: professor.account.bank_id,
+        key: professor.account.key,
       },
       {
         headers: this.authorizationHeaders,
@@ -73,11 +106,23 @@ export class ProfessorService extends BaseHttp {
         first_name: professor.first_name,
         last_name: professor.last_name,
         email: professor.email,
-        avatar: professor.avatar,
+        departement_id: professor.departement_id,
         status: professor.status,
-        job: professor.job,
-        is_active: professor.is_active,
+        phone_number: professor.phone_number,
+        job: professor.job ?? null,
+        rip: professor.account.rip,
+        account_number: professor.account.account_number,
+        bank_id: professor.account.bank_id,
+        key: professor.account.key,
       },
+      { headers: this.authorizationHeaders, observe: 'body' }
+    );
+  }
+
+  desableAccount(professor: Professor) {
+    return this.http.put<Professor>(
+      this.api + this.baseUrl + 'desable-account/' + professor.id,
+      { is_active: professor.is_active },
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

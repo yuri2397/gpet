@@ -9,4 +9,36 @@ class Course extends Model
 {
     use HasFactory;
 
+    protected $with = ['departement', 'classe', 'professor', 'ec', 'service', 'semester'];
+
+    public function professor()
+    {
+        return $this->belongsTo(Professor::class);
+    }
+
+    public function classe()
+    {
+        return $this->belongsTo(Classe::class);
+    }
+
+    public function ec()
+    {
+        return $this->belongsTo(EC::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
+    }
+
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class);
+    }
+
 }

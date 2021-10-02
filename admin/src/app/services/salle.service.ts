@@ -9,10 +9,12 @@ import { Batiment } from '../models/batiment';
 })
 export class SalleService extends BaseHttp{
   protected _baseUrl = 'salle/';
-  constructor(private http: HttpClient) {
+  constructor(
+    protected hc: HttpClient,
+  ) {
     super();
+    this.http = hc;
   }
-
   findAll() {
     return this.http.get<Salle[]>(this.api + this.baseUrl, {
       headers: this.authorizationHeaders,

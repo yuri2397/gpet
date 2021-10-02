@@ -9,6 +9,18 @@ class CoursesHasProfessors extends Model
 {
     use HasFactory;
     protected $fillable = ['*'];
+
+    protected $with = ['professor','course'];
+
     protected $table = "courses_has_professors";
+
+    public function professor()
+    {
+        return $this->belongsTo(Professor::class);
+    }
+
+    public function course(){
+        return $this->belongsTo(Course::class);
+    }
 
 }

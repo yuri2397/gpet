@@ -1,7 +1,7 @@
 <nz-layout *ngIf="!isLoad; else loadingTemplate" class="app-layout">
     <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
         <div class="sidebar-logo">
-            <a href="https://ng.ant.design/" target="_blank">
+            <a href="#" target="_blank">
                 <img src="/assets/img/logo.jpg" alt="logo">
                 <h1>UFR SET GPET</h1>
             </a>
@@ -9,9 +9,9 @@
         <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
             <li (click)="routerLink(item)" *ngFor="let item of menuItems" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]='selected(item)'>
                 <i nz-icon>
-            <mat-icon style="color:  #41729f;
+          <mat-icon style="color:  #41729f;
           ">{{ item.icon }}</mat-icon>
-          </i>
+        </i>
                 <span>{{ item.title }}</span>
             </li>
         </ul>
