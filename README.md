@@ -46,7 +46,7 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 
 - Les cours afféctés au professeur
 
-![Capture d’écran de 2021-10-04 18-47-03](https://user-images.githubusercontent.com/58815209/135907096-aa795bb3-cc9c-4313-9b6b-bbb62e75fe74.png)
+![Capture d’écran de 2021-10-04 21-35-54](https://user-images.githubusercontent.com/58815209/135928156-2521963f-d970-47f7-8664-14fe403fa8e3.png)
 
 - Les cours donnés par le professeurs durant le dernier mois
 
