@@ -1,3 +1,4 @@
+import { Service } from './service';
 import { Classe } from './classe';
 import { Departement } from './departement';
 import { EC } from './ec';
@@ -22,5 +23,14 @@ export class Course {
   classe!: Classe;
   ec!: EC;
   semester!: Semester;
-  service!: Semester;
+  service!: Service;
+
+  constructor(){
+    this.professor = new Professor();
+    this.departement = new Departement();
+    this.classe = new Classe();
+    this.ec= new EC();
+    this.semester = new Semester();
+    this.service = new Service();
+  }
 }

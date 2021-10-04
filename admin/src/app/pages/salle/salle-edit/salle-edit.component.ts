@@ -83,7 +83,6 @@ export class SalleEditComponent implements OnInit {
   }
 
   edit() {
-    console.log("NEW SALLE", this.salle);
     this.isLoad = true;
     this.salleService.edit(this.salle).subscribe({
       next: (response) => {

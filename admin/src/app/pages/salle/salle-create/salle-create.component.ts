@@ -84,7 +84,6 @@ export class SalleCreateComponent implements OnInit {
   }
 
   save() {
-    console.log("NEW SALLE", this.salle);
     this.isLoad = true;
     this.salleService.create(this.salle).subscribe({
       next: (response) => {

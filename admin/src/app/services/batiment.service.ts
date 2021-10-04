@@ -15,7 +15,7 @@ export class BatimentService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Batiment[]>(this.api + this.baseUrl, {
+    return this.http.get<Batiment[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -30,7 +30,7 @@ export class BatimentService extends BaseHttp {
 
   create(batiment: Batiment) {
     return this.http.post<Batiment>(
-      this.api + this.baseUrl + 'create',
+      this.endPoint + 'create',
       {
         name: batiment.name,
       },
@@ -43,14 +43,14 @@ export class BatimentService extends BaseHttp {
 
   delete(batiment: Batiment) {
     return this.http.delete<any>(
-      this.api + this.baseUrl + 'destroy/' + batiment.id,
+      this.endPoint + 'destroy/' + batiment.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(batiment: Batiment) {
     return this.http.put<Batiment>(
-      this.api + this.baseUrl + 'update/' + batiment.id,
+      this.endPoint + 'update/' + batiment.id,
       {
         name: batiment.name,
       },

@@ -56,7 +56,10 @@ import fr from '@angular/common/locales/fr';
 import localeFr from '@angular/common/locales/fr';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
-
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzResultModule } from 'ng-zorro-antd/result';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -69,6 +72,7 @@ registerLocaleData(localeFr, fr);
     NzToolTipModule,
     MatIconModule,
     CommonModule,
+    NzResultModule,
     NzTableModule,
     MatButtonModule,
     NzFormModule,
@@ -87,6 +91,9 @@ registerLocaleData(localeFr, fr);
     NzAlertModule,
     NzEmptyModule,
     NzTabsModule,
+    NzPopconfirmModule,
+    NzDatePickerModule,
+    NzCollapseModule,
   ],
   declarations: [
     AdminComponent,
@@ -115,7 +122,7 @@ registerLocaleData(localeFr, fr);
     UserListComponent,
     UserShowComponent,
     UserCreateComponent,
-    CanDeleteComponent
+    CanDeleteComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

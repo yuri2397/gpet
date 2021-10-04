@@ -16,7 +16,7 @@ export class DepartementService extends BaseHttp{
 
 
   findAll() {
-    return this.http.get<Departement[]>(this.api + this.baseUrl, {
+    return this.http.get<Departement[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -31,7 +31,7 @@ export class DepartementService extends BaseHttp{
 
   create(batiment: Departement) {
     return this.http.post<Departement>(
-      this.api + this.baseUrl + 'create',
+      this.endPoint + 'create',
       {
         name: batiment.name,
       },
@@ -44,14 +44,14 @@ export class DepartementService extends BaseHttp{
 
   delete(batiment: Departement) {
     return this.http.delete<any>(
-      this.api + this.baseUrl + 'destroy/' + batiment.id,
+      this.endPoint + 'destroy/' + batiment.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(batiment: Departement) {
     return this.http.put<Departement>(
-      this.api + this.baseUrl + 'update/' + batiment.id,
+      this.endPoint + 'update/' + batiment.id,
       {
         name: batiment.name,
       },

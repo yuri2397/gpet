@@ -102,6 +102,23 @@
                 </nz-form-item>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-4">
+                <nz-form-item>
+                    <nz-form-label nzFor="ec_id">EC</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
+                        <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec_id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
+                            <ng-container *ngFor="let o of ecs">
+                                <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
+                            </ng-container>
+                            <nz-option *ngIf="ecLoad" nzDisabled nzCustomContent>
+                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
     </nz-form>
 </div>
 

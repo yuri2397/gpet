@@ -6,39 +6,67 @@ import { Injectable } from '@angular/core';
 import { Professor } from '../models/professor';
 import { BaseHttp } from '../shared/base-http';
 import { DepartementService } from './departement.service';
+import { Course } from '../models/course';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfessorService extends BaseHttp {
   protected _baseUrl = 'professeur/';
-  constructor(
-    protected hc: HttpClient,
-    private bankService: BankService,
-  ) {
+  constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
     this.http = hc;
   }
 
   findAll() {
-    return this.http.get<Professor[]>(this.api + this.baseUrl, {
+    return this.http.get<Professor[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
   }
 
-  search(data: string){
-    return this.http.get<Professor[]>(this.api + this.baseUrl + 'search/' + data, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    })
+  search(data: string) {
+    return this.http.get<Professor[]>(
+      this.endPoint + 'search/' + data,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   find(id: number) {
-    return this.http.get<Professor>(this.api + this.baseUrl + 'show/' + id, {
+    return this.http.get<Professor>(this.endPoint + 'show/' + id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
+  }
+
+  addCourseForProfessor(course: Course, professor: Professor) {
+    return this.http.post<Course>(
+      this.endPoint + 'course-to-professor',
+      {
+        course_id: course.id,
+        professor_id: professor.id,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  removeCourse(course: Course) {
+    return this.http.put(
+      this.endPoint + 'remove-course-professor',
+      {
+        course_id: course.id,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   clone(professor: Professor): any {
@@ -71,7 +99,7 @@ export class ProfessorService extends BaseHttp {
 
   create(professor: Professor) {
     return this.http.post<Professor>(
-      this.api + this.baseUrl + 'create',
+      this.endPoint + 'create',
       {
         first_name: professor.first_name,
         last_name: professor.last_name,
@@ -94,14 +122,14 @@ export class ProfessorService extends BaseHttp {
 
   delete(professor: Professor) {
     return this.http.delete<any>(
-      this.api + this.baseUrl + 'destroy/' + professor.id,
+      this.endPoint + 'destroy/' + professor.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(professor: Professor) {
     return this.http.put<Professor>(
-      this.api + this.baseUrl + 'update/' + professor.id,
+      this.endPoint + 'update/' + professor.id,
       {
         first_name: professor.first_name,
         last_name: professor.last_name,
@@ -121,9 +149,26 @@ export class ProfessorService extends BaseHttp {
 
   desableAccount(professor: Professor) {
     return this.http.put<Professor>(
-      this.api + this.baseUrl + 'desable-account/' + professor.id,
+      this.endPoint + 'desable-account/' + professor.id,
       { is_active: professor.is_active },
       { headers: this.authorizationHeaders, observe: 'body' }
+    );
+  }
+
+  courseDo(hours: number, date: any, course: Course, professor: Professor) {
+    return this.http.post<any>(
+      this.endPoint + 'course-do',
+      {
+        hours: hours,
+        date: date,
+        professor_id: professor.id,
+        course_id: course.id,
+        amount: course.service.amount,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
     );
   }
 }

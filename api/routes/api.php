@@ -3,20 +3,28 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ECController;
+use App\Http\Controllers\UEController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalleController;
+use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BatimentController;
-use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
 
 Route::post('selectable', function (Request $request) {
     $res = [];
     foreach ($request->all() as $r) {
-        $res[$r] = DB::table($r)->get();
+        try {
+            $res[$r] = DB::table($r)->get();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => "Table '" . $r . "' est introuvable"
+            ], 404);
+        }
     }
     return $res;
 });
@@ -71,6 +79,27 @@ Route::prefix("professeur")->middleware(['auth:api', 'role:super admin'])->group
     Route::put('update/{id}', [ProfesseurController::class, "update"]);
     Route::delete('destroy/{id}', [ProfesseurController::class, "destroy"]);
     Route::put('desable-account/{id}', [ProfesseurController::class, "desableAccount"]);
+    Route::post('course-do', [CourseController::class, 'courseHasProfessor']);
+    Route::post('course-to-professor', [CourseController::class, 'courseToProfessor']);
+    Route::put('remove-course-professor', [CourseController::class, 'removeCourseProfessor']);
+});
+
+Route::prefix("ue")->middleware(['auth:api', 'role:super admin'])->group(function () {
+    Route::get('', [UEController::class, "index"])->withoutMiddleware('role:super admin');
+    Route::get('search/{data}', [UEController::class, "search"])->withoutMiddleware('role:super admin');
+    Route::get('show/{id}', [UEController::class, "show"])->withoutMiddleware('role:super admin');
+    Route::post('create', [UEController::class, "store"]);
+    Route::put('update/{id}', [UEController::class, "update"]);
+    Route::delete('destroy/{id}', [UEController::class, "destroy"]);
+});
+
+Route::prefix("ec")->middleware(['auth:api', 'role:super admin'])->group(function () {
+    Route::get('', [ECController::class, "index"])->withoutMiddleware('role:super admin');
+    Route::get('search/{data}', [ECController::class, "search"])->withoutMiddleware('role:super admin');
+    Route::get('show/{id}', [ECController::class, "show"])->withoutMiddleware('role:super admin');
+    Route::post('create', [ECController::class, "store"]);
+    Route::put('update/{id}', [ECController::class, "update"]);
+    Route::delete('destroy/{id}', [ECController::class, "destroy"]);
 });
 
 
@@ -80,6 +109,7 @@ Route::prefix("course")->middleware(['auth:api', 'role:super admin'])->group(fun
     Route::post('create', [CourseController::class, "store"]);
     Route::put('update/{id}', [CourseController::class, "update"]);
     Route::delete('destroy/{id}', [CourseController::class, "destroy"]);
+    Route::get('search/{data}', [CourseController::class, "search"])->withoutMiddleware('role:super admin');;
 });
 
 

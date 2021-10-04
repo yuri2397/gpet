@@ -55,6 +55,10 @@ export class BaseHttp {
     return false;
   }
 
+  get endPoint(){
+    return this.api + this.baseUrl;
+  }
+
   get guestHeaders() {
     return {
       accept: 'application/json',

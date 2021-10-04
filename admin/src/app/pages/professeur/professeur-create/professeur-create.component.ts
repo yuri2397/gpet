@@ -85,7 +85,6 @@ export class ProfesseurCreateComponent implements OnInit {
   }
 
   save() {
-    console.log('NEW SALLE', this.professor);
     this.isLoad = true;
     this.professorService.create(this.professor).subscribe({
       next: (response) => {
@@ -99,7 +98,7 @@ export class ProfesseurCreateComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
+        (errors);
 
         this.notification.createNotification(
           'error',

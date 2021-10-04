@@ -22,7 +22,7 @@ export class BankService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Bank[]>(this.api + this.baseUrl, {
+    return this.http.get<Bank[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });

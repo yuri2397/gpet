@@ -16,7 +16,7 @@ export class UserService extends BaseHttp {
   }
 
   currentUser() {
-    return this.http.get<User>(this.api + this.baseUrl + 'profile', {
+    return this.http.get<User>(this.endPoint + 'profile', {
       headers: this.authorizationHeaders,
       observe: 'body',
     });

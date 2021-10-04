@@ -11,6 +11,8 @@ import { Professor } from 'src/app/models/professor';
 import { Semester } from 'src/app/models/semester';
 import { Service } from 'src/app/models/service';
 import { ClasseService } from 'src/app/services/classe.service';
+import { EC } from 'src/app/models/ec';
+import { ECService } from 'src/app/services/ec.service';
 
 @Component({
   selector: 'app-course-create',
@@ -28,6 +30,8 @@ export class CourseCreateComponent implements OnInit {
   classes!: Classe[];
   courses!: Course[];
   services!: Service[];
+  ecs!: EC[];
+  ecLoad = false;
   profLoad = false;
   constructor(
     private notification: NotificationService,
@@ -35,7 +39,8 @@ export class CourseCreateComponent implements OnInit {
     private courseService: CourseService,
     private modal: NzModalRef,
     private profService: ProfessorService,
-    private classeService: ClasseService
+    private classeService: ClasseService,
+    private ecService: ECService
   ) {}
 
   ngOnInit(): void {
@@ -66,16 +71,43 @@ export class CourseCreateComponent implements OnInit {
 
   onProSearch(value: string) {
     this.profLoad = true;
-    if(value.length > 5){
-      this.profService.search(value).subscribe({
-      next: (response) => {
-        this.professors = response;
-        this.profLoad= false;
-      },
-      error: (errors) => {},
-    });
-    }
 
+    if (value.trim().length > 4) {
+      this.profService.search(value.trim()).subscribe({
+        next: (response) => {
+          this.professors = response;
+          this.profLoad = false;
+        },
+        error: (errors) => {
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
+          this.profLoad = false;
+        },
+      });
+    }
+  }
+
+  onECSearch(value: string) {
+    this.ecLoad = true;
+    if (value.trim().length > 4) {
+      this.ecService.search(value.trim()).subscribe({
+        next: (response) => {
+          this.ecs = response;
+          this.ecLoad = false;
+        },
+        error: (errors) => {
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
+          this.ecLoad = false;
+        },
+      });
+    }
   }
 
   findSelectableList() {
@@ -87,12 +119,16 @@ export class CourseCreateComponent implements OnInit {
           this.departements = response.departements;
           this.services = response.services;
           this.semesters = response.semesters;
-          console.log('SELECTABLE LIST', response);
           this.isLoad = false;
         },
         error: (errors) => {
-          console.log(errors);
+          (errors);
           this.isLoad = false;
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
         },
       });
   }
@@ -103,7 +139,7 @@ export class CourseCreateComponent implements OnInit {
         this.classes = response;
       },
       error: (errors) => {
-        console.log(errors);
+        (errors);
       },
     });
   }

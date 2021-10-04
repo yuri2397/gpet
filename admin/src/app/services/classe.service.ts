@@ -15,7 +15,7 @@ export class ClasseService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Classe[]>(this.api + this.baseUrl, {
+    return this.http.get<Classe[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -23,7 +23,7 @@ export class ClasseService extends BaseHttp {
 
   findByDepartement(id: number) {
     return this.http.get<Classe[]>(
-      this.api + this.baseUrl + 'departement/' + id,
+      this.endPoint + 'departement/' + id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
@@ -37,7 +37,7 @@ export class ClasseService extends BaseHttp {
 
   create(classe: Classe) {
     return this.http.post<Classe>(
-      this.api + this.baseUrl + 'create',
+      this.endPoint + 'create',
       {
         name: classe.name,
       },
@@ -50,14 +50,14 @@ export class ClasseService extends BaseHttp {
 
   delete(classe: Classe) {
     return this.http.delete<any>(
-      this.api + this.baseUrl + 'destroy/' + classe.id,
+      this.endPoint + 'destroy/' + classe.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(classe: Classe) {
     return this.http.put<Classe>(
-      this.api + this.baseUrl + 'update/' + classe.id,
+      this.endPoint + 'update/' + classe.id,
       {
         name: classe.name,
       },

@@ -16,7 +16,7 @@ export class SalleService extends BaseHttp{
     this.http = hc;
   }
   findAll() {
-    return this.http.get<Salle[]>(this.api + this.baseUrl, {
+    return this.http.get<Salle[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -37,7 +37,7 @@ export class SalleService extends BaseHttp{
 
   create(salle: Salle) {
     return this.http.post<Salle>(
-      this.api + this.baseUrl + 'create',
+      this.endPoint + 'create',
       {
         name: salle.name,
         number: salle.number,
@@ -54,14 +54,14 @@ export class SalleService extends BaseHttp{
 
   delete(salle: Salle) {
     return this.http.delete<any>(
-      this.api + this.baseUrl + 'destroy/' + salle.id,
+      this.endPoint + 'destroy/' + salle.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(salle: Salle) {
     return this.http.put<Salle>(
-      this.api + this.baseUrl + 'update/' + salle.id,
+      this.endPoint + 'update/' + salle.id,
       {
         name: salle.name,
         number: salle.number,

@@ -84,7 +84,7 @@ export const ROUTES: RouteInfo[] = [
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  isCollapsed = false;
+  isCollapsed = true;
   isLoad = true;
   menuItems!: RouteInfo[];
 

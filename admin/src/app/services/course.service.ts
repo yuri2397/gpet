@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Course } from '../models/course';
+import { Professor } from '../models/professor';
 import { BaseHttp } from '../shared/base-http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService extends BaseHttp {
+
   protected _baseUrl = 'course/';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
   }
-
-
 
   clone(course: Course) {
     let c = new Course();
@@ -30,7 +30,7 @@ export class CourseService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Course[]>(this.api + this.baseUrl, {
+    return this.http.get<Course[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -38,9 +38,17 @@ export class CourseService extends BaseHttp {
 
   create(classe: Course) {
     return this.http.post<Course>(
-      this.api + this.baseUrl + 'create',
+      this.endPoint + 'create',
       {
         name: classe.name,
+        acronym: classe.acronym,
+        groupe_number: classe.groupe_number,
+        classe_id: classe.classe_id,
+        service_id: classe.service_id,
+        semester_id: classe.semester_id,
+        departement_id: classe.departement_id,
+        ec_id: classe.ec_id,
+        professor_id: classe.professor_id,
       },
       {
         headers: this.authorizationHeaders,
@@ -51,17 +59,24 @@ export class CourseService extends BaseHttp {
 
   delete(course: Course) {
     return this.http.delete<any>(
-      this.api + this.baseUrl + 'destroy/' + course.id,
+      this.endPoint + 'destroy/' + course.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(course: Course) {
     return this.http.put<Course>(
-      this.api + this.baseUrl + 'update/' + course.id,
+      this.endPoint + 'update/' + course.id,
       {
         name: course.name,
       },
+      { headers: this.authorizationHeaders, observe: 'body' }
+    );
+  }
+
+  search(value: string) {
+    return this.http.get<Course[]>(
+      this.endPoint + 'search/' + value,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

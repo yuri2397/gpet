@@ -17,7 +17,7 @@ export class AuthService extends BaseHttp {
 
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(
-      this.api + this.baseUrl + 'login',
+      this.endPoint + 'login',
       {
         email: email,
         password: password,

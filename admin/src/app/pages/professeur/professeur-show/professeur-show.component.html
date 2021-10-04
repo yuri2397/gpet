@@ -4,19 +4,19 @@
         <div *ngIf="!dataLoad" class="card-header bg-color">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <button class="mx-2" (click)="onBack()" mat-mini-fab color="default">
+                    <button nz-tooltip [nzTooltipTitle]="'Revenir en arrièr'" class="mx-2" (click)="onBack()" mat-mini-fab color="default">
             <mat-icon>arrow_back</mat-icon>
           </button>
                 </div>
                 <div>
                     <div class="d-flex justify-content-end align-items-center">
                         <div class="mx-1">
-                            <button mat-mini-fab color="default">
+                            <button nz-tooltip [nzTooltipTitle]="'Export l\'état des paiements'" mat-mini-fab color="default">
                 <mat-icon>print</mat-icon>
               </button>
                         </div>
                         <div class="mx-1">
-                            <button (click)="openEditModal()" mat-mini-fab color="accent">
+                            <button nz-tooltip [nzTooltipTitle]="'Modifier les infos'" (click)="openEditModal()" mat-mini-fab color="accent">
                 <mat-icon>edit</mat-icon>
               </button>
                         </div>
@@ -95,73 +95,92 @@
                         </div>
                     </div>
                 </div>
-                <!-- BOTTOM -->
-                <div class="row my-3">
-                    <div class="col-12">
-                        <nz-card [nzTitle]="listTitle" class="shadow">
-                            <nz-table nzTableLayout="fixed" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="professeur.courses">
-                                <thead>
-                                    <tr>
-                                        <th> Code </th>
-                                        <th><b>Intitulé</b></th>
-                                        <th><b>Groupe</b></th>
-                                        <th><b>Service</b></th>
-                                        <th><b>Semestre</b></th>
-                                        <th><b>Classe</b></th>
-                                        <th><b>UE</b></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of basicTable.data">
-                                        <td>{{ data.acronym }}</td>
-                                        <td>{{ data.name }}</td>
-                                        <td>{{ data.groupe_number }}</td>
-                                        <td>{{ data.service.name }}</td>
-                                        <td>{{ data.semester.name }}</td>
-                                        <td>{{ data.classe.name }}</td>
-                                        <td>{{ data.ec.name }}</td>
-                                    </tr>
-                                </tbody>
-                            </nz-table>
-                        </nz-card>
-                        <ng-template #listTitle>
-                            <nz-alert nzType="info" nzMessage="Les des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}" nzShowIcon>
-                            </nz-alert>
-                        </ng-template>
-                    </div>
-                </div>
-                <div class="row my-5">
-                    <div class="col-12">
-                        <div class="shadow card">
-                            <div class="card-header bg-color">
-                                <h5 class="text-white">Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth() | date }}</h5>
-                            </div>
-                            <div class="card-body">
-                                <nz-table nzTableLayout="fixed" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professeur.coursesDo">
-                                    <thead>
-                                        <tr>
-                                            <th> Code </th>
-                                            <th><b>Cours</b></th>
-                                            <th><b>Classe</b></th>
-                                            <th><b>Service</b></th>
-                                            <th><b>Nombre d'heures</b></th>
-                                            <th><b>Montant</b></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let data of courseDoTable.data">
-                                            <td>{{ data.course.acronym }}</td>
-                                            <td>{{ data.course.name }}</td>
-                                            <td>{{ data.course.classe.name }}</td>
-                                            <td>{{ data.course.service.name }}</td>
-                                            <td>{{ data.total_hours}} heures</td>
-                                            <td>{{ data.total_sales}} FCFA </td>
-                                        </tr>
-                                    </tbody>
-                                </nz-table>
-                            </div>
-
+                <div class="card mt-3 shadow">
+                    <div class="d-flex justify-content-between align-items-center card-header bg-color">
+                        <div>
+                            <h5 class="text-white">Informations sur les cours</h5>
                         </div>
+                        <div>
+                            <button nz-tooltip [nzTooltipTitle]="'Ajoute un cour'" (click)="openAddCourseModal()" mat-mini-fab color="default">
+                <mat-icon>add</mat-icon>
+              </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <nz-collapse nzAccordion>
+                            <nz-collapse-panel [nzActive]="true" [nzExpandedIcon]="'double-right'" nzHeader="Liste des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}">
+                                <div class="col-12">
+                                    <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="professeur.courses">
+                                        <thead>
+                                            <tr>
+                                                <th> Code </th>
+                                                <th><b>Intitulé</b></th>
+                                                <th><b>Groupe</b></th>
+                                                <th><b>Service</b></th>
+                                                <th><b>Semestre</b></th>
+                                                <th><b>Classe</b></th>
+                                                <th><b>UE</b></th>
+                                                <th><b>Actions</b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of basicTable.data">
+                                                <td>{{ data.acronym }}</td>
+                                                <td>{{ data.name }}</td>
+                                                <td>{{ data.groupe_number }}</td>
+                                                <td>{{ data.service.name }}</td>
+                                                <td>{{ data.semester.name }}</td>
+                                                <td>{{ data.classe.name }}</td>
+                                                <td>{{ data.ec.name }}</td>
+                                                <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <div>
+                                                            <button (click)="openAddHourModal(data)" mat-mini-fab color="primary">
+                                <mat-icon>pending_actions</mat-icon>
+                              </button>
+                                                        </div>
+                                                        <div class="mx-2">
+                                                            <button (click)="openDeleteConf(data)" mat-mini-fab color="warn">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                                                        </div>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </div>
+                            </nz-collapse-panel>
+                            <nz-collapse-panel [nzExpandedIcon]="'double-right'" nzHeader="Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth()
+                |
+                date }}">
+                                <div class="row">
+                                    <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professeur.coursesDo">
+                                        <thead>
+                                            <tr>
+                                                <th> Code </th>
+                                                <th><b>Cours</b></th>
+                                                <th><b>Classe</b></th>
+                                                <th><b>Service</b></th>
+                                                <th><b>Nombre d'heures</b></th>
+                                                <th><b>Montant</b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of courseDoTable.data">
+                                                <td>{{ data.course.acronym }}</td>
+                                                <td>{{ data.course.name }}</td>
+                                                <td>{{ data.course.classe.name }}</td>
+                                                <td>{{ data.course.service.name }}</td>
+                                                <td>{{ data.total_hours}} heures</td>
+                                                <td>{{ data.total_sales}} FCFA </td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </div>
+                            </nz-collapse-panel>
+                        </nz-collapse>
                     </div>
                 </div>
             </ng-container>
@@ -200,3 +219,126 @@
         </div>
     </div>
 </div>
+
+
+<!-- ADD HOURS MODAL -->
+<nz-modal [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des heurs de cours">
+    <div *nzModalContent>
+        <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="hours">Nombre d'heures</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nombre d'heures est requi">
+                            <input [(ngModel)]="hours" formControlName="hours" nz-input name="hours" type="number" id="hours">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="cdDate">Date</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [(ngModel)]="cdDate" formControlName="cdDate" nz-input name="cdDate" type="date" id="cdDate">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Professeur</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ professeur.first_name + '' + professeur.last_name }}">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Cours</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.name }}">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-form>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="addHourModalClose()">Annuler</button>
+        <button nz-button nzType="primary" (click)="addHour()" [disabled]="!addHourForm.valid" [nzLoading]="addHourLaod">Valider</button>
+    </div>
+</nz-modal>
+
+<!-- ADD COURSE MODAL -->
+<nz-modal [(nzVisible)]="addCourseModalVisible" nzTitle="Affectation des cours" [nzFooter]="addCourFootModal" [nzWidth]="'40em'">
+    <div *nzModalContent>
+        <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addCourForm" (ngSubmit)="submitAddCourseForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="hours">Cours</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le cour requi">
+                            <nz-select (ngModelChange)='currentModel($event)' nzPlaceHolder="Rechercher un professeur" nzAllowClear nzShowSearch nzServerSearch formControlName="course_id" (nzOnSearch)="onCourseSearch($event)">
+                                <ng-container *ngFor="let o of courses">
+                                    <nz-option *ngIf="!coursesLoad" [nzValue]="o.id" [nzLabel]=" '# ' + o.name + ' | ' + o.service.name">
+                                    </nz-option>
+                                </ng-container>
+                                <nz-option *ngIf="coursesLoad" nzDisabled nzCustomContent>
+                                    <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                                </nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="cdDate">Code</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.acronym }}">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Service</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.service.name }}">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Montant Horaire</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.service.amount }} (FCFA)">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Semestre</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.semester.name }}">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>UE</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.ec.ue.name }}">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-form>
+    </div>
+    <ng-template #addCourFootModal>
+        <button nz-button nzType="default" (click)="addCourseModalVisible = false">Annuler</button>
+        <button nz-button nzType="primary" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid" [nzLoading]="addHourLaod">Valider</button>
+    </ng-template>
+</nz-modal>
