@@ -46,11 +46,11 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 
 - Les cours afféctés au professeur
 
-![Capture d’écran de 2021-10-01 00-06-22](https://user-images.githubusercontent.com/58815209/135546712-4894666d-f71e-4651-886d-610dfb1afb21.png)
+![Capture d’écran de 2021-10-04 21-35-54](https://user-images.githubusercontent.com/58815209/135928156-2521963f-d970-47f7-8664-14fe403fa8e3.png)
 
 - Les cours donnés par le professeurs durant le dernier mois
 
-![Capture d’écran de 2021-10-01 00-06-29](https://user-images.githubusercontent.com/58815209/135546721-bc243c3c-3372-4081-b3a5-1c6aa6b07133.png)
+![Capture d’écran de 2021-10-04 18-47-10](https://user-images.githubusercontent.com/58815209/135907156-78237b0a-235b-4d78-ad5f-31c77c6f19e0.png)
 
 # Ajouter un nouveau professeur
 
