@@ -10,6 +10,7 @@ import { BaseHttp } from '../shared/base-http';
 export class CourseService extends BaseHttp {
 
   protected _baseUrl = 'course/';
+
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

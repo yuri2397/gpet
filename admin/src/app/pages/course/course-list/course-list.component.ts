@@ -13,6 +13,7 @@ import { DepartementCreateComponent } from '../../departement/departement-create
 import { DepartementEditComponent } from '../../departement/departement-edit/departement-edit.component';
 import { Semester } from 'src/app/models/semester';
 import { Professor } from 'src/app/models/professor';
+import { CourseEditComponent } from '../course-edit/course-edit.component';
 
 @Component({
   selector: 'app-course-list',
@@ -31,15 +32,24 @@ export class CourseListComponent implements OnInit {
   semesters!: Semester[];
   professors!: Professor[];
   selectableLoad!: boolean;
-
+  canDeleteVisible = false;
+  canDeleteMessage!: string;
   constructor(
     private notification: NotificationService,
     private modalService: NzModalService,
-    private courseService: CourseService
+    public courseService: CourseService
   ) {}
 
   ngOnInit(): void {
+    this.canDeleteInit();
     this.findAll();
+  }
+  canDeleteInit() {
+    this.courseService.canDeleteTitle = 'Pour supprimer ce cour';
+    this.courseService.canDeleteErreurs = [
+      'Le cour ne doit avoir de professeur.',
+      'Le cour ne doit pas avoir de classe.',
+    ];
   }
 
   findAll() {
@@ -51,7 +61,7 @@ export class CourseListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        (errors);
+        errors;
       },
     });
   }
@@ -59,11 +69,8 @@ export class CourseListComponent implements OnInit {
   openEditModal(course: Course) {
     this.selectedCourse = course;
     const modal = this.modalService.create({
-      nzTitle: 'Modifier le batiment',
-      nzContent: DepartementEditComponent,
-      nzComponentParams: {
-        departement: this.courseService.clone(course),
-      },
+      nzTitle: 'Modifier le cour',
+      nzContent: CourseEditComponent,
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
@@ -105,12 +112,8 @@ export class CourseListComponent implements OnInit {
       },
       error: (errors) => {
         this.deleteLoad = false;
-        this.notification.createNotification(
-          'error',
-          'Notification',
-          errors.error.message
-        );
         this.deleteRestoRef.destroy();
+        this.canNotDelete();
       },
     });
   }
@@ -122,7 +125,7 @@ export class CourseListComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth:"55em"
+      nzWidth: '55em',
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -132,19 +135,12 @@ export class CourseListComponent implements OnInit {
     });
   }
 
+  canNotDelete() {
+    this.canDeleteMessage = 'Ce cour est lie à une classe et à un professeur.';
+    this.canDeleteVisible = true;
+  }
 
-  canNotDelete(message: string) {
-    this.modalService.create({
-      nzTitle: 'Impossible de supprimé ce cour',
-      nzContent: CanDeleteComponent,
-      nzComponentParams: {
-        message: message,
-      },
-      nzCentered: true,
-      nzMaskClosable: true,
-      nzClosable: true,
-      nzFooter: null,
-      nzWidth: '40em',
-    });
+  onCanDeleteClose() {
+    this.canDeleteVisible = false;
   }
 }

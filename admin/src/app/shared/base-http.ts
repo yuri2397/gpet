@@ -10,6 +10,11 @@ export class BaseHttp {
   private _super_admin = 'super admin';
   private _editeur = 'editeur';
   protected httpClient!: HttpClient;
+
+  _canDeleteErreurs!: string[];
+  _canDeleteSubTitle!: string;
+  _canDeleteTitle!: string;
+
   constructor() {}
 
   isLogIn(): boolean {
@@ -24,8 +29,32 @@ export class BaseHttp {
     };
   }
 
+  get canDeleteErreurs() {
+    return this._canDeleteErreurs;
+  }
+
+  get canDeleteSubTitle() {
+    return this._canDeleteSubTitle;
+  }
+
+  get canDeleteTitle() {
+    return this._canDeleteTitle;
+  }
+
+  set canDeleteErreurs(value: string[]) {
+    this._canDeleteErreurs = value;
+  }
+
+  set canDeleteSubTitle(value: string) {
+    this._canDeleteSubTitle = value;
+  }
+
+  set canDeleteTitle(value: string) {
+    this._canDeleteTitle = value;
+  }
+
   findSelectableList(tables: string[]) {
-    return this.http.post<any>(this.api + 'selectable',tables, {
+    return this.http.post<any>(this.api + 'selectable', tables, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -55,7 +84,7 @@ export class BaseHttp {
     return false;
   }
 
-  get endPoint(){
+  get endPoint() {
     return this.api + this.baseUrl;
   }
 
