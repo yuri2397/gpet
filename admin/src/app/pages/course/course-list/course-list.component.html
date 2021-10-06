@@ -39,11 +39,6 @@
                         <td>{{ data.professor.first_name }} {{ data.professor.last_name }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <div>
-                                    <button (click)="openEditModal(data)" mat-mini-fab color="primary">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                                </div>
                                 <div class="mx-3">
                                     <button (click)="openEditModal(data)" mat-mini-fab color="accent">
                     <mat-icon>edit</mat-icon>
@@ -63,3 +58,5 @@
         </div>
     </div>
 </div>
+
+<app-can-delete [erreurs]="courseService.canDeleteErreurs" [title]="courseService.canDeleteTitle" [subtitle]="courseService.canDeleteSubTitle" [visible]="canDeleteVisible" [message]="canDeleteMessage" (close)="onCanDeleteClose()"></app-can-delete>

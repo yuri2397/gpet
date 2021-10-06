@@ -1,3 +1,4 @@
+import { CourseEditComponent } from './../pages/course/course-edit/course-edit.component';
 import { CanDeleteComponent } from './../shared/ui/can-delete/can-delete.component';
 import { UserCreateComponent } from './../pages/user/user-create/user-create.component';
 import { UserShowComponent } from './../pages/user/user-show/user-show.component';
@@ -119,6 +120,7 @@ registerLocaleData(localeFr, fr);
     CourseCreateComponent,
     CourseListComponent,
     CourseShowComponent,
+    CourseEditComponent,
     UserListComponent,
     UserShowComponent,
     UserCreateComponent,

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CanDeleteComponent } from './can-delete.component';
+import { CourseEditComponent } from './course-edit.component';
 
-describe('CanDeleteComponent', () => {
-  let component: CanDeleteComponent;
-  let fixture: ComponentFixture<CanDeleteComponent>;
+describe('CourseEditComponent', () => {
+  let component: CourseEditComponent;
+  let fixture: ComponentFixture<CourseEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CanDeleteComponent ]
+      declarations: [ CourseEditComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CanDeleteComponent);
+    fixture = TestBed.createComponent(CourseEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

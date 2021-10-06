@@ -24,6 +24,7 @@ export class CourseCreateComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad: boolean = false;
 
+
   semesters!: Semester[];
   professors!: Professor[];
   departements!: Departement[];
