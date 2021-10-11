@@ -50,14 +50,15 @@ Route::prefix("batiment")->middleware(['auth:api', 'role:super admin'])->group(f
 
 Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->group(function () {
     Route::get('', [DepartementController::class, "index"])->withoutMiddleware('role:super admin');
+    Route::get('show/{id}', [DepartementController::class, "show"])->withoutMiddleware('role:super admin');
     Route::post('create', [DepartementController::class, "store"]);
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
 });
 
-Route::prefix("classe")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [ClasseController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('departement/{id}', [ClasseController::class, "findByDepartement"])->withoutMiddleware('role:super admin');
+Route::prefix("classe")->middleware(['auth:api',])->group(function () {
+    Route::get('', [ClasseController::class, "index"]);
+    Route::get('departement/{id}', [ClasseController::class, "findByDepartement"]);
     Route::post('create', [ClasseController::class, "store"]);
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
@@ -71,10 +72,10 @@ Route::prefix("salle")->middleware(['auth:api', 'role:super admin'])->group(func
 });
 
 
-Route::prefix("professeur")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [ProfesseurController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('search/{data}', [ProfesseurController::class, "search"])->withoutMiddleware('role:super admin');
-    Route::get('show/{id}', [ProfesseurController::class, "show"])->withoutMiddleware('role:super admin');
+Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
+    Route::get('', [ProfesseurController::class, "index"]);
+    Route::get('search/{data}', [ProfesseurController::class, "search"]);
+    Route::get('show/{id}', [ProfesseurController::class, "show"]);
     Route::post('create', [ProfesseurController::class, "store"]);
     Route::put('update/{id}', [ProfesseurController::class, "update"]);
     Route::delete('destroy/{id}', [ProfesseurController::class, "destroy"]);
@@ -84,38 +85,38 @@ Route::prefix("professeur")->middleware(['auth:api', 'role:super admin'])->group
     Route::put('remove-course-professor', [CourseController::class, 'removeCourseProfessor']);
 });
 
-Route::prefix("ue")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [UEController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('search/{data}', [UEController::class, "search"])->withoutMiddleware('role:super admin');
-    Route::get('show/{id}', [UEController::class, "show"])->withoutMiddleware('role:super admin');
+Route::prefix("ue")->middleware(['auth:api'])->group(function () {
+    Route::get('', [UEController::class, "index"]);
+    Route::get('search/{data}', [UEController::class, "search"]);
+    Route::get('show/{id}', [UEController::class, "show"]);
     Route::post('create', [UEController::class, "store"]);
     Route::put('update/{id}', [UEController::class, "update"]);
     Route::delete('destroy/{id}', [UEController::class, "destroy"]);
 });
 
-Route::prefix("ec")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [ECController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('search/{data}', [ECController::class, "search"])->withoutMiddleware('role:super admin');
-    Route::get('show/{id}', [ECController::class, "show"])->withoutMiddleware('role:super admin');
+Route::prefix("ec")->middleware(['auth:api'])->group(function () {
+    Route::get('', [ECController::class, "index"]);
+    Route::get('search/{data}', [ECController::class, "search"]);
+    Route::get('show/{id}', [ECController::class, "show"]);
     Route::post('create', [ECController::class, "store"]);
     Route::put('update/{id}', [ECController::class, "update"]);
     Route::delete('destroy/{id}', [ECController::class, "destroy"]);
 });
 
 
-Route::prefix("course")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [CourseController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('show/{id}', [CourseController::class, "show"])->withoutMiddleware('role:super admin');
+Route::prefix("course")->middleware(['auth:api',])->group(function () {
+    Route::get('', [CourseController::class, "index"]);
+    Route::get('show/{id}', [CourseController::class, "show"]);
     Route::post('create', [CourseController::class, "store"]);
     Route::put('update/{id}', [CourseController::class, "update"]);
     Route::delete('destroy/{id}', [CourseController::class, "destroy"]);
-    Route::get('search/{data}', [CourseController::class, "search"])->withoutMiddleware('role:super admin');;
+    Route::get('search/{data}', [CourseController::class, "search"]);
 });
 
 
-Route::prefix("bank")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [BankController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('show/{id}', [BankController::class, "show"])->withoutMiddleware('role:super admin');
+Route::prefix("bank")->middleware(['auth:api'])->group(function () {
+    Route::get('', [BankController::class, "index"]);
+    Route::get('show/{id}', [BankController::class, "show"]);
     Route::post('create', [BankController::class, "store"]);
     Route::put('update/{id}', [BankController::class, "update"]);
     Route::delete('destroy/{id}', [BankController::class, "destroy"]);

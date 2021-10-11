@@ -16,19 +16,7 @@ export class CourseService extends BaseHttp {
     this.http = hc;
   }
 
-  clone(course: Course) {
-    let c = new Course();
-    c.acronym = course.acronym;
-    c.ec = course.ec;
-    c.ec_id = course.ec_id;
-    c.groupe_number = course.groupe_number;
-    c.id = course.id;
-    c.name = course.name;
-    c.professor_id = course.professor_id;
-    c.semester = course.semester;
-    c.semester_id = course.semester_id;
-    return c;
-  }
+
 
   findAll() {
     return this.http.get<Course[]>(this.endPoint, {

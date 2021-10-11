@@ -30,7 +30,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: 'departements',
     title: 'Départements',
-    icon: 'support',
+    icon: 'school',
     class: '',
     roles: ['super-admin'],
   },
@@ -45,13 +45,6 @@ export const ROUTES: RouteInfo[] = [
     path: 'professeurs',
     title: 'Professeurs',
     icon: 'groups',
-    class: '',
-    roles: ['super-admin'],
-  },
-  {
-    path: 'classes',
-    title: 'Classes',
-    icon: 'school',
     class: '',
     roles: ['super-admin'],
   },

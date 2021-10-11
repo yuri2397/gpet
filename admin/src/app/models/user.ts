@@ -6,5 +6,6 @@ export class User {
   email!: string;
   avatar!: string;
   id!: number;
+  departement_id!: number;
   roles! : Role[];
 }

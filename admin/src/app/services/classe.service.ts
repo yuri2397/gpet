@@ -15,7 +15,7 @@ export class ClasseService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Classe[]>(this.endPoint, {
+    return this.http.get<any>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });

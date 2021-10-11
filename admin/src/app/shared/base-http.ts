@@ -8,7 +8,7 @@ export class BaseHttp {
   private _api = 'http://127.0.0.1:8000/api/';
   protected _baseUrl!: string;
   private _super_admin = 'super admin';
-  private _editeur = 'editeur';
+  private _editeur = 'chef de département';
   protected httpClient!: HttpClient;
 
   _canDeleteErreurs!: string[];
@@ -19,6 +19,10 @@ export class BaseHttp {
 
   isLogIn(): boolean {
     return this.getToken() == null ? false : true;
+  }
+
+  checkLocalData(): boolean {
+    return this.getRoles() && this.getUser() && this.getToken() ? true : false;
   }
 
   get authorizationHeaders() {
@@ -84,6 +88,14 @@ export class BaseHttp {
     return false;
   }
 
+  get super_admin() {
+    return this._super_admin;
+  }
+
+  get editeur() {
+    return this._editeur;
+  }
+
   get endPoint() {
     return this.api + this.baseUrl;
   }
@@ -111,8 +123,8 @@ export class BaseHttp {
     this._baseUrl = baseUrl;
   }
 
-  getUser() {
-    return sessionStorage.getItem('user');
+  getUser(): User {
+    return JSON.parse(sessionStorage.getItem('user')!);
   }
 
   setToken(token: string) {

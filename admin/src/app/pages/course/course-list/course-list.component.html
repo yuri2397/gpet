@@ -36,11 +36,20 @@
                         <td>{{ data.service.name }}</td>
                         <td>{{ data.semester.name }}</td>
                         <td>{{ data.classe.name }}</td>
-                        <td>{{ data.professor.first_name }} {{ data.professor.last_name }}</td>
+                        <td>
+                            <ng-container *ngIf="data.professor != null; else hasNotProf">
+                                <a [routerLink]="['/admin/professeurs/show/' + data.professor.id]">
+                  {{ data.professor.first_name }} {{ data.professor.last_name }}
+                </a>
+                            </ng-container>
+                            <ng-template #hasNotProf>
+                                <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
+                            </ng-template>
+                        </td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="mx-3">
-                                    <button (click)="openEditModal(data)" mat-mini-fab color="accent">
+                                    <button (click)="selectedCourse = data; openEditModal()" mat-mini-fab color="accent">
                     <mat-icon>edit</mat-icon>
                   </button>
                                 </div>

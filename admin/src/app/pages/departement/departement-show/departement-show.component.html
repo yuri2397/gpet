@@ -1,0 +1,84 @@
+<div *ngIf="!dataLoad; else dataLoadTemp" style="width: 100%">
+    <div class="card shadow">
+        <div class="card-body ">
+            <div *ngIf="showHeader()" class="row">
+                <div class="col-md-12">
+                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="Département {{ departement.name }}"></nz-page-header>
+                </div>
+                <ng-template #backTemp>
+                    <button class="m-2" mat-mini-fab color="primary">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+                </ng-template>
+            </div>
+            <nz-tabset [nzTabPosition]="'left'">
+                <nz-tab [nzTitle]="'Vue global'">
+                    <div class="row">
+                        <div class="col-md-4 my-2">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <nz-statistic [nzValue]="(departement.professors.length| number)!" [nzTitle]="'Professeurs'" [nzPrefix]="prefixTplProf" [nzValueStyle]="{ color: '#3F8600' }"></nz-statistic>
+                                    <ng-template #prefixTplProf>
+                                        <mat-icon>people</mat-icon>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 my-2">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <nz-statistic [nzValue]="(departement.classes.length| number)!" [nzTitle]="'Classes'" [nzPrefix]="prefixTplClasses" [nzValueStyle]="{ color: '#41729f' }"></nz-statistic>
+                                    <ng-template #prefixTplClasses>
+                                        <mat-icon>school</mat-icon>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 my-2">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <nz-statistic [nzValue]="(departement.courses.length| number)!" [nzTitle]="'Cours'" [nzPrefix]="prefixTplCours" [nzValueStyle]="{ color: '#3F8600' }"></nz-statistic>
+                                    <ng-template #prefixTplCours>
+                                        <mat-icon>emoji_objects</mat-icon>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nz-tab>
+                <nz-tab [nzTitle]="'Classes'">
+                    <app-classe-list [departement]="departement "></app-classe-list>
+                </nz-tab>
+                <nz-tab [nzTitle]="'Professeurs'">
+                    <app-professeur-list [professeurs]="departement.professors"></app-professeur-list>
+                </nz-tab>
+                <nz-tab [nzTitle]="'Cours'">
+                    <app-course-list [(courses)]="departement.courses"></app-course-list>
+                </nz-tab>
+            </nz-tabset>
+        </div>
+    </div>
+</div>
+<ng-template #dataLoadTemp>
+    <div class="card">
+        <div class="card-body">
+            <div class="row m-3">
+                <div class="col-md-6">
+                    <nz-skeleton [nzActive]="true"></nz-skeleton>
+                </div>
+                <div class="col-md-6">
+                    <nz-skeleton [nzActive]="true"></nz-skeleton>
+                </div>
+            </div>
+            <div class="row mx-3">
+                <div class="col-md-6">
+                    <nz-skeleton [nzActive]="true"></nz-skeleton>
+                </div>
+                <div class="col-md-6">
+                    <nz-skeleton [nzActive]="true"></nz-skeleton>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<app-error-server *ngIf="errorNetWork"></app-error-server>

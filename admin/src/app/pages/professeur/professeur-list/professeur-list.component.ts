@@ -1,5 +1,5 @@
 import { Professor } from './../../../models/professor';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Batiment } from 'src/app/models/batiment';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -14,9 +14,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./professeur-list.component.scss'],
 })
 export class ProfesseurListComponent implements OnInit {
-  professeurs!: Professor[];
+  @Input() professeurs!: Professor[];
   selectedProfessor!: Professor;
-  isLoad = true;
+  isLoad = false;
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   searchValue = '';
@@ -30,7 +30,11 @@ export class ProfesseurListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.findAll();
+    if (this.professeurs == null) {
+      this.findAll();
+    } else {
+      this.listOfDisplayData = this.professeurs;
+    }
   }
 
   findAll() {
@@ -93,7 +97,7 @@ export class ProfesseurListComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: "50em"
+      nzWidth: '50em',
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -120,7 +124,11 @@ export class ProfesseurListComponent implements OnInit {
     });
   }
 
-  showProfessor(professeur: Professor){
-    this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
+  showProfessor(professeur: Professor) {
+    if (this.profService.isAdmin())
+      this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
+    else
+    this.router.navigate(['/departement/professeurs/show/' + professeur.id]);
+
   }
 }

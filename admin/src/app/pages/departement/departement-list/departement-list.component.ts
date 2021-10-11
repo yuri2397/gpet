@@ -8,6 +8,7 @@ import { BatimentCreateComponent } from '../../batiment/batiment-create/batiment
 import { BatimentEditComponent } from '../../batiment/batiment-edit/batiment-edit.component';
 import { NotificationService } from 'src/app/services/notification.service';
 import { DepartementEditComponent } from '../departement-edit/departement-edit.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-departement-list',
@@ -24,7 +25,8 @@ export class DepartementListComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private modalService: NzModalService,
-    private depService: DepartementService
+    private depService: DepartementService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {

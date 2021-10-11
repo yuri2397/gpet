@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classe;
+use App\Models\Departement;
 use Illuminate\Http\Request;
 
 class ClasseController extends Controller
@@ -14,7 +15,7 @@ class ClasseController extends Controller
      */
     public function index()
     {
-        //
+        return Departement::with('classes')->with('courses')->get();
     }
 
     public function findByDepartement($departement)
