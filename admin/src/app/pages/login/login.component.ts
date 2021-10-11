@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService
   ) {
-    this.authService.alreadyConnect();
   }
 
   ngOnInit(): void {
@@ -67,10 +66,10 @@ export class LoginComponent implements OnInit {
       role = r.name;
     });
     switch (role) {
-      case 'super admin':
+      case this.authService.super_admin:
         this.router.navigate(['/admin']);
         break;
-      case 'editeur':
+      case this.authService.editeur:
         this.router.navigate(['/departement']);
         break;
     }

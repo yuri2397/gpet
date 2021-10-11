@@ -1,6 +1,6 @@
 import { CourseCreateComponent } from './../course-create/course-create.component';
 import { CanDeleteComponent } from './../../../shared/ui/can-delete/can-delete.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Batiment } from 'src/app/models/batiment';
 import { Classe } from 'src/app/models/classe';
@@ -21,11 +21,12 @@ import { CourseEditComponent } from '../course-edit/course-edit.component';
   styleUrls: ['./course-list.component.scss'],
 })
 export class CourseListComponent implements OnInit {
+  @Output() coursesChange: EventEmitter<Course[]> = new EventEmitter();
   departements!: Departement[];
   classes!: Classe[];
-  courses!: Course[];
+  @Input() courses!: Course[];
   services!: Service[];
-  isLoad = true;
+  isLoad = false;
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedCourse!: Course;
@@ -42,8 +43,9 @@ export class CourseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.canDeleteInit();
-    this.findAll();
+    if (this.courses == null) this.findAll();
   }
+
   canDeleteInit() {
     this.courseService.canDeleteTitle = 'Pour supprimer ce cour';
     this.courseService.canDeleteErreurs = [
@@ -57,20 +59,25 @@ export class CourseListComponent implements OnInit {
     this.courseService.findAll().subscribe({
       next: (response) => {
         this.courses = response;
+        this.coursesChange.emit(response);
         this.isLoad = false;
       },
       error: (errors) => {
         this.isLoad = false;
-        errors;
+        console.log(errors);
+        ;
       },
     });
   }
 
-  openEditModal(course: Course) {
-    this.selectedCourse = course;
+  openEditModal() {
+    let c: Course = this.selectedCourse;
     const modal = this.modalService.create({
       nzTitle: 'Modifier le cour',
       nzContent: CourseEditComponent,
+      nzComponentParams: {
+        course: (c as Course).clone(),
+      },
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,

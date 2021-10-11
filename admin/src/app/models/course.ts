@@ -4,9 +4,9 @@ import { Departement } from './departement';
 import { EC } from './ec';
 import { Professor } from './professor';
 import { Semester } from './semester';
+import { Model } from './model';
 
-export class Course {
-  id!: number;
+export class Course extends Model<Course> {
   acronym!: string;
   name!: string;
   groupe_number!: number;
@@ -25,12 +25,27 @@ export class Course {
   semester!: Semester;
   service!: Service;
 
-  constructor(){
+  constructor() {
+    super();
     this.professor = new Professor();
     this.departement = new Departement();
     this.classe = new Classe();
-    this.ec= new EC();
+    this.ec = new EC();
     this.semester = new Semester();
     this.service = new Service();
+  }
+
+  myIndex(arrays: Course[]): number {
+    let res = -1;
+    arrays.forEach((course: Course, index: number) => {
+      if (course.id === this.id) res = index;
+    });
+    return res;
+  }
+
+  some(arrays: Course[]): Course | null{
+    let res = this.myIndex(arrays);
+    if (res != -1) return arrays[res];
+    return null;
   }
 }

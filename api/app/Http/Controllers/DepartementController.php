@@ -15,7 +15,7 @@ class DepartementController extends Controller
      */
     public function index()
     {
-        return Departement::orderBy('created_at','desc')->get();
+        return Departement::with('classes')->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -41,7 +41,12 @@ class DepartementController extends Controller
      */
     public function show($id)
     {
-        return Departement::find($id);
+        return Departement::with('professors')
+            ->with('classes')
+            ->with('courses')
+            ->with('courses.departement')
+            ->whereId($id)
+            ->first();
     }
 
     /**
@@ -55,7 +60,7 @@ class DepartementController extends Controller
     {
         $this->validate($request, ['name' => 'required']);
         $dep = Departement::find($id);
-        if($dep == null) return response()->json(['message' => 'Département introuvable'], 404);
+        if ($dep == null) return response()->json(['message' => 'Département introuvable'], 404);
         $dep->name = $request->name;
         $dep->save();
         return response()->json($dep, 200);

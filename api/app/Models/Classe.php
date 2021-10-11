@@ -9,10 +9,13 @@ class Classe extends Model
 {
     use HasFactory;
 
-    protected $with = ['departement'];
-
     public function departement()
     {
         return $this->belongsTo(Departement::class);
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
     }
 }
