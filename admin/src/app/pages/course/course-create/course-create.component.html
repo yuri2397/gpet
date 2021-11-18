@@ -65,7 +65,7 @@
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                        <nz-select (ngModelChange)="findClasseByDepartement($event)" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement_id">
+                        <nz-select [nzDisabled]="courseService.isEditeur()" (ngModelChange)="findClasseByDepartement($event)" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement_id">
                             <ng-container *ngFor="let o of departements">
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>
@@ -105,9 +105,9 @@
         <div class="row">
             <div class="col-md-4">
                 <nz-form-item>
-                    <nz-form-label nzFor="ec_id">EC</nz-form-label>
+                    <nz-form-label nzRequired nzFor="ec_id">EC</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
-                        <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec_id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
+                        <nz-select [nzNotFoundContent]="addEC" nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec_id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
                             <ng-container *ngFor="let o of ecs">
                                 <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
                             </ng-container>
@@ -115,6 +115,10 @@
                                 <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
                             </nz-option>
                         </nz-select>
+                        <ng-template #addEC>
+                          <button nz-button nzType="primary" (click)="addEc()">Nouveau EC</button>
+                        </ng-template>
+
                     </nz-form-control>
                 </nz-form-item>
             </div>

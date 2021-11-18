@@ -44,6 +44,9 @@ import { DepartementDashboardComponent } from './departement-dashboard/departeme
 import { ClasseCreateComponent } from '../classe/classe-create/classe-create.component';
 import { ClasseShowComponent } from '../classe/classe-show/classe-show.component';
 import { ClasseEditComponent } from '../classe/classe-edit/classe-edit.component';
+import { EcCreateComponent } from '../ec/ec-create/ec-create.component';
+import { EcListComponent } from '../ec/ec-list/ec-list.component';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,9 @@ import { ClasseEditComponent } from '../classe/classe-edit/classe-edit.component
     ClasseListComponent,
     ClasseCreateComponent,
     ClasseShowComponent,
-    ClasseEditComponent
+    ClasseEditComponent,
+    EcCreateComponent,
+    EcListComponent
   ],
   imports: [
     CommonModule,
@@ -84,6 +89,7 @@ import { ClasseEditComponent } from '../classe/classe-edit/classe-edit.component
     NzLayoutModule,
     NzDropDownModule,
     NzSkeletonModule,
+    NzDividerModule,
     NzTabsModule,
     NzResultModule,
     NzStatisticModule,
@@ -119,6 +125,8 @@ import { ClasseEditComponent } from '../classe/classe-edit/classe-edit.component
     ClasseCreateComponent,
     ClasseShowComponent,
     ClasseEditComponent,
+    EcCreateComponent,
+    EcListComponent
   ],
 })
 export class DepartementModule {}

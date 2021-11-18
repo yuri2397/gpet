@@ -13,6 +13,8 @@ import { Service } from 'src/app/models/service';
 import { ClasseService } from 'src/app/services/classe.service';
 import { EC } from 'src/app/models/ec';
 import { ECService } from 'src/app/services/ec.service';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
 
 @Component({
   selector: 'app-course-create',
@@ -23,7 +25,6 @@ export class CourseCreateComponent implements OnInit {
   course: Course = new Course();
   validateForm!: FormGroup;
   isLoad: boolean = false;
-
 
   semesters!: Semester[];
   professors!: Professor[];
@@ -37,15 +38,21 @@ export class CourseCreateComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
-    private courseService: CourseService,
+    public courseService: CourseService,
     private modal: NzModalRef,
     private profService: ProfessorService,
     private classeService: ClasseService,
-    private ecService: ECService
+    private ecService: ECService,
+    private drawerService: NzDrawerService
   ) {}
 
   ngOnInit(): void {
     this.findSelectableList();
+    if (this.courseService.isEditeur()) {
+      this.course.departement_id = this.courseService.getUser().departement.id;
+      this.findClasseByDepartement(this.course.departement_id);
+    }
+
     this.validateForm = this.fb.group({
       acronym: [null, [Validators.required]],
       name: [null, [Validators.required]],
@@ -91,6 +98,23 @@ export class CourseCreateComponent implements OnInit {
     }
   }
 
+  addEc() {
+    const drawerRef = this.drawerService.create({
+      nzTitle: 'Ajouter un nouveau EC',
+      nzContent: EcCreateComponent,
+      nzContentParams: {
+        departements: this.departements
+      },
+      nzWidth: "350px",
+      nzClosable: false,
+      nzMaskClosable: false
+    });
+
+    drawerRef.afterClose.subscribe((data) => {
+      console.log("After close", data);
+    });
+  }
+
   onECSearch(value: string) {
     this.ecLoad = true;
     if (value.trim().length > 4) {
@@ -123,7 +147,7 @@ export class CourseCreateComponent implements OnInit {
           this.isLoad = false;
         },
         error: (errors) => {
-          (errors);
+          errors;
           this.isLoad = false;
           this.notification.createNotification(
             'error',
@@ -140,7 +164,7 @@ export class CourseCreateComponent implements OnInit {
         this.classes = response;
       },
       error: (errors) => {
-        (errors);
+        console.log(errors);
       },
     });
   }

@@ -22,7 +22,7 @@ class ECController extends Controller
             return EC::orderBy('created_at', 'desc')->get();
         }
         $ues = UE::whereDepartementId($user->departement_id)->get()->pluck('id');
-        return EC::whereIn('ue_id',$ues)->get();
+        return EC::whereIn('ue_id', $ues)->get();
     }
 
     /**
@@ -36,10 +36,30 @@ class ECController extends Controller
         $request->validate([
             'code' => 'required|unique:e_c_s,code',
             "name" => 'required',
-            'ue_id' => 'required|exists:u_e_s,id'
+            'ue_id' => 'required',
+            "ue_code" => "string",
+            "ue_name" => "string",
+            "departement_id" => "numeric"
         ]);
 
-        return EC::create($request->all());
+        $ec = new EC();
+        $ec->name = $request->name;
+        $ec->code = $request->code;
+
+        if ($request->ue_id == -1) {
+            $ue = new UE();
+            $ue->name = $request->ue_name;
+            $ue->code = $request->ue_code;
+            $ue->departement_id = $request->departement_id;
+            $ue->save();
+            $ec->ue_id = $ue->id;
+            $ec->save();
+        } else {
+            $ec->ue_id = $request->ue_id;
+            $ec->save();
+        }
+
+        return response()->json($ec);
     }
 
     /**
@@ -84,7 +104,7 @@ class ECController extends Controller
     public function search($data)
     {
         return EC::where('name', 'like', '%' . $data . '%')
-        ->orWhere('code', 'like', '%' . $data . '%')
-        ->get();
+            ->orWhere('code', 'like', '%' . $data . '%')
+            ->get();
     }
 }

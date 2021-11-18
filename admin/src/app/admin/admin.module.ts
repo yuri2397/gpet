@@ -47,6 +47,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -82,6 +84,7 @@ registerLocaleData(localeFr, fr);
     NzDatePickerModule,
     NzCollapseModule,
     DepartementModule,
+    NzDrawerModule,
   ],
   declarations: [
     AdminComponent,

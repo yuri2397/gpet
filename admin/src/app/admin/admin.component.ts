@@ -22,13 +22,6 @@ export const ROUTES: RouteInfo[] = [
     roles: ['super admin'],
   },
   {
-    path: 'departement',
-    title: 'Dashboard',
-    icon: 'space_dashboard',
-    class: '',
-    roles: ['chef de département'],
-  },
-  {
     path: 'batiments',
     title: 'Batiments',
     icon: 'room_preferences',

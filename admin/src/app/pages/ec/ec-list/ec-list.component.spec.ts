@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClasseShowComponent } from './classe-show.component';
+import { EcListComponent } from './ec-list.component';
 
-describe('ClasseShowComponent', () => {
-  let component: ClasseShowComponent;
-  let fixture: ComponentFixture<ClasseShowComponent>;
+describe('EcListComponent', () => {
+  let component: EcListComponent;
+  let fixture: ComponentFixture<EcListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClasseShowComponent ]
+      declarations: [ EcListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClasseShowComponent);
+    fixture = TestBed.createComponent(EcListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

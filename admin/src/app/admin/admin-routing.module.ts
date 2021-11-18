@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'salles', component: SalleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
   { path: 'professeurs', component: ProfesseurListComponent },
-  { path: 'classes', component: ClasseListComponent, canActivate: [AdminGuard] },
+  { path: 'classes', component: ClasseListComponent},
   { path: 'users', component: UserListComponent },
   { path: 'courses', component: CourseListComponent },
 ];

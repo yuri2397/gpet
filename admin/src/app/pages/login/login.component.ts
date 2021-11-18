@@ -62,15 +62,15 @@ export class LoginComponent implements OnInit {
   }
   afterLogin(response: LoginResponse) {
     let role!: string;
-    response.user.roles.forEach((r) => {
-      role = r.name;
-    });
+    role  = response.user.roles[0].name
+    console.log(role);
+
     switch (role) {
       case this.authService.super_admin:
         this.router.navigate(['/admin/dashboard']);
         break;
       case this.authService.editeur:
-        this.router.navigate(['/admin/classes']);
+        this.router.navigate(['/admin/salles']);
         break;
     }
   }

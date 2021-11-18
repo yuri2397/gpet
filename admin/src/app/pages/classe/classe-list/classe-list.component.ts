@@ -30,30 +30,56 @@ export class ClasseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.classes = this.departement.classes;
-    console.log(this.classes);
-    this.isLoad = false;
+    if (this.departement != null) {
+      this.classes = this.departement.classes;
+      this.isLoad = false;
+    } else {
+      this.departement = this.classeService.getUser().departement;
+      console.log('DEPARTEMENT', this.departement);
+      this.findByDepartement();
+    }
   }
 
+  findAll() {
+    this.classeService.findAll().subscribe({
+      next: (response) => {
+        this.departement = response;
+        this.classes = this.departement.classes;
+        console.log(response);
 
-  findAll(){
-    this.isLoad = true;
-    this.classeService.findByDepartement(this.departement.id).subscribe({
-      next: response => {
-        this.classes = response;
-        this.departement.classes = this.classes;
         this.isLoad = false;
       },
-      error: errors => {
+      error: (errors) => {
         this.isLoad = false;
         this.notification.createNotification(
           'error',
           'Erreur',
           errors.error.message
         );
-      }
+      },
     });
   }
+
+  findByDepartement() {
+    this.isLoad = true;
+    this.classeService.findByDepartement(this.departement.id).subscribe({
+      next: (response) => {
+        this.classes = response;
+        this.departement.classes = this.classes;
+        this.isLoad = false;
+      },
+      error: (errors) => {
+        this.isLoad = false;
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
+      },
+    });
+  }
+
+  showClasse(classe: Classe) {}
 
   openEditModal(classe: Classe) {
     const modal = this.modalService.create({
@@ -61,17 +87,17 @@ export class ClasseListComponent implements OnInit {
       nzContent: ClasseEditComponent,
       nzComponentParams: {
         classe: this.classeService.clone(classe),
-        departement: this.departement
+        departement: this.departement,
       },
       nzCentered: true,
-      nzWidth: "50em",
+      nzWidth: '50em',
       nzMaskClosable: false,
       nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Classe | null) => {
       if (data != null) {
-        this.findAll();
+        this.findByDepartement();
       }
     });
   }
@@ -81,7 +107,7 @@ export class ClasseListComponent implements OnInit {
       nzTitle: 'Ajouter un département',
       nzContent: ClasseCreateComponent,
       nzComponentParams: {
-        departement: this.departement
+        departement: this.departement,
       },
       nzCentered: true,
       nzMaskClosable: false,
@@ -90,7 +116,7 @@ export class ClasseListComponent implements OnInit {
 
     modal.afterClose.subscribe((data: Classe | null) => {
       if (data != null) {
-        this.findAll();
+        this.findByDepartement();
       }
     });
   }
@@ -109,22 +135,22 @@ export class ClasseListComponent implements OnInit {
     });
   }
 
-  deleteClasse(classe: Classe){
+  deleteClasse(classe: Classe) {
     this.deleteLoad = true;
     this.classeService.delete(classe).subscribe({
-      next: response => {
+      next: (response) => {
         this.deleteLoad = false;
         this.deleteRestoRef.destroy();
-        this.findAll();
+        this.findByDepartement();
       },
-      error: errors => {
+      error: (errors) => {
         this.isLoad = false;
         this.notification.createNotification(
           'error',
           'Erreur',
           errors.error.message
         );
-      }
-    })
+      },
+    });
   }
 }

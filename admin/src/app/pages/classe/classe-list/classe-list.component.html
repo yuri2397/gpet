@@ -28,7 +28,7 @@
                         <div class="d-flex justify-content-center">
                             <div>
                                 <a [routerLink]='["show/" + data.id]'>
-                                    <button mat-mini-fab color="primary">
+                                    <button mat-mini-fab color="primary" (click)="showClasse(data)">
                       <mat-icon>visibility</mat-icon>
                     </button>
                                 </a>
