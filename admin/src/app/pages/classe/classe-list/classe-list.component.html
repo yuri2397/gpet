@@ -2,17 +2,17 @@
     <div class="card-header p-3 bg-color">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="text-white">Liste des professeurs</h5>
+                <h5 class="text-white">Liste des classes</h5>
             </div>
             <div>
-                <button mat-mini-fab color="default">
+                <button mat-mini-fab color="default" (click)="openCreateModal()">
     <mat-icon>add</mat-icon>
   </button>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="2" #basicTable [nzData]="classes">
+        <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="classes">
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -34,12 +34,12 @@
                                 </a>
                             </div>
                             <div class="mx-3">
-                                <button mat-mini-fab color="accent">
+                                <button mat-mini-fab color="accent" (click)="openEditModal(data)">
                     <mat-icon>edit</mat-icon>
                   </button>
                             </div>
                             <div>
-                                <button mat-mini-fab color="warn">
+                                <button mat-mini-fab color="warn" (click)="openDeleteModal(data)">
                     <mat-icon>delete</mat-icon>
                   </button>
                             </div>

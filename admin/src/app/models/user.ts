@@ -1,3 +1,4 @@
+import { Departement } from "./departement";
 import { Role } from "./role";
 
 export class User {
@@ -8,4 +9,5 @@ export class User {
   id!: number;
   departement_id!: number;
   roles! : Role[];
+  departement!: Departement;
 }

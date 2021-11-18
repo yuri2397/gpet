@@ -67,10 +67,10 @@ export class LoginComponent implements OnInit {
     });
     switch (role) {
       case this.authService.super_admin:
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin/dashboard']);
         break;
       case this.authService.editeur:
-        this.router.navigate(['/departement']);
+        this.router.navigate(['/admin/classes']);
         break;
     }
   }

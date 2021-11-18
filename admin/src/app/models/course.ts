@@ -35,6 +35,7 @@ export class Course extends Model<Course> {
     this.service = new Service();
   }
 
+
   myIndex(arrays: Course[]): number {
     let res = -1;
     arrays.forEach((course: Course, index: number) => {

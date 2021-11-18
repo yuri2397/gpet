@@ -293,7 +293,7 @@ export class ProfesseurShowComponent implements OnInit {
 
   onCourseSearch(value: string) {
     this.coursesLoad = true;
-    if (value.trim().length >= 3) {
+    if (value.trim().length >= 1) {
       this.courseService.search(value.trim()).subscribe({
         next: (response) => {
           this.courses = response;

@@ -12,10 +12,9 @@ import { SalleService } from 'src/app/services/salle.service';
 @Component({
   selector: 'app-salle-create',
   templateUrl: './salle-create.component.html',
-  styleUrls: ['./salle-create.component.scss']
+  styleUrls: ['./salle-create.component.scss'],
 })
 export class SalleCreateComponent implements OnInit {
-
   batiments!: Batiment[];
   departements!: Departement[];
   validateForm!: FormGroup;
@@ -26,7 +25,7 @@ export class SalleCreateComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
-    private salleService: SalleService,
+    public salleService: SalleService,
     private modal: NzModalRef,
     private deptService: DepartementService,
     private batimentService: BatimentService
@@ -34,7 +33,12 @@ export class SalleCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.findBatiment();
-    this.findDepartement();
+    if (this.salleService.isAdmin()) {
+      this.findDepartement();
+    }
+    else{
+      this.salle.departement_id = this.salleService.getUser().departement_id;
+    }
     this.validateForm = this.fb.group({
       name: [null, null],
       number: [null, [Validators.required]],
@@ -106,5 +110,4 @@ export class SalleCreateComponent implements OnInit {
       },
     });
   }
-
 }

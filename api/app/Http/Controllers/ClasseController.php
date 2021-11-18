@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Classe;
 use App\Models\Departement;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
 {
@@ -31,7 +33,19 @@ class ClasseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "name" => "required|string|max:255",
+            "nb_students" => "required|numeric|min:0",
+            "departement_id" => "required|exists:departements,id"
+        ]);
+
+        $classe = new Classe();
+        $classe->name = $request->name;
+        $classe->nb_students = $request->nb_students;
+        $classe->departement_id = $request->departement_id;
+        $classe->save();
+
+        return response()->json($classe, 200);
     }
 
     /**
@@ -42,7 +56,7 @@ class ClasseController extends Controller
      */
     public function show($id)
     {
-        //
+        return Classe::find($id);
     }
 
     /**
@@ -54,7 +68,14 @@ class ClasseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            "name" => "required|string|max:255",
+            "nb_students" => "required|numeric|min:0",
+            "departement_id" => "required|exists:departements,id"
+        ]);
+
+        DB::table('classes')->whereId($id)->update($request->all());
+        return $this->show($id);
     }
 
     /**
@@ -65,6 +86,7 @@ class ClasseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Classe::find($id)->delete();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

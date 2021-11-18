@@ -22,22 +22,26 @@ const routes: Routes = [
           import('./admin/admin.module').then((m) => m.AdminModule),
       },
     ],
-    canActivate: [AuthGuard, AdminGuard, LocalDataGuard],
-  },
-  {
-    path: 'departement',
-    component: DepartementComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('./pages/departement/departement.module').then(
-            (m) => m.DepartementModule
-          ),
-      },
-    ],
     canActivate: [AuthGuard, LocalDataGuard],
   },
+  {
+    path:"**",
+    redirectTo: "login"
+  }
+  // {
+  //   path: 'departement',
+  //   component: DepartementComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadChildren: () =>
+  //         import('./pages/departement/departement.module').then(
+  //           (m) => m.DepartementModule
+  //         ),
+  //     },
+  //   ],
+  //   canActivate: [AuthGuard, LocalDataGuard],
+  // },
 ];
 
 @NgModule({

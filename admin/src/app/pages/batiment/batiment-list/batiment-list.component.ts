@@ -37,6 +37,7 @@ export class BatimentListComponent implements OnInit {
       },
       error: (errors: any) => {
         this.isLoad = false;
+        console.log(errors);
       },
     });
   }
@@ -96,6 +97,7 @@ export class BatimentListComponent implements OnInit {
           errors.error.message
         );
         this.deleteRestoRef.destroy();
+        console.log(errors);
       },
     });
   }

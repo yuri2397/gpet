@@ -47,6 +47,8 @@ export class ProfesseurListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
+        console.log(errors);
+
       },
     });
   }
@@ -125,10 +127,6 @@ export class ProfesseurListComponent implements OnInit {
   }
 
   showProfessor(professeur: Professor) {
-    if (this.profService.isAdmin())
-      this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
-    else
-    this.router.navigate(['/departement/professeurs/show/' + professeur.id]);
-
+    this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
   }
 }

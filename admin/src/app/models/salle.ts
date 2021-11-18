@@ -1,3 +1,5 @@
+import { Departement } from 'src/app/models/departement';
+import { Batiment } from './batiment';
 export class Salle {
   id!: number;
   number!: number;
@@ -5,6 +7,6 @@ export class Salle {
   capacity!: number;
   batiment_id!: number;
   departement_id!: number;
-  batiment!: string;
-  departement!: string;
+  departement!: Departement;
+  batiment!: Batiment;
 }

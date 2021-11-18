@@ -76,9 +76,10 @@ export class CourseListComponent implements OnInit {
       nzTitle: 'Modifier le cour',
       nzContent: CourseEditComponent,
       nzComponentParams: {
-        course: (c as Course).clone(),
+        course: this.courseService.clone(c),
       },
       nzCentered: true,
+      nzWidth: "50em",
       nzMaskClosable: false,
       nzClosable: false,
     });

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Account;
+use UserRole;
 use App\Models\User;
+use App\Models\Account;
 use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +19,10 @@ class ProfesseurController extends Controller
     public function index()
     {
         $user = User::find(auth()->id());
-        if ($user->hasRole("super admin")) {
+        if ($user->isAdmin()) {
             return Professor::with('account')->orderBy('created_at', 'desc')->get();
         }
-        return Professor::whereDerpartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -87,7 +88,6 @@ class ProfesseurController extends Controller
             ->whereYear('courses_has_professors.date', date('Y'))
             ->whereMonth('courses_has_professors.date', date('n') - 1)
             ->join('courses', 'courses_has_professors.course_id', 'courses.id')
-            ->where('courses.departement_id', $prof->departement_id)
             ->select(
                 "courses_has_professors.course_id",
                 "courses_has_professors.professor_id",
@@ -198,6 +198,6 @@ class ProfesseurController extends Controller
                 ->orWhere('registration_number', 'like', '%' . $data . '%')
                 ->orderBy('created_at', 'desc')->get();
         }
-        return Professor::whereDerpartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 }

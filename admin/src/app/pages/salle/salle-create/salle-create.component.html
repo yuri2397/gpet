@@ -38,7 +38,7 @@
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                        <nz-select formControlName="departement_id" [(ngModel)]="salle.departement_id">
+                        <nz-select [nzDisabled]="salleService.isEditeur()" formControlName="departement_id" [(ngModel)]="salle.departement_id">
 
                             <ng-container *ngFor="let o of departements">
                                 <nz-option *ngIf="!isLoadData" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>

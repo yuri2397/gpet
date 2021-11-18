@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Salle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,12 +16,13 @@ class SalleController extends Controller
      */
     public function index()
     {
-        return DB::table("salles as S")
-            ->join('departements as D', 'S.departement_id', 'D.id')
-            ->join('batiments as B', 'S.batiment_id', 'B.id')
-            ->select('S.*', 'D.name as departement', 'B.name as batiment')
-            ->orderBy('S.created_at', 'desc')
-            ->get();
+        $user = User::find(auth()->id());
+        if($user->isAdmin()){
+            return Salle::with(['batiment', 'departement'])->orderBy('created_at', 'desc')->get();
+        }
+        else{
+            return Salle::with(['batiment', 'departement'])->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        }
     }
 
     /**

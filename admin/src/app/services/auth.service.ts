@@ -38,9 +38,9 @@ export class AuthService extends BaseHttp {
   alreadyConnect() {
     if (this.isLogIn()) {
       if (this.isAdmin()) {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin/dashboard']);
       } else {
-        this.router.navigate(['/departement/']);
+        this.router.navigate(['/admin/departement']);
       }
     } else {
       this.router.navigate(['/login']);

@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             GenDays::class,
-            GenRoles::class,
             GenDep::class,
             GenBat::class,
             GenService::class,

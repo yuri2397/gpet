@@ -9,6 +9,8 @@ class Classe extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['*'];
+
     public function departement()
     {
         return $this->belongsTo(Departement::class);

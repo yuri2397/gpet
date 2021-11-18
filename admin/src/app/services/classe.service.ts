@@ -15,31 +15,37 @@ export class ClasseService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<any>(this.endPoint, {
+    return this.http.get<Departement>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
   }
 
   findByDepartement(id: number) {
-    return this.http.get<Classe[]>(
-      this.endPoint + 'departement/' + id,
-      { headers: this.authorizationHeaders, observe: 'body' }
-    );
+    return this.http.get<Classe[]>(this.endPoint + 'departement/' + id, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 
-  clone(classe: Classe): any {
+  clone(classe: Classe): Classe {
     let b = new Classe();
     b.id = classe.id;
     b.name = classe.name;
+    b.nb_students = classe.nb_students;
+    b.departement_id = classe.departement_id;
     return b;
   }
 
   create(classe: Classe) {
+    console.log(classe);
+
     return this.http.post<Classe>(
       this.endPoint + 'create',
       {
         name: classe.name,
+        departement_id: classe.departement_id,
+        nb_students: classe.nb_students,
       },
       {
         headers: this.authorizationHeaders,
@@ -49,10 +55,10 @@ export class ClasseService extends BaseHttp {
   }
 
   delete(classe: Classe) {
-    return this.http.delete<any>(
-      this.endPoint + 'destroy/' + classe.id,
-      { headers: this.authorizationHeaders, observe: 'body' }
-    );
+    return this.http.delete<any>(this.endPoint + 'destroy/' + classe.id, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 
   edit(classe: Classe) {
@@ -60,6 +66,8 @@ export class ClasseService extends BaseHttp {
       this.endPoint + 'update/' + classe.id,
       {
         name: classe.name,
+        departement_id: classe.departement_id,
+        nb_students: classe.nb_students,
       },
       { headers: this.authorizationHeaders, observe: 'body' }
     );

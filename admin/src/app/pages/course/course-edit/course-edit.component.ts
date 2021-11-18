@@ -37,7 +37,7 @@ export class CourseEditComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
-    private courseService: CourseService,
+    public courseService: CourseService,
     private modal: NzModalRef,
     private profService: ProfessorService,
     private classeService: ClasseService,
@@ -62,6 +62,7 @@ export class CourseEditComponent implements OnInit {
   serviceAmout(serviceId: number) {
     if (serviceId == null) return 'Montant (FCFA)';
     let amount!: number;
+    if(this.services)
     this.services.forEach((s) => {
       if (s.id == serviceId) {
         amount = s.amount;
@@ -117,6 +118,7 @@ export class CourseEditComponent implements OnInit {
       .findSelectableList(['departements', 'services', 'semesters'])
       .subscribe({
         next: (response) => {
+          console.log(response);
           this.departements = response.departements;
           this.services = response.services;
           this.semesters = response.semesters;

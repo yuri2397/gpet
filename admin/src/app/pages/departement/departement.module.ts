@@ -40,6 +40,10 @@ import { CourseEditComponent } from '../course/course-edit/course-edit.component
 import { CourseListComponent } from '../course/course-list/course-list.component';
 import { CourseShowComponent } from '../course/course-show/course-show.component';
 import { CanDeleteComponent } from 'src/app/shared/ui/can-delete/can-delete.component';
+import { DepartementDashboardComponent } from './departement-dashboard/departement-dashboard.component';
+import { ClasseCreateComponent } from '../classe/classe-create/classe-create.component';
+import { ClasseShowComponent } from '../classe/classe-show/classe-show.component';
+import { ClasseEditComponent } from '../classe/classe-edit/classe-edit.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +63,11 @@ import { CanDeleteComponent } from 'src/app/shared/ui/can-delete/can-delete.comp
     CourseShowComponent,
     CourseEditComponent,
     CanDeleteComponent,
+    DepartementDashboardComponent,
+    ClasseListComponent,
+    ClasseCreateComponent,
+    ClasseShowComponent,
+    ClasseEditComponent
   ],
   imports: [
     CommonModule,
@@ -106,6 +115,10 @@ import { CanDeleteComponent } from 'src/app/shared/ui/can-delete/can-delete.comp
     CourseShowComponent,
     CourseEditComponent,
     CanDeleteComponent,
+    ClasseListComponent,
+    ClasseCreateComponent,
+    ClasseShowComponent,
+    ClasseEditComponent,
   ],
 })
 export class DepartementModule {}

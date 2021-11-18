@@ -42,4 +42,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $with = ['departement'];
+
+    public function isAdmin()
+    {
+        return $this->hasRole('super admin') ? true :  false;
+    }
+
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class);
+    }
 }

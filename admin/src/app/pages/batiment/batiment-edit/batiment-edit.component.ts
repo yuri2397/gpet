@@ -62,6 +62,8 @@ export class BatimentEditComponent implements OnInit {
           errors.error.message
         );
         this.destroyModal(null);
+        console.log(errors);
+
       },
     });
   }

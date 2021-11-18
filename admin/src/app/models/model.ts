@@ -1,6 +1,7 @@
 export abstract class Model<T> {
   id!: number;
 
+
   clone():T{
     var cloneObj = new (this.constructor() as any);
     for (var attribut in this) {

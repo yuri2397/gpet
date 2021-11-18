@@ -1,28 +1,44 @@
 <nz-layout *ngIf="!isLoad; else loadingTemplate" class="app-layout">
     <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
         <div class="sidebar-logo">
-            <a href="#" target="_blank">
+            <a>
                 <img src="/assets/img/logo.jpg" alt="logo">
-                <h1>UFR SET GPET</h1>
+                <h1>{{ title }}</h1>
             </a>
         </div>
         <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-            <li (click)="routerLink(item)" *ngFor="let item of menuItems" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]='selected(item)'>
-                <i nz-icon>
-          <mat-icon style="color:  #41729f;
+            <ng-container *ngFor="let item of menuItems">
+                <li (click)="routerLink(item)" *ngIf="canShowItem(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]='selected(item)'>
+                    <i nz-icon>
+            <mat-icon style="color:  #41729f;
           ">{{ item.icon }}</mat-icon>
-        </i>
-                <span>{{ item.title }}</span>
-            </li>
+          </i>
+                    <span>{{ item.title }}</span>
+                </li>
+            </ng-container>
         </ul>
     </nz-sider>
     <nz-layout>
         <nz-header>
-            <div class="app-header">
-                <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
-        </span>
+            <div class="d-flex app-header justify-content-between align-items-center">
+                <div>
+                    <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+          </span>
+                </div>
+                <div class="mx-3">
+                    <button mat-mini-fab color="primary" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+            <mat-icon>account_circle</mat-icon>
+          </button>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu>
+                            <li nz-menu-item>Profile</li>
+                            <li (click)="logout()" nz-menu-item>Déconnexion</li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </div>
             </div>
+
         </nz-header>
         <nz-content>
             <div class="inner-content">

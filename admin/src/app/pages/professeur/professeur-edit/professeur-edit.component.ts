@@ -26,13 +26,16 @@ export class ProfesseurEditComponent implements OnInit {
     private notification: NotificationService,
     private fb: FormBuilder,
     private bankService: BankService,
-    private professorService: ProfessorService,
+    public professorService: ProfessorService,
     private modal: NzModalRef,
     private deptService: DepartementService
   ) {}
 
   ngOnInit(): void {
-    this.findDepartement();
+    console.log(this.professor);
+    if(this.professorService.isAdmin()){
+      this.findDepartement();
+    }
     this.findBank();
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],

@@ -64,8 +64,8 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
 });
 
-Route::prefix("salle")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [SalleController::class, "index"])->withoutMiddleware('role:super admin');
+Route::prefix("salle")->middleware(['auth:api'])->group(function () {
+    Route::get('', [SalleController::class, "index"]);
     Route::post('create', [SalleController::class, "store"]);
     Route::put('update/{id}', [SalleController::class, "update"]);
     Route::delete('destroy/{id}', [SalleController::class, "destroy"]);

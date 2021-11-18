@@ -19,7 +19,7 @@
                         <th>Nom</th>
                         <th>Numéro</th>
                         <th>capacité</th>
-                        <th>Département</th>
+                        <th *ngIf="!isEditeur()">Département</th>
                         <th>Batiment</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -37,8 +37,8 @@
                         </td>
                         <td>{{ data.number }}</td>
                         <td>{{ data.capacity }}</td>
-                        <td>{{ data.departement }}</td>
-                        <td>{{ data.batiment }}</td>
+                        <td *ngIf="!isEditeur()">{{ data.departement.name}}</td>
+                        <td>{{ data.batiment.name }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div>

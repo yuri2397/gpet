@@ -86,6 +86,8 @@ export class ProfessorService extends BaseHttp {
     b.account.bank_id = professor.account.bank_id;
     b.account.id = professor.account.id;
     b.account.account_number = professor.account.account_number;
+    b.departement = professor.departement;
+    b.departement_id = professor.departement_id;
     return b;
   }
 

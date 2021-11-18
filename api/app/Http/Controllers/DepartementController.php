@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\DB;
 
 class DepartementController extends Controller
 {
+
+    // public function stats()
+    // {
+    //     $stats = [];
+
+    //     $stats['nb_classes'] = DB::table('classes')
+    //     ->join('departements', 'classes.departement_id')
+    // }
+
     /**
      * Display a listing of the resource.
      *

@@ -28,6 +28,10 @@ export class SalleListComponent implements OnInit {
     this.findAll();
   }
 
+  isEditeur(){
+    return this.salleService.isEditeur();
+  }
+
   findAll() {
     this.isLoad = true;
     this.salleService.findAll().subscribe({
@@ -37,6 +41,7 @@ export class SalleListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
+        console.log(errors);
       },
     });
   }

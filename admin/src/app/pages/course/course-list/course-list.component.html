@@ -18,7 +18,7 @@
                     <tr>
                         <th>Code</th>
                         <th>Intitulé</th>
-                        <th>Département</th>
+                        <th *ngIf="courseService.isAdmin()">Département</th>
                         <th>Groupe</th>
                         <th>Service</th>
                         <th>Semestre</th>
@@ -31,7 +31,7 @@
                     <tr *ngFor="let data of basicTable.data">
                         <td>{{ data.acronym }}</td>
                         <td>{{ data.name }}</td>
-                        <td>{{ data.departement.name }}</td>
+                        <td *ngIf="courseService.isAdmin()">{{ data.departement.name }}</td>
                         <td>{{ data.groupe_number }}</td>
                         <td>{{ data.service.name }}</td>
                         <td>{{ data.semester.name }}</td>
@@ -49,7 +49,7 @@
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div class="mx-3">
-                                    <button (click)="selectedCourse = data; openEditModal()" mat-mini-fab color="accent">
+                                    <button (click)="selectedCourse =data; openEditModal()" mat-mini-fab color="accent">
                     <mat-icon>edit</mat-icon>
                   </button>
                                 </div>

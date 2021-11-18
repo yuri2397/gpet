@@ -35,6 +35,8 @@
                             <ng-container *ngFor="let o of semesters">
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>
+                            <nz-option nzLabel="{{ course.semester
+                              .name }}" nzValue="{{ course.semester_id }}"></nz-option>
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
@@ -47,6 +49,7 @@
                             <ng-container *ngFor="let o of services">
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>
+                            <nz-option nzLabel="{{ course.service.name }}" nzValue="{{ course.service_id }}"></nz-option>
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
@@ -61,7 +64,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" *ngIf="!courseService.isEditeur()">
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
@@ -69,6 +72,7 @@
                             <ng-container *ngFor="let o of departements">
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>
+                            <nz-option nzLabel="{{ course.departement.name }}" nzValue="{{ course.departement_id }}"></nz-option>
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
@@ -81,6 +85,7 @@
                             <ng-container *ngFor="let o of classes">
                                 <nz-option *ngIf="course.departement_id != null" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>
+                            <nz-option nzLabel="{{ course.classe.name }}" nzValue="{{ course.classe_id }}"></nz-option>
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
@@ -93,6 +98,7 @@
                             <ng-container *ngFor="let o of professors">
                                 <nz-option *ngIf="!profLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.registration_number + ' - ' + o.first_name + o.last_name "></nz-option>
                             </ng-container>
+                            <nz-option nzLabel="{{ course.professor.first_name + course.professor.last_name }}" nzValue="{{ course.professor_id }}"></nz-option>
                             <nz-option *ngIf="profLoad" nzDisabled nzCustomContent>
                                 <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
                             </nz-option>
@@ -102,22 +108,21 @@
                 </nz-form-item>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <nz-form-item>
-                    <nz-form-label nzFor="ec_id">EC</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
-                        <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec_id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
-                            <ng-container *ngFor="let o of ecs">
-                                <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
-                            </ng-container>
-                            <nz-option *ngIf="ecLoad" nzDisabled nzCustomContent>
-                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-                            </nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-            </div>
+        <div class="col-md-4">
+            <nz-form-item>
+                <nz-form-label nzFor="ec_id">EC</nz-form-label>
+                <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
+                    <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec_id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
+                        <ng-container *ngFor="let o of ecs">
+                            <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
+                        </ng-container>
+                        <nz-option nzLabel="{{ course.ec.name }}" nzValue="{{ course.ec_id }}"></nz-option>
+                        <nz-option *ngIf="ecLoad" nzDisabled nzCustomContent>
+                            <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
         </div>
     </nz-form>
 </div>

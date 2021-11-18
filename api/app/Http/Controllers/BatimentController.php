@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use UserRole;
+use App\Models\User;
 use App\Models\Batiment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
