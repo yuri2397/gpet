@@ -8,6 +8,8 @@ import { Departement } from 'src/app/models/departement';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Bank } from 'src/app/models/bank';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { BankCreateComponent } from '../../bank/bank-create/bank-create.component';
 
 @Component({
   selector: 'app-professeur-create',
@@ -22,22 +24,25 @@ export class ProfesseurCreateComponent implements OnInit {
   isLoadDataBat = true;
   professor: Professor = new Professor();
   banks!: Bank[];
+  bankLoad = false;
+
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
     private bankService: BankService,
     public professorService: ProfessorService,
     private modal: NzModalRef,
-    private deptService: DepartementService
+    private deptService: DepartementService,
+    private drawerService: NzDrawerService
   ) {}
 
   ngOnInit(): void {
     if(this.professorService.isAdmin()){
       this.findDepartement();
     } else {
-      this.professor.departement_id = this.deptService.getUser().departement_id;
+      this.professor.departement_id = this.deptService.departementId();
     }
-    this.findBank();
+
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],
       last_name: [null, [Validators.required]],
@@ -53,12 +58,49 @@ export class ProfesseurCreateComponent implements OnInit {
     });
   }
 
+
+  onAddBank(){
+    const drawerRef = this.drawerService.create({
+      nzTitle: 'Ajouter une nouvelle banque',
+      nzContent: BankCreateComponent,
+      nzWidth: "350px",
+      nzClosable: false,
+      nzMaskClosable: false
+    });
+  }
+
+  onBankSearch(data: string){
+    this.bankLoad = true;
+    if(data.trim().length >= 2){
+      this.bankService.search(data).subscribe({
+        next: response => {
+          this.banks = response;
+          this.bankLoad = false;
+        },
+        error: errors => {
+          this.bankLoad = false;
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
+        }
+      })
+    }
+  }
+
   findBank() {
     this.bankService.findAll().subscribe({
       next: (response) => {
         this.banks = response;
       },
-      error: (errors) => {}
+      error: (errors) => {
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
+      }
     })
   }
 
@@ -80,6 +122,11 @@ export class ProfesseurCreateComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoadData = false;
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
       },
     });
   }
@@ -103,7 +150,6 @@ export class ProfesseurCreateComponent implements OnInit {
       error: (errors) => {
         this.isLoad = false;
         (errors);
-
         this.notification.createNotification(
           'error',
           'Erreur',

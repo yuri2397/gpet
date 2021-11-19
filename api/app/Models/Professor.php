@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Professor extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['*'];
     /**
      * Get the account associated with the user.
      */

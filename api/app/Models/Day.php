@@ -9,5 +9,5 @@ class Day extends Model
 {
     use HasFactory;
 
-    protected $fillables = ['*'];
+    protected $fillable = ['*'];
 }

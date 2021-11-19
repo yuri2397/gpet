@@ -105,11 +105,19 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="bank_id">Banque</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la banque">
-                                <nz-select [nzLoading]="isLoadData" formControlName="bank_id" [(ngModel)]="professor.account.bank_id">
-                                    <ng-container *ngFor="let o of banks">
-                                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
-                                </nz-select>
+                                <nz-select [nzNotFoundContent]="addBanque" nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="professor.account.bank_id" formControlName="bank_id" (nzOnSearch)="onBankSearch($event)">
+                                  <ng-container *ngFor="let o of banks">
+                                      <nz-option *ngIf="!bankLoad" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                                  </ng-container>
+                                  <nz-option *ngIf="bankLoad" nzDisabled nzCustomContent>
+                                      <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                                  </nz-option>
+                              </nz-select>
+                              <ng-template #addBanque>
+                                <button nz-button nzType="primary" (click)="onAddBank()">Nouveau banque</button>
+                              </ng-template>
+
+
                             </nz-form-control>
                         </nz-form-item>
                     </div>

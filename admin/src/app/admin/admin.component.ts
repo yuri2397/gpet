@@ -36,6 +36,13 @@ export const ROUTES: RouteInfo[] = [
     roles: ['super admin'],
   },
   {
+    path: 'banks',
+    title: 'Banques',
+    icon: 'account_balance',
+    class: '',
+    roles: ['super admin', 'chef de département'],
+  },
+  {
     path: 'salles',
     title: 'Salles',
     icon: 'meeting_room',
@@ -52,14 +59,14 @@ export const ROUTES: RouteInfo[] = [
   {
     path: 'courses',
     title: 'Cours',
-    icon: 'ballot',
+    icon: 'history_edu',
     class: '',
     roles: ['super admin', 'chef de département'],
   },
   {
     path: 'classes',
     title: 'Classes',
-    icon: 'receipt_long',
+    icon: 'ballot',
     class: '',
     roles: ['chef de département',],
   },

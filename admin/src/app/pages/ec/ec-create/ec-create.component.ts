@@ -62,9 +62,13 @@ export class EcCreateComponent implements OnInit {
       this.ec.ue.departement_id = this.ecService.getUser().departement.id;
     this.ecService.create(this.ec).subscribe({
       next: (response) => {
-        console.log(response);
         this.modal.close(response);
         this.isLoad = false;
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          "Nouveau EU ajouté avec succès."
+        );
       },
       error: (errors) => {
         console.log(errors);

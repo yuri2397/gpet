@@ -120,4 +120,5 @@ Route::prefix("bank")->middleware(['auth:api'])->group(function () {
     Route::post('create', [BankController::class, "store"]);
     Route::put('update/{id}', [BankController::class, "update"]);
     Route::delete('destroy/{id}', [BankController::class, "destroy"]);
+    Route::get('search/{data}', [BankController::class, "search"]);
 });

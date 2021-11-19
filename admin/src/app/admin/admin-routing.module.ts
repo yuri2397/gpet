@@ -13,6 +13,7 @@ import { ClasseListComponent } from '../pages/classe/classe-list/classe-list.com
 import { DepartementListComponent } from '../pages/departement/departement-list/departement-list.component';
 import { AdminGuard } from '../shared/admin.guard';
 import { DepartementDashboardComponent } from '../pages/departement/departement-dashboard/departement-dashboard.component';
+import { BankListComponent } from '../pages/bank/bank-list/bank-list.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'classes', component: ClasseListComponent},
   { path: 'users', component: UserListComponent },
   { path: 'courses', component: CourseListComponent },
+  { path: 'banks', component: BankListComponent },
 ];
 
 @NgModule({

@@ -11,7 +11,7 @@ class EC extends Model
 
     protected $with = ['ue'];
 
-    protected $fillables = ['*'];
+    protected $fillable = ['*'];
 
     public function ue()
     {

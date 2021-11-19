@@ -53,6 +53,10 @@ export class ProfesseurListComponent implements OnInit {
     });
   }
 
+  onChercherInputChange(data: any){
+    console.log(data);
+  }
+
   openDeleteModal(professeur: Professor) {
     this.deleteRestoRef = this.modalService.confirm({
       nzTitle: '<span>Voulez-vous supprimé ce département?</span>',

@@ -47,6 +47,9 @@ import { ClasseEditComponent } from '../classe/classe-edit/classe-edit.component
 import { EcCreateComponent } from '../ec/ec-create/ec-create.component';
 import { EcListComponent } from '../ec/ec-list/ec-list.component';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { BankCreateComponent } from '../bank/bank-create/bank-create.component';
+import { BankListComponent } from '../bank/bank-list/bank-list.component';
+import { BankEditComponent } from '../bank/bank-edit/bank-edit.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +75,10 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     ClasseShowComponent,
     ClasseEditComponent,
     EcCreateComponent,
-    EcListComponent
+    EcListComponent,
+    BankCreateComponent,
+    BankListComponent,
+    BankEditComponent,
   ],
   imports: [
     CommonModule,
@@ -126,7 +132,10 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     ClasseShowComponent,
     ClasseEditComponent,
     EcCreateComponent,
-    EcListComponent
+    EcListComponent,
+    BankEditComponent,
+    BankCreateComponent,
+    BankListComponent,
   ],
 })
 export class DepartementModule {}

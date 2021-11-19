@@ -1,0 +1,25 @@
+<div>
+  <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="name">Nom banque</nz-form-label>
+      <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
+        <input [(ngModel)]="bank.name" formControlName="name" nz-input name="name" type="text" id="name" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="code">Code</nz-form-label>
+      <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est requi">
+        <input [(ngModel)]="bank.code" formControlName="code" nz-input name="code" type="text" id="code" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item><button nz-button nzType="primary" class="shadow-sm my-2" (click)="save()"
+        [disabled]="!validateForm.valid" [nzLoading]="isLoad">
+        Ajouter
+      </button>
+      <button nz-button class="shadow-sm" (click)="close()">
+        Annuler
+      </button>
+
+    </nz-form-item>
+  </nz-form>
+</div>

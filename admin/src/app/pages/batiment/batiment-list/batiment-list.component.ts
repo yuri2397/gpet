@@ -19,7 +19,6 @@ export class BatimentListComponent implements OnInit {
   deleteLoad!: boolean;
   constructor(
     private notification: NotificationService,
-
     private modalService: NzModalService,
     private batimentService: BatimentService
   ) {}

@@ -127,6 +127,10 @@ export class BaseHttp {
     return JSON.parse(sessionStorage.getItem('user')!);
   }
 
+  departementId(): number{
+    return this.getUser().departement.id;
+  }
+
   setToken(token: string) {
     sessionStorage.setItem('token', token);
   }

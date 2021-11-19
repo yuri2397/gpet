@@ -31,13 +31,22 @@ class BankController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate(['name' => 'required', 'code' => 'required']);
-        return DB::table('banks')->whereId($id)->first()->update($request->all());
+        $bank = Bank::find($id);
+        $bank->name = $request->name;
+        $bank->code = $request->code;
+        $bank->save();
+        return $this->show($id);
     }
 
     public function destroy($id)
     {
-       return DB::table('banks')->whereId($id)->delete();
+        return DB::table('banks')->whereId($id)->delete();
     }
 
-
+    public function search($data)
+    {
+        return Bank::where('name', 'like', '%' . $data . '%')
+            ->orWhere('code', 'like', '%' . $data . '%')
+            ->get();
+    }
 }
