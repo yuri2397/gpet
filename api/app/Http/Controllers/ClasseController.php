@@ -22,7 +22,9 @@ class ClasseController extends Controller
 
     public function findByDepartement($departement)
     {
-        return Classe::whereDepartementId($departement)->get();
+        return Classe::with("courses")
+            ->whereDepartementId($departement)
+            ->get();
     }
 
     /**
@@ -56,7 +58,7 @@ class ClasseController extends Controller
      */
     public function show($id)
     {
-        return Classe::find($id);
+        return Classe::with(['departement', 'courses'])->find($id);
     }
 
     /**

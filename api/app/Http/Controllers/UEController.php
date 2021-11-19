@@ -79,6 +79,9 @@ class UEController extends Controller
 
     public function search($data)
     {
-        return UE::with('departement')->where('name', 'like', '%' . $data . '%')->get();
+        return UE::with('departement')
+        ->where('name', 'like', '%' . $data . '%')
+        ->orWhere('code', 'like', '%' . $data . '%')
+        ->get();
     }
 }

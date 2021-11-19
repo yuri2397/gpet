@@ -61,6 +61,13 @@ export class ClasseService extends BaseHttp {
     });
   }
 
+  show(classe: Classe) {
+    return this.http.get<Classe>(this.endPoint + 'show/' + classe.id, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
+  }
+
   edit(classe: Classe) {
     return this.http.put<Classe>(
       this.endPoint + 'update/' + classe.id,

@@ -20,4 +20,8 @@ class Classe extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    public function professors(){
+        return $this->hasManyThrough(Professor::class, Course::class);
+    }
 }

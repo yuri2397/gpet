@@ -1,1 +1,48 @@
-<p>classe-show works!</p>
+<div *ngIf="!dataLoad && !errorNetWork" style="width: 100%">
+  <div class="card shadow">
+    <div class="card-body ">
+      <div class="row">
+        <div class="col-md-12">
+          <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
+            nzTitle="{{ classe.name }} - {{ departement.name }}"></nz-page-header>
+        </div>
+        <ng-template #backTemp>
+          <button class="m-2" mat-mini-fab color="primary">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </ng-template>
+      </div>
+      <nz-tabset [nzTabPosition]="'left'">
+        <nz-tab [nzTitle]="'Cours'">
+          <app-course-list [courses]="courses" [classe]="classe"></app-course-list>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Emploie du temps'">
+          <h1>Emploie du temps</h1>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+</div>
+<ng-template *ngIf="dataLoad && !errorNetWork">
+  <div class="card">
+    <div class="card-body">
+      <div class="row m-3">
+        <div class="col-md-6">
+          <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+        <div class="col-md-6">
+          <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+      </div>
+      <div class="row mx-3">
+        <div class="col-md-6">
+          <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+        <div class="col-md-6">
+          <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<app-error-server *ngIf="errorNetWork"></app-error-server>

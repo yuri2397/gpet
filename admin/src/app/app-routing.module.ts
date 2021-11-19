@@ -1,6 +1,5 @@
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { AdminGuard } from './shared/admin.guard';
-import { DepartementComponent } from './pages/departement/departement.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';

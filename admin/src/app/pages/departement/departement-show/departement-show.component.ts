@@ -19,33 +19,22 @@ export class DepartementShowComponent implements OnInit {
   constructor(
     private deptService: DepartementService,
     private route: ActivatedRoute,
-    private router: Router, private location: Location,
-
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
-    this.departement = this.currentDepartement();
+    this.route.params.subscribe((params) => {
+      this.departement.id = params['id'];
+    });
     this.find(this.departement);
   }
 
-  currentDepartement(): Departement {
-    let d = new Departement();
-    if (this.router.url.indexOf('admin') !== -1) {
-      this.route.params.subscribe((params) => {
-        d.id = params['id'];
-      });
-    } else {
-      d.id = this.deptService.getUser().departement_id;
-      console.log("IDDDDD", d.id);
-    }
-    return d;
-  }
-
-  showHeader(){
+  showHeader() {
     return this.deptService.isAdmin();
   }
 
-  onBack(){
+  onBack() {
     this.location.back();
   }
 
@@ -64,7 +53,7 @@ export class DepartementShowComponent implements OnInit {
     });
   }
 
-  onCoursesChanged(courses: Course[]){
+  onCoursesChanged(courses: Course[]) {
     this.departement.courses = courses;
   }
 }

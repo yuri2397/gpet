@@ -25,6 +25,7 @@ export class CourseListComponent implements OnInit {
   departements!: Departement[];
   classes!: Classe[];
   @Input() courses!: Course[];
+  @Input() classe!: Classe;
   services!: Service[];
   isLoad = false;
   deleteRestoRef!: NzModalRef;
@@ -130,15 +131,18 @@ export class CourseListComponent implements OnInit {
     const modal = this.modalService.create({
       nzTitle: 'Ajouter un cour',
       nzContent: CourseCreateComponent,
+      nzComponentParams:{
+        classe: this.classe,
+      },
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: '55em',
     });
 
-    modal.afterClose.subscribe((data: Batiment | null) => {
+    modal.afterClose.subscribe((data: Course | null) => {
       if (data != null) {
-        this.findAll();
+        this.courses.push(data);
       }
     });
   }

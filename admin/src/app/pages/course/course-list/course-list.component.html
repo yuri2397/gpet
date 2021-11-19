@@ -1,71 +1,101 @@
-<div>
-    <div class="card shadow-sm">
-        <div class="card-header p-3 bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="text-white">Liste des cours</h5>
-                </div>
-                <div>
-                    <button (click)="openCreateModal()" mat-mini-fab color="default">
+<!-- <div>
+  <div class="card shadow-sm">
+    <div class="card-header p-3 bg-color">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="text-white">Liste des cours</h5>
+        </div>
+        <div>
+          <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
-                </div>
-            </div>
         </div>
-        <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="courses">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Intitulé</th>
-                        <th *ngIf="courseService.isAdmin()">Département</th>
-                        <th>Groupe</th>
-                        <th>Service</th>
-                        <th>Semestre</th>
-                        <th>Classe</th>
-                        <th>Professeur</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of basicTable.data">
-                        <td>{{ data.acronym }}</td>
-                        <td>{{ data.name }}</td>
-                        <td *ngIf="courseService.isAdmin()">{{ data.departement.name }}</td>
-                        <td>{{ data.groupe_number }}</td>
-                        <td>{{ data.service.name }}</td>
-                        <td>{{ data.semester.name }}</td>
-                        <td>{{ data.classe.name }}</td>
-                        <td>
-                            <ng-container *ngIf="data.professor != null; else hasNotProf">
-                                <a [routerLink]="['/admin/professeurs/show/' + data.professor.id]">
+      </div>
+    </div>
+    <div class="card-body">
+      <nz-table class="scroll-table" [nzShowSizeChanger]="true" nzPageSizeChange [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable
+        [nzData]="courses">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Intitulé</th>
+            <th *ngIf="courseService.isAdmin()">Département</th>
+            <th>Groupe</th>
+            <th>Service</th>
+            <th>Semestre</th>
+            <th>Classe</th>
+            <th>Professeur</th>
+            <th class="text-center" *ngIf="!classe">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>
+              <a [routerLink]="['/admin/courses/show/' + data.id]">
+                {{ data.acronym }}
+              </a>
+
+            </td>
+            <td>{{ data.name }}</td>
+            <td *ngIf="courseService.isAdmin()">{{ data.departement.name }}</td>
+            <td>
+              <ng-container *ngIf="data.groupe_number == 0; else elseGroupe">
+                <nz-tag [nzColor]="'blue'">Commun</nz-tag>
+              </ng-container>
+              <ng-template #elseGroupe>
+                {{ data.groupe_number }}
+              </ng-template>
+            </td>
+            <td>{{ data.service.name }}</td>
+            <td>{{ data.semester.name }}</td>
+            <td>
+              <a [routerLink]="['/admin/classes/show/' + data.classe.id]">
+                {{ data.classe.name }}
+              </a>
+            </td>
+            <td>
+              <ng-container *ngIf="data.professor != null; else hasNotProf">
+                <a [routerLink]="['/admin/professeurs/show/' + data.professor.id]">
                   {{ data.professor.first_name }} {{ data.professor.last_name }}
                 </a>
-                            </ng-container>
-                            <ng-template #hasNotProf>
-                                <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
-                            </ng-template>
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <div class="mx-3">
-                                    <button (click)="selectedCourse =data; openEditModal()" mat-mini-fab color="accent">
+              </ng-container>
+              <ng-template #hasNotProf>
+                <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
+              </ng-template>
+            </td>
+            <td *ngIf="!classe">
+              <div class="d-flex justify-content-center">
+                <div class="mx-3">
+                  <a [routerLink]="['show/' + data.id]">
+                    <button mat-mini-fab color="primary">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+
+                  </a>
+
+                </div>
+                <div class="mx-3">
+                  <button (click)="selectedCourse =data; openEditModal()" mat-mini-fab color="accent">
                     <mat-icon>edit</mat-icon>
                   </button>
-                                </div>
-                                <div>
-                                    <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
+                </div>
+                <div>
+                  <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
                     <mat-icon>delete</mat-icon>
                   </button>
-                                </div>
+                </div>
 
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-        </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
     </div>
+  </div>
 </div>
 
-<app-can-delete [erreurs]="courseService.canDeleteErreurs" [title]="courseService.canDeleteTitle" [subtitle]="courseService.canDeleteSubTitle" [visible]="canDeleteVisible" [message]="canDeleteMessage" (close)="onCanDeleteClose()"></app-can-delete>
+<app-can-delete [erreurs]="courseService.canDeleteErreurs" [title]="courseService.canDeleteTitle"
+  [subtitle]="courseService.canDeleteSubTitle" [visible]="canDeleteVisible" [message]="canDeleteMessage"
+  (close)="onCanDeleteClose()"></app-can-delete> -->
+
+

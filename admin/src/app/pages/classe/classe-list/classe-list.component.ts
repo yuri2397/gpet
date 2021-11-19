@@ -79,8 +79,6 @@ export class ClasseListComponent implements OnInit {
     });
   }
 
-  showClasse(classe: Classe) {}
-
   openEditModal(classe: Classe) {
     const modal = this.modalService.create({
       nzTitle: 'Modifier les informations de la classe',

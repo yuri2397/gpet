@@ -109,6 +109,7 @@ export class AdminComponent implements OnInit {
         if(this.userService.isEditeur()){
           this.title = "GPET - " + this.user.departement.name.toUpperCase()
         }
+        console.log(this.title);
         this.menuItems = ROUTES.filter((menuItem) => menuItem);
         this.isLoad = false;
       },

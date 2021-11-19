@@ -1,7 +1,7 @@
 import { ProfessorService } from './../../../services/professor.service';
 import { CourseService } from 'src/app/services/course.service';
 import { Course } from './../../../models/course';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -15,6 +15,7 @@ import { EC } from 'src/app/models/ec';
 import { ECService } from 'src/app/services/ec.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
+import { ClasseEditComponent } from '../../classe/classe-edit/classe-edit.component';
 
 @Component({
   selector: 'app-course-create',
@@ -25,13 +26,13 @@ export class CourseCreateComponent implements OnInit {
   course: Course = new Course();
   validateForm!: FormGroup;
   isLoad: boolean = false;
-
   semesters!: Semester[];
   professors!: Professor[];
   departements!: Departement[];
   classes!: Classe[];
   courses!: Course[];
   services!: Service[];
+  @Input() classe!: Classe;
   ecs!: EC[];
   ecLoad = false;
   profLoad = false;
@@ -49,9 +50,10 @@ export class CourseCreateComponent implements OnInit {
   ngOnInit(): void {
     this.findSelectableList();
     if (this.courseService.isEditeur()) {
-      this.course.departement_id = this.courseService.getUser().departement.id;
+      this.course.departement_id = this.courseService.departementId();
       this.findClasseByDepartement(this.course.departement_id);
     }
+    console.log("CURRENT CLASSE IN CREATE", this.classe);
 
     this.validateForm = this.fb.group({
       acronym: [null, [Validators.required]],
@@ -64,6 +66,14 @@ export class CourseCreateComponent implements OnInit {
       departement_id: [null, [Validators.required]],
       professor_id: [null, null],
     });
+  }
+
+  setDefaultClasse() {
+    if (this.classe == null) {
+      return false;
+    }
+    this.course.classe_id = this.classe.id;
+    return true;
   }
 
   serviceAmout(serviceId: number) {
@@ -103,15 +113,15 @@ export class CourseCreateComponent implements OnInit {
       nzTitle: 'Ajouter un nouveau EC',
       nzContent: EcCreateComponent,
       nzContentParams: {
-        departements: this.departements
+        departements: this.departements,
       },
-      nzWidth: "350px",
+      nzWidth: '350px',
       nzClosable: false,
-      nzMaskClosable: false
+      nzMaskClosable: false,
     });
 
     drawerRef.afterClose.subscribe((data) => {
-      console.log("After close", data);
+      console.log('After close', data);
     });
   }
 

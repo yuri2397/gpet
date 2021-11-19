@@ -60,6 +60,7 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::get('', [ClasseController::class, "index"]);
     Route::get('departement/{id}', [ClasseController::class, "findByDepartement"]);
     Route::post('create', [ClasseController::class, "store"]);
+    Route::get('show/{id}', [ClasseController::class, 'show']);
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
 });
