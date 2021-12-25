@@ -8,6 +8,7 @@ import { Batiment } from '../models/batiment';
   providedIn: 'root',
 })
 export class SalleService extends BaseHttp{
+
   protected _baseUrl = 'salle/';
   constructor(
     protected hc: HttpClient,
@@ -69,6 +70,13 @@ export class SalleService extends BaseHttp{
         departement_id: salle.departement_id,
         batiment_id: salle.batiment_id,
       },
+      { headers: this.authorizationHeaders, observe: 'body' }
+    );
+  }
+
+  search(data: string) {
+    return this.http.get<Salle[]>(
+      this.endPoint + 'search/' + data,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

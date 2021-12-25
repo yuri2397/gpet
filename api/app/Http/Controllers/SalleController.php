@@ -97,4 +97,13 @@ class SalleController extends Controller
     {
         return response()->json(DB::table("salles")->whereId($id)->delete(), 200);
     }
+
+    public function search($data)
+    {
+        return Salle::with('batiment')
+            ->where('name', 'like', '%' . $data . '%')
+            ->orWhere('number', 'like', '%' . $data . '%')
+            ->orWhere('capacity', 'like', '%' . $data . '%')
+            ->get();
+    }
 }

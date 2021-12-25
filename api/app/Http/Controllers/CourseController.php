@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Professor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\CoursesHasProfessors;
 
 class CourseController extends Controller
@@ -36,6 +37,7 @@ class CourseController extends Controller
             "acronym" => 'required|unique:courses,acronym',
             "name" => "required",
             "groupe_number" => 'required',
+            "hours" => 'required',
             "classe_id" => "required|exists:classes,id",
             "semester_id" => "required|exists:semesters,id",
             "service_id" => "required|exists:services,id",
@@ -46,6 +48,7 @@ class CourseController extends Controller
         $course = new Course;
         $course->acronym = $request->acronym;
         $course->name = $request->name;
+        $course->hours = $request->hours;
         $course->classe_id = $request->classe_id;
         $course->groupe_number = $request->groupe_number;
         $course->semester_id = $request->semester_id;
@@ -55,7 +58,7 @@ class CourseController extends Controller
         $course->professor_id = $request->professor_id ?? null;
         $course->save();
 
-        return $course;
+        return $this->show($course->id);
     }
 
     /**
@@ -66,7 +69,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $cour = Course::with('classe')->with('departement')->find($id);
+        $cour = Course::find($id);
         return $cour;
     }
 
@@ -80,8 +83,9 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            "acronym" => 'required|unique:courses,acronym',
+            "acronym" => 'required|exists:courses,acronym',
             "name" => "required",
+            "hours" => 'required',
             "groupe_number" => 'required',
             "classe_id" => "required|exists:classes,id",
             "semester_id" => "required|exists:semesters,id",
@@ -89,7 +93,7 @@ class CourseController extends Controller
             "ec_id" => "required|exists:e_c_s,id"
         ]);
 
-        Course::find($id)->update($request->all());
+        DB::table('courses')->whereId($id)->update($request->all());
 
         return $this->show($id);
     }
@@ -164,5 +168,29 @@ class CourseController extends Controller
         $course->professor_id = null;
         $course->save();
         return response()->json($course, 200);
+    }
+
+    public function doPayment(Request $request)
+    {
+        $request->validate([
+            "course_id" => "required|exists:courses,id",
+            "professor_id" => "required|exists:professors,id",
+            "total_sales" => "required",
+            "total_hours" => "required",
+            "amount_hour" => "required"
+        ]);
+
+        $couresDo = CoursesHasProfessors::whereCourseId($request->course_id)
+            ->whereProfessorId($request->professor_id)
+            ->whereIsPaid(0)
+            ->get();
+        collect($couresDo)->map(function ($c) {
+            $c->is_paid = true;
+            $c->save();
+        });
+
+        return response()->json([
+            "message" => "Paiements effectué avec succès."
+        ], 200);
     }
 }

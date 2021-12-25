@@ -2,12 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Classe } from '../models/classe';
 import { Departement } from '../models/departement';
+import { EPT } from '../models/ept';
 import { BaseHttp } from '../shared/base-http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClasseService extends BaseHttp {
+
+
   protected _baseUrl = 'classe/';
   constructor(protected hc: HttpClient) {
     super();
@@ -79,4 +82,6 @@ export class ClasseService extends BaseHttp {
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
+
+
 }

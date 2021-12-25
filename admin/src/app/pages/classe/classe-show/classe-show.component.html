@@ -17,7 +17,74 @@
           <app-course-list [courses]="courses" [classe]="classe"></app-course-list>
         </nz-tab>
         <nz-tab [nzTitle]="'Emploie du temps'">
-          <h1>Emploie du temps</h1>
+          <nz-collapse *ngIf="!eptLoad" nzAccordion>
+            <nz-collapse-panel *ngFor="let panel of epts" nzHeader="{{ panel.day.name | uppercase }} - {{ panel.data.length }} cours" [nzActive]="panel.active"
+              [nzDisabled]="false">
+
+              <ng-container *ngIf="panel.data.length == 0; else dataEmpty">
+                <nz-empty [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
+                  <ng-template #contentTpl>
+                    <span>PAS DE COUR LE <span class="text-danger">{{ panel.day.name | uppercase }}</span>
+                    </span>
+                  </ng-template>
+                  <ng-template #footerTpl>
+                    <button (click)="openCreateModal(panel)" nz-button nzType="primary">Ajouter un cour</button>
+                  </ng-template>
+                </nz-empty>
+              </ng-container>
+
+              <ng-template #dataEmpty>
+                <div style="z-index: 500;" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                  <div class="col" *ngFor="let item of panel.data">
+                    <mat-card class="shadow">
+                      <mat-card-subtitle>{{ item.course.name | uppercase }}</mat-card-subtitle>
+                      <mat-card-content>
+                        <div class="d-flex alig-items-center my-2">
+                          <mat-icon class="mx-2">alarm</mat-icon>
+                          <nz-tag [nzColor]="'cyan'">{{ item.start }} | {{ item.end }}</nz-tag>
+                        </div>
+                        <div class="d-flex alig-items-center">
+                          <mat-icon class="mx-2">place</mat-icon>
+                          <nz-tag [nzColor]="'warning'">{{ item.salle.number }} - {{ item.salle.name }}</nz-tag>
+                        </div>
+                        <nz-alert class="mt-5" nzType="info"
+                          [nzMessage]="item.course.professor.first_name +  ' ' + item.course.professor.last_name"
+                          nzShowIcon>
+                        </nz-alert>
+                      </mat-card-content>
+                      <mat-card-actions>
+                        <button [disabled]="item.removeLoad" mat-mini-fab color="warn" nz-popconfirm
+                          nzPopconfirmTitle="Merci de confirmer votre action." nzPopconfirmPlacement="bottom"
+                          (nzOnConfirm)="removeEPT(panel, item)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                        <button [disabled]="item.removeLoad" mat-mini-fab color="primary" class="mx-2" (click)="editEPT(panel, item)">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                      </mat-card-actions>
+                      <mat-card-footer>
+                        <mat-progress-bar *ngIf="item.removeLoad" mode="indeterminate"></mat-progress-bar>
+                      </mat-card-footer>
+                    </mat-card>
+
+                  </div>
+                  <div class="col">
+                    <mat-card class="shadow">
+                      <mat-card-subtitle>Ajouter un nouveau cour</mat-card-subtitle>
+                      <mat-card-content>
+                        <button mat-mini-fab color="primary" (click)="openCreateModal(panel)">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                      </mat-card-content>
+                      <mat-card-footer>
+                        <mat-progress-bar *ngIf="panel.addLoad" mode="indeterminate"></mat-progress-bar>
+                      </mat-card-footer>
+                    </mat-card>
+                  </div>
+                </div>
+              </ng-template>
+            </nz-collapse-panel>
+          </nz-collapse>
         </nz-tab>
       </nz-tabset>
     </div>

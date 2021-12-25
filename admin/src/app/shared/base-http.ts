@@ -1,7 +1,7 @@
 import { Role } from './../models/role';
 import { User } from '../models/user';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { HttpClient } from '@angular/common/http';
+import { Day } from '../models/day';
 
 export class BaseHttp {
   private _host = 'http://127.0.0.1:8000/';
@@ -10,6 +10,14 @@ export class BaseHttp {
   private _super_admin = 'super admin';
   private _editeur = 'chef de département';
   protected httpClient!: HttpClient;
+  public DAYS: Day[] = [
+    {id: 1, name: "Lundi"},
+    {id: 2, name: "Mardi"},
+    {id: 3, name: "Mercredi"},
+    {id: 4, name: "Vendredi"},
+    {id: 5, name: "Samedi"},
+    {id: 6, name: "Dimance"},
+  ];
 
   _canDeleteErreurs!: string[];
   _canDeleteSubTitle!: string;

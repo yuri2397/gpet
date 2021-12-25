@@ -77,51 +77,15 @@ class ProfesseurController extends Controller
     public function show($id)
     {
         $prof = Professor::with('account')
-        ->with('departement')
-        ->with('account.bank')
-        ->find($id);
+            ->with('departement')
+            ->with('account.bank')
+            ->find($id);
 
         $user = User::find(auth()->id());
-        if($user->hasRole("super admin")){
+        if ($user->hasRole("super admin")) {
             $prof->courses;
-            $prof->coursesDo = $prof->coursesDo()
-            ->whereYear('courses_has_professors.date', date('Y'))
-            ->whereMonth('courses_has_professors.date', date('n') - 1)
-            ->join('courses', 'courses_has_professors.course_id', 'courses.id')
-            ->select(
-                "courses_has_professors.course_id",
-                "courses_has_professors.professor_id",
-                "courses_has_professors.amount",
-                DB::raw('SUM(courses_has_professors.hours) as total_hours'),
-                DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
-            )
-            ->groupBy(
-                'courses_has_professors.course_id',
-                "courses_has_professors.amount",
-                "courses_has_professors.professor_id",
-            )
-            ->get();
-        }
-        else{
+        } else {
             $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->get();
-            $prof->coursesDo = $prof->coursesDo()
-            ->whereYear('courses_has_professors.date', date('Y'))
-            ->whereMonth('courses_has_professors.date', date('n') - 1)
-            ->join('courses', 'courses_has_professors.course_id', 'courses.id')
-            ->where('courses.departement_id', $prof->departement_id)
-            ->select(
-                "courses_has_professors.course_id",
-                "courses_has_professors.professor_id",
-                "courses_has_professors.amount",
-                DB::raw('SUM(courses_has_professors.hours) as total_hours'),
-                DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
-            )
-            ->groupBy(
-                'courses_has_professors.course_id',
-                "courses_has_professors.amount",
-                "courses_has_professors.professor_id",
-            )
-            ->get();
         }
 
         return $prof;
@@ -199,5 +163,57 @@ class ProfesseurController extends Controller
                 ->orderBy('created_at', 'desc')->get();
         }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+    }
+
+    public function payments($register_number)
+    {
+        $prof = Professor::with("coursesDo")->whereRegistrationNumber($register_number)->first();
+
+        if ($prof) {
+            $user = User::find(auth()->id());
+            if ($user->hasRole("super admin")){
+                $prof->coursesDo = $prof->coursesDo()
+                ->whereYear('courses_has_professors.date', date('Y'))
+                ->join('courses', 'courses_has_professors.course_id', 'courses.id')
+                ->select(
+                    "courses_has_professors.course_id",
+                    "courses_has_professors.professor_id",
+                    "courses_has_professors.amount",
+                    DB::raw('SUM(courses_has_professors.hours) as total_hours'),
+                    DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
+                )
+                ->groupBy(
+                    'courses_has_professors.course_id',
+                    "courses_has_professors.amount",
+                    "courses_has_professors.is_paid",
+                    "courses_has_professors.professor_id",
+                )
+                ->get();
+            }
+            else{
+                $prof->coursesDo = $prof->coursesDo()
+                ->whereYear('courses_has_professors.date', date('Y'))
+                ->join('courses', 'courses_has_professors.course_id', 'courses.id')
+                ->where('courses.departement_id', $prof->departement_id)
+                ->select(
+                    "courses_has_professors.course_id",
+                    "courses_has_professors.professor_id",
+                    "courses_has_professors.is_paid",
+                    "courses_has_professors.amount",
+                    DB::raw('SUM(courses_has_professors.hours) as total_hours'),
+                    DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
+                )
+                ->groupBy(
+                    'courses_has_professors.course_id',
+                    "courses_has_professors.amount",
+                    "courses_has_professors.is_paid",
+                    "courses_has_professors.professor_id",
+                )
+                ->get();
+            }
+
+        }
+
+        return $prof;
     }
 }

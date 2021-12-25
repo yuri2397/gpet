@@ -96,7 +96,6 @@ export class BatimentListComponent implements OnInit {
           errors.error.message
         );
         this.deleteRestoRef.destroy();
-        console.log(errors);
       },
     });
   }

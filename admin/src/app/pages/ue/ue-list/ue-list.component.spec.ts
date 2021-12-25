@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EcListComponent } from './ec-list.component';
+import { UeListComponent } from './ue-list.component';
 
-describe('EcListComponent', () => {
-  let component: EcListComponent;
-  let fixture: ComponentFixture<EcListComponent>;
+describe('UeListComponent', () => {
+  let component: UeListComponent;
+  let fixture: ComponentFixture<UeListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EcListComponent ]
+      declarations: [ UeListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EcListComponent);
+    fixture = TestBed.createComponent(UeListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

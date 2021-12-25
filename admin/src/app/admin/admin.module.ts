@@ -38,8 +38,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import fr from '@angular/common/locales/fr';
-import localeFr from '@angular/common/locales/fr';
+
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
@@ -71,7 +70,22 @@ import { DepartementCreateComponent } from '../pages/departement/departement-cre
 import { DepartementEditComponent } from '../pages/departement/departement-edit/departement-edit.component';
 import { DepartementListComponent } from '../pages/departement/departement-list/departement-list.component';
 import { DepartementShowComponent } from '../pages/departement/departement-show/departement-show.component';
+import { MatTableModule } from '@angular/material/table';
+import { PayementsComponent } from '../pages/professeur/payements/payements.component';
+import { UeListComponent } from '../pages/ue/ue-list/ue-list.component';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { EptCreateComponent } from '../pages/classe/ept-create/ept-create.component';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
+/**
+ * TIME AND DATE
+ */
+import fr from '@angular/common/locales/fr';
+import localeFr from '@angular/common/locales/fr';
+import { EptEditComponent } from '../pages/classe/ept-edit/ept-edit.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -79,6 +93,7 @@ registerLocaleData(localeFr, fr);
     AdminRoutingModule,
     NzMenuModule,
     MatIconModule,
+    MatTableModule,
     NzCardModule,
     NzToolTipModule,
     NzResultModule,
@@ -120,6 +135,11 @@ registerLocaleData(localeFr, fr);
     NzTagModule,
     NzAlertModule,
     NzAvatarModule,
+    NzSpaceModule,
+    DragDropModule,
+    MatCardModule,
+    MatProgressBarModule,
+    NzTimePickerModule
   ],
   declarations: [
     AdminComponent,
@@ -157,6 +177,10 @@ registerLocaleData(localeFr, fr);
     DepartementShowComponent,
     BankListComponent,
     BankEditComponent,
+    PayementsComponent,
+    UeListComponent,
+    EptEditComponent,
+    EptCreateComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

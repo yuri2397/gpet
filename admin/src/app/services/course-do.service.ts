@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { CoursesDo } from '../models/coures-do';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CourseDoService extends BaseHttp {
   protected _baseUrl = 'course-do/';
@@ -13,8 +13,7 @@ export class CourseDoService extends BaseHttp {
     this.http = hc;
   }
 
-
-  clone(course: CoursesDo){
+  clone(course: CoursesDo) {
     let c = new CoursesDo();
     c.total_hours = course.total_hours;
     c.total_sales = course.total_sales;
@@ -22,4 +21,6 @@ export class CourseDoService extends BaseHttp {
     c.course = course.course;
     return c;
   }
+
+
 }

@@ -13,6 +13,7 @@ export class Course extends Model<Course> {
   classe_id!: number;
   semester_id!: number;
   service_id!: number;
+  hours!: number;
   ec_id!: number;
   professor_id!: number;
   created_at!: Date;

@@ -24,9 +24,7 @@ export class ClasseListComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private modalService: NzModalService,
-    private depService: DepartementService,
     private classeService: ClasseService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +33,6 @@ export class ClasseListComponent implements OnInit {
       this.isLoad = false;
     } else {
       this.departement = this.classeService.getUser().departement;
-      console.log('DEPARTEMENT', this.departement);
       this.findByDepartement();
     }
   }
@@ -45,8 +42,6 @@ export class ClasseListComponent implements OnInit {
       next: (response) => {
         this.departement = response;
         this.classes = this.departement.classes;
-        console.log(response);
-
         this.isLoad = false;
       },
       error: (errors) => {
@@ -137,9 +132,9 @@ export class ClasseListComponent implements OnInit {
     this.deleteLoad = true;
     this.classeService.delete(classe).subscribe({
       next: (response) => {
-        this.deleteLoad = false;
         this.deleteRestoRef.destroy();
         this.findByDepartement();
+        this.deleteLoad = false;
       },
       error: (errors) => {
         this.isLoad = false;

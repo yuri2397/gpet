@@ -60,7 +60,6 @@ export class ClasseCreateComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
         this.notification.createNotification(
           'error',
           'Erreur',

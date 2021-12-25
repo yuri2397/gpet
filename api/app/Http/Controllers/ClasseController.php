@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classe;
+use App\Models\Day;
 use App\Models\Departement;
+use App\Models\TimesTable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +48,6 @@ class ClasseController extends Controller
         $classe->nb_students = $request->nb_students;
         $classe->departement_id = $request->departement_id;
         $classe->save();
-
         return response()->json($classe, 200);
     }
 

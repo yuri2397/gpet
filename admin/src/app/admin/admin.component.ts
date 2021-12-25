@@ -64,6 +64,13 @@ export const ROUTES: RouteInfo[] = [
     roles: ['super admin', 'chef de département'],
   },
   {
+    path: 'ues',
+    title: 'UE',
+    icon: 'low_priority',
+    class: '',
+    roles: ['super admin', 'chef de département'],
+  },
+  {
     path: 'classes',
     title: 'Classes',
     icon: 'ballot',

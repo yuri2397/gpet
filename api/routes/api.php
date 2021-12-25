@@ -14,6 +14,8 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BatimentController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\EPTController;
+use App\Models\User;
 
 Route::post('selectable', function (Request $request) {
     $res = [];
@@ -28,7 +30,6 @@ Route::post('selectable', function (Request $request) {
     }
     return $res;
 });
-
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
@@ -54,6 +55,7 @@ Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->grou
     Route::post('create', [DepartementController::class, "store"]);
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
+
 });
 
 Route::prefix("classe")->middleware(['auth:api',])->group(function () {
@@ -63,15 +65,23 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::get('show/{id}', [ClasseController::class, 'show']);
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
-});
 
+
+});
+Route::prefix("ept")->middleware(['auth:api'])->group(function () {
+    Route::get('', [EPTController::class, "index"]);
+    Route::post('create', [EPTController::class, "store"]);
+    Route::put('update/{id}', [EPTController::class, "update"]);
+    Route::get('show/{id}', [EPTController::class, "show"]);
+    Route::delete('destroy/{id}', [EPTController::class, "destroy"]);
+});
 Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('', [SalleController::class, "index"]);
     Route::post('create', [SalleController::class, "store"]);
     Route::put('update/{id}', [SalleController::class, "update"]);
     Route::delete('destroy/{id}', [SalleController::class, "destroy"]);
+    Route::get('search/{data}', [SalleController::class, "search"]);
 });
-
 
 Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
     Route::get('', [ProfesseurController::class, "index"]);
@@ -82,8 +92,10 @@ Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
     Route::delete('destroy/{id}', [ProfesseurController::class, "destroy"]);
     Route::put('desable-account/{id}', [ProfesseurController::class, "desableAccount"]);
     Route::post('course-do', [CourseController::class, 'courseHasProfessor']);
+    Route::post('do-payment', [CourseController::class, 'doPayment']);
     Route::post('course-to-professor', [CourseController::class, 'courseToProfessor']);
     Route::put('remove-course-professor', [CourseController::class, 'removeCourseProfessor']);
+    Route::get("payments/{register_number}", [ProfesseurController::class, "payments"]);
 });
 
 Route::prefix("ue")->middleware(['auth:api'])->group(function () {
@@ -104,7 +116,6 @@ Route::prefix("ec")->middleware(['auth:api'])->group(function () {
     Route::delete('destroy/{id}', [ECController::class, "destroy"]);
 });
 
-
 Route::prefix("course")->middleware(['auth:api',])->group(function () {
     Route::get('', [CourseController::class, "index"]);
     Route::get('show/{id}', [CourseController::class, "show"]);
@@ -114,7 +125,6 @@ Route::prefix("course")->middleware(['auth:api',])->group(function () {
     Route::get('search/{data}', [CourseController::class, "search"]);
 });
 
-
 Route::prefix("bank")->middleware(['auth:api'])->group(function () {
     Route::get('', [BankController::class, "index"]);
     Route::get('show/{id}', [BankController::class, "show"]);
@@ -122,4 +132,45 @@ Route::prefix("bank")->middleware(['auth:api'])->group(function () {
     Route::put('update/{id}', [BankController::class, "update"]);
     Route::delete('destroy/{id}', [BankController::class, "destroy"]);
     Route::get('search/{data}', [BankController::class, "search"]);
+});
+
+
+Route::any('test', function (Request $request) {
+    $request->validate([
+        "description" => "required|string",
+        "delivred_at" => "required|date",
+        "budget" => "numeric"
+    ]);
+    return ($request->file("images"));
+
+    $paths = [];
+    $files = [];
+    if ($request->hasfile('files_name')) {
+
+        $paths  = [];
+        foreach ($files as $file) {
+            $extension = $file->getClientOriginalExtension();
+            $filename  = 'post_request_file_' . time() . '.' . $extension;
+            $paths[]   = $file->storeAs('post_request_files', $filename);
+        }
+        return $paths;
+
+        $postRequest = new User();
+
+        $postRequest->description = $request->description;
+        $postRequest->delivred_at = $request->delivred_at;
+        $request->category_id = $request->category_id;
+        $request->budget = $request->budget ?? 0;
+        $request->user_id = auth()->user()->id;
+        $postRequest->files = json_encode($paths);
+        $postRequest->save();
+
+        return response()->json([
+            "message" => "Success"
+        ], 200);
+    } else {
+        return response()->json([
+            "message" => "Sorry Only Upload png , jpg , doc"
+        ], 422);
+    }
 });

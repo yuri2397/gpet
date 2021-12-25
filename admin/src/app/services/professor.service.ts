@@ -7,6 +7,7 @@ import { Professor } from '../models/professor';
 import { BaseHttp } from '../shared/base-http';
 import { DepartementService } from './departement.service';
 import { Course } from '../models/course';
+import { CoursesDo } from '../models/coures-do';
 
 @Injectable({
   providedIn: 'root',
@@ -26,13 +27,10 @@ export class ProfessorService extends BaseHttp {
   }
 
   search(data: string) {
-    return this.http.get<Professor[]>(
-      this.endPoint + 'search/' + data,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
-    );
+    return this.http.get<Professor[]>(this.endPoint + 'search/' + data, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 
   find(id: number) {
@@ -48,6 +46,23 @@ export class ProfessorService extends BaseHttp {
       {
         course_id: course.id,
         professor_id: professor.id,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  doPayment(courseDo: CoursesDo) {
+    return this.http.post<any>(
+      this.endPoint + 'do-payment/',
+      {
+        course_id: courseDo.course_id,
+        professor_id: courseDo.professor_id,
+        total_sales: courseDo.total_sales,
+        total_hours: courseDo.total_hours,
+        amount_hour: courseDo.amount
       },
       {
         headers: this.authorizationHeaders,
@@ -123,10 +138,10 @@ export class ProfessorService extends BaseHttp {
   }
 
   delete(professor: Professor) {
-    return this.http.delete<any>(
-      this.endPoint + 'destroy/' + professor.id,
-      { headers: this.authorizationHeaders, observe: 'body' }
-    );
+    return this.http.delete<any>(this.endPoint + 'destroy/' + professor.id, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 
   edit(professor: Professor) {
@@ -167,6 +182,16 @@ export class ProfessorService extends BaseHttp {
         course_id: course.id,
         amount: course.service.amount,
       },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  payments(professor: Professor) {
+    return this.http.get<Professor>(
+      this.endPoint + 'payments/' + professor.registration_number,
       {
         headers: this.authorizationHeaders,
         observe: 'body',

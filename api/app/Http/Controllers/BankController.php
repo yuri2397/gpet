@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Bank;
+use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +42,10 @@ class BankController extends Controller
 
     public function destroy($id)
     {
-        return DB::table('banks')->whereId($id)->delete();
+        $professors = Account::whereBankId($id)->get();
+        if (count($professors) == 0)
+            return DB::table('banks')->whereId($id)->delete();
+        else return response()->json(["message" => "Cette bank est liée à un compte professeur."], 400);
     }
 
     public function search($data)

@@ -1,4 +1,4 @@
-<!-- <div>
+<div>
   <div class="card shadow-sm">
     <div class="card-header p-3 bg-color">
       <div class="d-flex justify-content-between align-items-center">
@@ -13,18 +13,19 @@
       </div>
     </div>
     <div class="card-body">
-      <nz-table class="scroll-table" [nzShowSizeChanger]="true" nzPageSizeChange [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable
-        [nzData]="courses">
+      <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowPagination
+        [nzPageSize]="4" #basicTable [nzData]="courses">
         <thead>
           <tr>
-            <th>Code</th>
-            <th>Intitulé</th>
-            <th *ngIf="courseService.isAdmin()">Département</th>
-            <th>Groupe</th>
-            <th>Service</th>
-            <th>Semestre</th>
-            <th>Classe</th>
-            <th>Professeur</th>
+            <th class="text-center">Code</th>
+            <th class="text-center">Intitulé</th>
+            <th class="text-center" *ngIf="courseService.isAdmin()">Département</th>
+            <th class="text-center">Groupe</th>
+            <th class="text-center">Volume</th>
+            <th class="text-center">Service</th>
+            <th class="text-center">Semestre</th>
+            <th class="text-center">Classe</th>
+            <th class="text-center">Professeur</th>
             <th class="text-center" *ngIf="!classe">Actions</th>
           </tr>
         </thead>
@@ -46,6 +47,7 @@
                 {{ data.groupe_number }}
               </ng-template>
             </td>
+            <td>{{ data.hours }} Heures</td>
             <td>{{ data.service.name }}</td>
             <td>{{ data.semester.name }}</td>
             <td>
@@ -96,6 +98,4 @@
 
 <app-can-delete [erreurs]="courseService.canDeleteErreurs" [title]="courseService.canDeleteTitle"
   [subtitle]="courseService.canDeleteSubTitle" [visible]="canDeleteVisible" [message]="canDeleteMessage"
-  (close)="onCanDeleteClose()"></app-can-delete> -->
-
-
+  (close)="onCanDeleteClose()"></app-can-delete>

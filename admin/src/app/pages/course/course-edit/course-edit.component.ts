@@ -33,7 +33,7 @@ export class CourseEditComponent implements OnInit {
   isLoad: boolean = false;
   ecLoad = false;
   profLoad = false;
-
+  serviceAmountFCFA = "";
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
@@ -45,22 +45,26 @@ export class CourseEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.course);
+
     this.findSelectableList();
     this.validateForm = this.fb.group({
       acronym: [null, [Validators.required]],
       name: [null, [Validators.required]],
-      groupe_number: [0, [Validators.required]],
+      groupe_number: [null, [Validators.required]],
       classe_id: [null, [Validators.required]],
+      hours: [null, [Validators.required]],
       semester_id: [null, [Validators.required]],
       service_id: [null, [Validators.required]],
       ec_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
       professor_id: [null, null],
     });
+    console.log("COURSE EDIT", this.course);
   }
 
   serviceAmout(serviceId: number) {
-    if (serviceId == null) return 'Montant (FCFA)';
+    if (serviceId == null) this.serviceAmountFCFA = 'Montant (FCFA)';
     let amount!: number;
     if(this.services)
     this.services.forEach((s) => {
@@ -68,7 +72,7 @@ export class CourseEditComponent implements OnInit {
         amount = s.amount;
       }
     });
-    return amount + ' FCFA';
+    this.serviceAmountFCFA = amount + ' FCFA';
   }
 
   onProSearch(value: string) {
@@ -162,9 +166,10 @@ export class CourseEditComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    this.courseService.create(this.course).subscribe({
+    this.courseService.edit(this.course).subscribe({
       next: (response) => {
         this.isLoad = false;
+        console.log(response);
         this.notification.createNotification(
           'success',
           'Notification',
@@ -173,6 +178,8 @@ export class CourseEditComponent implements OnInit {
         this.destroyModal(response);
       },
       error: (errors) => {
+        console.log(errors);
+
         this.isLoad = false;
         this.notification.createNotification(
           'error',

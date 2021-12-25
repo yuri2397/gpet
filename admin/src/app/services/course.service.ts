@@ -21,6 +21,7 @@ export class CourseService extends BaseHttp {
     c.acronym = course.acronym;
     c.name = course.name;
     c.id = course.id;
+    c.hours = course.hours;
     c.classe = course.classe;
     c.classe_id = course.classe_id;
     c.departement = course.departement;
@@ -29,6 +30,7 @@ export class CourseService extends BaseHttp {
     c.ec = course.ec;
     c.ec_id = course.ec_id;
     c.semester = course.semester;
+    c.semester_id = course.semester_id;
     c.professor = course.professor;
     c.professor_id = course.professor_id;
     c.service = course.service;
@@ -43,25 +45,33 @@ export class CourseService extends BaseHttp {
     });
   }
 
-  create(classe: Course) {
+  create(course: Course) {
     return this.http.post<Course>(
       this.endPoint + 'create',
       {
-        name: classe.name,
-        acronym: classe.acronym,
-        groupe_number: classe.groupe_number,
-        classe_id: classe.classe_id,
-        service_id: classe.service_id,
-        semester_id: classe.semester_id,
-        departement_id: classe.departement_id,
-        ec_id: classe.ec_id,
-        professor_id: classe.professor_id,
+        name: course.name,
+        acronym: course.acronym,
+        hours: course.hours,
+        groupe_number: course.groupe_number,
+        classe_id: course.classe.id,
+        service_id: course.service.id,
+        semester_id: course.semester.id,
+        departement_id: course.departement.id,
+        ec_id: course.ec_id,
+        professor_id: course.professor_id,
       },
       {
         headers: this.authorizationHeaders,
         observe: 'body',
       }
     );
+  }
+
+  show(course: Course){
+    return this.http.get<Course>(this.endPoint + 'show/' + course.id, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 
   delete(course: Course) {
@@ -72,10 +82,21 @@ export class CourseService extends BaseHttp {
   }
 
   edit(course: Course) {
+    console.log(course);
+
     return this.http.put<Course>(
       this.endPoint + 'update/' + course.id,
       {
         name: course.name,
+        acronym: course.acronym,
+        hours: course.hours,
+        groupe_number: course.groupe_number,
+        classe_id: course.classe.id,
+        service_id: course.service.id,
+        semester_id: course.semester.id,
+        departement_id: course.departement.id,
+        ec_id: course.ec_id,
+        professor_id: course.professor_id,
       },
       { headers: this.authorizationHeaders, observe: 'body' }
     );

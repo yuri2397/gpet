@@ -66,7 +66,6 @@ export class CourseListComponent implements OnInit {
       error: (errors) => {
         this.isLoad = false;
         console.log(errors);
-        ;
       },
     });
   }
@@ -80,7 +79,7 @@ export class CourseListComponent implements OnInit {
         course: this.courseService.clone(c),
       },
       nzCentered: true,
-      nzWidth: "50em",
+      nzWidth: '50em',
       nzMaskClosable: false,
       nzClosable: false,
     });
@@ -94,7 +93,7 @@ export class CourseListComponent implements OnInit {
 
   openDeleteModal(course: Course) {
     this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
+      nzTitle: '<span>Voulez-vous supprimé ce cours?</span>',
       nzOkText: 'Supprimer',
       nzOkType: 'primary',
       nzOkDanger: true,
@@ -114,7 +113,7 @@ export class CourseListComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          'Dépatement supprimé avec succès.'
+          'Cours supprimé avec succès.'
         );
         this.findAll();
         this.deleteRestoRef.destroy();
@@ -131,7 +130,7 @@ export class CourseListComponent implements OnInit {
     const modal = this.modalService.create({
       nzTitle: 'Ajouter un cour',
       nzContent: CourseCreateComponent,
-      nzComponentParams:{
+      nzComponentParams: {
         classe: this.classe,
       },
       nzCentered: true,
@@ -142,7 +141,7 @@ export class CourseListComponent implements OnInit {
 
     modal.afterClose.subscribe((data: Course | null) => {
       if (data != null) {
-        this.courses.push(data);
+        this.courses = [...this.courses, data];
       }
     });
   }

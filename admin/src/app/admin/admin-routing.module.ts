@@ -14,6 +14,8 @@ import { DepartementListComponent } from '../pages/departement/departement-list/
 import { AdminGuard } from '../shared/admin.guard';
 import { BankListComponent } from '../pages/bank/bank-list/bank-list.component';
 import { CourseShowComponent } from '../pages/course/course-show/course-show.component';
+import { PayementsComponent } from '../pages/professeur/payements/payements.component';
+import { UeListComponent } from '../pages/ue/ue-list/ue-list.component';
 
 const routes: Routes = [
   {
@@ -21,18 +23,23 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AdminGuard],
   },
-  { path: 'batiments', component: BatimentListComponent,canActivate: [AdminGuard], },
+  {
+    path: 'batiments',
+    component: BatimentListComponent,
+    canActivate: [AdminGuard],
+  },
   {
     path: 'departements',
     component: DepartementListComponent,
     canActivate: [AdminGuard],
   },
   { path: 'departements/show/:id', component: DepartementShowComponent },
-  { path: 'classes/show/:id', component: ClasseShowComponent},
+  { path: 'classes/show/:id', component: ClasseShowComponent },
   { path: 'salles', component: SalleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
+  { path: 'professeurs/payements/:register_number', component: PayementsComponent },
   { path: 'professeurs', component: ProfesseurListComponent },
-  { path: 'classes', component: ClasseListComponent},
+  { path: 'classes', component: ClasseListComponent },
   { path: 'users', component: UserListComponent },
   { path: 'courses', component: CourseListComponent },
   { path: 'courses/show/:id', component: CourseShowComponent },

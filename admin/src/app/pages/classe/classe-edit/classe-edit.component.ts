@@ -61,7 +61,6 @@ export class ClasseEditComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
         this.notification.createNotification(
           'error',
           'Erreur',
