@@ -10,6 +10,14 @@ class UE extends Model
     use HasFactory;
 
     protected $fillable = ['*'];
+
+    //protected $with = ['ecs'];
+
+    public function ecs()
+    {
+        return $this->hasMany(EC::class);
+    }
+
     public function departement()
     {
         return $this->belongsTo(Departement::class);

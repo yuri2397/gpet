@@ -2,10 +2,12 @@ import { Role } from './../models/role';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { Day } from '../models/day';
+import { Departement } from '../models/departement';
+import { environment as env } from 'src/environments/environment';
 
 export class BaseHttp {
-  private _host = 'http://127.0.0.1:8000/';
-  private _api = 'http://127.0.0.1:8000/api/';
+  private _host = env.host;
+  private _api = env.api;
   protected _baseUrl!: string;
   private _super_admin = 'super admin';
   private _editeur = 'chef de département';
@@ -139,6 +141,10 @@ export class BaseHttp {
     return this.getUser().departement.id;
   }
 
+  departement(): Departement{
+    return this.getUser().departement;
+  }
+
   setToken(token: string) {
     sessionStorage.setItem('token', token);
   }
@@ -149,6 +155,10 @@ export class BaseHttp {
 
   setRoles(roles: Role[]) {
     sessionStorage.setItem('roles', JSON.stringify(roles));
+  }
+
+  setDepartement(departement: Departement){
+    sessionStorage.setItem('departement', JSON.stringify(departement));
   }
 
   get api(): string {

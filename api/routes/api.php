@@ -15,6 +15,7 @@ use App\Http\Controllers\BatimentController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\EPTController;
+use App\Http\Controllers\SemesterController;
 use App\Models\User;
 
 Route::post('selectable', function (Request $request) {
@@ -55,6 +56,12 @@ Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->grou
     Route::post('create', [DepartementController::class, "store"]);
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
+
+});
+
+Route::prefix("semester")->middleware(['auth:api','role:chef de département'])->group(function () {
+
+    Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
 
 });
 

@@ -11,6 +11,8 @@ class Classe extends Model
 
     protected $fillable = ['*'];
 
+    protected $with = ['courses'];
+
     public function departement()
     {
         return $this->belongsTo(Departement::class);

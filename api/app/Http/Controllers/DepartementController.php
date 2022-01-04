@@ -53,6 +53,7 @@ class DepartementController extends Controller
         return Departement::with('professors')
             ->with('classes')
             ->with('courses')
+            ->with("courses.classe")
             ->with('courses.departement')
             ->whereId($id)
             ->first();

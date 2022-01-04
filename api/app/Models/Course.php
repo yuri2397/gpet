@@ -9,7 +9,7 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $with = ['classe', 'professor', 'ec', 'service', 'semester', 'departement'];
+    protected $with = ['professor', 'ec', 'service', 'semester', 'departement'];
     protected $fillable = ['*'];
 
     public function professor()

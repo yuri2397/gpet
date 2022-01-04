@@ -28,6 +28,7 @@ export class ClasseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     if (this.departement != null) {
       this.classes = this.departement.classes;
       this.isLoad = false;

@@ -24,6 +24,7 @@ export class DepartementShowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log("DEPAR IN CLASS", this.departement.classes);
     this.route.params.subscribe((params) => {
       this.departement.id = params['id'];
     });
@@ -42,8 +43,8 @@ export class DepartementShowComponent implements OnInit {
     this.dataLoad = true;
     this.deptService.find(departement).subscribe({
       next: (response) => {
-        console.log(response);
         this.departement = response;
+        console.log("CLASS",this.departement.courses);
         this.dataLoad = false;
       },
       error: (errors) => {

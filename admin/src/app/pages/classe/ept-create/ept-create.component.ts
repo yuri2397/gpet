@@ -67,7 +67,7 @@ export class EptCreateComponent implements OnInit {
 
   onSalleSearch(data: string) {
     this.isSallesLoad = true;
-    if (data && data.length >= 3)
+    if (data && data.length >= 1)
       this.salleService.search(data).subscribe({
         next: (salles) => {
           this.salles = salles;
@@ -84,6 +84,17 @@ export class EptCreateComponent implements OnInit {
   }
 
   startDes = () :number[] => {
+    let tab = [];
+    for (let index = 20; index < 24; index++) {
+      tab.push(index);
+    }
+    for (let index = 0; index < 8; index++) {
+      tab.push(index);
+    }
+    return tab;
+  }
+
+  endDes = () :number[] => {
     let tab = [];
     for (let index = 20; index < 24; index++) {
       tab.push(index);

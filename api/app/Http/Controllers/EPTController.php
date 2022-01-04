@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Day;
+use App\Models\Salle;
+use App\Traits\Utils;
 use App\Models\Classe;
 use App\Models\Course;
-use App\Models\Day;
+use App\Models\Professor;
 use App\Models\TimesTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Facade\FlareClient\Http\Response;
+use Illuminate\Http\Response as HttpResponse;
 
 class EPTController extends Controller
 {
+    use Utils;
     /**
      * Display a listing of the resource.
      *
@@ -33,17 +39,73 @@ class EPTController extends Controller
             "start" => "required|date",
             "end" => "required|date",
             "classe_id" => "required|exists:classes,id",
-            "salle_id" => "exists:salles,id",
+            "salle_id" => "required|exists:salles,id",
             "course_id" => "required|exists:courses,id",
             "day_id" => "required|exists:days,id"
         ]);
 
+        $start = date("H:i", strtotime($request->start));
+        $end = date("H:i", strtotime($request->end));
+
+        if($start >= $end){
+            return response()->json([
+                "message" => "Le cour ne peux pas terminé avant d'avoir commené."
+            ], HttpResponse::HTTP_CONFLICT);
+        }
         $course = Course::find($request->course_id);
         if($course->professor == null){
             return response()->json([
                 "message" => "Ce cour n'a pas de professeur pour le faire."
             ], 400);
         }
+
+        return $this->validateETP($request, $course);
+    }
+
+    private function validateETP(Request  $request, Course $course)
+    {
+        $start = date("H:i", strtotime($request->start));
+        $end = date("H:i", strtotime($request->end));
+        $day = Day::find($request->day_id);
+        $classe = Classe::find($request->classe_id);
+        $professor = Professor::find($course->professor->id);
+        $salle = Salle::find($request->salle_id);
+
+        $eptForDay = TimesTable::whereClasseId($classe->id)->whereDayId($day->id)->get();
+
+        $eptForProfessor = TimesTable::whereProfessorId($professor->id)->whereDayId($day->id)->get();
+
+        $eptForSalle = TimesTable::whereSalleId($salle->id)->whereDayId($day->id)->get();
+
+        // si le prof est dispo
+        foreach ($eptForProfessor as $key => $value) {
+            if($this->hourEmbedHour($start, $end, $value->start, $value->end)){
+                return response()->json([
+                    "message" => "Le professeur sera occupé le " . $day->name . " à " . $value->start . " À " . $value->end
+                ], HttpResponse::HTTP_CONFLICT);
+            }
+        }
+
+        // si la classe sera dispo
+        foreach ($eptForDay as $key => $value) {
+            if($this->hourEmbedHour($start, $end, $value->start, $value->end)){
+                $c = Course::find($value->course_id);
+                return response()->json([
+                    "message" => "Un cour de  " . $c->name . " est programmé pour le" . $day->name . " de " . $value->start . " À " . $value->end
+                ], HttpResponse::HTTP_CONFLICT);
+            }
+        }
+
+        // si la salle serra dispo
+        foreach ($eptForSalle as $key => $value) {
+            if($this->hourEmbedHour($start, $end, $value->start, $value->end)){
+                $s = Salle::find($value->salle_id);
+                return response()->json([
+                    "message" => "La salle " . $s->name ?? $s->number . " est déjà reservée pour le " . $day->name . " de " . $value->start . " À " . $value->end
+                ], HttpResponse::HTTP_CONFLICT);
+            }
+        }
+
         $ept = new TimesTable();
         $ept->start = date("H:i", strtotime($request->start));
         $ept->end = date("H:i", strtotime($request->end));
@@ -54,9 +116,11 @@ class EPTController extends Controller
         $ept->day_id = $request->day_id;
         $ept->save();
 
-
         return response()->json(TimesTable::find($ept->id), 201);
     }
+
+
+
 
     /**
      * Display the specified resource.

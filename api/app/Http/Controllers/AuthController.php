@@ -19,7 +19,8 @@ class AuthController extends Controller
             $user->roles->pluck('name')->all();
             return response()->json([
                 'token' => $token,
-                'user' => $user
+                'user' => $user,
+                'departement' => $user->departement
             ], 200);
         } else {
             $response = ["message" => "Email ou mot de password incorrect."];

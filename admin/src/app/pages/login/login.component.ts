@@ -47,6 +47,9 @@ export class LoginComponent implements OnInit {
           this.authService.setToken(response.token);
           this.authService.setUser(response.user);
           this.authService.setRoles(response.user.roles);
+          this.authService.setDepartement(response.departement);
+          console.log("LOGIN",response);
+
           this.afterLogin(response);
           this.isLoad = false;
         },

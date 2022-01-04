@@ -20,7 +20,7 @@
             <nz-select nzPlaceHolder="Rechercher une salle" nzAllowClear nzShowSearch nzServerSearch
             formControlName="professor_id" (nzOnSearch)="onSalleSearch($event)" formControlName="salle_id" [(ngModel)]="ept.salle.id">
               <ng-container *ngFor="let o of salles">
-                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                <nz-option [nzValue]="o.id" [nzLabel]="o.name ?? 'Salle n° ' + o.number"></nz-option>
               </ng-container>
               <nz-option *ngIf="isSallesLoad" nzDisabled nzCustomContent>
                 <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
@@ -44,7 +44,7 @@
         <nz-form-item>
           <nz-form-label nzRequired nzFor="end">Fin cour</nz-form-label>
           <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Heure de fin requi">
-            <nz-time-picker [nzMinuteStep]="15"  [(ngModel)]="ept.end" formControlName="end" nzFormat="HH:mm"  nzId="end" name="end" id="end"></nz-time-picker>
+            <nz-time-picker [nzMinuteStep]="15" [nzDisabledHours]="endDes"  [(ngModel)]="ept.end" formControlName="end" nzFormat="HH:mm"  nzId="end" name="end" id="end"></nz-time-picker>
           </nz-form-control>
         </nz-form-item>
       </div>

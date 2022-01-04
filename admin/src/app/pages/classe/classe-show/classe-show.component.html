@@ -45,7 +45,13 @@
                         </div>
                         <div class="d-flex alig-items-center">
                           <mat-icon class="mx-2">place</mat-icon>
-                          <nz-tag [nzColor]="'warning'">{{ item.salle.number }} - {{ item.salle.name }}</nz-tag>
+                          <nz-tag [nzColor]="'warning'"><ng-container *ngIf="item.salle.name == null; else salleUnName">
+                            Salle N° {{ item.salle.number }}
+                          </ng-container>
+                          <ng-template #salleUnName>
+                            {{ item.salle.number }} - {{ item.salle.name }}
+                          </ng-template>
+                          </nz-tag>
                         </div>
                         <nz-alert class="mt-5" nzType="info"
                           [nzMessage]="item.course.professor.first_name +  ' ' + item.course.professor.last_name"

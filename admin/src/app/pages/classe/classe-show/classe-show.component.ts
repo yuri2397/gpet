@@ -69,6 +69,7 @@ export class ClasseShowComponent implements OnInit {
   getClasse() {
     this.classeService.show(this.classe).subscribe({
       next: (response) => {
+        console.log("RRRRR", response);
         this.classe = response;
         this.courses = response.courses;
         this.departement = response.departement;

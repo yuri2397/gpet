@@ -86,6 +86,10 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import fr from '@angular/common/locales/fr';
 import localeFr from '@angular/common/locales/fr';
 import { EptEditComponent } from '../pages/classe/ept-edit/ept-edit.component';
+import { SemesterListComponent } from '../pages/semester/semester-list/semester-list.component';
+import { SemesterCreateComponent } from '../pages/semester/semester-create/semester-create.component';
+import { SemesterEditComponent } from '../pages/semester/semester-edit/semester-edit.component';
+import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -155,6 +159,7 @@ registerLocaleData(localeFr, fr);
     UserShowComponent,
     UserCreateComponent,
     ErrorServerComponent,
+    UnauthorizedComponent,
     ClasseListComponent,
     ProfesseurShowComponent,
     ProfesseurListComponent,
@@ -181,6 +186,9 @@ registerLocaleData(localeFr, fr);
     UeListComponent,
     EptEditComponent,
     EptCreateComponent,
+    SemesterListComponent,
+    SemesterCreateComponent,
+    SemesterEditComponent
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

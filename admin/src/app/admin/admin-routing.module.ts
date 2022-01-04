@@ -16,8 +16,12 @@ import { BankListComponent } from '../pages/bank/bank-list/bank-list.component';
 import { CourseShowComponent } from '../pages/course/course-show/course-show.component';
 import { PayementsComponent } from '../pages/professeur/payements/payements.component';
 import { UeListComponent } from '../pages/ue/ue-list/ue-list.component';
+import { SemesterListComponent } from '../pages/semester/semester-list/semester-list.component';
+import { CdGuard } from '../shared/cd.guard';
+import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.component';
 
 const routes: Routes = [
+  { path: 'unauthorized', component: UnauthorizedComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -33,17 +37,25 @@ const routes: Routes = [
     component: DepartementListComponent,
     canActivate: [AdminGuard],
   },
-  { path: 'departements/show/:id', component: DepartementShowComponent },
-  { path: 'classes/show/:id', component: ClasseShowComponent },
-  { path: 'salles', component: SalleListComponent },
-  { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
-  { path: 'professeurs/payements/:register_number', component: PayementsComponent },
+  {
+    path: 'professeurs/payements/:register_number',
+    component: PayementsComponent,
+  },
+  {
+    path: 'semesters',
+    component: SemesterListComponent,
+    canActivate: [CdGuard],
+  },
   { path: 'professeurs', component: ProfesseurListComponent },
   { path: 'classes', component: ClasseListComponent },
   { path: 'users', component: UserListComponent },
   { path: 'courses', component: CourseListComponent },
   { path: 'courses/show/:id', component: CourseShowComponent },
   { path: 'banks', component: BankListComponent },
+  { path: 'departements/show/:id', component: DepartementShowComponent },
+  { path: 'classes/show/:id', component: ClasseShowComponent },
+  { path: 'salles', component: SalleListComponent },
+  { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
 ];
 
 @NgModule({

@@ -64,11 +64,11 @@ export const ROUTES: RouteInfo[] = [
     roles: ['super admin', 'chef de département'],
   },
   {
-    path: 'ues',
-    title: 'UE',
+    path: 'semesters',
+    title: 'Semestres',
     icon: 'low_priority',
     class: '',
-    roles: ['super admin', 'chef de département'],
+    roles: ['chef de département'],
   },
   {
     path: 'classes',
