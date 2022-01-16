@@ -22,6 +22,7 @@ export class Course extends Model<Course> {
   professor!: Professor;
   departement!: Departement;
   classe!: Classe;
+  evolution!: Array<number>;
   ec!: EC;
   semester!: Semester;
   service!: Service;

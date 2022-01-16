@@ -8,7 +8,7 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class BatimentService extends BaseHttp {
 
-  protected _baseUrl = 'batiment/';
+  protected _baseUrl = 'batiment';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
@@ -30,7 +30,7 @@ export class BatimentService extends BaseHttp {
 
   create(batiment: Batiment) {
     return this.http.post<Batiment>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         name: batiment.name,
       },
@@ -43,14 +43,14 @@ export class BatimentService extends BaseHttp {
 
   delete(batiment: Batiment) {
     return this.http.delete<any>(
-      this.endPoint + 'destroy/' + batiment.id,
+      this.endPointWithSlash + 'destroy/' + batiment.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(batiment: Batiment) {
     return this.http.put<Batiment>(
-      this.endPoint + 'update/' + batiment.id,
+      this.endPointWithSlash + 'update/' + batiment.id,
       {
         name: batiment.name,
       },

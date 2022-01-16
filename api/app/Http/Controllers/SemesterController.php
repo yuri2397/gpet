@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EC;
+use App\Models\UE;
 use App\Models\Semester;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SemesterController extends Controller
 {
@@ -14,7 +17,7 @@ class SemesterController extends Controller
      */
     public function index()
     {
-        //
+    //
     }
 
     /**
@@ -25,7 +28,7 @@ class SemesterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    //
     }
 
     /**
@@ -36,7 +39,7 @@ class SemesterController extends Controller
      */
     public function show($id)
     {
-        //
+    //
     }
 
     /**
@@ -48,7 +51,7 @@ class SemesterController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    //
     }
 
     /**
@@ -59,12 +62,16 @@ class SemesterController extends Controller
      */
     public function destroy($id)
     {
-        //
+    //
     }
 
 
     public function findByDepartement($departement)
     {
-        $semesters = Semester::with([])
+        $result = Semester::with(["ues", "ues.ecs"])
+            ->whereDepartementId($departement)
+            ->get();
+
+        return $result;
     }
 }

@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "cli": {
-      "analytics": "cfe5efdb-3df5-4b4a-9202-c24e7bbf9518"
+        "analytics": "cfe5efdb-3df5-4b4a-9202-c24e7bbf9518"
     },
     "version": 1,
     "newProjectRoot": "projects",
@@ -50,8 +50,8 @@
                         "production": {
                             "budgets": [{
                                     "type": "initial",
-                                    "maximumWarning": "500kb",
-                                    "maximumError": "1mb"
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",

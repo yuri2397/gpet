@@ -124,13 +124,10 @@ export class ProfesseurShowComponent implements OnInit {
       next: (professeur) => {
         professeur;
         this.professeur = professeur;
-        console.log(professeur);
         this.dataLoad = false;
 
       },
       error: (errors) => {
-        console.log(errors);
-
         if (errors.status == 0) {
           this.errorServer = true;
         } else {

@@ -7,7 +7,7 @@ import { CoursesDo } from '../models/coures-do';
   providedIn: 'root',
 })
 export class CourseDoService extends BaseHttp {
-  protected _baseUrl = 'course-do/';
+  protected _baseUrl = 'course-do';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

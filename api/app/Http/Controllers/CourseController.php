@@ -8,6 +8,8 @@ use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\CoursesHasProfessors;
+use App\Models\UE;
+use App\Models\EC;
 
 class CourseController extends Controller
 {
@@ -34,24 +36,22 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "acronym" => 'required|unique:courses,acronym',
-            "name" => "required",
             "groupe_number" => 'required',
-            "hours" => 'required',
             "classe_id" => "required|exists:classes,id",
-            "semester_id" => "required|exists:semesters,id",
             "service_id" => "required|exists:services,id",
             "ec_id" => "required|exists:e_c_s,id",
             "departement_id" => 'required|exists:departements,id'
         ]);
+        
+        $ec = EC::with("ue")->find($request->ec_id);
 
         $course = new Course;
-        $course->acronym = $request->acronym;
-        $course->name = $request->name;
-        $course->hours = $request->hours;
+        $course->acronym = $ec->code;
+        $course->name = $ec->name;
+        $course->hours = $ec->vht;
         $course->classe_id = $request->classe_id;
         $course->groupe_number = $request->groupe_number;
-        $course->semester_id = $request->semester_id;
+        $course->semester_id = $ec->ue->semester_id;
         $course->departement_id = $request->departement_id;
         $course->service_id = $request->service_id;
         $course->ec_id = $request->ec_id;
@@ -69,7 +69,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $cour = Course::find($id);
+        $cour = Course::with("classe")->find($id);
         return $cour;
     }
 
@@ -83,17 +83,27 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            "acronym" => 'required|exists:courses,acronym',
-            "name" => "required",
-            "hours" => 'required',
             "groupe_number" => 'required',
             "classe_id" => "required|exists:classes,id",
-            "semester_id" => "required|exists:semesters,id",
             "service_id" => "required|exists:services,id",
-            "ec_id" => "required|exists:e_c_s,id"
+            "ec_id" => "required|exists:e_c_s,id",
+            "departement_id" => 'required|exists:departements,id'
         ]);
+        
+        $ec = EC::with("ue")->find($request->ec_id);
 
-        DB::table('courses')->whereId($id)->update($request->all());
+        DB::table('courses')->whereId($id)->update([
+        	"acronym" => $ec->code,
+        	"name" => $ec->name,
+        	"hours" => $ec->vht,
+        	"classe_id" => $request->classe_id,
+        	"groupe_number" => $request->groupe_number,
+        	"semester_id" => $ec->ue->semester_id,
+        	"departement_id" => $request->departement_id,
+        	"service_id" => $request->service_id,
+        	"ec_id" => $ec->id,
+        	"professor_id" => $request->professor_id ?? null,
+        ]);
 
         return $this->show($id);
     }
@@ -180,15 +190,13 @@ class CourseController extends Controller
             "amount_hour" => "required"
         ]);
 
-        $couresDo = CoursesHasProfessors::whereCourseId($request->course_id)
+        CoursesHasProfessors::whereCourseId($request->course_id)
             ->whereProfessorId($request->professor_id)
             ->whereIsPaid(0)
-            ->get();
-        collect($couresDo)->map(function ($c) {
-            $c->is_paid = true;
-            $c->save();
-        });
-
+            ->update([
+                "is_paid" => true
+            ]);
+        
         return response()->json([
             "message" => "Paiements effectué avec succès."
         ], 200);

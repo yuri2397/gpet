@@ -8,7 +8,7 @@ import { BankService } from './bank.service';
   providedIn: 'root'
 })
 export class UEService extends BaseHttp {
-  protected _baseUrl = 'ue/';
+  protected _baseUrl = 'ue';
   constructor(
     protected hc: HttpClient,
     private bankService: BankService,
@@ -25,7 +25,7 @@ export class UEService extends BaseHttp {
   }
 
   search(data: string){
-    return this.http.get<UE[]>(this.endPoint + 'search/' + data, {
+    return this.http.get<UE[]>(this.endPointWithSlash + 'search/' + data, {
       headers: this.authorizationHeaders,
       observe: 'body',
     })

@@ -9,7 +9,7 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class CourseService extends BaseHttp {
 
-  protected _baseUrl = 'course/';
+  protected _baseUrl = 'course';
 
   constructor(protected hc: HttpClient) {
     super();
@@ -47,16 +47,12 @@ export class CourseService extends BaseHttp {
 
   create(course: Course) {
     return this.http.post<Course>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
-        name: course.name,
-        acronym: course.acronym,
-        hours: course.hours,
         groupe_number: course.groupe_number,
-        classe_id: course.classe.id,
-        service_id: course.service.id,
-        semester_id: course.semester.id,
-        departement_id: course.departement.id,
+        classe_id: course.classe_id,
+        service_id: course.service_id,
+        departement_id: course.departement_id,
         ec_id: course.ec_id,
         professor_id: course.professor_id,
       },
@@ -68,7 +64,7 @@ export class CourseService extends BaseHttp {
   }
 
   show(course: Course){
-    return this.http.get<Course>(this.endPoint + 'show/' + course.id, {
+    return this.http.get<Course>(this.endPointWithSlash + 'show/' + course.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -76,16 +72,14 @@ export class CourseService extends BaseHttp {
 
   delete(course: Course) {
     return this.http.delete<any>(
-      this.endPoint + 'destroy/' + course.id,
+      this.endPointWithSlash + 'destroy/' + course.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(course: Course) {
-    console.log(course);
-
     return this.http.put<Course>(
-      this.endPoint + 'update/' + course.id,
+      this.endPointWithSlash + 'update/' + course.id,
       {
         name: course.name,
         acronym: course.acronym,
@@ -104,8 +98,9 @@ export class CourseService extends BaseHttp {
 
   search(value: string) {
     return this.http.get<Course[]>(
-      this.endPoint + 'search/' + value,
+      this.endPointWithSlash + 'search/' + value,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
+
 }

@@ -1,10 +1,17 @@
 .bg-color {
-  background-color: #41729f;
-  color: white;
+    background-color: #41729f;
+    color: white;
 }
+
 .example-boundary {
-  width: 400px;
-  height: 400px;
-  max-width: 100%;
-  border: dotted #ccc 2px;
+    width: 400px;
+    height: 400px;
+    max-width: 100%;
+    border: dotted #ccc 2px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    margin: auto;
 }

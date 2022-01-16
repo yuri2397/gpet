@@ -9,7 +9,7 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class AuthService extends BaseHttp {
 
-  protected _baseUrl = 'user/';
+  protected _baseUrl = 'user';
 
   constructor(protected hc: HttpClient,private router: Router) {
     super();
@@ -18,7 +18,7 @@ export class AuthService extends BaseHttp {
 
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(
-      this.endPoint + 'login',
+      this.endPointWithSlash + 'login',
       {
         email: email,
         password: password,
@@ -37,13 +37,9 @@ export class AuthService extends BaseHttp {
 
   alreadyConnect() {
     if (this.isLogIn()) {
-      if (this.isAdmin()) {
         this.router.navigate(['/admin/dashboard']);
-      } else {
-        this.router.navigate(['/admin/departement']);
-      }
     } else {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     }
   }
 }

@@ -59,7 +59,7 @@ Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->grou
 
 });
 
-Route::prefix("semester")->middleware(['auth:api','role:chef de département'])->group(function () {
+Route::prefix("semester")->middleware(['auth:api'])->group(function () {
 
     Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
 
@@ -143,41 +143,5 @@ Route::prefix("bank")->middleware(['auth:api'])->group(function () {
 
 
 Route::any('test', function (Request $request) {
-    $request->validate([
-        "description" => "required|string",
-        "delivred_at" => "required|date",
-        "budget" => "numeric"
-    ]);
-    return ($request->file("images"));
-
-    $paths = [];
-    $files = [];
-    if ($request->hasfile('files_name')) {
-
-        $paths  = [];
-        foreach ($files as $file) {
-            $extension = $file->getClientOriginalExtension();
-            $filename  = 'post_request_file_' . time() . '.' . $extension;
-            $paths[]   = $file->storeAs('post_request_files', $filename);
-        }
-        return $paths;
-
-        $postRequest = new User();
-
-        $postRequest->description = $request->description;
-        $postRequest->delivred_at = $request->delivred_at;
-        $request->category_id = $request->category_id;
-        $request->budget = $request->budget ?? 0;
-        $request->user_id = auth()->user()->id;
-        $postRequest->files = json_encode($paths);
-        $postRequest->save();
-
-        return response()->json([
-            "message" => "Success"
-        ], 200);
-    } else {
-        return response()->json([
-            "message" => "Sorry Only Upload png , jpg , doc"
-        ], 422);
-    }
+    return "API TEST";
 });

@@ -1,3 +1,4 @@
+import { Semester } from './../../../models/semester';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzDrawerRef } from 'ng-zorro-antd/drawer';
@@ -16,6 +17,7 @@ import { UEService } from 'src/app/services/ue.service';
 })
 export class EcCreateComponent implements OnInit {
   @Input() departements!: Departement[];
+  @Input() semesters!: Semester[];
   validateForm!: FormGroup;
   ec: EC = new EC();
   isLoad = false;
@@ -37,9 +39,11 @@ export class EcCreateComponent implements OnInit {
       name: [null, [Validators.required, Validators.min]],
       ec_id: [null, [Validators.required]],
       code: [null, [Validators.required]],
+      vht: [null, [Validators.required]],
       ue_code: [null, []],
       ue_name: [null, []],
       ue_departement: [null, []],
+      ue_semester: [null, []]
     });
   }
 
@@ -58,8 +62,9 @@ export class EcCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    if (this.ecService.isEditeur())
+    if (this.ecService.isEditeur()){
       this.ec.ue.departement_id = this.ecService.getUser().departement.id;
+    }
     this.ecService.create(this.ec).subscribe({
       next: (response) => {
         this.modal.close(response);
@@ -71,7 +76,6 @@ export class EcCreateComponent implements OnInit {
         );
       },
       error: (errors) => {
-        console.log(errors);
       },
     });
   }
@@ -89,8 +93,8 @@ export class EcCreateComponent implements OnInit {
       ue_code: [null, [Validators.required]],
       ue_name: [null, [Validators.required]],
       ue_departement: [null, [Validators.required]],
+      ue_semester: [null, [Validators.required]],
     });
-    console.log(this.validateForm);
     this.ec.ue_id = -1;
   }
 
@@ -103,12 +107,10 @@ export class EcCreateComponent implements OnInit {
     if (data.trim().length < 2) return;
     this.ueService.search(data).subscribe({
       next: (response) => {
-        console.log(response);
         this.ues = response;
         this.ueLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
         this.ueLoad = false;
       },
     });
@@ -117,7 +119,6 @@ export class EcCreateComponent implements OnInit {
   currentUESelected(index: number) {
     if (index != null) {
       this.ec.ue_id = index;
-      console.log(this.ec);
     }
   }
 }

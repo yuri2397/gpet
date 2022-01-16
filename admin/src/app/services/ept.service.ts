@@ -9,7 +9,7 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class EptService extends BaseHttp {
-  protected _baseUrl = 'ept/';
+  protected _baseUrl = 'ept';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
@@ -38,14 +38,14 @@ export class EptService extends BaseHttp {
   }
 
   show(classe: Classe) {
-    return this.http.get<EptRow[]>(this.endPoint + 'show/' + classe.id, {
+    return this.http.get<EptRow[]>(this.endPointWithSlash + 'show/' + classe.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
   }
 
   remove(item: EPT) {
-    return this.http.delete(this.endPoint + 'destroy/' + item.id, {
+    return this.http.delete(this.endPointWithSlash + 'destroy/' + item.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -53,7 +53,7 @@ export class EptService extends BaseHttp {
 
   create(item: EPT) {
     return this.http.post<EPT>(
-      this.endPoint + 'create/',
+      this.endPointWithSlash + 'create',
       {
         start: item.start,
         end: item.end,

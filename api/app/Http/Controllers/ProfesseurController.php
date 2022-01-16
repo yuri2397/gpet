@@ -85,7 +85,7 @@ class ProfesseurController extends Controller
         if ($user->hasRole("super admin")) {
             $prof->courses;
         } else {
-            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->get();
+            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
         }
 
         return $prof;
@@ -191,7 +191,7 @@ class ProfesseurController extends Controller
                 ->get();
             }
             else{
-                $prof->coursesDo = $prof->coursesDo()
+                $prof->coursesDo = $prof->coursesDo()->with("course.classe")
                 ->whereYear('courses_has_professors.date', date('Y'))
                 ->join('courses', 'courses_has_professors.course_id', 'courses.id')
                 ->where('courses.departement_id', $prof->departement_id)

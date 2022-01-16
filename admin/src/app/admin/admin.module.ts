@@ -1,3 +1,4 @@
+import { EcEditComponent } from './../pages/ec/ec-edit/ec-edit.component';
 import { CanDeleteComponent } from './../shared/ui/can-delete/can-delete.component';
 import { UserCreateComponent } from './../pages/user/user-create/user-create.component';
 import { UserShowComponent } from './../pages/user/user-show/user-show.component';
@@ -79,6 +80,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EptCreateComponent } from '../pages/classe/ept-create/ept-create.component';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 /**
  * TIME AND DATE
@@ -90,16 +94,21 @@ import { SemesterListComponent } from '../pages/semester/semester-list/semester-
 import { SemesterCreateComponent } from '../pages/semester/semester-create/semester-create.component';
 import { SemesterEditComponent } from '../pages/semester/semester-edit/semester-edit.component';
 import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.component';
+import { ProfileComponent } from '../pages/profile/profile.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
     CommonModule,
     AdminRoutingModule,
+    NzListModule,
     NzMenuModule,
     MatIconModule,
     MatTableModule,
     NzCardModule,
     NzToolTipModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+    }),
     NzResultModule,
     MatButtonModule,
     NzFormModule,
@@ -143,7 +152,8 @@ registerLocaleData(localeFr, fr);
     DragDropModule,
     MatCardModule,
     MatProgressBarModule,
-    NzTimePickerModule
+    NzTimePickerModule,
+    NzSpinModule,
   ],
   declarations: [
     AdminComponent,
@@ -188,7 +198,9 @@ registerLocaleData(localeFr, fr);
     EptCreateComponent,
     SemesterListComponent,
     SemesterCreateComponent,
-    SemesterEditComponent
+    SemesterEditComponent,
+    ProfileComponent,
+    EcEditComponent
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

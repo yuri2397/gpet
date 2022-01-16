@@ -1,3 +1,4 @@
+import { SemesterResponse } from './../models/semester-response';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Departement } from '../models/departement';
@@ -8,14 +9,14 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class SemesterService extends BaseHttp {
-  protected _baseUrl = 'semester/';
+  protected _baseUrl = 'semester';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
   }
 
   findByDepartement(departement: Departement){
-    return this.http.get<Semester[]>(this.endPoint + "by-departement/" + departement.id, {
+    return this.http.get<Semester[]>(this.endPointWithSlash + "by-departement/" + departement.id, {
       headers: this.authorizationHeaders,
       observe: 'body'
     })

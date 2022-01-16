@@ -47,14 +47,11 @@ export class ProfesseurListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
-
       },
     });
   }
 
   onChercherInputChange(data: any){
-    console.log(data);
   }
 
   openDeleteModal(professeur: Professor) {

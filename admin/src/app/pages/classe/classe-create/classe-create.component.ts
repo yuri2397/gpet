@@ -28,7 +28,7 @@ export class ClasseCreateComponent implements OnInit {
 
     this.validateForm = this.fb.group({
       name: [null, [Validators.required, Validators.min(2)]],
-      nb_etudiants: [null, [Validators.required]],
+      nb_etudiants: [0, [Validators.required, Validators.min(0)]],
     });
   }
 

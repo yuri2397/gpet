@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   providedIn: 'root',
 })
 export class DepartementService extends BaseHttp {
-  protected _baseUrl = 'departement/';
+  protected _baseUrl = 'departement';
   constructor(
     protected hc: HttpClient,
   ) {
@@ -27,7 +27,7 @@ export class DepartementService extends BaseHttp {
 
   find(departement: Departement) {
     return this.http.get<Departement>(
-      this.endPoint + 'show/' + departement.id,
+      this.endPointWithSlash + 'show/' + departement.id,
       {
         headers: this.authorizationHeaders,
         observe: 'body',
@@ -44,7 +44,7 @@ export class DepartementService extends BaseHttp {
 
   create(batiment: Departement) {
     return this.http.post<Departement>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         name: batiment.name,
       },
@@ -56,7 +56,7 @@ export class DepartementService extends BaseHttp {
   }
 
   delete(batiment: Departement) {
-    return this.http.delete<any>(this.endPoint + 'destroy/' + batiment.id, {
+    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + batiment.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -64,7 +64,7 @@ export class DepartementService extends BaseHttp {
 
   edit(batiment: Departement) {
     return this.http.put<Departement>(
-      this.endPoint + 'update/' + batiment.id,
+      this.endPointWithSlash + 'update/' + batiment.id,
       {
         name: batiment.name,
       },

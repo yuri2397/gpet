@@ -1,3 +1,4 @@
+import { NotFoundComponent } from './shared/ui/not-found/not-found.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { AdminGuard } from './shared/admin.guard';
 import { LoginComponent } from './pages/login/login.component';
@@ -9,8 +10,7 @@ import { LoginGuard } from './shared/login.guard';
 import { LocalDataGuard } from './shared/local-data.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
-  { path: 'login', component: LoginComponent,canActivate: [LoginGuard]},
+  { path: '', component: LoginComponent,canActivate: [LoginGuard]},
   {
     path: 'admin',
     component: AdminComponent,
@@ -25,22 +25,8 @@ const routes: Routes = [
   },
   {
     path:"**",
-    redirectTo: "login"
+    component: NotFoundComponent
   }
-  // {
-  //   path: 'departement',
-  //   component: DepartementComponent,
-  //   children: [
-  //     {
-  //       path: '',
-  //       loadChildren: () =>
-  //         import('./pages/departement/departement.module').then(
-  //           (m) => m.DepartementModule
-  //         ),
-  //     },
-  //   ],
-  //   canActivate: [AuthGuard, LocalDataGuard],
-  // },
 ];
 
 @NgModule({

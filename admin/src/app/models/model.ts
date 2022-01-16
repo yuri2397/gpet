@@ -17,4 +17,8 @@ export abstract class Model<T> {
   abstract myIndex(arrays: T[]): number;
 
   abstract some(arrays: T[]): T | null;
+
+  deleted = false;
+  add = false;
+  loading = false;
 }

@@ -9,7 +9,7 @@ import { Batiment } from '../models/batiment';
 })
 export class SalleService extends BaseHttp{
 
-  protected _baseUrl = 'salle/';
+  protected _baseUrl = 'salle';
   constructor(
     protected hc: HttpClient,
   ) {
@@ -38,7 +38,7 @@ export class SalleService extends BaseHttp{
 
   create(salle: Salle) {
     return this.http.post<Salle>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         name: salle.name,
         number: salle.number,
@@ -55,14 +55,14 @@ export class SalleService extends BaseHttp{
 
   delete(salle: Salle) {
     return this.http.delete<any>(
-      this.endPoint + 'destroy/' + salle.id,
+      this.endPointWithSlash + 'destroy/' + salle.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(salle: Salle) {
     return this.http.put<Salle>(
-      this.endPoint + 'update/' + salle.id,
+      this.endPointWithSlash + 'update/' + salle.id,
       {
         name: salle.name,
         number: salle.number,
@@ -76,7 +76,7 @@ export class SalleService extends BaseHttp{
 
   search(data: string) {
     return this.http.get<Salle[]>(
-      this.endPoint + 'search/' + data,
+      this.endPointWithSlash + 'search/' + data,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

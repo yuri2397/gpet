@@ -33,7 +33,7 @@ export class CourseEditComponent implements OnInit {
   isLoad: boolean = false;
   ecLoad = false;
   profLoad = false;
-  serviceAmountFCFA = "";
+  serviceAmountFCFA = 'MONTANT HORAIRE';
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
@@ -45,40 +45,36 @@ export class CourseEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.course);
-
     this.findSelectableList();
     this.validateForm = this.fb.group({
-      acronym: [null, [Validators.required]],
-      name: [null, [Validators.required]],
       groupe_number: [null, [Validators.required]],
       classe_id: [null, [Validators.required]],
-      hours: [null, [Validators.required]],
-      semester_id: [null, [Validators.required]],
       service_id: [null, [Validators.required]],
       ec_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
       professor_id: [null, null],
     });
-    console.log("COURSE EDIT", this.course);
   }
 
   serviceAmout(serviceId: number) {
+    console.log(serviceId);
+    
     if (serviceId == null) this.serviceAmountFCFA = 'Montant (FCFA)';
     let amount!: number;
-    if(this.services)
-    this.services.forEach((s) => {
-      if (s.id == serviceId) {
-        amount = s.amount;
-      }
-    });
-    this.serviceAmountFCFA = amount + ' FCFA';
+    if (this.services) {
+      this.services.forEach((s) => {
+        if (s.id == serviceId) {
+          amount = s.amount;
+        }
+      });
+      this.serviceAmountFCFA = amount + ' FCFA';
+    }
   }
 
   onProSearch(value: string) {
     this.profLoad = true;
 
-    if (value.trim().length > 4) {
+    if (value.trim().length > 2) {
       this.profService.search(value.trim()).subscribe({
         next: (response) => {
           this.professors = response;
@@ -98,7 +94,7 @@ export class CourseEditComponent implements OnInit {
 
   onECSearch(value: string) {
     this.ecLoad = true;
-    if (value.trim().length > 4) {
+    if (value.trim().length > 2) {
       this.ecService.search(value.trim()).subscribe({
         next: (response) => {
           this.ecs = response;
@@ -122,7 +118,6 @@ export class CourseEditComponent implements OnInit {
       .findSelectableList(['departements', 'services', 'semesters'])
       .subscribe({
         next: (response) => {
-          console.log(response);
           this.departements = response.departements;
           this.services = response.services;
           this.semesters = response.semesters;
@@ -169,7 +164,6 @@ export class CourseEditComponent implements OnInit {
     this.courseService.edit(this.course).subscribe({
       next: (response) => {
         this.isLoad = false;
-        console.log(response);
         this.notification.createNotification(
           'success',
           'Notification',
@@ -178,8 +172,6 @@ export class CourseEditComponent implements OnInit {
         this.destroyModal(response);
       },
       error: (errors) => {
-        console.log(errors);
-
         this.isLoad = false;
         this.notification.createNotification(
           'error',

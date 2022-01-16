@@ -36,7 +36,6 @@ export class BatimentListComponent implements OnInit {
       },
       error: (errors: any) => {
         this.isLoad = false;
-        console.log(errors);
       },
     });
   }

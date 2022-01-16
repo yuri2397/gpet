@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BankService extends BaseHttp {
-  protected _baseUrl = 'bank/';
+  protected _baseUrl = 'bank';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
@@ -30,7 +30,7 @@ export class BankService extends BaseHttp {
 
   edit(bank: Bank){
     return this.http.put<Bank>(
-      this.endPoint + 'update/' + bank.id,
+      this.endPointWithSlash + 'update/' + bank.id,
       {
         name: bank.name,
         code: bank.code,
@@ -41,14 +41,14 @@ export class BankService extends BaseHttp {
 
   delete(bank: Bank){
     return this.http.delete<any>(
-      this.endPoint + 'destroy/' + bank.id,
+      this.endPointWithSlash + 'destroy/' + bank.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   create(bank: Bank) {
     return this.http.post<Bank>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         name: bank.name,
         code: bank.code,
@@ -61,7 +61,7 @@ export class BankService extends BaseHttp {
   }
 
   search(data: string) {
-    return this.http.get<Bank[]>(this.endPoint + 'search/' + data, {
+    return this.http.get<Bank[]>(this.endPointWithSlash + 'search/' + data, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });

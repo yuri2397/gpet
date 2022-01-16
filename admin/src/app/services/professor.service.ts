@@ -13,7 +13,7 @@ import { CoursesDo } from '../models/coures-do';
   providedIn: 'root',
 })
 export class ProfessorService extends BaseHttp {
-  protected _baseUrl = 'professeur/';
+  protected _baseUrl = 'professeur';
   constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
     this.http = hc;
@@ -27,14 +27,14 @@ export class ProfessorService extends BaseHttp {
   }
 
   search(data: string) {
-    return this.http.get<Professor[]>(this.endPoint + 'search/' + data, {
+    return this.http.get<Professor[]>(this.endPointWithSlash + 'search/' + data, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
   }
 
   find(id: number) {
-    return this.http.get<Professor>(this.endPoint + 'show/' + id, {
+    return this.http.get<Professor>(this.endPointWithSlash + 'show/' + id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -42,7 +42,7 @@ export class ProfessorService extends BaseHttp {
 
   addCourseForProfessor(course: Course, professor: Professor) {
     return this.http.post<Course>(
-      this.endPoint + 'course-to-professor',
+      this.endPointWithSlash + 'course-to-professor',
       {
         course_id: course.id,
         professor_id: professor.id,
@@ -56,7 +56,7 @@ export class ProfessorService extends BaseHttp {
 
   doPayment(courseDo: CoursesDo) {
     return this.http.post<any>(
-      this.endPoint + 'do-payment/',
+      this.endPointWithSlash + 'do-payment',
       {
         course_id: courseDo.course_id,
         professor_id: courseDo.professor_id,
@@ -73,7 +73,7 @@ export class ProfessorService extends BaseHttp {
 
   removeCourse(course: Course) {
     return this.http.put(
-      this.endPoint + 'remove-course-professor',
+      this.endPointWithSlash + 'remove-course-professor',
       {
         course_id: course.id,
       },
@@ -116,7 +116,7 @@ export class ProfessorService extends BaseHttp {
 
   create(professor: Professor) {
     return this.http.post<Professor>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         first_name: professor.first_name,
         last_name: professor.last_name,
@@ -138,7 +138,7 @@ export class ProfessorService extends BaseHttp {
   }
 
   delete(professor: Professor) {
-    return this.http.delete<any>(this.endPoint + 'destroy/' + professor.id, {
+    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + professor.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -146,7 +146,7 @@ export class ProfessorService extends BaseHttp {
 
   edit(professor: Professor) {
     return this.http.put<Professor>(
-      this.endPoint + 'update/' + professor.id,
+      this.endPointWithSlash + 'update/' + professor.id,
       {
         first_name: professor.first_name,
         last_name: professor.last_name,
@@ -166,7 +166,7 @@ export class ProfessorService extends BaseHttp {
 
   desableAccount(professor: Professor) {
     return this.http.put<Professor>(
-      this.endPoint + 'desable-account/' + professor.id,
+      this.endPointWithSlash + 'desable-account/' + professor.id,
       { is_active: professor.is_active },
       { headers: this.authorizationHeaders, observe: 'body' }
     );
@@ -174,7 +174,7 @@ export class ProfessorService extends BaseHttp {
 
   courseDo(hours: number, date: any, course: Course, professor: Professor) {
     return this.http.post<any>(
-      this.endPoint + 'course-do',
+      this.endPointWithSlash + 'course-do',
       {
         hours: hours,
         date: date,
@@ -191,7 +191,7 @@ export class ProfessorService extends BaseHttp {
 
   payments(professor: Professor) {
     return this.http.get<Professor>(
-      this.endPoint + 'payments/' + professor.registration_number,
+      this.endPointWithSlash + 'payments/' + professor.registration_number,
       {
         headers: this.authorizationHeaders,
         observe: 'body',

@@ -98,7 +98,7 @@ export class ClasseListComponent implements OnInit {
 
   openCreateModal() {
     const modal = this.modalService.create({
-      nzTitle: 'Ajouter un département',
+      nzTitle: 'Ajouter une classe',
       nzContent: ClasseCreateComponent,
       nzComponentParams: {
         departement: this.departement,
@@ -106,6 +106,7 @@ export class ClasseListComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
+      nzWidth: "400px"
     });
 
     modal.afterClose.subscribe((data: Classe | null) => {

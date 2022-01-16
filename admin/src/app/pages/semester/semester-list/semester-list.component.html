@@ -1,1 +1,80 @@
-<h1>SEMESTER</h1>
+<ng-container *ngIf="!isLoad; else elseTemplate">
+    <div class="container-fluid pb-3">
+        <div class="card card-body shadow">
+            <nz-tabset nzCentered>
+                <nz-tab [nzTitle]="item.name.toUpperCase()" *ngFor="let item of
+                    semesters">
+                    <div class="d-flex justify-content-start
+                        align-items-center">
+                        <div class="m-2">
+                            <button (click)="openCreateModal(item)" mat-fab color="primary">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                        <div>
+                            <h4>Ajouter un nouveau EC.</h4>
+                        </div>
+                    </div>
+                    <nz-table [nzShowPagination]="false" #basicTable [nzData]="item.ues">
+                        <thead class="">
+                            <tr>
+                                <th class="bold text-center">UE</th>
+                                <th class="bold text-center">Elément Constitutif</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of basicTable.data">
+                                <td>{{ data.code.toLocaleUpperCase() }}</td>
+                                <td>
+                                    <nz-table #ecTable [nzBordered]="true" [nzShowPagination]="false" [nzData]="data.ecs">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Nom</th>
+                                                <th class="text-center" nzWidth="200px">Volume Horaire</th>
+                                                <th class="text-center" nzWidth="100px">Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let ec of ecTable.data">
+                                                <td>{{ ec.code }} - {{ ec.name }} </td>
+                                                <td>{{ ec.vht }}</td>
+                                                <td class="p-0">
+                                                    <div class="d-flex justify-content-center">
+                                                        <div class="mx-3">
+                                                            <button (click)="openEditModal(ec, item)" mat-mini-fab color="primary">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                        <div class="mx-3">
+                                                            <button nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr de supprimer cet EC
+                                                            ?" (nzOnConfirm)="onDeleteOk(ec, item)" nzPopconfirmPlacement="top" mat-mini-fab color="warn">
+                                                                <mat-icon>delete</mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <mat-progress-bar *ngIf="ec.deleted" [color]="'warn'" class="mt-3" mode="indeterminate"></mat-progress-bar>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </nz-table>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </nz-tab>
+            </nz-tabset>
+        </div>
+    </div>
+</ng-container>
+<ng-template #elseTemplate>
+    <div class="container">
+        <div class="card card-body shadow">
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+            <br>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+    </div>
+</ng-template>

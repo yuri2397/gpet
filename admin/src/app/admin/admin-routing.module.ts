@@ -1,3 +1,5 @@
+import { AuthGuard } from './../shared/auth.guard';
+import { ProfileComponent } from './../pages/profile/profile.component';
 import { DepartementShowComponent } from './../pages/departement/departement-show/departement-show.component';
 import { ClasseShowComponent } from './../pages/classe/classe-show/classe-show.component';
 import { CourseListComponent } from './../pages/course/course-list/course-list.component';
@@ -26,6 +28,11 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AdminGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'batiments',

@@ -42,10 +42,8 @@ export class PayementsComponent implements OnInit {
       next: (response) => {
         this.professor = response;
         this.dataLoad = false;
-        console.log(this.professor);
       },
       error: (errors) => {
-        console.log(errors);
         this.dataLoad = false;
         this.errorServer = true;
       },
@@ -57,7 +55,6 @@ export class PayementsComponent implements OnInit {
     this.professorService.doPayment(courseDo).subscribe({
       next: (response) => {
         this.paymentLoad = false;
-        console.log(response);
         this.findPayments();
         this.notification.createNotification(
           'success',

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Classe } from 'src/app/models/classe';
 import { ClasseService } from 'src/app/services/classe.service';
@@ -13,7 +13,9 @@ import { FormBuilder } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { EptCreateComponent } from '../ept-create/ept-create.component';
 import { EptEditComponent } from '../ept-edit/ept-edit.component';
-
+import { Day } from 'src/app/models/day';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-classe-show',
   templateUrl: './classe-show.component.html',
@@ -25,8 +27,12 @@ export class ClasseShowComponent implements OnInit {
   classe: Classe = new Classe();
   courses!: Course[];
   departement!: Departement;
+  depName!: string;
   epts!: EptRow[];
   eptLoad: boolean = true;
+  days!: Day[];
+  doc = new jsPDF();
+  @ViewChild('presentionEPT') htmlData!:ElementRef;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -34,10 +40,12 @@ export class ClasseShowComponent implements OnInit {
     private notification: NotificationService,
     public eptService: EptService,
     private fb: FormBuilder,
-    private modalService: NzModalService,
+    private modalService: NzModalService
   ) {}
 
+
   ngOnInit(): void {
+    this.days = this.classeService.DAYS;
     this.route.params.subscribe((params) => {
       this.classe.id = params['id'];
     });
@@ -45,12 +53,29 @@ export class ClasseShowComponent implements OnInit {
     this.getClasse();
   }
 
+  exportPDF(){
+    let DATA = document.getElementById('presentionEPT');
+      
+    html2canvas(DATA!).then(canvas => {
+        
+        let fileWidth = 208;
+        let fileHeight = canvas.height * fileWidth / canvas.width;
+        
+        const FILEURI = canvas.toDataURL('image/png')
+        let PDF = new jsPDF('p', 'mm', 'a4', false);
+        let position = 0;
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
+        
+        PDF.save( this.classe.name + '.pdf');
+    }); 
+  }
+
   getEmploieDuTemps(classe: Classe) {
     this.eptLoad = true;
     this.eptService.show(classe).subscribe({
       next: (data) => {
-        console.log('EPT', data);
         this.epts = data;
+        console.log(data);
         this.eptLoad = false;
       },
       error: (errors) => {
@@ -66,13 +91,17 @@ export class ClasseShowComponent implements OnInit {
     });
   }
 
+  pipeHours(hour: Date) {
+    return hour.toString().substring(0, 5);
+  }
+
   getClasse() {
     this.classeService.show(this.classe).subscribe({
       next: (response) => {
-        console.log("RRRRR", response);
         this.classe = response;
         this.courses = response.courses;
         this.departement = response.departement;
+        this.depName = this.departement.name;
         this.dataLoad = false;
         this.getEmploieDuTemps(response);
       },
@@ -104,29 +133,25 @@ export class ClasseShowComponent implements OnInit {
         );
       },
       error: (errors) => {
-        console.log(errors);
-
         this.notification.createNotification('error', 'Erreur', errors.error);
       },
     });
   }
 
-  editEPT(panel: EptRow, item: EPT){
-    console.log("ITEMMMM ", item);
-
+  editEPT(panel: EptRow, item: EPT) {
     const modal = this.modalService.create({
-      nzTitle: 'Modifier le cour dans l\'emploi du temps.',
+      nzTitle: "Modifier le cour dans l'emploi du temps.",
       nzContent: EptEditComponent,
       nzComponentParams: {
         day: panel,
         classe: this.classe,
         courses: this.courses,
-        ept: this.eptService.clone(item)
+        ept: this.eptService.clone(item),
       },
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: "500px"
+      nzWidth: '500px',
     });
 
     modal.afterClose.subscribe((data: EPT | null) => {
@@ -136,19 +161,19 @@ export class ClasseShowComponent implements OnInit {
     });
   }
 
-  openCreateModal(panel: EptRow){
+  openCreateModal(panel: EptRow) {
     const modal = this.modalService.create({
-      nzTitle: 'Ajoute un cour dans l\'emploi du temps.',
+      nzTitle: "Ajoute un cour dans l'emploi du temps.",
       nzContent: EptCreateComponent,
       nzComponentParams: {
         day: panel,
         classe: this.classe,
-        courses: this.courses
+        courses: this.courses,
       },
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: "500px"
+      nzWidth: '600px',
     });
 
     modal.afterClose.subscribe((data: EPT | null) => {
@@ -158,8 +183,6 @@ export class ClasseShowComponent implements OnInit {
     });
   }
   onCreateSuccess(panel: EptRow, ept: EPT) {
-    console.log("ON EPT CREATED: ", ept, panel);
     panel.data.push(ept);
   }
-
 }

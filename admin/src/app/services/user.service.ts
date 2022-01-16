@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class UserService extends BaseHttp {
 
-  protected _baseUrl = 'user/';
+  protected _baseUrl = 'user';
   constructor(
     protected hc: HttpClient,
     private router: Router
@@ -19,7 +19,7 @@ export class UserService extends BaseHttp {
   }
 
   currentUser() {
-    return this.http.get<User>(this.endPoint + 'profile', {
+    return this.http.get<User>(this.endPointWithSlash + 'profile', {
       headers: this.authorizationHeaders,
       observe: 'body',
     });

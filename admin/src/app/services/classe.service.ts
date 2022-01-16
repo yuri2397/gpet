@@ -11,7 +11,7 @@ import { BaseHttp } from '../shared/base-http';
 export class ClasseService extends BaseHttp {
 
 
-  protected _baseUrl = 'classe/';
+  protected _baseUrl = 'classe';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
@@ -25,7 +25,7 @@ export class ClasseService extends BaseHttp {
   }
 
   findByDepartement(id: number) {
-    return this.http.get<Classe[]>(this.endPoint + 'departement/' + id, {
+    return this.http.get<Classe[]>(this.endPointWithSlash + 'departement/' + id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -41,10 +41,8 @@ export class ClasseService extends BaseHttp {
   }
 
   create(classe: Classe) {
-    console.log(classe);
-
     return this.http.post<Classe>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         name: classe.name,
         departement_id: classe.departement_id,
@@ -58,14 +56,14 @@ export class ClasseService extends BaseHttp {
   }
 
   delete(classe: Classe) {
-    return this.http.delete<any>(this.endPoint + 'destroy/' + classe.id, {
+    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + classe.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
   }
 
   show(classe: Classe) {
-    return this.http.get<Classe>(this.endPoint + 'show/' + classe.id, {
+    return this.http.get<Classe>(this.endPointWithSlash + 'show/' + classe.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -73,7 +71,7 @@ export class ClasseService extends BaseHttp {
 
   edit(classe: Classe) {
     return this.http.put<Classe>(
-      this.endPoint + 'update/' + classe.id,
+      this.endPointWithSlash + 'update/' + classe.id,
       {
         name: classe.name,
         departement_id: classe.departement_id,

@@ -16,9 +16,9 @@ export class BaseHttp {
     {id: 1, name: "Lundi"},
     {id: 2, name: "Mardi"},
     {id: 3, name: "Mercredi"},
-    {id: 4, name: "Vendredi"},
-    {id: 5, name: "Samedi"},
-    {id: 6, name: "Dimance"},
+    {id: 4, name: "Jeudi"},
+    {id: 5, name: "Vendredi"},
+    {id: 6, name: "Samedi"},
   ];
 
   _canDeleteErreurs!: string[];
@@ -108,6 +108,10 @@ export class BaseHttp {
 
   get endPoint() {
     return this.api + this.baseUrl;
+  }
+
+  get endPointWithSlash(){
+    return this.api + this.baseUrl + "/";
   }
 
   get guestHeaders() {

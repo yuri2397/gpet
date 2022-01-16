@@ -1,7 +1,21 @@
+import { EC } from 'src/app/models/ec';
 import { Departement } from './departement';
 import { Model } from './model';
 
 export class UE extends Model<UE> {
+  
+  semester_id!: number;
+  id!: number;
+  code!: string;
+  name!: string;
+  departement_id!: number;
+  departement!: Departement;
+  ecs!: EC[];
+  constructor() {
+    super();
+    this.departement = new Departement();
+  }
+
   myIndex(arrays: UE[]): number {
     throw new Error('Method not implemented.');
   }
@@ -11,15 +25,5 @@ export class UE extends Model<UE> {
       if (this.id == e.id) a = e;
     });
     return a;
-  }
-  id!: number;
-  code!: string;
-  name!: string;
-  departement_id!: number;
-  departement!: Departement;
-
-  constructor() {
-    super();
-    this.departement = new Departement();
   }
 }

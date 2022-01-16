@@ -65,7 +65,6 @@ export class CourseListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
       },
     });
   }

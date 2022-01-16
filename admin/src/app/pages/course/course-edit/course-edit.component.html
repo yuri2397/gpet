@@ -1,144 +1,102 @@
 <div>
-  <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-    <div class="row">
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="acronym">Code</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est requi">
-            <input [(ngModel)]="course.acronym" formControlName="acronym" nz-input name="acronym" type="text"
-              id="acronym">
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="name">Nom</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-            <input [(ngModel)]="course.name" formControlName="name" nz-input name="name" type="text" id="name">
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="groupe_number">Nombre de groupe</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
-            <input [(ngModel)]="course.groupe_number" min="0" formControlName="groupe_number" nz-input
-              name="groupe_number" type="number" id="groupe_number">
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="semester_id">Semestre</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le semestre">
-            <nz-select [nzLoading]="isLoad" formControlName="semester_id" [(ngModel)]="course.semester.id">
-              <ng-container *ngFor="let o of semesters">
-                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-              </ng-container>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="service_id">Service</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le service">
-            <nz-select formControlName="service_id" [(ngModel)]="course.service.id">
-              <ng-container *ngFor="let o of services">
-                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-              </ng-container>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzFor="montant">Montant Horaire</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
-            <input disabled [value]="serviceAmout(course.service_id)" nz-input>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-            <nz-select [nzDisabled]="courseService.isEditeur()" (ngModelChange)="findClasseByDepartement($event)"
-              [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement.id">
-              <ng-container *ngFor="let o of departements">
-                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-              </ng-container>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="classe_id">Classe</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la classe">
-            <nz-select [nzDisabled]="course.departement_id == null" [nzLoading]="isLoad" formControlName="classe_id"
-              [(ngModel)]="course.classe.id">
-              <ng-container *ngFor="let o of classes">
-                <nz-option *ngIf="course.departement_id != null" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-              </ng-container>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="hours">Volume horaire</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le volume est requi">
-            <input [(ngModel)]="course.hours" formControlName="hours" min="0" nz-input name="hours"
-              type="number" id="hours">
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="ec_id">EC</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
-            <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch
-              [(ngModel)]="course.ec.id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
-              <ng-container *ngFor="let o of ecs">
-                <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
-              </ng-container>
-              <nz-option *ngIf="ecLoad" nzDisabled nzCustomContent>
-                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-              </nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-4">
-        <nz-form-item>
-          <nz-form-label nzFor="professor_id">Professeur</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le prof">
-            <nz-select nzPlaceHolder="Rechercher un professeur" nzAllowClear nzShowSearch nzServerSearch
-              [(ngModel)]="course.professor_id" formControlName="professor_id" (nzOnSearch)="onProSearch($event)">
-              <ng-container *ngFor="let o of professors">
-                <nz-option *ngIf="!profLoad" [nzValue]="o.id"
-                  [nzLabel]=" '#' + o.registration_number + ' - ' + o.first_name + o.last_name "></nz-option>
-              </ng-container>
-              <nz-option *ngIf="profLoad" nzDisabled nzCustomContent>
-                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-              </nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-  </nz-form>
+    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+        <div class="row">
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="service_id">Service</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le service">
+                        <nz-select formControlName="service_id" (ngModelChange)="serviceAmout(course.service_id)" [(ngModel)]="course.service.id">
+                            <ng-container *ngFor="let o of services">
+                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                            </ng-container>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzFor="montant">Montant Horaire</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
+                        <input disabled value="{{serviceAmountFCFA}}" nz-input>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
+                        <nz-select [nzDisabled]="courseService.isEditeur()" (ngModelChange)="findClasseByDepartement($event)" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement.id">
+                            <ng-container *ngFor="let o of departements">
+                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                            </ng-container>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="classe_id">Classe</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la classe">
+                        <nz-select [nzDisabled]="course.departement_id == null" [nzLoading]="isLoad" formControlName="classe_id" [(ngModel)]="course.classe.id">
+                            <ng-container *ngFor="let o of classes">
+                                <nz-option *ngIf="course.departement_id != null" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                            </ng-container>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="groupe_number">Nombre de groupe</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
+                        <input [(ngModel)]="course.groupe_number" min="0" formControlName="groupe_number" nz-input name="groupe_number" type="number" id="groupe_number">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="ec_id">EC</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
+                        <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec.id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
+                            <ng-container *ngFor="let o of ecs">
+                                <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
+                            </ng-container>
+                            <nz-option *ngIf="ecLoad" nzDisabled nzCustomContent>
+                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzFor="professor_id">Professeur</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le prof">
+                        <nz-select nzPlaceHolder="Rechercher un professeur" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.professor_id" formControlName="professor_id" (nzOnSearch)="onProSearch($event)">
+                            <ng-container *ngFor="let o of professors">
+                                <nz-option *ngIf="!profLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.registration_number + ' - ' + o.first_name + o.last_name "></nz-option>
+                            </ng-container>
+                            <nz-option *ngIf="profLoad" nzDisabled nzCustomContent>
+                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-form>
 </div>
 
 <div *nzModalFooter>
-  <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-  <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid"
-    [nzLoading]="isLoad">Ajouter</button>
+    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
+    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Ajouter</button>
 </div>

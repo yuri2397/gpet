@@ -32,7 +32,6 @@ export class ProfesseurEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.professor);
     if(this.professorService.isAdmin()){
       this.findDepartement();
     }

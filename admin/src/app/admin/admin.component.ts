@@ -98,6 +98,7 @@ export class AdminComponent implements OnInit {
   user!: User;
   menuItems!: RouteInfo[];
   title = "UFR SET - GPET";
+  depTitle!: string;
 
   constructor(private router: Router, private userService: UserService) {}
 
@@ -114,9 +115,8 @@ export class AdminComponent implements OnInit {
         this.user = response;
         this.roles = response.roles;
         if(this.userService.isEditeur()){
-          this.title = "GPET - " + this.user.departement.name.toUpperCase()
+          this.depTitle = this.user.departement.name.toUpperCase();
         }
-        console.log(this.title);
         this.menuItems = ROUTES.filter((menuItem) => menuItem);
         this.isLoad = false;
       },

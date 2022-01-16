@@ -15,11 +15,16 @@ class UE extends Model
 
     public function ecs()
     {
-        return $this->hasMany(EC::class);
+        return $this->hasMany(EC::class, "ue_id");
     }
 
     public function departement()
     {
         return $this->belongsTo(Departement::class);
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
     }
 }

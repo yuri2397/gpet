@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EC;
 use App\Models\UE;
 use App\Models\User;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +14,7 @@ class ECController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JSONResponse
      */
     public function index()
     {
@@ -29,7 +30,7 @@ class ECController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JSONResponse
      */
     public function store(Request $request)
     {
@@ -39,7 +40,8 @@ class ECController extends Controller
             'ue_id' => 'required',
             "ue_code" => "string",
             "ue_name" => "string",
-            "departement_id" => "numeric"
+            "departement_id" => "numeric",
+            "semester_id" => "exists:semesters,id"
         ]);
 
         $ec = new EC();
@@ -51,6 +53,7 @@ class ECController extends Controller
             $ue->name = $request->ue_name;
             $ue->code = $request->ue_code;
             $ue->departement_id = $request->departement_id;
+            $ue->semester_id = $request->semester_id;
             $ue->save();
             $ec->ue_id = $ue->id;
             $ec->save();
@@ -59,7 +62,7 @@ class ECController extends Controller
             $ec->save();
         }
 
-        return response()->json($ec);
+        return response()->json($ec, 200);
     }
 
     /**
@@ -78,27 +81,44 @@ class ECController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JSONResponse
      */
     public function update(Request $request, $id)
     {
         $request->validate([
             'code' => 'required|exists:e_c_s,code',
-            "name" => 'required'
+            "name" => 'required',
+            "vht" => "required|numeric"
         ]);
 
-        return EC::whereId($id)->update($request->all());
+        EC::whereId($id)->update($request->all());
+        $ec = EC::find($id);
+        $courses = Course::whereEcId($ec->id)->get();
+        foreach ($courses as $value) {
+            $value->hours = $ec->vht;
+            $value->save();
+        }
+        return $ec;
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JSONResponse
      */
     public function destroy($id)
     {
-        return EC::whereId($id)->delete();
+        $courses = Course::whereEcId($id)->first();
+        
+        if(!$courses){
+            return response()->json(EC::find($id)->delete());
+        }
+        
+        return response()->json([
+            "message" => "Le EC est lien au cours de : '" . $courses->name . "'."
+        ]);
+        
     }
 
     public function search($data)
@@ -108,3 +128,4 @@ class ECController extends Controller
             ->get();
     }
 }
+

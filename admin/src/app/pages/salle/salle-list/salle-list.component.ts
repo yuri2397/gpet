@@ -41,7 +41,6 @@ export class SalleListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
       },
     });
   }

@@ -36,8 +36,6 @@ export class EptEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log("EPT EDIT",this.ept);
-
     this.validateForm = this.fb.group({
       start: [null, [Validators.required]],
       end: [null, [Validators.required]],
@@ -90,8 +88,6 @@ export class EptEditComponent implements OnInit {
   }
 
   edit() {
-    console.log(this.ept);
-    return;
     this.isLoad = true;
     this.eptService.create(this.ept).subscribe({
       next: (response) => {
@@ -110,7 +106,6 @@ export class EptEditComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
-        console.log(errors);
         this.destroyModal(null);
       },
     });

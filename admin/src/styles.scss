@@ -23,3 +23,21 @@ table {
     background-color: #41729f;
     color: white;
 }
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.card {
+    border: none !important;
+    border-radius: 10px !important;
+}
+
+.bold {
+    font-weight: bold;
+    font-size: 16px;
+}

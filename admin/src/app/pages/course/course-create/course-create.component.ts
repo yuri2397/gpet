@@ -1,3 +1,4 @@
+import { SemesterService } from './../../../services/semester.service';
 import { ProfessorService } from './../../../services/professor.service';
 import { CourseService } from 'src/app/services/course.service';
 import { Course } from './../../../models/course';
@@ -26,7 +27,8 @@ export class CourseCreateComponent implements OnInit {
   course: Course = new Course();
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  semesters!: Semester[];
+  isLoadSemester = true;
+  isLoadClasse = true;
   professors!: Professor[];
   departements!: Departement[];
   classes!: Classe[];
@@ -44,7 +46,8 @@ export class CourseCreateComponent implements OnInit {
     private profService: ProfessorService,
     private classeService: ClasseService,
     private ecService: ECService,
-    private drawerService: NzDrawerService
+    private drawerService: NzDrawerService,
+    private semesterService: SemesterService
   ) {}
 
   ngOnInit(): void {
@@ -53,14 +56,9 @@ export class CourseCreateComponent implements OnInit {
       this.course.departement_id = this.courseService.departementId();
       this.findClasseByDepartement(this.course.departement_id);
     }
-    console.log("CURRENT CLASSE IN CREATE", this.classe);
-
     this.validateForm = this.fb.group({
-      acronym: [null, [Validators.required]],
-      name: [null, [Validators.required]],
       groupe_number: [0, [Validators.required]],
       classe_id: [null, [Validators.required]],
-      semester_id: [null, [Validators.required]],
       service_id: [null, [Validators.required]],
       ec_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
@@ -73,6 +71,7 @@ export class CourseCreateComponent implements OnInit {
       return false;
     }
     this.course.classe_id = this.classe.id;
+    this.isLoad = false;
     return true;
   }
 
@@ -120,9 +119,7 @@ export class CourseCreateComponent implements OnInit {
       nzMaskClosable: false,
     });
 
-    drawerRef.afterClose.subscribe((data) => {
-      console.log('After close', data);
-    });
+    drawerRef.afterClose.subscribe((data) => {});
   }
 
   onECSearch(value: string) {
@@ -148,12 +145,11 @@ export class CourseCreateComponent implements OnInit {
   findSelectableList() {
     this.isLoad = true;
     this.courseService
-      .findSelectableList(['departements', 'services', 'semesters'])
+      .findSelectableList(['departements', 'services'])
       .subscribe({
         next: (response) => {
           this.departements = response.departements;
           this.services = response.services;
-          this.semesters = response.semesters;
           this.isLoad = false;
         },
         error: (errors) => {
@@ -169,9 +165,11 @@ export class CourseCreateComponent implements OnInit {
   }
 
   findClasseByDepartement(id: number) {
+    this.isLoadClasse = true;
     this.classeService.findByDepartement(id).subscribe({
       next: (response) => {
         this.classes = response;
+        this.isLoadClasse = false;
       },
       error: (errors) => {
         console.log(errors);
@@ -203,6 +201,8 @@ export class CourseCreateComponent implements OnInit {
           'course ajouté avec succés.'
         );
         this.destroyModal(response);
+        console.log(response);
+        
       },
       error: (errors) => {
         this.isLoad = false;
@@ -212,6 +212,8 @@ export class CourseCreateComponent implements OnInit {
           errors.error.message
         );
         this.destroyModal(null);
+        console.log(errors);
+        
       },
     });
   }

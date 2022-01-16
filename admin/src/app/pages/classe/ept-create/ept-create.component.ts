@@ -125,7 +125,6 @@ export class EptCreateComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
-        console.log(errors);
         this.destroyModal(null);
       },
     });

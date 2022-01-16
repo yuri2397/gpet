@@ -1,78 +1,92 @@
 <div>
-  <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-    <nz-form-item>
-      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="name">Nom EC</nz-form-label>
-      <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
-        <input [(ngModel)]="ec.name" formControlName="name" nz-input name="name" type="text" id="name" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="code">Code EC</nz-form-label>
-      <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est requi">
-        <input [(ngModel)]="ec.code" formControlName="code" nz-input name="code" type="text" id="code" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ec_id">UE</nz-form-label>
-      <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-        <nz-select (ngModelChange)="currentUESelected($event)" [nzDisabled]="addUE" nzPlaceHolder="Rechercher un UE"
-          nzAllowClear (nzOnSearch)="onUESearch($event)" nzShowSearch nzServerSearch [nzNotFoundContent]="ueNotFound"
-          [nzLoading]="isLoadData" formControlName="ec_id" [(ngModel)]="ec.ue_id">
-          <ng-container *ngFor="let o of ues">
-            <nz-option *ngIf="!ueLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
-          </ng-container>
-          <nz-option *ngIf="ueLoad" nzDisabled nzCustomContent>
-            <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-          </nz-option>
-          <ng-template #ueNotFound>
-            <button nz-button nzType="primary" (click)="addNewUE()">Nouveau UE</button>
-          </ng-template>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
+    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="code">Code EC</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est requi">
+                <input [(ngModel)]="ec.code" formControlName="code" nz-input name="code" type="text" id="code" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="name">Nom EC</nz-form-label>
+            <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
+                <input [(ngModel)]="ec.name" formControlName="name" nz-input name="name" type="text" id="name" />
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="name">VHT EC</nz-form-label>
+            <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Volume horaire requi">
+                <input [(ngModel)]="ec.vht" formControlName="vht" nz-input name="vht" type="number" min="0" max="200" id="vht" />
+            </nz-form-control>
+        </nz-form-item>
 
-    <!-- AJOUTE AUSSI L'UE -->
-    <nz-divider [hidden]="!addUE" nzDashed [nzText]="text">
-      <ng-template #text>
-        <i nz-icon nzType="plus"></i>
-        Ajouter l'UE
-      </ng-template>
-    </nz-divider>
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ec_id">UE</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
+                <nz-select (ngModelChange)="currentUESelected($event)" [nzDisabled]="addUE" nzPlaceHolder="Rechercher un UE" nzAllowClear (nzOnSearch)="onUESearch($event)" nzShowSearch nzServerSearch [nzNotFoundContent]="ueNotFound" [nzLoading]="isLoadData" formControlName="ec_id"
+                    [(ngModel)]="ec.ue_id">
+                    <ng-container *ngFor="let o of ues">
+                        <nz-option *ngIf="!ueLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
+                    </ng-container>
+                    <nz-option *ngIf="ueLoad" nzDisabled nzCustomContent>
+                        <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
+                    </nz-option>
+                    <ng-template #ueNotFound>
+                        <button nz-button nzType="primary" (click)="addNewUE()">Nouveau UE</button>
+                    </ng-template>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item [hidden]="!addUE">
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_code">Code UE</nz-form-label>
-      <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
-        <input [(ngModel)]="ec.ue.code" formControlName="ue_code" nz-input name="ue_code" type="text" id="ue_code" />
-      </nz-form-control>
-    </nz-form-item>
+        <!-- AJOUTE AUSSI L'UE -->
+        <nz-divider [hidden]="!addUE" nzDashed [nzText]="text">
+            <ng-template #text>
+                <i nz-icon nzType="plus"></i> Ajouter l'UE
+            </ng-template>
+        </nz-divider>
 
-    <nz-form-item [hidden]="!addUE">
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_name">Nom UE</nz-form-label>
-      <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-        <input [(ngModel)]="ec.ue.name" formControlName="ue_name" nz-input name="ue_name" type="text" id="ue_name" />
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item [hidden]="!addUE">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_code">Code UE</nz-form-label>
+            <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
+                <input [(ngModel)]="ec.ue.code" formControlName="ue_code" nz-input name="ue_code" type="text" id="ue_code" />
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item [hidden]="!addUE || ueService.isEditeur()">
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_departement">Département</nz-form-label>
-      <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-        <nz-select (ngModelChange)="currentDepSelected($event)" [nzDisabled]="!addUE"
-          nzPlaceHolder="Rechercher un département" formControlName="ue_departement" [(ngModel)]="ec.ue_id">
-          <ng-container *ngFor="let o of departements">
-            <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-          </ng-container>
-        </nz-select>
-      </nz-form-control>
-    </nz-form-item>
+        <nz-form-item [hidden]="!addUE">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_name">Nom UE</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
+                <input [(ngModel)]="ec.ue.name" formControlName="ue_name" nz-input name="ue_name" type="text" id="ue_name" />
+            </nz-form-control>
+        </nz-form-item>
 
-    <nz-form-item><button nz-button nzType="primary" class="shadow-sm my-2" (click)="save()"
-        [disabled]="!validateForm.valid" [nzLoading]="isLoad">
+        <nz-form-item [hidden]="!addUE">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_name">Semestre</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le semestre est requi">
+                <nz-select [nzDisabled]="!addUE" nzPlaceHolder="Selectionner un semestre" formControlName="ue_semester" [(ngModel)]="ec.ue.semester_id">
+                    <ng-container *ngFor="let o of semesters">
+                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                    </ng-container>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item [hidden]="!addUE || ueService.isEditeur()">
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_departement">Département</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
+                <nz-select (ngModelChange)="currentDepSelected($event)" [nzDisabled]="!addUE" nzPlaceHolder="Rechercher un département" formControlName="ue_departement" [(ngModel)]="ec.ue_id">
+                    <ng-container *ngFor="let o of departements">
+                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                    </ng-container>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item><button nz-button nzType="primary" class="shadow-sm my-2" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">
         Ajouter
       </button>
-      <button nz-button class="shadow-sm" (click)="close()">
+            <button nz-button class="shadow-sm" (click)="close()">
         Annuler
       </button>
 
-    </nz-form-item>
-  </nz-form>
+        </nz-form-item>
+    </nz-form>
 </div>

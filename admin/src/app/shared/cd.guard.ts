@@ -23,8 +23,6 @@ export class CdGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (this.authService.departement() == null) {
-      console.log("unauthorized");
-
       return this.router.navigate(['/admin/unauthorized']);
     }
 

@@ -12,7 +12,7 @@ import { BankEditComponent } from '../bank-edit/bank-edit.component';
 })
 export class BankListComponent implements OnInit {
   banks!: Bank[];
-  isLoad = false;
+  isLoad = true;
   deleteBankRef!: NzModalRef;
   deleteLoad!: boolean;
 
@@ -27,10 +27,10 @@ export class BankListComponent implements OnInit {
   }
 
   findAll() {
+    this.isLoad = true;
     this.bankService.findAll().subscribe({
       next: (response) => {
         this.banks = response;
-
         this.isLoad = false;
       },
       error: (errors) => {
