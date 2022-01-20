@@ -20,15 +20,19 @@ class SemesterController extends Controller
     //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-    //
+        $this->validate($request, [
+            "name" => "required",
+            "departement_id" => "required|exists:departements,id"
+        ]);
+
+        $semester = new Semester;
+        $semester->name = $request->name;
+        $semester->departement_id = $request->departement_id;
+        $semester->save();
+        return $semester;
     }
 
     /**
@@ -39,7 +43,7 @@ class SemesterController extends Controller
      */
     public function show($id)
     {
-    //
+        return Semester::find($id);
     }
 
     /**

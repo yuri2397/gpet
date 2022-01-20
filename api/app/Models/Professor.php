@@ -9,6 +9,7 @@ class Professor extends Model
 {
     use HasFactory;
     protected $fillable = ['*'];
+    protected $with = ["professorType"];
     /**
      * Get the account associated with the user.
      */
@@ -30,5 +31,10 @@ class Professor extends Model
     public function coursesDo()
     {
         return $this->hasMany(CoursesHasProfessors::class);
+    }
+
+    public function professorType()
+    {
+        return $this->belongsTo(ProfessorType::class);
     }
 }

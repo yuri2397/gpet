@@ -18,6 +18,13 @@ use App\Http\Controllers\EPTController;
 use App\Http\Controllers\SemesterController;
 use App\Models\User;
 
+/**
+ * SERVICES WEB POUR LES EMPLOIS DU TEMPS
+ */
+
+
+Route::get("ept/ws/{departement}/{classe}", [EPTController::class, 'serviceWebEPT']);
+
 Route::post('selectable', function (Request $request) {
     $res = [];
     foreach ($request->all() as $r) {
@@ -62,7 +69,7 @@ Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->grou
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
 
     Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
-
+    Route::post('create', [SemesterController::class, 'store']);
 });
 
 Route::prefix("classe")->middleware(['auth:api',])->group(function () {

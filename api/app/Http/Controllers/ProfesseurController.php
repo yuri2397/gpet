@@ -11,11 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProfesseurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $user = User::find(auth()->id());
@@ -25,15 +21,11 @@ class ProfesseurController extends Controller
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $this->validate($request, [
+            'registration_number' => 'unique:professors,registration_number',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:professors,email',
@@ -43,18 +35,28 @@ class ProfesseurController extends Controller
             'departement_id' => 'required|exists:departements,id',
             'rip' => 'required',
             'key' => 'required',
-            'bank_id' => 'required|exists:banks,id'
+            'bank_id' => 'required|exists:banks,id',
+            'cni' => 'required|string|unique:professors,cni',
+            'born_in' => "required|string",
+            'born_at' => 'required',
+            'professor_type_id' => 'required|exists:professor_types,id',
+            'last_degree' => "required|string",
         ]);
-
         $prof = new Professor;
-        $prof->registration_number = $this->randomInt('professors', 'registration_number');
+        $prof->registration_number = $request->registration_number ?? $this->randomInt('professors', 'registration_number');
         $prof->first_name = $request->first_name;
         $prof->last_name = $request->last_name;
         $prof->email = $request->email;
+        $prof->born_in = $request->born_in;
+        $prof->cni = $request->cni;
+        $prof->born_at = date($request->born_at);
+        $prof->last_degree = $request->last_degree;
+        $prof->professor_type_id = $request->professor_type_id;
         $prof->status = $request->status;
         $prof->departement_id = $request->departement_id;
         $prof->phone_number = $request->phone_number;
         $prof->job = $request->job ?? null;
+        
         $prof->save();
 
         $compte = new Account();
@@ -68,12 +70,7 @@ class ProfesseurController extends Controller
         return response()->json($this->show($prof->id), 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $prof = Professor::with('account')
@@ -91,13 +88,7 @@ class ProfesseurController extends Controller
         return $prof;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -110,9 +101,14 @@ class ProfesseurController extends Controller
             "departement_id" => "required|exists:departements,id",
             'rip' => 'required',
             'key' => 'required',
-            'bank_id' => 'required|exists:banks,id'
+            'bank_id' => 'required|exists:banks,id',
+            'cni' => 'required|string',
+            'born_in' => "required|string",
+            'last_degree' => "required|string",
+            'born_at' => 'required|date',
+            'professor_type_id' => 'required|exists:professor_types,id'
         ]);
-
+        
         Professor::whereId($id)->update([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
@@ -121,6 +117,11 @@ class ProfesseurController extends Controller
             "phone_number" => $request->phone_number,
             "job" => $request->job,
             "departement_id" => $request->departement_id,
+            "cni" => $request->cni,
+            "born_in" => $request->born_in,
+            "born_at" => $request->born_at,
+            "professor_type_id" => $request->professor_type_id,
+            "last_degree" => $request->last_degree,
         ]);
 
         Account::whereProfessorId($id)->update([
@@ -133,12 +134,7 @@ class ProfesseurController extends Controller
         return $this->show($id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id)
     {
         return response()->json(DB::table("professors")->whereId($id)->delete(), 200);
@@ -160,6 +156,9 @@ class ProfesseurController extends Controller
             return Professor::where("first_name", 'like', '%' . $data . '%')
                 ->orWhere('last_name', 'like', '%' . $data . '%')
                 ->orWhere('registration_number', 'like', '%' . $data . '%')
+                ->orWhere('cni', 'like', '%' . $data . '%')
+                ->orWhere('email', 'like', '%' . $data . '%')
+                ->orWhere('phone_number', 'like', '%' . $data . '%')
                 ->orderBy('created_at', 'desc')->get();
         }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();

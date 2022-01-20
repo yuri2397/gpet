@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EPTController;
 
-Route::get("", function(){
-    return "BIENVENUE SUR EDT";
-});
+
+Route::get("edt/{departement}/{classe}", [EPTController::class, 'serviceWebEPT']);

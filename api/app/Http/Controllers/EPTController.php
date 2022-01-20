@@ -13,26 +13,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Response as HttpResponse;
+use App\Models\Departement;
 
 class EPTController extends Controller
 {
     use Utils;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+    //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -47,13 +38,13 @@ class EPTController extends Controller
         $start = date("H:i", strtotime($request->start));
         $end = date("H:i", strtotime($request->end));
 
-        if($start >= $end){
+        if ($start >= $end) {
             return response()->json([
                 "message" => "Le cour ne peux pas terminé avant d'avoir commené."
             ], HttpResponse::HTTP_CONFLICT);
         }
         $course = Course::find($request->course_id);
-        if($course->professor == null){
+        if ($course->professor == null) {
             return response()->json([
                 "message" => "Ce cour n'a pas de professeur pour le faire."
             ], 400);
@@ -62,7 +53,7 @@ class EPTController extends Controller
         return $this->validateETP($request, $course);
     }
 
-    private function validateETP(Request  $request, Course $course)
+    private function validateETP(Request $request, Course $course)
     {
         $start = date("H:i", strtotime($request->start));
         $end = date("H:i", strtotime($request->end));
@@ -79,7 +70,7 @@ class EPTController extends Controller
 
         // si le prof est dispo
         foreach ($eptForProfessor as $key => $value) {
-            if($this->hourEmbedHour($start, $end, $value->start, $value->end)){
+            if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 return response()->json([
                     "message" => "Le professeur sera occupé le " . $day->name . " à " . $value->start . " À " . $value->end
                 ], HttpResponse::HTTP_CONFLICT);
@@ -88,7 +79,7 @@ class EPTController extends Controller
 
         // si la classe sera dispo
         foreach ($eptForDay as $key => $value) {
-            if($this->hourEmbedHour($start, $end, $value->start, $value->end)){
+            if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 $c = Course::find($value->course_id);
                 return response()->json([
                     "message" => "Un cour de  " . $c->name . " est programmé pour le" . $day->name . " de " . $value->start . " À " . $value->end
@@ -98,7 +89,7 @@ class EPTController extends Controller
 
         // si la salle serra dispo
         foreach ($eptForSalle as $key => $value) {
-            if($this->hourEmbedHour($start, $end, $value->start, $value->end)){
+            if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 $s = Salle::find($value->salle_id);
                 return response()->json([
                     "message" => "La salle " . $s->name ?? $s->number . " est déjà reservée pour le " . $day->name . " de " . $value->start . " À " . $value->end
@@ -120,14 +111,22 @@ class EPTController extends Controller
     }
 
 
+    public function serviceWebEPT($departement_name, $classe_name)
+    {
+        $classe = Classe::whereName($classe_name)->first();
+        if($classe != null){
+            return view("ept")->with([
+                "ept" => $this->show($classe->id),
+                "classe" => $classe->name,
+                "departement" => $departement_name
+            ]);
+        }
+        else{
+            return view("ept404");
+        }
+    }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $ept = [];
@@ -135,22 +134,15 @@ class EPTController extends Controller
         $days = Day::all();
 
         foreach ($days as $day) {
-            $ept[] = [ "day" => $day, "data" => TimesTable::whereClasseId($id)->whereDayId($day->id)->get()];
+            $ept[] = ["day" => $day, "data" => TimesTable::whereClasseId($id)->whereDayId($day->id)->get()];
         }
 
         return $ept;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+    //
     }
 
     /**
