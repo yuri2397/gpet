@@ -66,4 +66,14 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 ![Capture d’écran de 2021-10-02 21-24-28](https://user-images.githubusercontent.com/58815209/135732181-3ae265bb-be79-4641-bace-abc904a3ba84.png)
 
 
+# EMPLOI DU TEMPS
+
+- Afficher l'emploi du temps d'une classe
+
+![list_ept](https://user-images.githubusercontent.com/58815209/147390693-75a6755a-fc5a-4bf1-98ac-de8ad5990662.png)
+
+- Creer un element dans l'emploi du temps
+
+![create_ept](https://user-images.githubusercontent.com/58815209/147390711-dc2b939f-c072-46a4-b6af-fad57bc95506.png)
+
 
