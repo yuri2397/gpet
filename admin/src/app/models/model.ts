@@ -21,4 +21,6 @@ export abstract class Model<T> {
   deleted = false;
   add = false;
   loading = false;
+  created_at!: Date;
+  updated_at!: Date;
 }

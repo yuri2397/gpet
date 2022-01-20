@@ -8,12 +8,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UserService extends BaseHttp {
-
   protected _baseUrl = 'user';
-  constructor(
-    protected hc: HttpClient,
-    private router: Router
-  ) {
+  constructor(protected hc: HttpClient, private router: Router) {
     super();
     this.http = hc;
   }
@@ -28,5 +24,12 @@ export class UserService extends BaseHttp {
   logout() {
     sessionStorage.clear();
     this.router.navigate(['/']);
+  }
+
+  findByAuthDepartement() {
+    return this.http.get<User[]>(this.endPoint, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 }

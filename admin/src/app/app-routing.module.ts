@@ -8,6 +8,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './shared/auth.guard';
 import { LoginGuard } from './shared/login.guard';
 import { LocalDataGuard } from './shared/local-data.guard';
+import { EdtShowComponent } from './pages/edt/edt-show/edt-show.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent,canActivate: [LoginGuard]},
@@ -22,6 +23,9 @@ const routes: Routes = [
       },
     ],
     canActivate: [AuthGuard, LocalDataGuard],
+  },
+  {
+    path: 'edt/:departement/:classe', component: EdtShowComponent
   },
   {
     path:"**",

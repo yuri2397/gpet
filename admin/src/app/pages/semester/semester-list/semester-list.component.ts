@@ -1,3 +1,4 @@
+import { SemesterCreateComponent } from './../semester-create/semester-create.component';
 import { EcEditComponent } from './../../ec/ec-edit/ec-edit.component';
 import { SemesterEditComponent } from './../semester-edit/semester-edit.component';
 import { ECService } from 'src/app/services/ec.service';
@@ -99,5 +100,19 @@ export class SemesterListComponent implements OnInit {
         console.log(errors);
       },
     });
+  }
+
+  openCreateSemesterModal() {
+    let modal = this.modalService.create({
+      nzTitle: 'AJOUTER UN NOUVEAU SEMESTRE',
+      nzContent: SemesterCreateComponent,
+      nzClosable: false,
+    });
+
+    modal.afterClose.subscribe((data: Semester | null) => {
+      if(data){
+        this.findByDepartement(this.semesterService.departement());
+      }
+    })
   }
 }

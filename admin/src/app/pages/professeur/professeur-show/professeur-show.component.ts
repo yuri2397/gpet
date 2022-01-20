@@ -39,7 +39,6 @@ export class ProfesseurShowComponent implements OnInit {
   constructor(
     private location: Location,
     private route: ActivatedRoute,
-    private router: Router,
     private fb: FormBuilder,
     private courseService: CourseService,
     private notification: NotificationService,
@@ -168,7 +167,7 @@ export class ProfesseurShowComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: '50em',
+      nzWidth: '60em',
     });
 
     modal.afterClose.subscribe((data: Professor | null) => {

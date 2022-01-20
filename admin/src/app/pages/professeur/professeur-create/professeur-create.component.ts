@@ -1,3 +1,4 @@
+import { ProfessorType } from './../../../models/professor_type';
 import { BankService } from './../../../services/bank.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { Professor } from 'src/app/models/professor';
@@ -25,6 +26,7 @@ export class ProfesseurCreateComponent implements OnInit {
   professor: Professor = new Professor();
   banks!: Bank[];
   bankLoad = false;
+  professorTypes!: ProfessorType[];
 
   constructor(
     private notification: NotificationService,
@@ -37,11 +39,10 @@ export class ProfesseurCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if(this.professorService.isAdmin()){
-      this.findDepartement();
-    } else {
+    if (!this.professorService.isAdmin()) {
       this.professor.departement_id = this.deptService.departementId();
     }
+    this.findDepartement();
 
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],
@@ -53,39 +54,43 @@ export class ProfesseurCreateComponent implements OnInit {
       key: [null, [Validators.required]],
       rip: [null, [Validators.required]],
       bank_id: [null, [Validators.required]],
+      last_degree: [null, [Validators.required]],
       job: [null, null],
+      cni: [null, [Validators.required]],
+      born_in: [null, [Validators.required]],
+      born_at: [null, [Validators.required]],
+      professor_type_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
     });
   }
 
-
-  onAddBank(){
+  onAddBank() {
     const drawerRef = this.drawerService.create({
       nzTitle: 'Ajouter une nouvelle banque',
       nzContent: BankCreateComponent,
-      nzWidth: "350px",
+      nzWidth: '350px',
       nzClosable: false,
-      nzMaskClosable: false
+      nzMaskClosable: false,
     });
   }
 
-  onBankSearch(data: string){
+  onBankSearch(data: string) {
     this.bankLoad = true;
-    if(data.trim().length >= 2){
+    if (data.trim().length >= 2) {
       this.bankService.search(data).subscribe({
-        next: response => {
+        next: (response) => {
           this.banks = response;
           this.bankLoad = false;
         },
-        error: errors => {
+        error: (errors) => {
           this.bankLoad = false;
           this.notification.createNotification(
             'error',
             'Erreur',
             errors.error.message
           );
-        }
-      })
+        },
+      });
     }
   }
 
@@ -100,8 +105,8 @@ export class ProfesseurCreateComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
-      }
-    })
+      },
+    });
   }
 
   submitForm(): void {
@@ -115,9 +120,11 @@ export class ProfesseurCreateComponent implements OnInit {
 
   findDepartement() {
     this.isLoadData = true;
-    this.professorService.findSelectableList(['departements']).subscribe({
+    this.professorService.findSelectableList(['departements', 'professor_types']).subscribe({
       next: (response) => {
         this.departements = response.departements;
+        this.professorTypes = response.professor_types;
+        console.log(response);
         this.isLoadData = false;
       },
       error: (errors) => {
@@ -131,15 +138,23 @@ export class ProfesseurCreateComponent implements OnInit {
     });
   }
 
+  onBornAtChange(date: any){
+    console.log("DATE CHANGE", date);
+    console.log("PP", this.professor.born_at);
+  }
+
   destroyModal(data: Professor | null): void {
     this.modal.destroy(data);
   }
 
   save() {
     this.isLoad = true;
+    console.log(this.professor);
+    
     this.professorService.create(this.professor).subscribe({
       next: (response) => {
         this.isLoad = false;
+        console.log(response);
         this.notification.createNotification(
           'success',
           'Notification',
@@ -148,8 +163,10 @@ export class ProfesseurCreateComponent implements OnInit {
         this.destroyModal(response);
       },
       error: (errors) => {
+        console.log(errors);
+        
         this.isLoad = false;
-        (errors);
+        errors;
         this.notification.createNotification(
           'error',
           'Erreur',

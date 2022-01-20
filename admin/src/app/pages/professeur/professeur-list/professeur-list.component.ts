@@ -95,12 +95,12 @@ export class ProfesseurListComponent implements OnInit {
 
   openCreateModal() {
     const modal = this.modalService.create({
-      nzTitle: 'AJOUTER UN PROFESSEUR',
+      nzTitle: 'AJOUTER UN NOUVEAU PROFESSEUR',
       nzContent: ProfesseurCreateComponent,
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: '50em',
+      nzWidth: '60em',
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {

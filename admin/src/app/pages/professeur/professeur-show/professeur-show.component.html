@@ -33,36 +33,87 @@
                     <div class="row justify-content-between align-items-top">
                         <div class="col-xm-8 col-md-6 my-1">
                             <nz-card class="shadow" [nzCover]="coverTemplate">
-                                <div class="mb-3">
-                                    <h5>
-                                        <nz-tag [nzColor]="'geekblue'">
-                                            <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
-                                        </nz-tag>
-                                        - {{ professeur.first_name }} {{ professeur.last_name }}
-                                    </h5>
-                                </div>
-                                <div class="my-2 h6">
-                                    Département :
-                                    <nz-tag [nzColor]="'cyan'">{{ professeur.departement.name }}</nz-tag>
-                                </div>
-                                <div class="my-2 h6">
-                                    Email :
-                                    <nz-tag [nzColor]="'purple'">{{ professeur.email }}</nz-tag>
-                                </div>
-                                <div class="my-2 h6">
-                                    Status :
-                                    <nz-tag [nzColor]="'gold'">{{ professeur.status }}</nz-tag>
-                                </div>
-                                <div class="my-2 h6">
-                                    Métier :
-                                    <nz-tag [nzColor]="professeur.job == null ? 'red': 'blue'" [innerText]="professeur.job ?? 'Non définie'"></nz-tag>
-                                </div>
-                                <div class="my-2 h6">
-                                    En fonction :
-                                    <nz-tag [nzColor]="professeur.is_active == 1 ? 'green' :
-                    'red'" [innerText]="professeur.is_active == 1 ? 'OUI' :
-                    'NON'"></nz-tag>
-                                </div>
+                                <nz-tabset>
+                                    <nz-tab nzTitle="Personnel">
+                                        <div class="mb-3">
+                                            <nz-tag [nzColor]="'geekblue'">
+                                                <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
+                                            </nz-tag>
+                                            {{ professeur.first_name }} {{ professeur.last_name }}
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Email
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'geekblue'">{{ professeur.email }}</nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Date de naissance
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'lime'">{{ professeur.born_at | date:'d MMMM y' }}</nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Lieu de naissance
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'orange'">{{ professeur.born_in }}</nz-tag>
+                                            </div>
+                                        </div>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Professionel">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                Département
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'geekblue'">{{ professeur.departement.name }}</nz-tag>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex my-1 justify-content-between align-items-center">
+                                            <div>
+                                                Status
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'volcano'">{{ professeur.status }}</nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Métier
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="professeur.job == null ? 'red': 'orange'" [innerText]="professeur.job ?? 'Non définie'"></nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Dérnier Diplôme
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="professeur.last_degree == null ? 'red': 'magenta'" [innerText]="professeur.last_degree ?? 'Non définie'"></nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-1 justify-content-between align-items-center">
+                                            <div>
+                                                En fonction
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="professeur.is_active == 1 ? 'green' :
+                                                'red'" [innerText]="professeur.is_active == 1 ? 'OUI' :
+                                                'NON'"></nz-tag>
+                                            </div>
+                                        </div>
+                                    </nz-tab>
+                                </nz-tabset>
+
+
                             </nz-card>
                             <ng-template #coverTemplate>
                                 <img class="user-avatar" [src]="userProfilePath()" />
@@ -72,27 +123,49 @@
                             <nz-card class="shadow">
                                 <div class="row">
                                     <div class="col-md-12 col-xs-12">
+
                                         <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert><br>
-                                        <div class="my-2 h6">
-                                            Banque :
-                                            <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}
-                                            </nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Banque
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}
+                                                </nz-tag>
+
+                                            </div>
                                         </div>
-                                        <div class="my-2 h6">
-                                            Code de la banque :
-                                            <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Code de la banque
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}</nz-tag>
+                                            </div>
                                         </div>
-                                        <div class="my-2 h6">
-                                            N° de compte :
-                                            <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                N° de compte
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}</nz-tag>
+                                            </div>
                                         </div>
-                                        <div class="my-2 h6">
-                                            RIP :
-                                            <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                RIP
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}</nz-tag>
+                                            </div>
                                         </div>
-                                        <div class="my-2 h6">
-                                            Clé :
-                                            <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key"></nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Clé
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key"></nz-tag>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -6,4 +6,7 @@ export class Semester {
   departement_id!: number;
   departement!: Departement;
   ues!: UE[];
+  constructor(){
+    this.departement = new Departement();
+  }
 }

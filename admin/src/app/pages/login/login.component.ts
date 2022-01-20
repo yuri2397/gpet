@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/admin/dashboard']);
         break;
       case this.authService.editeur:
-        this.router.navigate(['/admin/salles']);
+        this.router.navigate(['/admin/classes']);
         break;
     }
   }

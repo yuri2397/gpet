@@ -27,10 +27,13 @@ export class ProfessorService extends BaseHttp {
   }
 
   search(data: string) {
-    return this.http.get<Professor[]>(this.endPointWithSlash + 'search/' + data, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Professor[]>(
+      this.endPointWithSlash + 'search/' + data,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   find(id: number) {
@@ -62,7 +65,7 @@ export class ProfessorService extends BaseHttp {
         professor_id: courseDo.professor_id,
         total_sales: courseDo.total_sales,
         total_hours: courseDo.total_hours,
-        amount_hour: courseDo.amount
+        amount_hour: courseDo.amount,
       },
       {
         headers: this.authorizationHeaders,
@@ -103,6 +106,13 @@ export class ProfessorService extends BaseHttp {
     b.account.account_number = professor.account.account_number;
     b.departement = professor.departement;
     b.departement_id = professor.departement_id;
+    b.born_at = new Date(professor.born_at);
+    b.born_in = professor.born_in;
+    b.last_degree = professor.last_degree;
+    b.cni = professor.cni;
+    b.professor_type_id = professor.professor_type_id;
+    b.professor_type = professor.professor_type;
+
     return b;
   }
 
@@ -115,6 +125,14 @@ export class ProfessorService extends BaseHttp {
   }
 
   create(professor: Professor) {
+    console.log(
+      professor.born_at.getFullYear() +
+        '-' +
+        (professor.born_at.getUTCMonth() + 1) +
+        '-' +
+        professor.born_at.getDate()
+    );
+
     return this.http.post<Professor>(
       this.endPointWithSlash + 'create',
       {
@@ -129,6 +147,16 @@ export class ProfessorService extends BaseHttp {
         account_number: professor.account.account_number,
         bank_id: professor.account.bank_id,
         key: professor.account.key,
+        cni: professor.cni,
+        born_at:
+          professor.born_at.getFullYear() +
+          '-' +
+          (professor.born_at.getUTCMonth() + 1) +
+          '-' +
+          professor.born_at.getDate(),
+        born_in: professor.born_in,
+        professor_type_id: professor.professor_type_id,
+        last_degree: professor.last_degree,
       },
       {
         headers: this.authorizationHeaders,
@@ -138,10 +166,13 @@ export class ProfessorService extends BaseHttp {
   }
 
   delete(professor: Professor) {
-    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + professor.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.delete<any>(
+      this.endPointWithSlash + 'destroy/' + professor.id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   edit(professor: Professor) {
@@ -159,6 +190,16 @@ export class ProfessorService extends BaseHttp {
         account_number: professor.account.account_number,
         bank_id: professor.account.bank_id,
         key: professor.account.key,
+        cni: professor.cni,
+        born_at:
+          professor.born_at.getFullYear() +
+          '-' +
+          (professor.born_at.getUTCMonth() + 1) +
+          '-' +
+          professor.born_at.getDate(),
+        born_in: professor.born_in,
+        professor_type_id: professor.professor_type.id,
+        last_degree: professor.last_degree,
       },
       { headers: this.authorizationHeaders, observe: 'body' }
     );

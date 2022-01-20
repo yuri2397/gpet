@@ -9,6 +9,7 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class SemesterService extends BaseHttp {
+  
   protected _baseUrl = 'semester';
   constructor(protected hc: HttpClient) {
     super();
@@ -19,6 +20,16 @@ export class SemesterService extends BaseHttp {
     return this.http.get<Semester[]>(this.endPointWithSlash + "by-departement/" + departement.id, {
       headers: this.authorizationHeaders,
       observe: 'body'
+    })
+  }
+
+  create(semester: Semester) {
+    return this.http.post<Semester>(this.endPointWithSlash + "create", {
+      name: semester.name,
+      departement_id: semester.departement_id
+    }, {
+      headers: this.authorizationHeaders,
+      observe: "body"
     })
   }
 }

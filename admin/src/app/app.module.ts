@@ -1,3 +1,6 @@
+import { MatButtonModule } from '@angular/material/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { NotFoundComponent } from './shared/ui/not-found/not-found.component';
 import { NgModule } from '@angular/core';
@@ -19,10 +22,12 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzMessageComponent, NzMessageModule } from 'ng-zorro-antd/message';
+import { EdtShowComponent } from './pages/edt/edt-show/edt-show.component';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotFoundComponent],
+  declarations: [AppComponent, LoginComponent, NotFoundComponent, EdtShowComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -37,6 +42,10 @@ registerLocaleData(fr);
     NzNotificationModule,
     NzMessageModule,
     NzResultModule,
+    NzTableModule,
+    MatIconModule,
+    NzDividerModule,
+    MatButtonModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent],

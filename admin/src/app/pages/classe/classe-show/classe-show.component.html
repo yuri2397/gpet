@@ -111,22 +111,38 @@
                                             EN SCIENCES ET TECHNOLOGIES <br>
                                             {{ depName }}
                                         </span>
-                                        <h1>{{ classe.name }}</h1>
+                                        <h3>{{ classe.name }}</h3> {{ now | date:'EEEE d MMMM y'}}
                                     </div>
-                                    <nz-table class="card card-body shadow mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="epts">
-                                        <thead>
+                                    <nz-table [nzOuterBordered]="false" [nzSize]="'middle'" class=" p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="epts">
+                                        <thead class="bg-primary card">
                                             <tr>
-                                                <th class="text-center" *ngFor="let item of days">{{ item.name.toUpperCase() }}</th>
+                                                <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">{{ item.name.toUpperCase() }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <td *ngFor="let ept of presentionEPT.data">
                                                 <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
-                                                    <div class="card border m-3" *ngFor="let row of ept.data; let index = index; let isFirst = first; let isLast = last;" class="text-center m-1">
+                                                    <div class="card border m-3 card-body text-center m-1" *ngFor="let row of ept.data; let index = index; let isFirst = first; let isLast = last;">
                                                         {{ row.course.name.toLocaleUpperCase() }} <br>
-                                                        <nz-tag nzColor="blue" class="mt-1 text-center">
-                                                            {{ pipeHours(row.start )}} À {{ pipeHours(row.end) }}
-                                                        </nz-tag>
+
+                                                        <nz-divider nzText="{{ pipeHours(row.start )}} À {{ pipeHours(row.end) }}"></nz-divider>
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div>
+                                                                <mat-icon [color]="'primary'" class="mat-18">person</mat-icon>
+                                                            </div>
+                                                            <div>
+                                                                M. {{ row.course.professor.last_name }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div>
+                                                                <mat-icon [color]="'primary'" class="mat-18">room</mat-icon>
+                                                            </div>
+                                                            <div>
+                                                                {{ row.salle.name }}
+                                                            </div>
+                                                        </div>
+
                                                         <ng-container *ngIf="!isLast">
                                                             <nz-divider></nz-divider>
                                                         </ng-container>
@@ -141,7 +157,6 @@
                                         </tbody>
                                     </nz-table>
                                 </div>
-
                             </nz-tab>
                         </nz-tab>
                     </nz-tabset>

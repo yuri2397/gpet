@@ -1,3 +1,4 @@
+import { Departement } from 'src/app/models/departement';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Classe } from '../models/classe';
@@ -38,10 +39,13 @@ export class EptService extends BaseHttp {
   }
 
   show(classe: Classe) {
-    return this.http.get<EptRow[]>(this.endPointWithSlash + 'show/' + classe.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<EptRow[]>(
+      this.endPointWithSlash + 'show/' + classe.id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   remove(item: EPT) {
@@ -64,6 +68,16 @@ export class EptService extends BaseHttp {
       },
       {
         headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  getEDT(departement: Departement, classe: Classe) {
+    return this.http.get<EptRow[]>(
+      this.endPointWithSlash + 'ws/' + departement + '/' + classe,
+      {
+        headers: this.guestHeaders,
         observe: 'body',
       }
     );

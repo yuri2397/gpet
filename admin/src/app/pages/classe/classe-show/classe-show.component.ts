@@ -32,6 +32,7 @@ export class ClasseShowComponent implements OnInit {
   eptLoad: boolean = true;
   days!: Day[];
   doc = new jsPDF();
+  now = new Date();
   @ViewChild('presentionEPT') htmlData!:ElementRef;
   constructor(
     private route: ActivatedRoute,
@@ -75,7 +76,7 @@ export class ClasseShowComponent implements OnInit {
     this.eptService.show(classe).subscribe({
       next: (data) => {
         this.epts = data;
-        console.log(data);
+        console.log("ETP", data);
         this.eptLoad = false;
       },
       error: (errors) => {
