@@ -12,11 +12,10 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::with("roles", "roles.permissions")->where('email', $request->email)->first();
 
         if ($user != null && Hash::check($request->password, $user->password)) {
             $token = $user->createToken('Admin Password Grant Client')->accessToken;
-            $user->roles->pluck('name')->all();
             return response()->json([
                 'token' => $token,
                 'user' => $user,
@@ -30,8 +29,7 @@ class AuthController extends Controller
 
     public function user()
     {
-        $user = User::find(auth()->id());
-        $user->roles->pluck('name')->all();
+        $user = User::with("roles", "roles.permissions")->find(auth()->id());
         return $user;
     }
 }

@@ -1,10 +1,13 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ECController;
 use App\Http\Controllers\UEController;
+use App\Http\Controllers\EPTController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\UserController;
@@ -12,11 +15,11 @@ use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BatimentController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
-use App\Http\Controllers\EPTController;
-use App\Http\Controllers\SemesterController;
-use App\Models\User;
+use Spatie\Permission\Models\Permission;
+use App\Http\Controllers\RoleController;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -148,7 +151,13 @@ Route::prefix("bank")->middleware(['auth:api'])->group(function () {
     Route::get('search/{data}', [BankController::class, "search"]);
 });
 
+Route::prefix("role")->middleware(['auth:api', 'permission: edit roles'])->group(function (){
+    Route::get('/', [RoleController::class, "index"]);
+});
 
 Route::any('test', function (Request $request) {
-    return "API TEST";
+    $role = Role::whereName("chef de département")->first();
+    $p = Permission::all();
+    $role->syncPermissions($p);
+    return $role;
 });
