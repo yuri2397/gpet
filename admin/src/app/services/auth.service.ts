@@ -32,6 +32,7 @@ export class AuthService extends BaseHttp {
 
   logOut() {
     sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/']);
   }
 

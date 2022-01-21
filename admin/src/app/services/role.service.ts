@@ -19,4 +19,11 @@ export class RoleService extends BaseHttp {
       observe: 'body',
     });
   }
+
+  findAll() {
+    return this.http.get<Role[]>(this.endPoint, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
+  }
 }

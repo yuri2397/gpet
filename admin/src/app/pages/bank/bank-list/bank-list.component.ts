@@ -1,9 +1,11 @@
+import { RoleService } from './../../../services/role.service';
 import { Component, OnInit } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Bank } from 'src/app/models/bank';
 import { BankService } from 'src/app/services/bank.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { BankEditComponent } from '../bank-edit/bank-edit.component';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-bank-list',
@@ -19,7 +21,8 @@ export class BankListComponent implements OnInit {
   constructor(
     private bankService: BankService,
     private notification: NotificationService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    public roleService: RoleService
   ) {}
 
   ngOnInit(): void {
@@ -97,5 +100,13 @@ export class BankListComponent implements OnInit {
         );
       },
     });
+  }
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.roleService.can(p, this.bankService.getRoles());
+    console.log(test);
+    return test;
   }
 }

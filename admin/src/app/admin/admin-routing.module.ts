@@ -1,3 +1,4 @@
+import { RoleListComponent } from './../pages/roles/role-list/role-list.component';
 import { AuthGuard } from './../shared/auth.guard';
 import { ProfileComponent } from './../pages/profile/profile.component';
 import { DepartementShowComponent } from './../pages/departement/departement-show/departement-show.component';
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'departements/show/:id', component: DepartementShowComponent },
   { path: 'classes/show/:id', component: ClasseShowComponent },
   { path: 'salles', component: SalleListComponent },
+  { path: 'roles', component: RoleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
 ];
 

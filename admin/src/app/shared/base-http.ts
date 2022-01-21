@@ -4,13 +4,16 @@ import { HttpClient } from '@angular/common/http';
 import { Day } from '../models/day';
 import { Departement } from '../models/departement';
 import { environment as env } from 'src/environments/environment';
+import { GestionRole } from './gestion-role';
 
-export class BaseHttp {
+export class BaseHttp  extends GestionRole{
   private _host = env.host;
   private _api = env.api;
   protected _baseUrl!: string;
   private _super_admin = 'super admin';
   private _editeur = 'chef de département';
+  private _secretaire = 'editeur';
+  private _admin = 'admin';
   protected httpClient!: HttpClient;
   public DAYS: Day[] = [
     {id: 1, name: "Lundi"},
@@ -25,7 +28,9 @@ export class BaseHttp {
   _canDeleteSubTitle!: string;
   _canDeleteTitle!: string;
 
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   isLogIn(): boolean {
     return this.getToken() == null ? false : true;
@@ -83,19 +88,25 @@ export class BaseHttp {
   }
 
   isAdmin(): boolean {
-    let role: string = this.getRoles()[0].name;
-    if (role == this._super_admin) {
-      return true;
-    }
-    return false;
+    let test = false;
+    this.getRoles().forEach(r => {
+        if(r.name == this.admin){
+          test = true;
+        }
+    });
+
+    return test;
   }
 
   isEditeur(): boolean {
-    let role: string = this.getRoles()[0].name;
-    if (role == this._editeur) {
-      return true;
-    }
-    return false;
+    let test = false;
+    this.getRoles().forEach(r => {
+        if(r.name == this.editeur){
+          test = true;
+        }
+    });
+
+    return test;
   }
 
   get super_admin() {
@@ -104,6 +115,14 @@ export class BaseHttp {
 
   get editeur() {
     return this._editeur;
+  }
+
+  get admin(){
+    return this._admin;
+  }
+
+  get secretaire(){
+    return this._secretaire;
   }
 
   get endPoint() {
@@ -122,11 +141,11 @@ export class BaseHttp {
   }
 
   getToken() {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
 
   getRoles(): Role[] {
-    return JSON.parse(sessionStorage.getItem('roles')!) as Role[];
+    return JSON.parse(localStorage.getItem('roles')!) as Role[];
   }
 
   get baseUrl(): string {
@@ -138,7 +157,7 @@ export class BaseHttp {
   }
 
   getUser(): User {
-    return JSON.parse(sessionStorage.getItem('user')!);
+    return JSON.parse(localStorage.getItem('user')!);
   }
 
   departementId(): number{
@@ -150,19 +169,21 @@ export class BaseHttp {
   }
 
   setToken(token: string) {
-    sessionStorage.setItem('token', token);
+    localStorage.setItem('token', token);
   }
 
   setUser(user: User) {
-    sessionStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   setRoles(roles: Role[]) {
-    sessionStorage.setItem('roles', JSON.stringify(roles));
+    console.log("ROLES IN SET ROLES", roles);
+    
+    localStorage.setItem('roles', JSON.stringify(roles));
   }
 
   setDepartement(departement: Departement){
-    sessionStorage.setItem('departement', JSON.stringify(departement));
+    localStorage.setItem('departement', JSON.stringify(departement));
   }
 
   get api(): string {

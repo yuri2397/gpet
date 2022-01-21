@@ -23,6 +23,7 @@ export class UserService extends BaseHttp {
 
   logout() {
     sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate(['/']);
   }
 

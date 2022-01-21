@@ -1,3 +1,4 @@
+import { HasRoleInterceptor } from './shared/has-role.interceptor';
 import { MatButtonModule } from '@angular/material/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -13,7 +14,7 @@ import { fr_FR } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './pages/login/login.component';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -27,7 +28,12 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 registerLocaleData(fr);
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotFoundComponent, EdtShowComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    NotFoundComponent,
+    EdtShowComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -45,9 +51,15 @@ registerLocaleData(fr);
     NzTableModule,
     MatIconModule,
     NzDividerModule,
-    MatButtonModule
+    MatButtonModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: fr_FR }],
+  providers: [
+    { provide: NZ_I18N, useValue: fr_FR },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HasRoleInterceptor,multi: true
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

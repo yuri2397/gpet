@@ -23,12 +23,12 @@
                         <td class="text-center">
                             <div class="d-flex justify-content-center">
                                 <div>
-                                    <button (click)="openEditModal(data)" mat-mini-fab color="primary">
+                                    <button *ngIf="can('modifier salle')" (click)="openEditModal(data)" mat-mini-fab color="primary">
                     <mat-icon>edit</mat-icon>
                   </button>
                                 </div>
                                 <div class="mx-3">
-                                    <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
+                                    <button *ngIf="can('supprimer banque')" (click)="openDeleteModal(data)" mat-mini-fab color="warn">
                     <mat-icon>delete</mat-icon>
                   </button>
                                 </div>

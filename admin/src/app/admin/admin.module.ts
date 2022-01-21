@@ -1,3 +1,6 @@
+import { RoleCreateComponent } from './../pages/roles/role-create/role-create.component';
+import { RoleListComponent } from './../pages/roles/role-list/role-list.component';
+import { RoleEditComponent } from './../pages/roles/role-edit/role-edit.component';
 import { EcEditComponent } from './../pages/ec/ec-edit/ec-edit.component';
 import { CanDeleteComponent } from './../shared/ui/can-delete/can-delete.component';
 import { UserCreateComponent } from './../pages/user/user-create/user-create.component';
@@ -95,6 +98,8 @@ import { SemesterCreateComponent } from '../pages/semester/semester-create/semes
 import { SemesterEditComponent } from '../pages/semester/semester-edit/semester-edit.component';
 import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.component';
 import { ProfileComponent } from '../pages/profile/profile.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HasRoleInterceptor } from '../shared/has-role.interceptor';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -200,9 +205,12 @@ registerLocaleData(localeFr, fr);
     SemesterCreateComponent,
     SemesterEditComponent,
     ProfileComponent,
-    EcEditComponent
+    EcEditComponent,
+    RoleEditComponent,
+    RoleListComponent,
+    RoleCreateComponent
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' },],
   exports: [AdminComponent],
 })
 export class AdminModule {}

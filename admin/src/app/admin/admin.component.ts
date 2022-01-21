@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NzIconService } from 'ng-zorro-antd/icon';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Role } from '../models/role';
@@ -40,14 +39,14 @@ export const ROUTES: RouteInfo[] = [
     title: 'Banques',
     icon: 'account_balance',
     class: '',
-    roles: ['super admin', 'chef de département'],
+    roles: ['admin'],
   },
   {
     path: 'salles',
     title: 'Salles',
     icon: 'meeting_room',
     class: '',
-    roles: ['super admin', 'chef de département'],
+    roles: ['admin'],
   },
   {
     path: 'professeurs',
@@ -82,7 +81,14 @@ export const ROUTES: RouteInfo[] = [
     title: 'Administrateurs',
     icon: 'manage_accounts',
     class: '',
-    roles: ['super admin', 'chef de département'],
+    roles: ['admin'],
+  },
+  {
+    path: 'roles',
+    title: 'Rôles et Permissions',
+    icon: 'security',
+    class: '',
+    roles: ['admin'],
   },
 ];
 
