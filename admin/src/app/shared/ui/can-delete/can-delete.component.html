@@ -1,12 +1,19 @@
-<div class="container">
-    <div class="row">
-        <div class="col-12 text-center">
-            <img style="width: 300px; height: 300px; margin: auto" src="/assets/img/400.jpg" alt="Erreur">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 text-center">
-            <nz-alert nzType="info" nzMessage="{{ message }}" nzShowIcon></nz-alert>
-        </div>
-    </div>
-</div>
+<nz-modal [nzClosable]="false" [nzFooter]="null" [nzVisible]="visible" [nzTitle]="'Erreur de suppréssion'" [nzBodyStyle]="{'padding': '10px'}" [nzContent]="content">
+    <ng-template #content>
+        <nz-result nzStatus="error" nzTitle="Erreur de suppression" nzSubTitle="{{ subtitle }}">
+            <div nz-result-extra>
+                <div>
+                    <h4 nz-title>{{ title }}</h4>
+                    <p *ngFor="let item of erreurs" nz-paragraph>
+                        <i nz-icon nzType="close-circle"></i> {{ item }}
+                    </p>
+                </div>
+
+            </div>
+            <div nz-result-extra>
+                <button (click)="onClose()" nz-button nzType="primary">Fermer</button>
+
+            </div>
+        </nz-result>
+    </ng-template>
+</nz-modal>

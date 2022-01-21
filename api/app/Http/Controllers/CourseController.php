@@ -19,9 +19,9 @@ class CourseController extends Controller
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
-            return Course::orderBy('created_at', 'desc')->get();
+            return Course::with('classe')->with('departement')->orderBy('created_at', 'desc')->get();
         }
-        return Course::whereDerpartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        return Course::with('classe')->with('departement')->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -66,8 +66,7 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        $cour = Course::find($id);
-        $cour->professor;
+        $cour = Course::with('classe')->with('departement')->find($id);
         return $cour;
     }
 
@@ -108,7 +107,9 @@ class CourseController extends Controller
 
     public function search($data)
     {
-        return Course::where('name', 'like', '%' . $data . '%')
+        return Course::with('classe')
+            ->with('departement')
+            ->where('name', 'like', '%' . $data . '%')
             ->orWhere('acronym', 'like', '%' . $data . '%')
             ->get();
     }

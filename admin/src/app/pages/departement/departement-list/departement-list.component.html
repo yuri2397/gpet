@@ -17,18 +17,22 @@
                 <thead>
                     <tr>
                         <th>Nom</th>
+                        <th class="text-center">Nombre de classes</th>
                         <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of basicTable.data">
                         <td>{{ data.name }}</td>
-                        <td>
+                        <td class="text-center">{{ data.classes.length }}</td>
+                        <td class="text-center">
                             <div class="d-flex justify-content-center">
                                 <div>
-                                    <button (click)="openEditModal(data)" mat-mini-fab color="primary">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
+                                    <a [routerLink]='["show/" + data.id]'>
+                                        <button mat-mini-fab color="primary">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                                    </a>
                                 </div>
                                 <div class="mx-3">
                                     <button (click)="openEditModal(data)" mat-mini-fab color="accent">

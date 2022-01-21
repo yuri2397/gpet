@@ -2,24 +2,37 @@ import { Departement } from './../models/departement';
 import { BaseHttp } from './../shared/base-http';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class DepartementService extends BaseHttp{
-
+export class DepartementService extends BaseHttp {
   protected _baseUrl = 'departement/';
-  constructor(protected hc: HttpClient) {
+  constructor(
+    protected hc: HttpClient,
+  ) {
     super();
     this.http = hc;
   }
-
 
   findAll() {
     return this.http.get<Departement[]>(this.endPoint, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
+  }
+
+
+
+  find(departement: Departement) {
+    return this.http.get<Departement>(
+      this.endPoint + 'show/' + departement.id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   clone(batiment: Departement): any {
@@ -43,10 +56,10 @@ export class DepartementService extends BaseHttp{
   }
 
   delete(batiment: Departement) {
-    return this.http.delete<any>(
-      this.endPoint + 'destroy/' + batiment.id,
-      { headers: this.authorizationHeaders, observe: 'body' }
-    );
+    return this.http.delete<any>(this.endPoint + 'destroy/' + batiment.id, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
   }
 
   edit(batiment: Departement) {

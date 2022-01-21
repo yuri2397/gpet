@@ -1,30 +1,25 @@
-import { ProfessorService } from './../../../services/professor.service';
-import { CourseService } from 'src/app/services/course.service';
-import { Course } from './../../../models/course';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NotificationService } from 'src/app/services/notification.service';
 import { Classe } from 'src/app/models/classe';
+import { Course } from 'src/app/models/course';
 import { Departement } from 'src/app/models/departement';
+import { EC } from 'src/app/models/ec';
 import { Professor } from 'src/app/models/professor';
 import { Semester } from 'src/app/models/semester';
 import { Service } from 'src/app/models/service';
 import { ClasseService } from 'src/app/services/classe.service';
-import { EC } from 'src/app/models/ec';
+import { CourseService } from 'src/app/services/course.service';
 import { ECService } from 'src/app/services/ec.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ProfessorService } from 'src/app/services/professor.service';
 
 @Component({
-  selector: 'app-course-create',
-  templateUrl: './course-create.component.html',
-  styleUrls: ['./course-create.component.scss'],
+  selector: 'app-course-edit',
+  templateUrl: './course-edit.component.html',
+  styleUrls: ['./course-edit.component.scss'],
 })
-export class CourseCreateComponent implements OnInit {
-  course: Course = new Course();
-  validateForm!: FormGroup;
-  isLoad: boolean = false;
-
-
+export class CourseEditComponent implements OnInit {
   semesters!: Semester[];
   professors!: Professor[];
   departements!: Departement[];
@@ -32,8 +27,13 @@ export class CourseCreateComponent implements OnInit {
   courses!: Course[];
   services!: Service[];
   ecs!: EC[];
+
+  @Input() course!: Course;
+  validateForm!: FormGroup;
+  isLoad: boolean = false;
   ecLoad = false;
   profLoad = false;
+
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
@@ -123,7 +123,7 @@ export class CourseCreateComponent implements OnInit {
           this.isLoad = false;
         },
         error: (errors) => {
-          (errors);
+          errors;
           this.isLoad = false;
           this.notification.createNotification(
             'error',
@@ -140,7 +140,7 @@ export class CourseCreateComponent implements OnInit {
         this.classes = response;
       },
       error: (errors) => {
-        (errors);
+        errors;
       },
     });
   }

@@ -8,6 +8,7 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class AuthService extends BaseHttp {
+
   protected _baseUrl = 'user/';
 
   constructor(protected hc: HttpClient,private router: Router) {
@@ -29,12 +30,17 @@ export class AuthService extends BaseHttp {
     );
   }
 
+  logOut() {
+    sessionStorage.clear();
+    this.router.navigate(['/']);
+  }
+
   alreadyConnect() {
     if (this.isLogIn()) {
       if (this.isAdmin()) {
         this.router.navigate(['/admin']);
       } else {
-        this.router.navigate(['/departement']);
+        this.router.navigate(['/departement/']);
       }
     } else {
       this.router.navigate(['/login']);

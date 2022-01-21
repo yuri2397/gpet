@@ -1,20 +1,9 @@
+import { DepartementModule } from './../pages/departement/departement.module';
 import { CanDeleteComponent } from './../shared/ui/can-delete/can-delete.component';
 import { UserCreateComponent } from './../pages/user/user-create/user-create.component';
 import { UserShowComponent } from './../pages/user/user-show/user-show.component';
 import { UserListComponent } from './../pages/user/user-list/user-list.component';
-import { CourseShowComponent } from './../pages/course/course-show/course-show.component';
-import { CourseListComponent } from './../pages/course/course-list/course-list.component';
-import { CourseCreateComponent } from './../pages/course/course-create/course-create.component';
-import { ClasseCreateComponent } from './../pages/classe/classe-create/classe-create.component';
-import { ClasseShowComponent } from './../pages/classe/classe-show/classe-show.component';
-import { ClasseListComponent } from './../pages/classe/classe-list/classe-list.component';
-import { ErrorServerComponent } from './../shared/ui/error-server/error-server.component';
-import { ProfesseurEditComponent } from './../pages/professeur/professeur-edit/professeur-edit.component';
-import { ProfesseurCreateComponent } from './../pages/professeur/professeur-create/professeur-create.component';
 import { SalleEditComponent } from './../pages/salle/salle-edit/salle-edit.component';
-import { DepartementCreateComponent } from './../pages/departement/departement-create/departement-create.component';
-import { DepartementEditComponent } from './../pages/departement/departement-edit/departement-edit.component';
-import { DepartementListComponent } from './../pages/departement/departement-list/departement-list.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,8 +32,6 @@ import { SalleListComponent } from '../pages/salle/salle-list/salle-list.compone
 import { SalleCreateComponent } from '../pages/salle/salle-create/salle-create.component';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTagModule } from 'ng-zorro-antd/tag';
-import { ProfesseurListComponent } from '../pages/professeur/professeur-list/professeur-list.component';
-import { ProfesseurShowComponent } from '../pages/professeur/professeur-show/professeur-show.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -94,6 +81,7 @@ registerLocaleData(localeFr, fr);
     NzPopconfirmModule,
     NzDatePickerModule,
     NzCollapseModule,
+    DepartementModule,
   ],
   declarations: [
     AdminComponent,
@@ -102,27 +90,12 @@ registerLocaleData(localeFr, fr);
     BatimentCreateComponent,
     BatimentShowComponent,
     DashboardComponent,
-    DepartementListComponent,
-    DepartementEditComponent,
-    DepartementCreateComponent,
     SalleListComponent,
     SalleEditComponent,
     SalleCreateComponent,
-    ProfesseurShowComponent,
-    ProfesseurListComponent,
-    ProfesseurCreateComponent,
-    ProfesseurEditComponent,
-    ErrorServerComponent,
-    ClasseListComponent,
-    ClasseShowComponent,
-    ClasseCreateComponent,
-    CourseCreateComponent,
-    CourseListComponent,
-    CourseShowComponent,
     UserListComponent,
     UserShowComponent,
     UserCreateComponent,
-    CanDeleteComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

@@ -8,12 +8,21 @@ export class BaseHttp {
   private _api = 'http://127.0.0.1:8000/api/';
   protected _baseUrl!: string;
   private _super_admin = 'super admin';
-  private _editeur = 'editeur';
+  private _editeur = 'chef de département';
   protected httpClient!: HttpClient;
+
+  _canDeleteErreurs!: string[];
+  _canDeleteSubTitle!: string;
+  _canDeleteTitle!: string;
+
   constructor() {}
 
   isLogIn(): boolean {
     return this.getToken() == null ? false : true;
+  }
+
+  checkLocalData(): boolean {
+    return this.getRoles() && this.getUser() && this.getToken() ? true : false;
   }
 
   get authorizationHeaders() {
@@ -24,8 +33,32 @@ export class BaseHttp {
     };
   }
 
+  get canDeleteErreurs() {
+    return this._canDeleteErreurs;
+  }
+
+  get canDeleteSubTitle() {
+    return this._canDeleteSubTitle;
+  }
+
+  get canDeleteTitle() {
+    return this._canDeleteTitle;
+  }
+
+  set canDeleteErreurs(value: string[]) {
+    this._canDeleteErreurs = value;
+  }
+
+  set canDeleteSubTitle(value: string) {
+    this._canDeleteSubTitle = value;
+  }
+
+  set canDeleteTitle(value: string) {
+    this._canDeleteTitle = value;
+  }
+
   findSelectableList(tables: string[]) {
-    return this.http.post<any>(this.api + 'selectable',tables, {
+    return this.http.post<any>(this.api + 'selectable', tables, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
@@ -55,7 +88,15 @@ export class BaseHttp {
     return false;
   }
 
-  get endPoint(){
+  get super_admin() {
+    return this._super_admin;
+  }
+
+  get editeur() {
+    return this._editeur;
+  }
+
+  get endPoint() {
     return this.api + this.baseUrl;
   }
 
@@ -82,8 +123,8 @@ export class BaseHttp {
     this._baseUrl = baseUrl;
   }
 
-  getUser() {
-    return sessionStorage.getItem('user');
+  getUser(): User {
+    return JSON.parse(sessionStorage.getItem('user')!);
   }
 
   setToken(token: string) {

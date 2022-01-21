@@ -6,11 +6,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './shared/auth.guard';
+import { LoginGuard } from './shared/login.guard';
+import { LocalDataGuard } from './shared/local-data.guard';
 
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
-
-  { path: 'login', component: LoginComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: 'login', component: LoginComponent,canActivate: [LoginGuard]},
   {
     path: 'admin',
     component: AdminComponent,
@@ -21,7 +22,7 @@ const routes: Routes = [
           import('./admin/admin.module').then((m) => m.AdminModule),
       },
     ],
-    canActivate: [AuthGuard, AdminGuard],
+    canActivate: [AuthGuard, AdminGuard, LocalDataGuard],
   },
   {
     path: 'departement',
@@ -35,7 +36,7 @@ const routes: Routes = [
           ),
       },
     ],
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, LocalDataGuard],
   },
 ];
 
