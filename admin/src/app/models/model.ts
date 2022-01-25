@@ -23,4 +23,5 @@ export abstract class Model<T> {
   loading = false;
   created_at!: Date;
   updated_at!: Date;
+  disabled = false;
 }

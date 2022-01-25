@@ -9,10 +9,17 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("permission:voir roles", ['only' => ['index', 'show']]);
+        $this->middleware("permission:modifier roles", ['only' => ['addRoleForUser', 'removeRoleForUser']]);
+    }
+
     public function index()
     {
         return Role::with("permissions")->get();
     }
+
     public function addRoleForUser(Request $request)
     {
         $this->validate($request, [
@@ -37,10 +44,10 @@ class RoleController extends Controller
         return $user;
     }
 
-    public function gitPermissionToRole(Request $request)
+    public function givePermissionToRole(Request $request)
     {
         $this->validate($request, [
-            "role_id" => "required|exists,roles,id",
+            "role_id" => "required|exists:roles,id",
             "permissions[]" => "required"
         ]);
 
@@ -53,13 +60,13 @@ class RoleController extends Controller
     public function removePermissionToRole(Request $request)
     {
         $this->validate($request, [
-            "role_id" => "required|exists,roles,id",
-            "permissions[]" => "required"
+            "role_id" => "required|exists:roles,id",
+            "permission_id" => "required"
         ]);
 
         $role = Role::find($request->role_id);
-        $permissions = Permission::find($request->permissions);
-        $role->revokePermissionTo($permissions);
+        $permission = Permission::find($request->permission_id);
+        $role->revokePermissionTo($permission);
         return $role;
     }
 }

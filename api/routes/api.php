@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ECController;
 use App\Http\Controllers\UEController;
 use App\Http\Controllers\EPTController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CourseController;
@@ -18,8 +21,6 @@ use App\Http\Controllers\BatimentController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
-use Spatie\Permission\Models\Permission;
-use App\Http\Controllers\RoleController;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -151,13 +152,22 @@ Route::prefix("bank")->middleware(['auth:api'])->group(function () {
     Route::get('search/{data}', [BankController::class, "search"]);
 });
 
-Route::prefix("role")->middleware(['auth:api', 'permission: edit roles'])->group(function (){
+Route::prefix("role")->middleware(['auth:api'])->group(function (){
     Route::get('/', [RoleController::class, "index"]);
+    Route::post('/give-permission-to-role', [RoleController::class, "givePermissionToRole"]);
+    Route::put('/remove-permission-to-role', [RoleController::class, "removePermissionToRole"]);
+    Route::put('/remove-role-for-user', [RoleController::class, "removeRoleForUser"]);
+    Route::post('/give-role-for-user', [RoleController::class, "addRoleForUser"]);
 });
 
 Route::any('test', function (Request $request) {
-    $role = Role::whereName("chef de département")->first();
+    $role = Role::whereName("admin")->first();
     $p = Permission::all();
     $role->syncPermissions($p);
     return $role;
+});
+
+
+Route::get('/artisan', function () {
+    return Artisan::call('migrate');
 });

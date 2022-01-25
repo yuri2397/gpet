@@ -1,3 +1,4 @@
+import { Permission } from 'src/app/models/permission';
 import { HttpClient } from '@angular/common/http';
 import { BaseHttp } from './../shared/base-http';
 import { Injectable } from '@angular/core';
@@ -18,6 +19,19 @@ export class RoleService extends BaseHttp {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
+  }
+
+  deletePermissionToRole(role: Role, permission: Permission) {
+    return this.http.put<Role>(
+      this.endPointWithSlash + 'remove-permission-to-role',
+      {
+        role_id: role.id,
+        permission_id: permission.id,
+      },
+      {
+        headers: this.authorizationHeaders,
+      }
+    );
   }
 
   findAll() {
