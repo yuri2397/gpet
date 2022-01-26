@@ -1,3 +1,4 @@
+import { AnyPermissionComponent } from './shared/ui/any-permission/any-permission.component';
 import { NotFoundComponent } from './shared/ui/not-found/not-found.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { AdminGuard } from './shared/admin.guard';
@@ -26,6 +27,9 @@ const routes: Routes = [
   },
   {
     path: 'edt/:departement/:classe', component: EdtShowComponent
+  },
+  {
+    path: "any-permission", component: AnyPermissionComponent
   },
   {
     path:"**",

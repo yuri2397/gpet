@@ -14,6 +14,7 @@ import { DepartementEditComponent } from '../../departement/departement-edit/dep
 import { Semester } from 'src/app/models/semester';
 import { Professor } from 'src/app/models/professor';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-course-list',
@@ -102,6 +103,13 @@ export class CourseListComponent implements OnInit {
       nzMaskClosable: false,
       nzClosable: false,
     });
+  }
+  
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.courseService.can(p, this.courseService.getPermissions());
+    return test;
   }
 
   deleteCourse(course: Course) {

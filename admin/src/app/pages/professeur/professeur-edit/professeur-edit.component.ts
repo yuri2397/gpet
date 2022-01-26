@@ -63,7 +63,6 @@ export class ProfesseurEditComponent implements OnInit {
         this.departements = response.departements;
         this.professorTypes = response.professor_types;
         this.banks = response.banks;
-        console.log(response);
         this.isLoadData = false;
       },
       error: (errors) => {

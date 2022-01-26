@@ -32,15 +32,15 @@ export class AuthService extends BaseHttp {
 
   logOut() {
     sessionStorage.clear();
-    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/']);
   }
 
   alreadyConnect() {
     if (this.isLogIn()) {
-        this.router.navigate(['/admin/dashboard']);
+        return this.router.navigate(['/admin']);
     } else {
-      this.router.navigate(['/']);
+      return this.router.navigate(['/']);
     }
   }
 }

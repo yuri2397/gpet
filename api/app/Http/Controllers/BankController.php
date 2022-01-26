@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class BankController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir banque")->only(["index", "show"]);
+        $this->middleware("permission:modifier banque")->only(["update"]);
+        $this->middleware("permission:creer banque")->only(["store"]);
+        $this->middleware("permission:supprimer banque")->only(["destroy"]);
+    }
     public function index()
     {
         return Bank::all();

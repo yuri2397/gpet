@@ -45,11 +45,9 @@ export class EcEditComponent implements OnInit {
   }
 
   save() {
-    console.log(this.ec);
     this.isLoad = true;
     this.ecService.edit(this.ec).subscribe({
       next: (response) => {
-        console.log(response);
         this.isLoad = false;
         this.destroyModal(response);
         this.notification.success(
@@ -58,7 +56,6 @@ export class EcEditComponent implements OnInit {
         );
       },
       error: (errors) => {
-        console.log(errors);
         this.isLoad = false;
         this.destroyModal(null);
       },

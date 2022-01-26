@@ -76,7 +76,6 @@ export class ClasseShowComponent implements OnInit {
     this.eptService.show(classe).subscribe({
       next: (data) => {
         this.epts = data;
-        console.log("ETP", data);
         this.eptLoad = false;
       },
       error: (errors) => {

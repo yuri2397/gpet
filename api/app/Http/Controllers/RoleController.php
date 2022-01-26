@@ -11,13 +11,19 @@ class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware("permission:voir roles", ['only' => ['index', 'show']]);
-        $this->middleware("permission:modifier roles", ['only' => ['addRoleForUser', 'removeRoleForUser']]);
+
     }
 
     public function index()
     {
         return Role::with("permissions")->get();
+    }
+
+    public function findRoleOnUserCreate()
+    {
+        return Role::with("permissions")
+            ->where("name", "!=", "super admin")
+            ->get();
     }
 
     public function addRoleForUser(Request $request)
@@ -68,5 +74,34 @@ class RoleController extends Controller
         $permission = Permission::find($request->permission_id);
         $role->revokePermissionTo($permission);
         return $role;
+    }
+
+    public function removePermissionForUser(Request $request)
+    {
+        $this->validate($request, [
+            "user_id" => "required|exists:users,id",
+            "permission_id" => "required|exists:permissions,id"
+        ]);
+
+        $user = User::find($request->user_id);
+        $user->revokePermissionTo(Permission::find($request->permission_id));
+        return $user;
+    }
+
+    public function searchPermission($data)
+    {
+        return Permission::where('name', 'like', '%' . $data . '%')
+        ->get();
+    }
+
+    public function givePermissionToUser(Request $request)
+    {
+        $this->validate($request, [
+            "user_id" => "required|exists:users,id",
+            "permissions" => "required|array"
+        ]);
+        $user = User::find($request->user_id);
+        $user->givePermissionTo($request->permissions);
+        return $user;
     }
 }

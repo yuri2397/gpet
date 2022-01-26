@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("permission:voir classe")->only(["index", "show"]);
+        $this->middleware("permission:modifier classe")->only(["update"]);
+        $this->middleware("permission:creer classe")->only(["store"]);
+        $this->middleware("permission:supprimer classe")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *

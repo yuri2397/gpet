@@ -1,3 +1,4 @@
+import { Permission } from 'src/app/models/permission';
 import { Role } from './../models/role';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
@@ -98,6 +99,28 @@ export class BaseHttp  extends GestionRole{
     return test;
   }
 
+  isCD(): boolean {
+    let test = false;
+    this.getRoles().forEach(r => {
+        if(r.name == this.editeur){
+          test = true;
+        }
+    });
+
+    return test;
+  }
+
+  isSuperAdmin(): boolean {
+    let test = false;
+    this.getRoles().forEach(r => {
+        if(r.name == this.super_admin){
+          test = true;
+        }
+    });
+
+    return test;
+  }
+
   isEditeur(): boolean {
     let test = false;
     this.getRoles().forEach(r => {
@@ -141,11 +164,15 @@ export class BaseHttp  extends GestionRole{
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   getRoles(): Role[] {
-    return JSON.parse(localStorage.getItem('roles')!) as Role[];
+    return JSON.parse(sessionStorage.getItem('roles')!) as Role[];
+  }
+
+  getPermissions(): Permission[]{
+    return JSON.parse(sessionStorage.getItem('permissions')!) as Role[];
   }
 
   get baseUrl(): string {
@@ -157,7 +184,7 @@ export class BaseHttp  extends GestionRole{
   }
 
   getUser(): User {
-    return JSON.parse(localStorage.getItem('user')!);
+    return JSON.parse(sessionStorage.getItem('user')!);
   }
 
   departementId(): number{
@@ -169,21 +196,25 @@ export class BaseHttp  extends GestionRole{
   }
 
   setToken(token: string) {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
   }
 
   setUser(user: User) {
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   setRoles(roles: Role[]) {
-    console.log("ROLES IN SET ROLES", roles);
-    
-    localStorage.setItem('roles', JSON.stringify(roles));
+    sessionStorage.removeItem("roles");
+    sessionStorage.setItem('roles', JSON.stringify(roles));
+  }
+
+  setPermissions(p: Permission[]) {
+    sessionStorage.removeItem("permissions");
+    sessionStorage.setItem('permissions', JSON.stringify(p));
   }
 
   setDepartement(departement: Departement){
-    localStorage.setItem('departement', JSON.stringify(departement));
+    sessionStorage.setItem('departement', JSON.stringify(departement));
   }
 
   get api(): string {

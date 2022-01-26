@@ -2,8 +2,10 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Mail\SendNewUserMail;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ECController;
 use App\Http\Controllers\UEController;
@@ -48,22 +50,22 @@ Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::get("profile", [AuthController::class, "user"]);
 
     Route::get("/", [UserController::class, "index"]);
-    Route::post("create", [UserController::class, "store"])->middleware("role:super admin");;
-    Route::put("update/{id}", [UserController::class, "update"])->middleware("role:super admin");
-    Route::get("show/{id}", [UserController::class, "show"])->middleware("role:super admin");
-    Route::delete("destroy/{id}", [UserController::class, "destroy"])->middleware("role:super admin");
+    Route::post("create", [UserController::class, "store"]);
+    Route::put("update/{id}", [UserController::class, "update"]);
+    Route::get("show/{id}", [UserController::class, "show"]);
+    Route::delete("destroy/{id}", [UserController::class, "destroy"]);
 });
 
-Route::prefix("batiment")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [BatimentController::class, "index"])->withoutMiddleware('role:super admin');
+Route::prefix("batiment")->middleware(['auth:api'])->group(function () {
+    Route::get('', [BatimentController::class, "index"]);
     Route::post('create', [BatimentController::class, "store"]);
     Route::put('update/{id}', [BatimentController::class, "update"]);
     Route::delete('destroy/{id}', [BatimentController::class, "destroy"]);
 });
 
-Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->group(function () {
-    Route::get('', [DepartementController::class, "index"])->withoutMiddleware('role:super admin');
-    Route::get('show/{id}', [DepartementController::class, "show"])->withoutMiddleware('role:super admin');
+Route::prefix("departement")->middleware(['auth:api',])->group(function () {
+    Route::get('', [DepartementController::class, "index"]);
+    Route::get('show/{id}', [DepartementController::class, "show"]);
     Route::post('create', [DepartementController::class, "store"]);
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
@@ -71,7 +73,6 @@ Route::prefix("departement")->middleware(['auth:api', 'role:super admin'])->grou
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
-
     Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
     Route::post('create', [SemesterController::class, 'store']);
 });
@@ -158,13 +159,18 @@ Route::prefix("role")->middleware(['auth:api'])->group(function (){
     Route::put('/remove-permission-to-role', [RoleController::class, "removePermissionToRole"]);
     Route::put('/remove-role-for-user', [RoleController::class, "removeRoleForUser"]);
     Route::post('/give-role-for-user', [RoleController::class, "addRoleForUser"]);
+    Route::put('/remove-permission-for-user', [RoleController::class, "removePermissionForUser"]);
+    Route::put('/give-permission-to-user', [RoleController::class, "givePermissionToUser"]);
+    Route::get('not-super', [RoleController::class, 'findRoleOnUserCreate']);
+    Route::get("/search-permission/{data}", [RoleController::class, "searchPermission"]);
 });
 
 Route::any('test', function (Request $request) {
-    $role = Role::whereName("admin")->first();
     $p = Permission::all();
-    $role->syncPermissions($p);
-    return $role;
+
+    $user = User::find(1);
+    $user->givePermissionTo($p);
+    return $user;
 });
 
 

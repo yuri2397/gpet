@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des cours</h5>
                 </div>
-                <div>
+                <div *ngIf="can('creer cour')">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -66,7 +66,7 @@
                         </td>
                         <td *ngIf="!classe">
                             <div class="d-flex justify-content-center">
-                                <div class="mx-3">
+                                <div class="mx-3" *ngIf="can('voir cour')">
                                     <a [routerLink]="['show/' + data.id]">
                                         <button mat-mini-fab color="primary">
                       <mat-icon>visibility</mat-icon>
@@ -75,12 +75,12 @@
                                     </a>
 
                                 </div>
-                                <div class="mx-3">
+                                <div class="mx-3" *ngIf="can('modifier cour')">
                                     <button (click)="selectedCourse =data; openEditModal()" mat-mini-fab color="accent">
                     <mat-icon>edit</mat-icon>
                   </button>
                                 </div>
-                                <div>
+                                <div *ngIf="can('supprimer cour')">
                                     <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
                     <mat-icon>delete</mat-icon>
                   </button>

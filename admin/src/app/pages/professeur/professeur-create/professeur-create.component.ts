@@ -124,7 +124,6 @@ export class ProfesseurCreateComponent implements OnInit {
       next: (response) => {
         this.departements = response.departements;
         this.professorTypes = response.professor_types;
-        console.log(response);
         this.isLoadData = false;
       },
       error: (errors) => {
@@ -139,8 +138,6 @@ export class ProfesseurCreateComponent implements OnInit {
   }
 
   onBornAtChange(date: any){
-    console.log("DATE CHANGE", date);
-    console.log("PP", this.professor.born_at);
   }
 
   destroyModal(data: Professor | null): void {
@@ -149,12 +146,9 @@ export class ProfesseurCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    console.log(this.professor);
-    
     this.professorService.create(this.professor).subscribe({
       next: (response) => {
         this.isLoad = false;
-        console.log(response);
         this.notification.createNotification(
           'success',
           'Notification',
@@ -163,8 +157,6 @@ export class ProfesseurCreateComponent implements OnInit {
         this.destroyModal(response);
       },
       error: (errors) => {
-        console.log(errors);
-        
         this.isLoad = false;
         errors;
         this.notification.createNotification(

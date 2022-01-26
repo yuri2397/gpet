@@ -36,8 +36,6 @@ export class SemesterCreateComponent implements OnInit {
         this.destroyModal(response)
       },
       error: errors => {
-        console.log(errors);
-        
       }
     })
   }

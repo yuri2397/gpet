@@ -1,8 +1,10 @@
+import { Router } from '@angular/router';
 import { UserCreateComponent } from './../user-create/user-create.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
 import { Component, OnInit } from '@angular/core';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-user-list',
@@ -14,7 +16,8 @@ export class UserListComponent implements OnInit {
   isLoad = true;
   constructor(
     private userService: UserService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,13 +28,10 @@ export class UserListComponent implements OnInit {
     this.isLoad = true;
     this.userService.findByAuthDepartement().subscribe({
       next: (response) => {
-        console.log(response);
         this.users = response;
         this.isLoad = false;
       },
-      error: (errors) => {
-        console.log(errors);
-      },
+      error: (errors) => {},
     });
   }
 
@@ -41,7 +41,20 @@ export class UserListComponent implements OnInit {
       nzContent: UserCreateComponent,
       nzClosable: false,
     });
+
+    modal.afterClose.subscribe((data: any) => {
+      if (data) this.findUsers();
+    });
   }
 
-  openEditModal(data: any) {}
+  showUser(data: User) {
+    this.router.navigate(['/admin/users/show/' + data.id]);
+  }
+
+  can(permission: string) {
+    let p = new Permission();
+    p.name = permission;
+    let test = this.userService.can(p, this.userService.getPermissions());
+    return test;
+  }
 }

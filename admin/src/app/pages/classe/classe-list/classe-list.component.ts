@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Classe } from 'src/app/models/classe';
 import { Departement } from 'src/app/models/departement';
+import { Permission } from 'src/app/models/permission';
 import { ClasseService } from 'src/app/services/classe.service';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -28,17 +29,17 @@ export class ClasseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    if (this.departement != null) {
+    if (this.classeService.isSuperAdmin()) {
       this.classes = this.departement.classes;
       this.isLoad = false;
     } else {
-      this.departement = this.classeService.getUser().departement;
+      this.departement = this.classeService.departement();
       this.findByDepartement();
     }
   }
 
   findAll() {
+    this.isLoad = true;
     this.classeService.findAll().subscribe({
       next: (response) => {
         this.departement = response;
@@ -147,5 +148,13 @@ export class ClasseListComponent implements OnInit {
         );
       },
     });
+  }
+
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.classeService.can(p, this.classeService.getPermissions());
+    return test;
   }
 }

@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class ECController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir ec")->only(["index", "show"]);
+        $this->middleware("permission:modifier ec")->only(["update"]);
+        $this->middleware("permission:creer ec")->only(["store"]);
+        $this->middleware("permission:supprimer ec")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *

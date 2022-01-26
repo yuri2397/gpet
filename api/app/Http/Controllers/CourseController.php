@@ -13,6 +13,15 @@ use App\Models\EC;
 
 class CourseController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir cour")->only(["index", "show"]);
+        $this->middleware("permission:modifier cour")->only(["update", "courseHasProfessor"]);
+        $this->middleware("permission:creer cour")->only(["store"]);
+        $this->middleware("permission:supprimer cour")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +51,7 @@ class CourseController extends Controller
             "ec_id" => "required|exists:e_c_s,id",
             "departement_id" => 'required|exists:departements,id'
         ]);
-        
+
         $ec = EC::with("ue")->find($request->ec_id);
 
         $course = new Course;
@@ -89,20 +98,20 @@ class CourseController extends Controller
             "ec_id" => "required|exists:e_c_s,id",
             "departement_id" => 'required|exists:departements,id'
         ]);
-        
+
         $ec = EC::with("ue")->find($request->ec_id);
 
         DB::table('courses')->whereId($id)->update([
-        	"acronym" => $ec->code,
-        	"name" => $ec->name,
-        	"hours" => $ec->vht,
-        	"classe_id" => $request->classe_id,
-        	"groupe_number" => $request->groupe_number,
-        	"semester_id" => $ec->ue->semester_id,
-        	"departement_id" => $request->departement_id,
-        	"service_id" => $request->service_id,
-        	"ec_id" => $ec->id,
-        	"professor_id" => $request->professor_id ?? null,
+            "acronym" => $ec->code,
+            "name" => $ec->name,
+            "hours" => $ec->vht,
+            "classe_id" => $request->classe_id,
+            "groupe_number" => $request->groupe_number,
+            "semester_id" => $ec->ue->semester_id,
+            "departement_id" => $request->departement_id,
+            "service_id" => $request->service_id,
+            "ec_id" => $ec->id,
+            "professor_id" => $request->professor_id ?? null,
         ]);
 
         return $this->show($id);
@@ -161,7 +170,8 @@ class CourseController extends Controller
             $course->professor_id = $request->professor_id;
             $course->save();
             return response()->json($course, 200);
-        } else {
+        }
+        else {
             $cp = Professor::find($course->professor_id);
             return response()->json([
                 'message' => 'Ce cour est affecté à ' . $cp->first_name . ' ' . $cp->last_name
@@ -194,9 +204,9 @@ class CourseController extends Controller
             ->whereProfessorId($request->professor_id)
             ->whereIsPaid(0)
             ->update([
-                "is_paid" => true
-            ]);
-        
+            "is_paid" => true
+        ]);
+
         return response()->json([
             "message" => "Paiements effectué avec succès."
         ], 200);

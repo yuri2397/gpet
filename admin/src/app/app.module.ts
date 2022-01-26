@@ -1,3 +1,4 @@
+import { AnyPermissionComponent } from './shared/ui/any-permission/any-permission.component';
 import { HasRoleInterceptor } from './shared/has-role.interceptor';
 import { MatButtonModule } from '@angular/material/button';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -33,6 +34,7 @@ registerLocaleData(fr);
     LoginComponent,
     NotFoundComponent,
     EdtShowComponent,
+    AnyPermissionComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ registerLocaleData(fr);
     { provide: NZ_I18N, useValue: fr_FR },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HasRoleInterceptor,multi: true
+      useClass: HasRoleInterceptor,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],

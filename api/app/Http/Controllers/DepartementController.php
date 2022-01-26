@@ -9,14 +9,13 @@ use Illuminate\Support\Facades\DB;
 class DepartementController extends Controller
 {
 
-    // public function stats()
-    // {
-    //     $stats = [];
-
-    //     $stats['nb_classes'] = DB::table('classes')
-    //     ->join('departements', 'classes.departement_id')
-    // }
-
+    public function __construct()
+    {
+        $this->middleware("permission:voir departement")->only(["index", "show"]);
+        $this->middleware("permission:modifier departement")->only(["update"]);
+        $this->middleware("permission:creer departement")->only(["store"]);
+        $this->middleware("permission:supprimer departement")->only(["destroy"]);
+    }
     /**
      * Display a listing of the resource.
      *

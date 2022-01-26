@@ -34,12 +34,10 @@ export class RoleListComponent implements OnInit {
         this.listOfDisplayData = response[0].permissions;
         this.currentPermissions = response[0].permissions;
         this.roles = response;
-        console.log(this.roles);
         this.allIsLoad = false;
       },
       error: (errors) => {
         console.log(errors);
-        this.notification.error("Notification", errors.error.message)
       },
     });
   }
@@ -62,8 +60,6 @@ export class RoleListComponent implements OnInit {
   {
     this.currentPermissions = item.permissions;
     this.listOfDisplayData = item.permissions;
-    console.log(item.name);
-    console.log(this.listOfDisplayData);
   }
 
   openCreateModal(role: Role){
@@ -74,7 +70,6 @@ export class RoleListComponent implements OnInit {
     this.isLoad = true;
     this.roleService.deletePermissionToRole(role, permission).subscribe({
       next: response => {
-        console.log(response);
         this.findAll();
         this.isLoad = false;
       },

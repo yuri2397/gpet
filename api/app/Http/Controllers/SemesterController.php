@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class SemesterController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir semestre")->only(["index", "show"]);
+        $this->middleware("permission:modifier semestre")->only(["update"]);
+        $this->middleware("permission:creer semestre")->only(["store"]);
+        $this->middleware("permission:supprimer semestre")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *

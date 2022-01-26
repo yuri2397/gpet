@@ -57,8 +57,6 @@ export class CourseEditComponent implements OnInit {
   }
 
   serviceAmout(serviceId: number) {
-    console.log(serviceId);
-    
     if (serviceId == null) this.serviceAmountFCFA = 'Montant (FCFA)';
     let amount!: number;
     if (this.services) {

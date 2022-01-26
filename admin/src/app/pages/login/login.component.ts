@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.authService.alreadyConnect();
     this.validateForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.min(6)]],
@@ -44,10 +45,10 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (response: LoginResponse) => {
           this.authService.setRoles(response.user.roles);
+          this.authService.setPermissions(response.user.permissions);
           this.authService.setToken(response.token);
           this.authService.setUser(response.user);
           this.authService.setDepartement(response.departement);
-          console.log('ROLE AFTER LOGIN', response.user.roles);
           this.afterLogin(response);
           this.isLoad = false;
         },
@@ -62,10 +63,6 @@ export class LoginComponent implements OnInit {
       });
   }
   afterLogin(response: LoginResponse) {
-    if (this.authService.isAdmin()) {
-      this.router.navigate(['/admin/dashboard']);
-    } else {
-      this.router.navigate(['/admin/classes']);
-    }
+      this.router.navigate(['/admin']);
   }
 }

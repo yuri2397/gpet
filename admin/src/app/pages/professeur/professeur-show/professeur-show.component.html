@@ -10,7 +10,7 @@
                 </div>
                 <div>
                     <div class="d-flex justify-content-end align-items-center">
-                        <div class="mx-1">
+                        <div class="mx-1" *ngIf="can('voir payement')">
                             <a [routerLink]='["/admin/professeurs/payements/" + professeur.registration_number]'>
                                 <button mat-mini-fab color="default">
                   <mat-icon>paid</mat-icon>
@@ -112,8 +112,6 @@
                                         </div>
                                     </nz-tab>
                                 </nz-tabset>
-
-
                             </nz-card>
                             <ng-template #coverTemplate>
                                 <img class="user-avatar" [src]="userProfilePath()" />

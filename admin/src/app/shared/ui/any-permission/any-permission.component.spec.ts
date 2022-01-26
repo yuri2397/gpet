@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserShowComponent } from './user-show.component';
+import { AnyPermissionComponent } from './any-permission.component';
 
-describe('UserShowComponent', () => {
-  let component: UserShowComponent;
-  let fixture: ComponentFixture<UserShowComponent>;
+describe('AnyPermissionComponent', () => {
+  let component: AnyPermissionComponent;
+  let fixture: ComponentFixture<AnyPermissionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserShowComponent ]
+      declarations: [ AnyPermissionComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserShowComponent);
+    fixture = TestBed.createComponent(AnyPermissionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des batiments</h5>
                 </div>
-                <div>
+                <div *ngIf="can('creer batiment')">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -25,12 +25,12 @@
                         <td>{{ data.name }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <div>
+                                <div *ngIf="can('modifier salle')">
                                     <button (click)="openEditModal(data)" mat-mini-fab color="primary">
                     <mat-icon>edit</mat-icon>
                   </button>
                                 </div>
-                                <div class="mx-3">
+                                <div class="mx-3" *ngIf="can('supprimer salle')">
                                     <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
                     <mat-icon>delete</mat-icon>
                   </button>

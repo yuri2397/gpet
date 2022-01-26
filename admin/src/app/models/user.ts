@@ -1,5 +1,6 @@
-import { Departement } from "./departement";
-import { Role } from "./role";
+import { Departement } from './departement';
+import { Permission } from './permission';
+import { Role } from './role';
 
 export class User {
   first_name!: string;
@@ -8,6 +9,7 @@ export class User {
   avatar!: string;
   id!: number;
   departement_id!: number;
-  roles! : Role[];
+  roles!: Role[];
+  permissions!: Permission[];
   departement!: Departement;
 }
