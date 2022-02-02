@@ -53,6 +53,7 @@ Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::get("/", [UserController::class, "index"]);
     Route::post("create", [UserController::class, "store"]);
     Route::put("update/{id}", [UserController::class, "update"]);
+    Route::put("update-avatar", [UserController::class, "updateAvatar"]);
     Route::get("show/{id}", [UserController::class, "show"]);
     Route::delete("destroy/{id}", [UserController::class, "destroy"]);
 });

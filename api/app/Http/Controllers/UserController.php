@@ -9,10 +9,11 @@ use App\Mail\SendNewUserMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Traits\Utils;
 
 class UserController extends Controller
 {
-
+    use Utils;
     public function __construct()
     {
         $this->middleware("permission:voir admin")->only(["index", "show"]);
@@ -97,5 +98,25 @@ class UserController extends Controller
     public function destroy($id)
     {
         return DB::table("users")->whereId($id)->delete();
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $this->validate($request, [
+            "image" => "required"
+        ]);
+
+        $url = $this->uploadImage($request, $this->userProfilPath);
+        if($url){
+            $user = User::find(auth()->id());
+            $user->avatar = $url;
+            $user->save();
+            return response()->json([
+                "message" => "Votre profil est bien modifié."
+            ], 200);
+        }
+        return response()->json([
+            "message" => "Merci de selectionner une image."
+        ], 422);
     }
 }

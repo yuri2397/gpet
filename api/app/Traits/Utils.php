@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Traits;
+
+use Illuminate\Http\Request;
+
+
 trait Utils
 {
-
+    protected $userProfilPath = "user-profile";
     public function hourEmbedHour($start, $end, $emdStart, $emdEnd)
     {
         if (
@@ -20,5 +24,16 @@ trait Utils
             return true;
         }
         return false;
+    }
+
+    public function uploadImage(Request $request, $path)
+    {
+        if ($request->hasFile('file')) {
+
+            $request->file->store($path, 'public');
+
+            return $request->file->hashName();
+        }
+        return null;
     }
 }
