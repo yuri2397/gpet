@@ -48,6 +48,7 @@ Route::post('selectable', function (Request $request) {
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
+    Route::post("/update-password", [AuthController::class, "updatePassword"]);
 
     Route::get("/", [UserController::class, "index"]);
     Route::post("create", [UserController::class, "store"]);
@@ -69,7 +70,6 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::post('create', [DepartementController::class, "store"]);
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
-
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
@@ -84,8 +84,6 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::get('show/{id}', [ClasseController::class, 'show']);
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
-
-
 });
 Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::get('', [EPTController::class, "index"]);
@@ -153,7 +151,7 @@ Route::prefix("bank")->middleware(['auth:api'])->group(function () {
     Route::get('search/{data}', [BankController::class, "search"]);
 });
 
-Route::prefix("role")->middleware(['auth:api'])->group(function (){
+Route::prefix("role")->middleware(['auth:api'])->group(function () {
     Route::get('/', [RoleController::class, "index"]);
     Route::post('/give-permission-to-role', [RoleController::class, "givePermissionToRole"]);
     Route::put('/remove-permission-to-role', [RoleController::class, "removePermissionToRole"]);

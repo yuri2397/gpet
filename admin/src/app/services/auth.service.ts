@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseHttp } from '../shared/base-http';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -43,4 +44,19 @@ export class AuthService extends BaseHttp {
       return this.router.navigate(['/']);
     }
   }
+
+  updatePassword(password: string, new_password: string) {
+    return this.http.post<User>(
+      this.endPointWithSlash + 'update-password',
+      {
+        password: password,
+        new_password: new_password,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
 }
