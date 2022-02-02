@@ -19,7 +19,7 @@ export const ROUTES: RouteInfo[] = [
     title: 'Dashboard',
     icon: 'space_dashboard',
     class: '',
-    permissions: [],
+    permissions: ['*'],
   },
   {
     path: 'batiments',
@@ -146,7 +146,7 @@ export class AdminComponent implements OnInit {
   canShowItem(item: RouteInfo) {
     let r = false;
     this.permissions.forEach((e) => {
-      if (item.permissions.indexOf(e.name) != -1) {
+      if (item.permissions.indexOf(e.name) != -1 || item.permissions.indexOf('*') != -1) {
         r = true;
       }
     });
