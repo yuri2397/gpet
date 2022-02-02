@@ -65,6 +65,7 @@ class EPTController extends Controller
         $start = date("H:i", strtotime($request->start));
         $end = date("H:i", strtotime($request->end));
         $day = Day::find($request->day_id);
+        
         $classe = Classe::find($request->classe_id);
         $professor = Professor::find($course->professor->id);
         $salle = Salle::find($request->salle_id);

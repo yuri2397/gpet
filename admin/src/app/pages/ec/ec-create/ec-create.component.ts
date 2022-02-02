@@ -43,7 +43,7 @@ export class EcCreateComponent implements OnInit {
       ue_code: [null, []],
       ue_name: [null, []],
       ue_departement: [null, []],
-      ue_semester: [null, []]
+      ue_semester: [null, []],
     });
   }
 
@@ -62,7 +62,7 @@ export class EcCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    if (this.ecService.isEditeur()){
+    if (this.ecService.isEditeur()) {
       this.ec.ue.departement_id = this.ecService.getUser().departement.id;
     }
     this.ecService.create(this.ec).subscribe({
@@ -72,10 +72,16 @@ export class EcCreateComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          "Nouveau EU ajouté avec succès."
+          'Nouveau EU ajouté avec succès.'
         );
       },
       error: (errors) => {
+        this.isLoad = false;
+        this.notification.createNotification(
+          'error',
+          'Notification',
+          errors.error.message
+        );
       },
     });
   }

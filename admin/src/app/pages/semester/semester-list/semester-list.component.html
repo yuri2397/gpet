@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isLoad; else elseTemplate">
     <div class="container-fluid pb-3">
         <div class="card shadow">
-            <div class="card-header bg-color" *ngIf="can('CREER SEMESTRE')">
+            <div class="card-header bg-color" *ngIf="can('creer semestre')">
                 <div class="d-flex align-items-center ">
                     <div>
                         <button (click)="openCreateSemesterModal()" mat-fab color="default">

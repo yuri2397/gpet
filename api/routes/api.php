@@ -175,5 +175,5 @@ Route::any('test', function (Request $request) {
 
 
 Route::get('/artisan', function () {
-    return Artisan::call('migrate');
+    return Artisan::call('storage:link');
 });

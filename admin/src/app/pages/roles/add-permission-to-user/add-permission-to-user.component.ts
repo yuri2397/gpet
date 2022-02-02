@@ -30,6 +30,7 @@ export class AddPermissionToUserComponent implements OnInit {
       permissions: [[], [Validators.required]],
     });
     this.findAllPermissions();
+    console.log(this.user);
   }
 
   destroyModal(data: any | null) {
@@ -37,16 +38,24 @@ export class AddPermissionToUserComponent implements OnInit {
   }
 
   save() {
+    this.isLoad = true;
     this.roleService
       .givePermissionToUser(this.user, this.selectedValue)
       .subscribe({
         next: (response) => {
-          this.ref.destroy(response);
           this.message.success('Permissions attribuées avec succès.');
-          this.roleService.setPermissions(response.permissions);
+          if (this.roleService.getUser().id === this.user.id) {
+            this.roleService.setPermissions(response.permissions);
+            window.location.reload();
+          }
+          this.ref.destroy(response);
+
         },
         error: (errors) => {
-          this.message.success(errors.error.message);
+          this.isLoad = false;
+          this.message.error(errors.error.message);
+          this.ref.destroy(null);
+
         },
       });
   }

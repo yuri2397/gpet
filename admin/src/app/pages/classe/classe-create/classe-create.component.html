@@ -1,7 +1,7 @@
 <div>
     <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
-            <nz-form-label nzRequired nzFor="name">Nom du batiment</nz-form-label>
+            <nz-form-label nzRequired nzFor="name">Nom de la classe</nz-form-label>
             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
                 <input [(ngModel)]="classe.name" formControlName="name" nz-input name="name" type="text" id="name">
             </nz-form-control>

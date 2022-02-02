@@ -85,7 +85,6 @@ export class ClasseListComponent implements OnInit {
         departement: this.departement,
       },
       nzCentered: true,
-      nzWidth: '50em',
       nzMaskClosable: false,
       nzClosable: false,
     });

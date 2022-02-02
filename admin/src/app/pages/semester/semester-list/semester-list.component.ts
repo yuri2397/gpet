@@ -36,6 +36,8 @@ export class SemesterListComponent implements OnInit {
 
   ngOnInit(): void {
     this.findByDepartement(this.semesterService.departement());
+    console.log(this.ecService.getPermissions());
+    
   }
 
   findByDepartement(departement: Departement) {
