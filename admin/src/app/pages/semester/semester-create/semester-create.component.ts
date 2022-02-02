@@ -31,15 +31,20 @@ export class SemesterCreateComponent implements OnInit {
   save() {
     this.isLoad = true;
     this.semesterService.create(this.semester).subscribe({
-      next: response => {
-        this.notification.success("Notification", "Semestre ajouté avec succès.");
-        this.destroyModal(response)
+      next: (response) => {
+        this.notification.success(
+          'Notification',
+          'Semestre ajouté avec succès.'
+        );
+        this.destroyModal(response);
       },
-      error: errors => {
-        console.log(errors);
-        
-      }
-    })
+      error: (errors) => {
+        this.isLoad = false;
+        if (errors.status != 403)
+          this.notification.error('Notification', errors.error.message);
+        this.destroyModal(null);
+      },
+    });
   }
 
   destroyModal(data: Semester | null) {

@@ -125,14 +125,6 @@ export class ProfessorService extends BaseHttp {
   }
 
   create(professor: Professor) {
-    console.log(
-      professor.born_at.getFullYear() +
-        '-' +
-        (professor.born_at.getUTCMonth() + 1) +
-        '-' +
-        professor.born_at.getDate()
-    );
-
     return this.http.post<Professor>(
       this.endPointWithSlash + 'create',
       {

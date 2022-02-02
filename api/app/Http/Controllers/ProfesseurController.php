@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class ProfesseurController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir professeur")->only(["index", "show"]);
+        $this->middleware("permission:modifier professeur")->only(["update"]);
+        $this->middleware("permission:creer professeur")->only(["store"]);
+        $this->middleware("permission:supprimer professeur")->only(["destroy"]);
+        $this->middleware("permission:voir payement")->only(["payments"]);
+        
+    }
     
     public function index()
     {
@@ -80,7 +90,7 @@ class ProfesseurController extends Controller
 
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
-            $prof->courses;
+            $prof->courses = $prof->courses()->with("classe")->get();
         } else {
             $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
         }

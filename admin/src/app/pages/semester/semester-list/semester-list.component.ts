@@ -12,6 +12,7 @@ import { Departement } from 'src/app/models/departement';
 import { Semester } from 'src/app/models/semester';
 import { SemesterService } from 'src/app/services/semester.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-semester-list',
@@ -35,6 +36,8 @@ export class SemesterListComponent implements OnInit {
 
   ngOnInit(): void {
     this.findByDepartement(this.semesterService.departement());
+    console.log(this.ecService.getPermissions());
+    
   }
 
   findByDepartement(departement: Departement) {
@@ -43,6 +46,8 @@ export class SemesterListComponent implements OnInit {
       next: (response) => {
         this.semesters = response;
         this.isLoad = false;
+        console.log(response);
+        
       },
       error: (errors) => {
         this.isLoad = false;
@@ -97,7 +102,6 @@ export class SemesterListComponent implements OnInit {
       },
       error: (errors) => {
         this.notification.error('Suppression', errors.error.message);
-        console.log(errors);
       },
     });
   }
@@ -114,5 +118,12 @@ export class SemesterListComponent implements OnInit {
         this.findByDepartement(this.semesterService.departement());
       }
     })
+  }
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.semesterService.can(p, this.semesterService.getPermissions());
+    return test;
   }
 }

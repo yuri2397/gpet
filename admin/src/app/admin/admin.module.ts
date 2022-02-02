@@ -1,3 +1,4 @@
+import { AddPermissionToUserComponent } from './../pages/roles/add-permission-to-user/add-permission-to-user.component';
 import { RoleCreateComponent } from './../pages/roles/role-create/role-create.component';
 import { RoleListComponent } from './../pages/roles/role-list/role-list.component';
 import { RoleEditComponent } from './../pages/roles/role-edit/role-edit.component';
@@ -86,6 +87,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 /**
  * TIME AND DATE
@@ -159,6 +161,7 @@ registerLocaleData(localeFr, fr);
     MatProgressBarModule,
     NzTimePickerModule,
     NzSpinModule,
+    NzMessageModule,
   ],
   declarations: [
     AdminComponent,
@@ -208,9 +211,10 @@ registerLocaleData(localeFr, fr);
     EcEditComponent,
     RoleEditComponent,
     RoleListComponent,
-    RoleCreateComponent
+    RoleCreateComponent,
+    AddPermissionToUserComponent,
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'fr' },],
+  providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],
 })
 export class AdminModule {}

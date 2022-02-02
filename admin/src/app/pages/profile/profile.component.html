@@ -6,7 +6,11 @@
                 <img class="" [src]="userProfilePath()" class="user-avatar card-img-top" alt="">
                 <div class="card-body">
                     <h5 class="card-title">
-                        {{ user.first_name }} {{ user.last_name }} <br> {{ user.departement.name }}
+                        {{ user.first_name }} {{ user.last_name }} <br>
+                        <ng-container *ngIf="user.departement != null">
+                            {{ user.departement.name }}
+                        </ng-container>
+
                     </h5>
                     <nz-divider nzText="Rôles"></nz-divider>
                     <p class="card-text">
@@ -19,7 +23,7 @@
         <div class="col">
             <div class="card card-body m-3 border">
                 <h3 class="text-muted">Change votre mot de passe</h3>
-                <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+                <form nz-form [formGroup]="validateForm" class="login-form">
                     <nz-form-item>
                         <nz-form-control nzErrorTip="Mot de passe actuel requi!">
                             <nz-input-group nzPrefixIcon="unlock">

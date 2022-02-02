@@ -52,7 +52,7 @@ export class CourseCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.findSelectableList();
-    if (this.courseService.isEditeur()) {
+    if (!this.classeService.isSuperAdmin()) {
       this.course.departement_id = this.courseService.departementId();
       this.findClasseByDepartement(this.course.departement_id);
     }
@@ -172,7 +172,6 @@ export class CourseCreateComponent implements OnInit {
         this.isLoadClasse = false;
       },
       error: (errors) => {
-        console.log(errors);
       },
     });
   }
@@ -201,8 +200,6 @@ export class CourseCreateComponent implements OnInit {
           'course ajouté avec succés.'
         );
         this.destroyModal(response);
-        console.log(response);
-        
       },
       error: (errors) => {
         this.isLoad = false;
@@ -212,8 +209,6 @@ export class CourseCreateComponent implements OnInit {
           errors.error.message
         );
         this.destroyModal(null);
-        console.log(errors);
-        
       },
     });
   }

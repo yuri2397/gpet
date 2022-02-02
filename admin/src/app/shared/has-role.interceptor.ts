@@ -28,7 +28,6 @@ export class HasRoleInterceptor implements HttpInterceptor {
   private errorHandle(
     error: HttpErrorResponse
   ): Observable<HttpEvent<unknown>> {
-    console.log(error);
     if (error.status == 403) {
       this.router.navigate(['/admin/unauthorized']);
     }

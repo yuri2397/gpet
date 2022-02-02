@@ -1,3 +1,4 @@
+import { UserShowComponent } from './../pages/user/user-show/user-show.component';
 import { RoleListComponent } from './../pages/roles/role-list/role-list.component';
 import { AuthGuard } from './../shared/auth.guard';
 import { ProfileComponent } from './../pages/profile/profile.component';
@@ -65,6 +66,7 @@ const routes: Routes = [
   { path: 'salles', component: SalleListComponent },
   { path: 'roles', component: RoleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
+  { path: 'users/show/:id', component: UserShowComponent },
 ];
 
 @NgModule({

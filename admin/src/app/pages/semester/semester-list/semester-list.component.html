@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isLoad; else elseTemplate">
     <div class="container-fluid pb-3">
         <div class="card shadow">
-            <div class="card-header bg-color">
+            <div class="card-header bg-color" *ngIf="can('creer semestre')">
                 <div class="d-flex align-items-center ">
                     <div>
                         <button (click)="openCreateSemesterModal()" mat-fab color="default">
@@ -56,12 +56,12 @@
                                                     <td>{{ ec.vht }}</td>
                                                     <td class="p-0">
                                                         <div class="d-flex justify-content-center">
-                                                            <div class="mx-3">
+                                                            <div class="mx-3" *ngIf="can('modifier semestre')">
                                                                 <button (click)="openEditModal(ec, item)" mat-mini-fab color="primary">
                                                                     <mat-icon>edit</mat-icon>
                                                                 </button>
                                                             </div>
-                                                            <div class="mx-3">
+                                                            <div class="mx-3" *ngIf="can('supprimer semestre')">
                                                                 <button nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr de supprimer cet EC
                                                                 ?" (nzOnConfirm)="onDeleteOk(ec, item)" nzPopconfirmPlacement="top" mat-mini-fab color="warn">
                                                                     <mat-icon>delete</mat-icon>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { Permission } from '../models/permission';
 import { Role } from '../models/role';
 
 declare interface RouteInfo {
@@ -9,7 +10,7 @@ declare interface RouteInfo {
   title: string;
   icon: string;
   class: string;
-  roles: string[];
+  permissions: string[];
 }
 
 export const ROUTES: RouteInfo[] = [
@@ -18,77 +19,70 @@ export const ROUTES: RouteInfo[] = [
     title: 'Dashboard',
     icon: 'space_dashboard',
     class: '',
-    roles: ['super admin'],
+    permissions: [],
   },
   {
     path: 'batiments',
     title: 'Batiments',
     icon: 'room_preferences',
     class: '',
-    roles: ['super admin'],
+    permissions: ['voir batiment'],
   },
   {
     path: 'departements',
     title: 'Départements',
     icon: 'school',
     class: '',
-    roles: ['super admin'],
+    permissions: ['voir departement'],
   },
   {
     path: 'banks',
     title: 'Banques',
     icon: 'account_balance',
     class: '',
-    roles: ['admin'],
+    permissions: ['voir banque'],
   },
   {
     path: 'salles',
     title: 'Salles',
     icon: 'meeting_room',
     class: '',
-    roles: ['admin'],
+    permissions: ['voir salle'],
   },
   {
     path: 'professeurs',
     title: 'Professeurs',
     icon: 'groups',
     class: '',
-    roles: ['super admin', 'chef de département'],
+    permissions: ['voir professeur'],
   },
   {
     path: 'courses',
     title: 'Cours',
     icon: 'history_edu',
     class: '',
-    roles: ['super admin', 'chef de département'],
+    permissions: ['voir cour'],
   },
   {
     path: 'semesters',
     title: 'Semestres',
     icon: 'low_priority',
     class: '',
-    roles: ['chef de département'],
+    permissions: ['voir semestre'],
   },
   {
     path: 'classes',
     title: 'Classes',
     icon: 'ballot',
     class: '',
-    roles: ['chef de département',],
+    permissions: ['voir classe'],
   },
   {
     path: 'users',
     title: 'Administrateurs',
     icon: 'manage_accounts',
     class: '',
-    roles: ['admin'],
-  },
-  {
-    path: 'roles',
-    title: 'Rôles et Permissions',
-    icon: 'security',
-    class: '',
-    roles: ['admin'],
+    permissions: ['voir admin'],
   },
 ];
 
@@ -103,8 +97,9 @@ export class AdminComponent implements OnInit {
   roles!: Role[];
   user!: User;
   menuItems!: RouteInfo[];
-  title = "UFR SET - GPET";
+  title = 'UFR SET - GPET';
   depTitle!: string;
+  permissions!: Permission[];
 
   constructor(private router: Router, private userService: UserService) {}
 
@@ -120,10 +115,14 @@ export class AdminComponent implements OnInit {
         this.userService.setRoles(response.roles);
         this.user = response;
         this.roles = response.roles;
-        if(this.userService.isEditeur()){
+        this.permissions = response.permissions;
+        if (!this.userService.isSuperAdmin()) {
           this.depTitle = this.user.departement.name.toUpperCase();
         }
         this.menuItems = ROUTES.filter((menuItem) => menuItem);
+        if (this.user.permissions.length == 0) {
+          this.router.navigate(['/any-permission']);
+        }
         this.isLoad = false;
       },
       error: (errors) => {
@@ -146,8 +145,8 @@ export class AdminComponent implements OnInit {
 
   canShowItem(item: RouteInfo) {
     let r = false;
-    this.roles.forEach((e) => {
-      if (item.roles.indexOf(e.name) != -1) {
+    this.permissions.forEach((e) => {
+      if (item.permissions.indexOf(e.name) != -1) {
         r = true;
       }
     });

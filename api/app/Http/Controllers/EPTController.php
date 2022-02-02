@@ -19,6 +19,13 @@ class EPTController extends Controller
 {
     use Utils;
 
+    public function __construct()
+    {
+        $this->middleware("permission:modifier ept")->only(["update"]);
+        $this->middleware("permission:creer ept")->only(["store"]);
+        $this->middleware("permission:supprimer ept")->only(["destroy"]);
+    }
+
     public function index()
     {
     //
@@ -58,6 +65,7 @@ class EPTController extends Controller
         $start = date("H:i", strtotime($request->start));
         $end = date("H:i", strtotime($request->end));
         $day = Day::find($request->day_id);
+        
         $classe = Classe::find($request->classe_id);
         $professor = Professor::find($course->professor->id);
         $salle = Salle::find($request->salle_id);

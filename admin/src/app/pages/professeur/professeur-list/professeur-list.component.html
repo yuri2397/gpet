@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des professeurs</h5>
                 </div>
-                <div>
+                <div *ngIf="can('creer professeur')">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -38,7 +38,7 @@
                         <td>{{ data.status }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <div>
+                                <div *ngIf="can('voir cour')">
                                     <button (click)="showProfessor(data)" mat-mini-fab color="primary">
                     <mat-icon>visibility</mat-icon>
                   </button>

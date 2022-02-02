@@ -105,8 +105,7 @@ export class BankListComponent implements OnInit {
   can(permission: string){
     let p = new Permission();
     p.name = permission;
-    let test = this.roleService.can(p, this.bankService.getRoles());
-    console.log(test);
+    let test = this.roleService.can(p, this.bankService.getPermissions());
     return test;
   }
 }

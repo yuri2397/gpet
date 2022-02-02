@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { CourseService } from 'src/app/services/course.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-professeur-show',
@@ -121,10 +122,10 @@ export class ProfesseurShowComponent implements OnInit {
     this.errorServer = false;
     this.profService.find(id).subscribe({
       next: (professeur) => {
-        professeur;
+        console.log(professeur.courses);
+        
         this.professeur = professeur;
         this.dataLoad = false;
-
       },
       error: (errors) => {
         if (errors.status == 0) {
@@ -303,5 +304,12 @@ export class ProfesseurShowComponent implements OnInit {
     this.courses.forEach((c) => {
       if (c.id == event) this.selectedCourse = c;
     });
+  }
+
+  can(permission: string) {
+    let p = new Permission();
+    p.name = permission;
+    let test = this.profService.can(p, this.profService.getPermissions());
+    return test;
   }
 }

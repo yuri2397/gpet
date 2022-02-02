@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class ECController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir ec")->only(["index", "show"]);
+        $this->middleware("permission:modifier ec")->only(["update"]);
+        $this->middleware("permission:creer ec")->only(["store"]);
+        $this->middleware("permission:supprimer ec")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,18 +44,20 @@ class ECController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|unique:e_c_s,code',
+            'code' => 'required',
             "name" => 'required',
             'ue_id' => 'required',
             "ue_code" => "string",
             "ue_name" => "string",
             "departement_id" => "numeric",
+            "vht" => "required",
             "semester_id" => "exists:semesters,id"
         ]);
 
         $ec = new EC();
         $ec->name = $request->name;
         $ec->code = $request->code;
+        $ec->vht = $request->vht;
 
         if ($request->ue_id == -1) {
             $ue = new UE();
@@ -57,7 +68,8 @@ class ECController extends Controller
             $ue->save();
             $ec->ue_id = $ue->id;
             $ec->save();
-        } else {
+        }
+        else {
             $ec->ue_id = $request->ue_id;
             $ec->save();
         }
@@ -110,15 +122,15 @@ class ECController extends Controller
     public function destroy($id)
     {
         $courses = Course::whereEcId($id)->first();
-        
-        if(!$courses){
+
+        if (!$courses) {
             return response()->json(EC::find($id)->delete());
         }
-        
+
         return response()->json([
             "message" => "Le EC est lien au cours de : '" . $courses->name . "'."
         ]);
-        
+
     }
 
     public function search($data)
@@ -128,4 +140,3 @@ class ECController extends Controller
             ->get();
     }
 }
-

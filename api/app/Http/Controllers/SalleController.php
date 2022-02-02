@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class SalleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir salle")->only(["index", "show"]);
+        $this->middleware("permission:modifier salle")->only(["update"]);
+        $this->middleware("permission:creer salle")->only(["store"]);
+        $this->middleware("permission:supprimer salle")->only(["destroy"]);
+    }
+    
     /**
      * Display a listing of the resource.
      *

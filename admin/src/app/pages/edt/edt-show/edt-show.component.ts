@@ -29,7 +29,6 @@ export class EdtShowComponent implements OnInit {
       this.departement = params['departement'];
       this.classe = params['classe'];
       this.token = params['token'];
-      console.log(this.departement, this.classe, this.token);
       this.getEDT();
     });
   }
@@ -43,12 +42,10 @@ export class EdtShowComponent implements OnInit {
       .getEDT(this.departement, this.classe)
       .subscribe({
         next: (response) => {
-          console.log(response);
           this.epts = response;
           this.isLoad = false;
         },
         error: (errors) => {
-          console.log(errors);
           this.hasError = true;
           this.isLoad = false;
         },

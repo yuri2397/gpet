@@ -7,6 +7,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { ProfesseurCreateComponent } from '../professeur-create/professeur-create.component';
 import { Router } from '@angular/router';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-professeur-list',
@@ -129,5 +130,12 @@ export class ProfesseurListComponent implements OnInit {
 
   showProfessor(professeur: Professor) {
     this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
+  }
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.profService.can(p, this.profService.getPermissions());
+    return test;
   }
 }

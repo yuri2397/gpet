@@ -53,7 +53,6 @@ export class CourseShowComponent implements OnInit {
     this.dataLoad = true;
     this.courseService.show(this.course).subscribe({
       next: (response) => {
-        console.log(response);
         this.course = response;
         this.setChartData(response);
         this.dataLoad = false;
