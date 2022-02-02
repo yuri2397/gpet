@@ -29,7 +29,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AdminGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'profile',

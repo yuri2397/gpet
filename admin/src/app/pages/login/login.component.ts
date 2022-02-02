@@ -63,6 +63,6 @@ export class LoginComponent implements OnInit {
       });
   }
   afterLogin(response: LoginResponse) {
-      this.router.navigate(['/admin']);
+      this.router.navigate(['/admin/dashboard']);
   }
 }
