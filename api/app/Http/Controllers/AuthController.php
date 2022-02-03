@@ -12,6 +12,11 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        $this->validate($request, [
+            "email" => "required|email|exists:users,email",
+            "password" => "required"
+        ]);
+
         $user = User::with("roles", "roles.permissions")->where('email', $request->email)->first();
 
         if ($user != null && Hash::check($request->password, $user->password)) {

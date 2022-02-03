@@ -102,21 +102,20 @@ class UserController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        $this->validate($request, [
-            "image" => "required"
+        $request->validate([
+            'file' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
 
-        $url = $this->uploadImage($request, $this->userProfilPath);
-        if($url){
-            $user = User::find(auth()->id());
-            $user->avatar = $url;
-            $user->save();
-            return response()->json([
-                "message" => "Votre profil est bien modifié."
-            ], 200);
+
+        $path = $request->file('file')->store('public/images');
+        
+        $user = User::find(auth()->id());
+        if($user->avatar){
+            \unlink($user->avatar);
         }
-        return response()->json([
-            "message" => "Merci de selectionner une image."
-        ], 422);
+        $user->avatar = Str::substr($path, 6, strlen($path));
+        
+        $user->save();
+        return response()->json($user);
     }
 }

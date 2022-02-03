@@ -45,6 +45,7 @@ Route::post('selectable', function (Request $request) {
     return $res;
 });
 
+
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
@@ -52,7 +53,7 @@ Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::get("/", [UserController::class, "index"]);
     Route::post("create", [UserController::class, "store"]);
     Route::put("update/{id}", [UserController::class, "update"]);
-    Route::put("update-avatar", [UserController::class, "updateAvatar"]);
+    Route::post("update-avatar", [UserController::class, "updateAvatar"]);
     Route::get("show/{id}", [UserController::class, "show"]);
     Route::delete("destroy/{id}", [UserController::class, "destroy"]);
 });
@@ -70,6 +71,7 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::post('create', [DepartementController::class, "store"]);
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
+    Route::get('dashboard', [DepartementController::class, 'dashboard']);
 
 });
 

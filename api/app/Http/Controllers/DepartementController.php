@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Course;
+use App\Models\Professor;
+use App\Models\Batiment;
 
 class DepartementController extends Controller
 {
@@ -16,22 +20,13 @@ class DepartementController extends Controller
         $this->middleware("permission:creer departement")->only(["store"]);
         $this->middleware("permission:supprimer departement")->only(["destroy"]);
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return Departement::with('classes')->orderBy('created_at', 'desc')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required']);
@@ -41,12 +36,7 @@ class DepartementController extends Controller
         return response()->json($dep, 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         return Departement::with('professors')
@@ -58,31 +48,32 @@ class DepartementController extends Controller
             ->first();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $this->validate($request, ['name' => 'required']);
         $dep = Departement::find($id);
-        if ($dep == null) return response()->json(['message' => 'Département introuvable'], 404);
+        if ($dep == null)
+            return response()->json(['message' => 'Département introuvable'], 404);
         $dep->name = $request->name;
         $dep->save();
         return response()->json($dep, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         return response()->json(DB::table("departements")->whereId($id)->delete(), 200);
+    }
+
+
+    public function dashboard()
+    {
+        $departement = Departement::find(User::find(auth()->id())->departement_id);
+
+        $courses = count(Course::whereDepartementId($departement->id)->get());
+        $professors = count(Professor::whereDepartementId($departement->id)->get());
+        $batiments = count(Batiment::whereDepartementId($departement->id)->get());
+        $courses = count(Course::whereDepartementId($departement->id)->get());
     }
 }
