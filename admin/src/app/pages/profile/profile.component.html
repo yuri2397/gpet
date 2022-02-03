@@ -9,8 +9,16 @@
           class="user-avatar card-img-top"
           alt=""
         />
-        <button mat-mini-fab color="primary">
+        <button mat-mini-fab color="primary" (click)="image.click()">
           <mat-icon>edit</mat-icon>
+          <input
+            #image
+            type="file"
+            nz-input
+            name="image"
+            hidden
+            (change)="onChange($event)"
+          />
         </button>
         <div class="card-body">
           <h5 class="card-title">

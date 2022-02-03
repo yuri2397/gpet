@@ -56,12 +56,10 @@ class UserController extends Controller
             $user->save();
             $user->assignRole($request->roles);
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
         }
-
     }
 
     /**
@@ -85,7 +83,7 @@ class UserController extends Controller
         ]);
         $user = User::find($id);
         if ($user == null) {
-            return response()->json(['message' => "Utilisateur n'existe pas.", ], 404);
+            return response()->json(['message' => "Utilisateur n'existe pas.",], 404);
         }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -102,12 +100,13 @@ class UserController extends Controller
 
     public function updateAvatar(Request $request)
     {
+        return response()->json($request->all(), 200);
         $this->validate($request, [
             "image" => "required"
         ]);
 
         $url = $this->uploadImage($request, $this->userProfilPath);
-        if($url){
+        if ($url) {
             $user = User::find(auth()->id());
             $user->avatar = $url;
             $user->save();

@@ -15,6 +15,7 @@ export class ProfileComponent implements OnInit {
   roles!: Role[];
   validateForm!: FormGroup;
   isLoad = false;
+  file:any;
 
 
   constructor(
@@ -79,6 +80,38 @@ export class ProfileComponent implements OnInit {
 
           },
         });
+  }
+  onChange(event:any) {
+    this.file = event.target.files[0];
+    if(this.file!=null){
+      this.chooseFile();
+    }
+}
+
+  chooseFile(){
+   // image.click();
+   console.log(this.file);
+
+    this.authService.updateAvatar(this.file).subscribe({
+          next: (response: any) => {
+            console.log(response);
+
+            this.notification.createNotification(
+              'success','Notification','Modification avec succes'
+            );
+            this.isLoad = false;
+          },
+          error: (errors:any) => {
+            this.isLoad = false;
+            this.notification.createNotification(
+              'error',
+              'Erreur',
+              'probleme de modification'
+            );
+            console.log(errors);
+          },
+        });
+
   }
 
 }

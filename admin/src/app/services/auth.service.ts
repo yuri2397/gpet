@@ -59,4 +59,20 @@ export class AuthService extends BaseHttp {
     );
   }
 
+  updateAvatar(data:File){
+    // Create form data
+    let formData = new FormData();
+
+    // Store form name as "file" with file data
+    formData.append("image", data);
+    console.log(formData);
+
+    // Make http post request over api
+    // with formData as req
+    return this.http.put<any>(this.endPointWithSlash + 'update-avatar', formData,{
+      headers: { authorization: 'Bearer ' + this.getToken(),'Content-Type':'multipart/form-data'}
+    });
+
+  }
+
 }
