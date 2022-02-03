@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseHttp } from '../shared/base-http';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -43,4 +44,35 @@ export class AuthService extends BaseHttp {
       return this.router.navigate(['/']);
     }
   }
+
+  updatePassword(password: string, new_password: string) {
+    return this.http.post<User>(
+      this.endPointWithSlash + 'update-password',
+      {
+        password: password,
+        new_password: new_password,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  updateAvatar(data:File){
+    // Create form data
+    let formData = new FormData();
+
+    // Store form name as "file" with file data
+    formData.append("image", data);
+    console.log(formData);
+
+    // Make http post request over api
+    // with formData as req
+    return this.http.put<any>(this.endPointWithSlash + 'update-avatar', formData,{
+      headers: { authorization: 'Bearer ' + this.getToken(),'Content-Type':'multipart/form-data'}
+    });
+
+  }
+
 }

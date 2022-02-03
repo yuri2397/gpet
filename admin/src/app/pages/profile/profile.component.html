@@ -1,53 +1,98 @@
 <div class="card car-body shadow">
-    <h3 class="m-3">Paramètres</h3>
-    <div class="row">
-        <div class="col">
-            <div class="card body m-3 border">
-                <img class="" [src]="userProfilePath()" class="user-avatar card-img-top" alt="">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        {{ user.first_name }} {{ user.last_name }} <br>
-                        <ng-container *ngIf="user.departement != null">
-                            {{ user.departement.name }}
-                        </ng-container>
-
-                    </h5>
-                    <nz-divider nzText="Rôles"></nz-divider>
-                    <p class="card-text">
-                        <nz-tag *ngFor="let item of roles" nzType="default" nzColor="blue" nzMode="checkable">
-                            {{ item.name }} </nz-tag>
-                    </p>
-                </div>
-            </div>
+  <h3 class="m-3">Paramètres</h3>
+  <div class="row">
+    <div class="col">
+      <div class="card body m-3 border">
+        <img
+          class=""
+          [src]="userProfilePath()"
+          class="user-avatar card-img-top"
+          alt=""
+        />
+        <button mat-mini-fab color="primary" (click)="image.click()">
+          <mat-icon>edit</mat-icon>
+          <input
+            #image
+            type="file"
+            nz-input
+            name="image"
+            hidden
+            (change)="onChange($event)"
+          />
+        </button>
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ user.first_name }} {{ user.last_name }} <br />
+            <ng-container *ngIf="user.departement != null">
+              {{ user.departement.name }}
+            </ng-container>
+          </h5>
+          <nz-divider nzText="Rôles"></nz-divider>
+          <p class="card-text">
+            <nz-tag
+              *ngFor="let item of roles"
+              nzType="default"
+              nzColor="blue"
+              nzMode="checkable"
+            >
+              {{ item.name }}
+            </nz-tag>
+          </p>
         </div>
-        <div class="col">
-            <div class="card card-body m-3 border">
-                <h3 class="text-muted">Change votre mot de passe</h3>
-                <form nz-form [formGroup]="validateForm" class="login-form">
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe actuel requi!">
-                            <nz-input-group nzPrefixIcon="unlock">
-                                <input type="password" nz-input formControlName="password" placeholder="Mot de passe courrant" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe requi!">
-                            <nz-input-group nzPrefixIcon="lock">
-                                <input type="password" nz-input formControlName="new_password" (ngModelChange)="updateConfirmValidator()" placeholder="Nouveau mot de passe" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe requi!">
-                            <nz-input-group nzPrefixIcon="lock">
-                                <input type="password" nz-input formControlName="new_password_conf" placeholder="Confirmer le mot de passe" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <button nz-button [disabled]="!validateForm.valid" class="login-form-button login-form-margin shadow-sm" [nzType]="'primary'">Valider</button>
-                </form>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="col">
+      <div class="card card-body m-3 border">
+        <h3 class="text-muted">Change votre mot de passe</h3>
+        <form nz-form [formGroup]="validateForm" class="login-form">
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Mot de passe actuel requi!">
+              <nz-input-group nzPrefixIcon="unlock">
+                <input
+                  type="password"
+                  nz-input
+                  formControlName="password"
+                  placeholder="Mot de passe courrant"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Mot de passe requi!">
+              <nz-input-group nzPrefixIcon="lock">
+                <input
+                  type="password"
+                  nz-input
+                  formControlName="new_password"
+                  placeholder="Nouveau mot de passe"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Mot de passe requi!">
+              <nz-input-group nzPrefixIcon="lock">
+                <input
+                  type="password"
+                  nz-input
+                  formControlName="new_password_conf"
+                  placeholder="Confirmer le mot de passe"
+                />
+              </nz-input-group>
+            </nz-form-control>
+          </nz-form-item>
+          <button
+            nz-button
+            [disabled]="!validateForm.valid"
+            class="login-form-button login-form-margin shadow-sm"
+            [nzType]="'primary'"
+            (click)="updatepassword()"
+            [nzLoading]="isLoad"
+          >
+            Valider
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
