@@ -56,7 +56,8 @@ class UserController extends Controller
             $user->save();
             $user->assignRole($request->roles);
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);
-        } catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
         }
@@ -83,7 +84,7 @@ class UserController extends Controller
         ]);
         $user = User::find($id);
         if ($user == null) {
-            return response()->json(['message' => "Utilisateur n'existe pas.",], 404);
+            return response()->json(['message' => "Utilisateur n'existe pas.", ], 404);
         }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -100,20 +101,24 @@ class UserController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        $request->validate([
-            'file' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-        ]);
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images');
 
+            $user = User::find(auth()->id());
+            if ($user->avatar) {
+                \unlink("storage" . $user->avatar);
+            }
+            $user->avatar = Str::substr($path, 6, strlen($path));
 
-        $path = $request->file('file')->store('public/images');
-        
-        $user = User::find(auth()->id());
-        if($user->avatar){
-            \unlink($user->avatar);
+            $user->save();
+            return response()->json($user);
         }
-        $user->avatar = Str::substr($path, 6, strlen($path));
-        
-        $user->save();
-        return response()->json($user);
+        else {
+            return response()->json([
+                "message" => "Veuillez selectionner une image pour votre profile."
+            ], 422);
+
+        }
+
     }
 }

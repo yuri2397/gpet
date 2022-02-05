@@ -51,6 +51,6 @@ class AuthController extends Controller
             $user->save();
             return $user;
         }
-        return  response()->json(["message" => "Ancien mot de passe incorrect"], 422);;
+        return  response()->json(["message" => "Votre mot de passe est incorrect"], 422);;
     }
 }

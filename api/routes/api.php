@@ -168,11 +168,8 @@ Route::prefix("role")->middleware(['auth:api'])->group(function () {
 });
 
 Route::any('test', function (Request $request) {
-    $p = Permission::all();
-
-    $user = User::find(1);
-    $user->givePermissionTo($p);
-    return $user;
+    Artisan::call('permission:create-permission "voir payement" api');
+    return "OKAY";
 });
 
 

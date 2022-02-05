@@ -81,7 +81,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                                <nz-select [nzDisabled]="professorService.isEditeur()" [nzLoading]="isLoadData" formControlName="departement_id" [(ngModel)]="professor.departement_id">
+                                <nz-select [nzDisabled]="!professorService.isSuperAdmin()" [nzLoading]="isLoadData" formControlName="departement_id" [(ngModel)]="professor.departement.id">
                                     <ng-container *ngFor="let o of departements">
                                         <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                                     </ng-container>
@@ -160,8 +160,6 @@
                                 <ng-template #addBanque>
                                     <button nz-button nzType="primary" (click)="onAddBank()">Nouveau banque</button>
                                 </ng-template>
-
-
                             </nz-form-control>
                         </nz-form-item>
                     </div>
