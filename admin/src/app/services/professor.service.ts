@@ -198,9 +198,9 @@ export class ProfessorService extends BaseHttp {
   }
 
   desableAccount(professor: Professor) {
-    return this.http.put<Professor>(
+    return this.http.put<any>(
       this.endPointWithSlash + 'desable-account/' + professor.id,
-      { is_active: professor.is_active },
+      { is_active: !professor.is_active },
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

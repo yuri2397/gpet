@@ -10,20 +10,14 @@ trait Utils
     protected $userProfilPath = "user-profile";
     public function hourEmbedHour($start, $end, $emdStart, $emdEnd)
     {
+        // $start = 15:00, $end = 18:00
+        // $emdStart = 8:00, $emdEnd = 12:00
         if (
-        ($start == $emdStart && $end == $emdEnd)
-        ||
-        ($start >= $emdStart && $end <= $emdEnd)
-        ||
-        ($emdStart >= $start && $emdEnd >= $end)
-        ||
-        ($start >= $emdStart && $end >= $emdEnd)
-        ||
-        ($emdStart >= $start && $end <= $emdEnd)
+        ($start < $emdStart && $end <= $emdStart) || ($start >= $emdStart && $end > $emdStart)
         ) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public function uploadImage(Request $request, $path)

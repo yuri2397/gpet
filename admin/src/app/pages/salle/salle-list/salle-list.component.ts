@@ -29,8 +29,8 @@ export class SalleListComponent implements OnInit {
     this.findAll();
   }
 
-  isEditeur(){
-    return this.salleService.isEditeur();
+  isSuperAdmin(){
+    return this.salleService.isSuperAdmin();
   }
 
   findAll() {

@@ -9,9 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DepartementService extends BaseHttp {
   protected _baseUrl = 'departement';
-  constructor(
-    protected hc: HttpClient,
-  ) {
+  constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
   }
@@ -23,7 +21,11 @@ export class DepartementService extends BaseHttp {
     });
   }
 
-
+  dashboard() {
+    return this.http.get<any>(this.endPointWithSlash + 'dashboard', {
+      headers: this.authorizationHeaders,
+    });
+  }
 
   find(departement: Departement) {
     return this.http.get<Departement>(
@@ -56,10 +58,13 @@ export class DepartementService extends BaseHttp {
   }
 
   delete(batiment: Departement) {
-    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + batiment.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.delete<any>(
+      this.endPointWithSlash + 'destroy/' + batiment.id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   edit(batiment: Departement) {

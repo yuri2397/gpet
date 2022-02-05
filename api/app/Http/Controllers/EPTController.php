@@ -37,7 +37,7 @@ class EPTController extends Controller
             "start" => "required|date",
             "end" => "required|date",
             "classe_id" => "required|exists:classes,id",
-            "salle_id" => "required|exists:salles,id",
+            "salle_id" => "exists:salles,id",
             "course_id" => "required|exists:courses,id",
             "day_id" => "required|exists:days,id"
         ]);
@@ -47,7 +47,7 @@ class EPTController extends Controller
 
         if ($start >= $end) {
             return response()->json([
-                "message" => "Le cour ne peux pas terminé avant d'avoir commené."
+                "message" => "Le cour ne peux pas terminé avant d'avoir commencé."
             ], HttpResponse::HTTP_CONFLICT);
         }
         $course = Course::find($request->course_id);
@@ -65,13 +65,11 @@ class EPTController extends Controller
         $start = date("H:i", strtotime($request->start));
         $end = date("H:i", strtotime($request->end));
         $day = Day::find($request->day_id);
-        
         $classe = Classe::find($request->classe_id);
         $professor = Professor::find($course->professor->id);
         $salle = Salle::find($request->salle_id);
 
         $eptForDay = TimesTable::whereClasseId($classe->id)->whereDayId($day->id)->get();
-
         $eptForProfessor = TimesTable::whereProfessorId($professor->id)->whereDayId($day->id)->get();
 
         $eptForSalle = TimesTable::whereSalleId($salle->id)->whereDayId($day->id)->get();
@@ -100,7 +98,7 @@ class EPTController extends Controller
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 $s = Salle::find($value->salle_id);
                 return response()->json([
-                    "message" => "La salle " . $s->name ?? $s->number . " est déjà reservée pour le " . $day->name . " de " . $value->start . " À " . $value->end
+                    "message" => "La salle " . $s->name . " est déjà reservée pour le " . $day->name . " de " . $value->start . " À " . $value->end . " pour le cour de " . Course::find($value->course_id)->name . " avec la classe: " . Classe::find($value->classe_id)->name
                 ], HttpResponse::HTTP_CONFLICT);
             }
         }
@@ -122,14 +120,14 @@ class EPTController extends Controller
     public function serviceWebEPT($departement_name, $classe_name)
     {
         $classe = Classe::whereName($classe_name)->first();
-        if($classe != null){
+        if ($classe != null) {
             return view("ept")->with([
                 "ept" => $this->show($classe->id),
                 "classe" => $classe->name,
                 "departement" => $departement_name
             ]);
         }
-        else{
+        else {
             return view("ept404");
         }
     }
@@ -142,7 +140,13 @@ class EPTController extends Controller
         $days = Day::all();
 
         foreach ($days as $day) {
-            $ept[] = ["day" => $day, "data" => TimesTable::whereClasseId($id)->whereDayId($day->id)->get()];
+            $ept[] = [
+                "day" => $day,
+                "data" => TimesTable::whereClasseId($id)
+                ->whereDayId($day->id)
+                ->orderBy("start")
+                ->get()
+            ];
         }
 
         return $ept;

@@ -87,77 +87,73 @@
                                     </ng-template>
                                 </nz-collapse-panel>
                             </nz-collapse>
-                            <nz-tab nzTitle="Présentation">
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <div class="mx-1">
-                                        Exporter en PDF
-                                    </div>
+
+                        </nz-tab>
+                        <nz-tab nzTitle="Présentation">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <div class="mx-1">
+                                    Exporter en PDF
+                                </div>
+                                <div>
+                                    <button (click)="exportPDF()" mat-mini-fab class="shadow m-2" color="primary">
+                                        <mat-icon class="mat-18" >file_download</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="presentionEPT">
+                                <div class="card card-body text-center">
                                     <div>
-                                        <button (click)="exportPDF()" mat-mini-fab class="shadow m-2" color="primary">
-                                            <mat-icon class="mat-18" >file_download</mat-icon>
-                                        </button>
+                                        <span>REPUBLIQUE DU SENEGAL <br>
+                                            Un Peuple Un But Une Foi</span>
+
                                     </div>
+                                    <img src="assets/img/logo.jpg" class="logo" alt="UIDT">
+                                    <span class="text-center">
+                                        UNITÉ DE FORMATION ET DE RECHERCHE <br>
+                                        EN SCIENCES ET TECHNOLOGIES <br>
+                                        {{ depName }}
+                                    </span>
+                                    <h3>{{ classe.name }}</h3> {{ now | date:'EEEE d MMMM y'}}
                                 </div>
-                                <div id="presentionEPT">
-                                    <div class="card card-body text-center">
-                                        <div>
-                                            <span>REPUBLIQUE DU SENEGAL <br>
-                                                Un Peuple Un But Une Foi</span>
-
-                                        </div>
-                                        <img src="assets/img/logo.jpg" class="logo" alt="UIDT">
-                                        <span class="text-center">
-                                            UNITÉ DE FORMATION ET DE RECHERCHE <br>
-                                            EN SCIENCES ET TECHNOLOGIES <br>
-                                            {{ depName }}
-                                        </span>
-                                        <h3>{{ classe.name }}</h3> {{ now | date:'EEEE d MMMM y'}}
-                                    </div>
-                                    <nz-table [nzOuterBordered]="false" [nzSize]="'middle'" class=" p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="epts">
-                                        <thead class="bg-primary card">
-                                            <tr>
-                                                <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">{{ item.name.toUpperCase() }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <td *ngFor="let ept of presentionEPT.data">
-                                                <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
-                                                    <div class="card border m-3 card-body text-center m-1" *ngFor="let row of ept.data; let index = index; let isFirst = first; let isLast = last;">
-                                                        {{ row.course.name.toLocaleUpperCase() }} <br>
-
-                                                        <nz-divider nzText="{{ pipeHours(row.start )}} À {{ pipeHours(row.end) }}"></nz-divider>
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <div>
-                                                                <mat-icon [color]="'primary'" class="mat-18">person</mat-icon>
-                                                            </div>
-                                                            <div>
-                                                                M. {{ row.course.professor.last_name }}
-                                                            </div>
+                                <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="epts">
+                                    <thead>
+                                        <tr>
+                                            <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">{{ item.name.toUpperCase() }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td *ngFor="let ept of presentionEPT.data">
+                                            <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
+                                                <div class="card border m-3 card-body text-center m-1" *ngFor="let row of ept.data; let index = index; let isFirst = first; let isLast = last;">
+                                                    {{ row.course.name.toLocaleUpperCase() }} <br>
+                                                    <nz-divider nzText="{{ pipeHours(row.start )}} À {{ pipeHours(row.end) }}"></nz-divider>
+                                                    <div class="row justify-content-between">
+                                                        <div class="col text-start">
+                                                            <mat-icon [color]="'primary'" class="mat-24">person</mat-icon>
                                                         </div>
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <div>
-                                                                <mat-icon [color]="'primary'" class="mat-18">room</mat-icon>
-                                                            </div>
-                                                            <div>
-                                                                {{ row.salle.name }}
-                                                            </div>
+                                                        <div class="col text-end">
+                                                            M. {{ row.course.professor.last_name }}
                                                         </div>
-
-                                                        <ng-container *ngIf="!isLast">
-                                                            <nz-divider></nz-divider>
-                                                        </ng-container>
                                                     </div>
-                                                </ng-container>
-                                                <ng-template #noEPTRow>
-                                                    <div class="card m-3 text-center">
-                                                        <span>LIBRE</span>
+                                                    <div class="row  justify-content-between">
+                                                        <div class="col text-start">
+                                                            <mat-icon [color]="'primary'" class="mat-24">room</mat-icon>
+                                                        </div>
+                                                        <div class="col text-end">
+                                                            {{ row.salle.name }}
+                                                        </div>
                                                     </div>
-                                                </ng-template>
-                                            </td>
-                                        </tbody>
-                                    </nz-table>
-                                </div>
-                            </nz-tab>
+                                                </div>
+                                            </ng-container>
+                                            <ng-template #noEPTRow>
+                                                <div class="card m-3 text-center">
+                                                    <nz-tag [nzColor]="'red'">LIBRE</nz-tag>
+                                                </div>
+                                            </ng-template>
+                                        </td>
+                                    </tbody>
+                                </nz-table>
+                            </div>
                         </nz-tab>
                     </nz-tabset>
                 </nz-tab>

@@ -26,7 +26,7 @@ export class Professor extends Model<Professor> {
   born_at!: Date;
   professor_type_id!: number;
   professor_type!: ProfessorType;
-  is_active!: number;
+  is_active!: boolean;
   last_degree!: string;
   
   departement_id!: number;

@@ -19,9 +19,9 @@ class ProfesseurController extends Controller
         $this->middleware("permission:creer professeur")->only(["store"]);
         $this->middleware("permission:supprimer professeur")->only(["destroy"]);
         $this->middleware("permission:voir payement")->only(["payments"]);
-        
+
     }
-    
+
     public function index()
     {
         $user = User::find(auth()->id());
@@ -31,7 +31,7 @@ class ProfesseurController extends Controller
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
-    
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -66,7 +66,7 @@ class ProfesseurController extends Controller
         $prof->departement_id = $request->departement_id;
         $prof->phone_number = $request->phone_number;
         $prof->job = $request->job ?? null;
-        
+
         $prof->save();
 
         $compte = new Account();
@@ -80,7 +80,7 @@ class ProfesseurController extends Controller
         return response()->json($this->show($prof->id), 200);
     }
 
-    
+
     public function show($id)
     {
         $prof = Professor::with('account')
@@ -91,14 +91,15 @@ class ProfesseurController extends Controller
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
             $prof->courses = $prof->courses()->with("classe")->get();
-        } else {
+        }
+        else {
             $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
         }
 
         return $prof;
     }
 
-    
+
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -118,7 +119,7 @@ class ProfesseurController extends Controller
             'born_at' => 'required|date',
             'professor_type_id' => 'required|exists:professor_types,id'
         ]);
-        
+
         Professor::whereId($id)->update([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
@@ -144,7 +145,7 @@ class ProfesseurController extends Controller
         return $this->show($id);
     }
 
-   
+
     public function destroy($id)
     {
         return response()->json(DB::table("professors")->whereId($id)->delete(), 200);
@@ -153,10 +154,10 @@ class ProfesseurController extends Controller
     public function desableAccount(Request $request, $id)
     {
         $request->validate(['is_active' => 'required|boolean']);
-        $prof  = Professor::find($id);
+        $prof = Professor::find($id);
         $prof->is_active = $request->is_active;
         $prof->save();
-        return $this->show($id);
+        return response()->json(["message" => "Mis à jour succès."]);
     }
 
     public function search($data)
@@ -180,31 +181,31 @@ class ProfesseurController extends Controller
 
         if ($prof) {
             $user = User::find(auth()->id());
-            if ($user->hasRole("super admin")){
+            if ($user->hasRole("super admin")) {
                 $prof->coursesDo = $prof->coursesDo()
-                ->whereYear('courses_has_professors.date', date('Y'))
-                ->join('courses', 'courses_has_professors.course_id', 'courses.id')
-                ->select(
+                    ->whereYear('courses_has_professors.date', date('Y'))
+                    ->join('courses', 'courses_has_professors.course_id', 'courses.id')
+                    ->select(
                     "courses_has_professors.course_id",
                     "courses_has_professors.professor_id",
                     "courses_has_professors.amount",
                     DB::raw('SUM(courses_has_professors.hours) as total_hours'),
                     DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
                 )
-                ->groupBy(
+                    ->groupBy(
                     'courses_has_professors.course_id',
                     "courses_has_professors.amount",
                     "courses_has_professors.is_paid",
                     "courses_has_professors.professor_id",
                 )
-                ->get();
+                    ->get();
             }
-            else{
+            else {
                 $prof->coursesDo = $prof->coursesDo()->with("course.classe")
-                ->whereYear('courses_has_professors.date', date('Y'))
-                ->join('courses', 'courses_has_professors.course_id', 'courses.id')
-                ->where('courses.departement_id', $prof->departement_id)
-                ->select(
+                    ->whereYear('courses_has_professors.date', date('Y'))
+                    ->join('courses', 'courses_has_professors.course_id', 'courses.id')
+                    ->where('courses.departement_id', $prof->departement_id)
+                    ->select(
                     "courses_has_professors.course_id",
                     "courses_has_professors.professor_id",
                     "courses_has_professors.is_paid",
@@ -212,13 +213,13 @@ class ProfesseurController extends Controller
                     DB::raw('SUM(courses_has_professors.hours) as total_hours'),
                     DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
                 )
-                ->groupBy(
+                    ->groupBy(
                     'courses_has_professors.course_id',
                     "courses_has_professors.amount",
                     "courses_has_professors.is_paid",
                     "courses_has_professors.professor_id",
                 )
-                ->get();
+                    ->get();
             }
 
         }

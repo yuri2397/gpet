@@ -20,13 +20,10 @@ class CourseController extends Controller
         $this->middleware("permission:modifier cour")->only(["update", "courseHasProfessor"]);
         $this->middleware("permission:creer cour")->only(["store"]);
         $this->middleware("permission:supprimer cour")->only(["destroy"]);
+        $this->middleware("is_active")->only(["courseToProfessor"]);
+        
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $user = User::find(auth()->id());
@@ -36,12 +33,6 @@ class CourseController extends Controller
         return Course::with('classe')->with('departement')->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -70,25 +61,13 @@ class CourseController extends Controller
         return $this->show($course->id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show($id)
     {
         $cour = Course::with("classe")->find($id);
         return $cour;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -117,12 +96,7 @@ class CourseController extends Controller
         return $this->show($id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         return Course::find($id)->delete();
