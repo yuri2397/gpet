@@ -73,7 +73,6 @@ export class AuthService extends BaseHttp {
       }
     );
   }
-<<<<<<< HEAD
   public forgotPassword(email:String){
 
     return this.http.post<any>(
@@ -104,6 +103,4 @@ export class AuthService extends BaseHttp {
 
   }
 
-=======
->>>>>>> 55701b864c1dd9d17b43c3d08b1b3a054e940356
 }
