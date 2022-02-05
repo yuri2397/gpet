@@ -102,6 +102,7 @@ import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.co
 import { ProfileComponent } from '../pages/profile/profile.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HasRoleInterceptor } from '../shared/has-role.interceptor';
+import { ForgotPasswordComponent } from '../pages/forgot-password/forgot-password.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [

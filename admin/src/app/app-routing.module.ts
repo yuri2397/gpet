@@ -10,9 +10,13 @@ import { AuthGuard } from './shared/auth.guard';
 import { LoginGuard } from './shared/login.guard';
 import { LocalDataGuard } from './shared/local-data.guard';
 import { EdtShowComponent } from './pages/edt/edt-show/edt-show.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent,canActivate: [LoginGuard]},
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   {
     path: 'admin',
     component: AdminComponent,

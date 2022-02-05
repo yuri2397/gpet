@@ -26,6 +26,9 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzMessageComponent, NzMessageModule } from 'ng-zorro-antd/message';
 import { EdtShowComponent } from './pages/edt/edt-show/edt-show.component';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { IconsProviderModule } from './icons-provider.module';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -35,6 +38,8 @@ registerLocaleData(fr);
     NotFoundComponent,
     EdtShowComponent,
     AnyPermissionComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,7 @@ registerLocaleData(fr);
     MatIconModule,
     NzDividerModule,
     MatButtonModule,
+
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },
