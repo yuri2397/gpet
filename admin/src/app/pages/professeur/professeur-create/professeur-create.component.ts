@@ -39,8 +39,10 @@ export class ProfesseurCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.professorService.isAdmin()) {
-      this.professor.departement_id = this.deptService.departementId();
+    if (!this.professorService.isSuperAdmin()) {
+      this.professor.departement = this.deptService.departement();
+      console.log(this.professor.departement);
+      
     }
     this.findDepartement();
 
@@ -120,25 +122,26 @@ export class ProfesseurCreateComponent implements OnInit {
 
   findDepartement() {
     this.isLoadData = true;
-    this.professorService.findSelectableList(['departements', 'professor_types']).subscribe({
-      next: (response) => {
-        this.departements = response.departements;
-        this.professorTypes = response.professor_types;
-        this.isLoadData = false;
-      },
-      error: (errors) => {
-        this.isLoadData = false;
-        this.notification.createNotification(
-          'error',
-          'Erreur',
-          errors.error.message
-        );
-      },
-    });
+    this.professorService
+      .findSelectableList(['departements', 'professor_types'])
+      .subscribe({
+        next: (response) => {
+          this.departements = response.departements;
+          this.professorTypes = response.professor_types;
+          this.isLoadData = false;
+        },
+        error: (errors) => {
+          this.isLoadData = false;
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
+        },
+      });
   }
 
-  onBornAtChange(date: any){
-  }
+  onBornAtChange(date: any) {}
 
   destroyModal(data: Professor | null): void {
     this.modal.destroy(data);

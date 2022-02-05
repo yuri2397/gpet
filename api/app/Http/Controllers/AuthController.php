@@ -20,6 +20,11 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        $this->validate($request, [
+            "email" => "required|email|exists:users,email",
+            "password" => "required"
+        ]);
+
         $user = User::with("roles", "roles.permissions")->where('email', $request->email)->first();
 
         if ($user != null && Hash::check($request->password, $user->password)) {
@@ -99,5 +104,6 @@ class AuthController extends Controller
             DB::table('password_resets')->whereEmail($user->email)->whereToken($request->code)->delete();
             return response()->json(['message' => "Mot de passe modifier avec success."], 200);
         }
+        return  response()->json(["message" => "Votre mot de passe est incorrect"], 422);;
     }
 }

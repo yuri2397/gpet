@@ -21,9 +21,9 @@ class EPTController extends Controller
 
     public function __construct()
     {
-        $this->middleware("permission:modifier ept")->only(["update"]);
-        $this->middleware("permission:creer ept")->only(["store"]);
-        $this->middleware("permission:supprimer ept")->only(["destroy"]);
+        $this->middleware("permission:modifier edt")->only(["update"]);
+        $this->middleware("permission:creer edt")->only(["store"]);
+        $this->middleware("permission:supprimer edt")->only(["destroy"]);
     }
 
     public function index()

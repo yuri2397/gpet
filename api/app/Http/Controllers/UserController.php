@@ -56,7 +56,8 @@ class UserController extends Controller
             $user->save();
             $user->assignRole($request->roles);
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);
-        } catch (\Throwable $th) {
+        }
+        catch (\Throwable $th) {
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
         }
@@ -83,7 +84,7 @@ class UserController extends Controller
         ]);
         $user = User::find($id);
         if ($user == null) {
-            return response()->json(['message' => "Utilisateur n'existe pas.",], 404);
+            return response()->json(['message' => "Utilisateur n'existe pas.", ], 404);
         }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -100,22 +101,24 @@ class UserController extends Controller
 
     public function updateAvatar(Request $request)
     {
-        return response()->json($request->all(), 200);
-        $this->validate($request, [
-            "image" => "required"
-        ]);
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images');
 
-        $url = $this->uploadImage($request, $this->userProfilPath);
-        if ($url) {
             $user = User::find(auth()->id());
-            $user->avatar = $url;
+            if ($user->avatar) {
+                \unlink("storage" . $user->avatar);
+            }
+            $user->avatar = Str::substr($path, 6, strlen($path));
+
             $user->save();
-            return response()->json([
-                "message" => "Votre profil est bien modifié."
-            ], 200);
+            return response()->json($user);
         }
-        return response()->json([
-            "message" => "Merci de selectionner une image."
-        ], 422);
+        else {
+            return response()->json([
+                "message" => "Veuillez selectionner une image pour votre profile."
+            ], 422);
+
+        }
+
     }
 }

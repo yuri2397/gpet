@@ -131,7 +131,7 @@ export class ProfessorService extends BaseHttp {
         first_name: professor.first_name,
         last_name: professor.last_name,
         email: professor.email,
-        departement_id: professor.departement_id,
+        departement_id: professor.departement.id,
         status: professor.status,
         phone_number: professor.phone_number,
         job: professor.job ?? null,

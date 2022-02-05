@@ -1,5 +1,5 @@
 import { LoginResponse } from './../models/login-response';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseHttp } from '../shared/base-http';
@@ -9,10 +9,9 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class AuthService extends BaseHttp {
-
   protected _baseUrl = 'user';
 
-  constructor(protected hc: HttpClient,private router: Router) {
+  constructor(protected hc: HttpClient, private router: Router) {
     super();
     this.http = hc;
   }
@@ -39,7 +38,7 @@ export class AuthService extends BaseHttp {
 
   alreadyConnect() {
     if (this.isLogIn()) {
-        return this.router.navigate(['/admin']);
+      return this.router.navigate(['/admin']);
     } else {
       return this.router.navigate(['/']);
     }
@@ -59,21 +58,22 @@ export class AuthService extends BaseHttp {
     );
   }
 
-  updateAvatar(data:File){
-    // Create form data
-    let formData = new FormData();
+  updateAvatar(data: any) {
+    var myFormData = new FormData();
+    myFormData.append('image', data);
 
-    // Store form name as "file" with file data
-    formData.append("image", data);
-    console.log(formData);
-
-    // Make http post request over api
-    // with formData as req
-    return this.http.put<any>(this.endPointWithSlash + 'update-avatar', formData,{
-      headers: { authorization: 'Bearer ' + this.getToken(),'Content-Type':'multipart/form-data'}
-    });
-
+    return this.http.post<User>(
+      this.endPointWithSlash + 'update-avatar',
+      myFormData,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + this.getToken(),
+        },
+      }
+    );
   }
+<<<<<<< HEAD
   public forgotPassword(email:String){
 
     return this.http.post<any>(
@@ -104,4 +104,6 @@ export class AuthService extends BaseHttp {
 
   }
 
+=======
+>>>>>>> 55701b864c1dd9d17b43c3d08b1b3a054e940356
 }

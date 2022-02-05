@@ -46,6 +46,7 @@ export class UserShowComponent implements OnInit {
       next: (response) => {
         this.user = response;
         this.listOfDisplayData = this.user.permissions;
+        this.userProfilePath();
         this.isLoad = false;
       },
       error: (errors) => {},
@@ -72,10 +73,10 @@ export class UserShowComponent implements OnInit {
   }
 
   userProfilePath() {
-    if (this.user.avatar == null) {
-      return '/assets/img/avatar.png';
+    if (this.userService.getUser().avatar == null) {
+      this.user.avatar = '/assets/img/avatar.png';
     }
-    return this.userService.host + this.user.avatar;
+    this.user.avatar = this.userService.host + 'storage' + this.user.avatar;
   }
 
   deleteUser() {
