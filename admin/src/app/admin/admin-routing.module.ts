@@ -23,9 +23,11 @@ import { UeListComponent } from '../pages/ue/ue-list/ue-list.component';
 import { SemesterListComponent } from '../pages/semester/semester-list/semester-list.component';
 import { CdGuard } from '../shared/cd.guard';
 import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.component';
+import { ForgotPasswordComponent } from '../pages/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
+
   {
     path: 'dashboard',
     component: DashboardComponent,

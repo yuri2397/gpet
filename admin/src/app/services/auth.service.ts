@@ -73,4 +73,34 @@ export class AuthService extends BaseHttp {
       }
     );
   }
+  public forgotPassword(email:String){
+
+    return this.http.post<any>(
+      this.endPointWithSlash + 'forgot-password',
+      {
+        email: email,
+      },
+      {
+        headers: this.guestHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  public resetPassword(email:string,code:string,password: string){
+    return this.http.post<any>(
+      this.endPointWithSlash + 'reset-password',
+      {
+        email: email,
+        code:  code,
+        password: password,
+      },
+      {
+        headers: this.guestHeaders,
+        observe: 'body',
+      }
+    );
+
+  }
+
 }

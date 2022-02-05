@@ -7,22 +7,23 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
-use Illuminate\Support\Facades\URL;
 
-class SendNewUserMail extends Mailable
+class SendForgotPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
     public  $user;
-    public $password;
+    public $code;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $password)
+    public function __construct($user, $code)
     {
+        //
         $this->user = $user;
-        $this->password = $password;
+        $this->code = $code;
     }
 
     /**
@@ -32,10 +33,10 @@ class SendNewUserMail extends Mailable
      */
     public function build()
     {
-        return $this->subject("Nouveau compte sur GPET")
-            ->markdown("emails.on-create-user")->with([
+        return $this->subject("Renitialisation de mot de passe")
+            ->markdown("emails.on-forgot-password")->with([
                 "user" => $this->user,
-                "password" => $this->password,
+                "code" => $this->code,
                 "url" => env("WEB_APP_HOST")
             ]);
     }
