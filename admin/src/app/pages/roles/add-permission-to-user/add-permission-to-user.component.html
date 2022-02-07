@@ -1,0 +1,19 @@
+<div>
+    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm">
+
+        <nz-form-item>
+            <nz-form-label nzRequired nzFor="first_name">Selectionner les permissions</nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner un rôle.">
+                <nz-select nzShowSearch nzMode="multiple" formControlName="permissions" nzAllowClear nzPlaceHolder="Selectionner une permission" nzLoading="isDataLoad" [(ngModel)]="selectedValue">
+                    <nz-option *ngFor="let item of permissions" [nzLabel]="item.name.toUpperCase()" [nzValue]="item.name"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+    </nz-form>
+</div>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
+    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Ajouter</button>
+</div>

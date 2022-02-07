@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 
 class UEController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir ue")->only(["index", "show"]);
+        $this->middleware("permission:modifier ue")->only(["update"]);
+        $this->middleware("permission:creer ue")->only(["store"]);
+        $this->middleware("permission:supprimer ue")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -79,6 +88,9 @@ class UEController extends Controller
 
     public function search($data)
     {
-        return UE::with('departement')->where('name', 'like', '%' . $data . '%')->get();
+        return UE::with('departement')
+        ->where('name', 'like', '%' . $data . '%')
+        ->orWhere('code', 'like', '%' . $data . '%')
+        ->get();
     }
 }

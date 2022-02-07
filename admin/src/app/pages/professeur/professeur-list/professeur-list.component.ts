@@ -7,6 +7,7 @@ import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { ProfesseurCreateComponent } from '../professeur-create/professeur-create.component';
 import { Router } from '@angular/router';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-professeur-list',
@@ -51,6 +52,9 @@ export class ProfesseurListComponent implements OnInit {
     });
   }
 
+  onChercherInputChange(data: any){
+  }
+
   openDeleteModal(professeur: Professor) {
     this.deleteRestoRef = this.modalService.confirm({
       nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
@@ -92,12 +96,12 @@ export class ProfesseurListComponent implements OnInit {
 
   openCreateModal() {
     const modal = this.modalService.create({
-      nzTitle: 'AJOUTER UN PROFESSEUR',
+      nzTitle: 'AJOUTER UN NOUVEAU PROFESSEUR',
       nzContent: ProfesseurCreateComponent,
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: '50em',
+      nzWidth: '60em',
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -125,10 +129,13 @@ export class ProfesseurListComponent implements OnInit {
   }
 
   showProfessor(professeur: Professor) {
-    if (this.profService.isAdmin())
-      this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
-    else
-    this.router.navigate(['/departement/professeurs/show/' + professeur.id]);
+    this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
+  }
 
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.profService.can(p, this.profService.getPermissions());
+    return test;
   }
 }

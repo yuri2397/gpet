@@ -1,11 +1,11 @@
-<div class="container">
-    <div class="card shadow-sm">
+<div class="container-fluid">
+    <div class="card shadow">
         <div class="card-header p-3 bg-color">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h5 class="text-white">Liste des professeurs</h5>
                 </div>
-                <div>
+                <div *ngIf="can('creer professeur')">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -38,7 +38,7 @@
                         <td>{{ data.status }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <div>
+                                <div *ngIf="can('voir cour')">
                                     <button (click)="showProfessor(data)" mat-mini-fab color="primary">
                     <mat-icon>visibility</mat-icon>
                   </button>
@@ -52,9 +52,9 @@
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <div class="ant-table-filter-dropdown">
                 <div class="search-box">
-                    <input type="text" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
+                    <input type="text" (change)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
                     <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Rechercher</button>
-                    <button nz-button nzSize="small" (click)="reset()">annuler</button>
+                    <button nz-button nzSize="small" (click)="reset()">Annuler</button>
                 </div>
             </div>
         </nz-dropdown-menu>

@@ -8,7 +8,8 @@ import { Batiment } from '../models/batiment';
   providedIn: 'root',
 })
 export class SalleService extends BaseHttp{
-  protected _baseUrl = 'salle/';
+
+  protected _baseUrl = 'salle';
   constructor(
     protected hc: HttpClient,
   ) {
@@ -37,7 +38,7 @@ export class SalleService extends BaseHttp{
 
   create(salle: Salle) {
     return this.http.post<Salle>(
-      this.endPoint + 'create',
+      this.endPointWithSlash + 'create',
       {
         name: salle.name,
         number: salle.number,
@@ -54,14 +55,14 @@ export class SalleService extends BaseHttp{
 
   delete(salle: Salle) {
     return this.http.delete<any>(
-      this.endPoint + 'destroy/' + salle.id,
+      this.endPointWithSlash + 'destroy/' + salle.id,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   edit(salle: Salle) {
     return this.http.put<Salle>(
-      this.endPoint + 'update/' + salle.id,
+      this.endPointWithSlash + 'update/' + salle.id,
       {
         name: salle.name,
         number: salle.number,
@@ -69,6 +70,13 @@ export class SalleService extends BaseHttp{
         departement_id: salle.departement_id,
         batiment_id: salle.batiment_id,
       },
+      { headers: this.authorizationHeaders, observe: 'body' }
+    );
+  }
+
+  search(data: string) {
+    return this.http.get<Salle[]>(
+      this.endPointWithSlash + 'search/' + data,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

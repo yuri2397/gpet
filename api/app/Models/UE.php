@@ -9,9 +9,22 @@ class UE extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['*'];
+
+    //protected $with = ['ecs'];
+
+    public function ecs()
+    {
+        return $this->hasMany(EC::class, "ue_id");
+    }
 
     public function departement()
     {
         return $this->belongsTo(Departement::class);
+    }
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class);
     }
 }

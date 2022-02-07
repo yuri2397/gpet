@@ -1,1 +1,89 @@
-<p>user-show works!</p>
+<ng-container *ngIf="!isLoad; else loadData">
+    <div class="card card-body shadow border">
+        <div class="card card p-3">
+            <div class="row">
+                <div class="col">
+                    <nz-card class="shadow border text-center" [nzBodyStyle]="{
+                     padding: 0   
+                    }" [nzCover]="coverTemplate">
+                        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                        <span>{{ user.email }}</span>
+                        <nz-divider nzText="ACTIONS"></nz-divider>
+                        <div class="d-flex justify-content-center align-items center">
+
+                            <div class="mx-2">
+                                <button mat-mini-fab [color]="'primary'">
+                                    <mat-icon class="mat-18">edit</mat-icon>    
+                                </button>
+                            </div>
+                            <div class="mx-2">
+                                <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser()" mat-mini-fab [color]="'warn'">
+                                    <mat-icon class="mat-18">delete</mat-icon>    
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <mat-progress-bar *ngIf="deleteUserLoad" mode="indeterminate"></mat-progress-bar>
+                        </div>
+                    </nz-card>
+                    <ng-template #coverTemplate>
+                        <img class="user-avatar" [src]="user.avatar" />
+                    </ng-template>
+                </div>
+                <div class="col shadow border py-2">
+                    <div class="card card-body border p-1 shadow-sm my-3">
+                        <div class="d-flex justify-content-end align-items center ">
+                            <div>
+                                Ajouter une permission
+                            </div>
+                            <div class="mx-2">
+                                <button (click)="openAddPermissionModal()" mat-mini-fab [color]="'primary'">
+                                        <mat-icon class="mat-18">add</mat-icon>    
+                                    </button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <nz-divider nzText="Liste des permissions"></nz-divider>
+                    <nz-table [nzPageSize]="5" #basicTable [nzData]="listOfDisplayData">
+                        <thead>
+                            <th nzCustomFilter>
+                                Permissions
+                                <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+                                    <mat-icon class="mat-18">search</mat-icon>
+                                </nz-filter-trigger>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of basicTable.data">
+                                <td>{{data.name.toUpperCase()}}</td>
+                                <td>
+                                    <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="removePermission(data)" mat-mini-fab [color]="'warn'">
+                                        <mat-icon class="mat-18">delete</mat-icon>    
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <div class="ant-table-filter-dropdown">
+                        <div class="search-box">
+                            <input type="text" (change)="search()" nz-input placeholder="Rechercher" [(ngModel)]="searchValue" />
+                            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+                        </div>
+                    </div>
+                </nz-dropdown-menu>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #loadData>
+    <div class="card shadow">
+        <div class="card-body">
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+    </div>
+</ng-template>

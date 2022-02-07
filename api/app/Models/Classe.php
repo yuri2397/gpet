@@ -9,6 +9,10 @@ class Classe extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['*'];
+
+    protected $with = ['courses'];
+
     public function departement()
     {
         return $this->belongsTo(Departement::class);
@@ -17,5 +21,9 @@ class Classe extends Model
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function professors(){
+        return $this->hasManyThrough(Professor::class, Course::class);
     }
 }

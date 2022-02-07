@@ -14,6 +14,7 @@ import { DepartementEditComponent } from '../../departement/departement-edit/dep
 import { Semester } from 'src/app/models/semester';
 import { Professor } from 'src/app/models/professor';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-course-list',
@@ -25,6 +26,7 @@ export class CourseListComponent implements OnInit {
   departements!: Departement[];
   classes!: Classe[];
   @Input() courses!: Course[];
+  @Input() classe!: Classe;
   services!: Service[];
   isLoad = false;
   deleteRestoRef!: NzModalRef;
@@ -64,8 +66,6 @@ export class CourseListComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        console.log(errors);
-        ;
       },
     });
   }
@@ -76,9 +76,10 @@ export class CourseListComponent implements OnInit {
       nzTitle: 'Modifier le cour',
       nzContent: CourseEditComponent,
       nzComponentParams: {
-        course: (c as Course).clone(),
+        course: this.courseService.clone(c),
       },
       nzCentered: true,
+      nzWidth: '50em',
       nzMaskClosable: false,
       nzClosable: false,
     });
@@ -92,7 +93,7 @@ export class CourseListComponent implements OnInit {
 
   openDeleteModal(course: Course) {
     this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
+      nzTitle: '<span>Voulez-vous supprimé ce cours?</span>',
       nzOkText: 'Supprimer',
       nzOkType: 'primary',
       nzOkDanger: true,
@@ -103,6 +104,13 @@ export class CourseListComponent implements OnInit {
       nzClosable: false,
     });
   }
+  
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.courseService.can(p, this.courseService.getPermissions());
+    return test;
+  }
 
   deleteCourse(course: Course) {
     this.deleteLoad = true;
@@ -112,7 +120,7 @@ export class CourseListComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          'Dépatement supprimé avec succès.'
+          'Cours supprimé avec succès.'
         );
         this.findAll();
         this.deleteRestoRef.destroy();
@@ -129,15 +137,18 @@ export class CourseListComponent implements OnInit {
     const modal = this.modalService.create({
       nzTitle: 'Ajouter un cour',
       nzContent: CourseCreateComponent,
+      nzComponentParams: {
+        classe: this.classe,
+      },
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: '55em',
     });
 
-    modal.afterClose.subscribe((data: Batiment | null) => {
+    modal.afterClose.subscribe((data: Course | null) => {
       if (data != null) {
-        this.findAll();
+        this.courses = [...this.courses, data];
       }
     });
   }

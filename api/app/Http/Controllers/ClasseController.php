@@ -3,11 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classe;
+use App\Models\Day;
 use App\Models\Departement;
+use App\Models\TimesTable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ClasseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware("permission:voir classe")->only(["index", "show"]);
+        $this->middleware("permission:modifier classe")->only(["update"]);
+        $this->middleware("permission:creer classe")->only(["store"]);
+        $this->middleware("permission:supprimer classe")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +32,9 @@ class ClasseController extends Controller
 
     public function findByDepartement($departement)
     {
-        return Classe::whereDepartementId($departement)->get();
+        return Classe::with("courses")
+            ->whereDepartementId($departement)
+            ->get();
     }
 
     /**
@@ -31,7 +45,18 @@ class ClasseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "name" => "required|string|max:255",
+            "nb_students" => "required|numeric|min:0",
+            "departement_id" => "required|exists:departements,id"
+        ]);
+
+        $classe = new Classe();
+        $classe->name = $request->name;
+        $classe->nb_students = $request->nb_students;
+        $classe->departement_id = $request->departement_id;
+        $classe->save();
+        return response()->json($classe, 200);
     }
 
     /**
@@ -42,7 +67,7 @@ class ClasseController extends Controller
      */
     public function show($id)
     {
-        //
+        return Classe::with(['departement', 'courses', 'courses.classe'])->find($id);
     }
 
     /**
@@ -54,7 +79,14 @@ class ClasseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            "name" => "required|string|max:255",
+            "nb_students" => "required|numeric|min:0",
+            "departement_id" => "required|exists:departements,id"
+        ]);
+
+        DB::table('classes')->whereId($id)->update($request->all());
+        return $this->show($id);
     }
 
     /**
@@ -65,6 +97,7 @@ class ClasseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Classe::find($id)->delete();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

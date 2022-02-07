@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { CourseService } from 'src/app/services/course.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-professeur-show',
@@ -35,11 +36,10 @@ export class ProfesseurShowComponent implements OnInit {
   addCourseModalVisible: boolean = false;
   deleteCourseLoad!: boolean;
   deleteCourseRef!: NzModalRef;
-
+  updateStatusLoad = false;
   constructor(
     private location: Location,
     private route: ActivatedRoute,
-    private router: Router,
     private fb: FormBuilder,
     private courseService: CourseService,
     private notification: NotificationService,
@@ -122,15 +122,12 @@ export class ProfesseurShowComponent implements OnInit {
     this.errorServer = false;
     this.profService.find(id).subscribe({
       next: (professeur) => {
-        professeur;
-        this.professeur = professeur;
-        console.log(professeur);
-        this.dataLoad = false;
+        console.log(professeur.courses);
 
+        this.professeur = professeur;
+        this.dataLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
-
         if (errors.status == 0) {
           this.errorServer = true;
         } else {
@@ -171,7 +168,7 @@ export class ProfesseurShowComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: '50em',
+      nzWidth: '60em',
     });
 
     modal.afterClose.subscribe((data: Professor | null) => {
@@ -293,7 +290,7 @@ export class ProfesseurShowComponent implements OnInit {
 
   onCourseSearch(value: string) {
     this.coursesLoad = true;
-    if (value.trim().length >= 3) {
+    if (value.trim().length >= 1) {
       this.courseService.search(value.trim()).subscribe({
         next: (response) => {
           this.courses = response;
@@ -306,6 +303,37 @@ export class ProfesseurShowComponent implements OnInit {
   currentModel(event: any) {
     this.courses.forEach((c) => {
       if (c.id == event) this.selectedCourse = c;
+    });
+  }
+
+  can(permission: string) {
+    let p = new Permission();
+    p.name = permission;
+    let test = this.profService.can(p, this.profService.getPermissions());
+    return test;
+  }
+
+  setAccountStatus() {
+    this.updateStatusLoad = true;
+    this.profService.desableAccount(this.professeur).subscribe({
+      next: (response) => {
+        this.professeur.is_active = !this.professeur.is_active;
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          response.message
+        );
+        this.updateStatusLoad = false;
+      },
+      error: (errors) => {
+        console.log(errors);
+        this.updateStatusLoad = false;
+        this.notification.createNotification(
+          'error',
+          'Notification',
+          errors.error.message
+        );
+      },
     });
   }
 }

@@ -13,6 +13,7 @@ export class Course extends Model<Course> {
   classe_id!: number;
   semester_id!: number;
   service_id!: number;
+  hours!: number;
   ec_id!: number;
   professor_id!: number;
   created_at!: Date;
@@ -21,6 +22,7 @@ export class Course extends Model<Course> {
   professor!: Professor;
   departement!: Departement;
   classe!: Classe;
+  evolution!: Array<number>;
   ec!: EC;
   semester!: Semester;
   service!: Service;
@@ -34,6 +36,7 @@ export class Course extends Model<Course> {
     this.semester = new Semester();
     this.service = new Service();
   }
+
 
   myIndex(arrays: Course[]): number {
     let res = -1;

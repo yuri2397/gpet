@@ -1,7 +1,8 @@
+import { SemesterService } from './../../../services/semester.service';
 import { ProfessorService } from './../../../services/professor.service';
 import { CourseService } from 'src/app/services/course.service';
 import { Course } from './../../../models/course';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -13,6 +14,9 @@ import { Service } from 'src/app/models/service';
 import { ClasseService } from 'src/app/services/classe.service';
 import { EC } from 'src/app/models/ec';
 import { ECService } from 'src/app/services/ec.service';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
+import { ClasseEditComponent } from '../../classe/classe-edit/classe-edit.component';
 
 @Component({
   selector: 'app-course-create',
@@ -23,40 +27,52 @@ export class CourseCreateComponent implements OnInit {
   course: Course = new Course();
   validateForm!: FormGroup;
   isLoad: boolean = false;
-
-
-  semesters!: Semester[];
+  isLoadSemester = true;
+  isLoadClasse = true;
   professors!: Professor[];
   departements!: Departement[];
   classes!: Classe[];
   courses!: Course[];
   services!: Service[];
+  @Input() classe!: Classe;
   ecs!: EC[];
   ecLoad = false;
   profLoad = false;
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
-    private courseService: CourseService,
+    public courseService: CourseService,
     private modal: NzModalRef,
     private profService: ProfessorService,
     private classeService: ClasseService,
-    private ecService: ECService
+    private ecService: ECService,
+    private drawerService: NzDrawerService,
+    private semesterService: SemesterService
   ) {}
 
   ngOnInit(): void {
     this.findSelectableList();
+    if (!this.classeService.isSuperAdmin()) {
+      this.course.departement_id = this.courseService.departementId();
+      this.findClasseByDepartement(this.course.departement_id);
+    }
     this.validateForm = this.fb.group({
-      acronym: [null, [Validators.required]],
-      name: [null, [Validators.required]],
       groupe_number: [0, [Validators.required]],
       classe_id: [null, [Validators.required]],
-      semester_id: [null, [Validators.required]],
       service_id: [null, [Validators.required]],
       ec_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
       professor_id: [null, null],
     });
+  }
+
+  setDefaultClasse() {
+    if (this.classe == null) {
+      return false;
+    }
+    this.course.classe_id = this.classe.id;
+    this.isLoad = false;
+    return true;
   }
 
   serviceAmout(serviceId: number) {
@@ -91,6 +107,21 @@ export class CourseCreateComponent implements OnInit {
     }
   }
 
+  addEc() {
+    const drawerRef = this.drawerService.create({
+      nzTitle: 'Ajouter un nouveau EC',
+      nzContent: EcCreateComponent,
+      nzContentParams: {
+        departements: this.departements,
+      },
+      nzWidth: '350px',
+      nzClosable: false,
+      nzMaskClosable: false,
+    });
+
+    drawerRef.afterClose.subscribe((data) => {});
+  }
+
   onECSearch(value: string) {
     this.ecLoad = true;
     if (value.trim().length > 4) {
@@ -114,16 +145,15 @@ export class CourseCreateComponent implements OnInit {
   findSelectableList() {
     this.isLoad = true;
     this.courseService
-      .findSelectableList(['departements', 'services', 'semesters'])
+      .findSelectableList(['departements', 'services'])
       .subscribe({
         next: (response) => {
           this.departements = response.departements;
           this.services = response.services;
-          this.semesters = response.semesters;
           this.isLoad = false;
         },
         error: (errors) => {
-          (errors);
+          errors;
           this.isLoad = false;
           this.notification.createNotification(
             'error',
@@ -135,12 +165,13 @@ export class CourseCreateComponent implements OnInit {
   }
 
   findClasseByDepartement(id: number) {
+    this.isLoadClasse = true;
     this.classeService.findByDepartement(id).subscribe({
       next: (response) => {
         this.classes = response;
+        this.isLoadClasse = false;
       },
       error: (errors) => {
-        (errors);
       },
     });
   }

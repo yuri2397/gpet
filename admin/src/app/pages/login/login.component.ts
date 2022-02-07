@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
     private notification: NotificationService,
     private fb: FormBuilder,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.authService.alreadyConnect();
     this.validateForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.min(6)]],
@@ -44,9 +44,11 @@ export class LoginComponent implements OnInit {
       .login(this.validateForm.value.email, this.validateForm.value.password)
       .subscribe({
         next: (response: LoginResponse) => {
+          this.authService.setRoles(response.user.roles);
+          this.authService.setPermissions(response.user.permissions);
           this.authService.setToken(response.token);
           this.authService.setUser(response.user);
-          this.authService.setRoles(response.user.roles);
+          this.authService.setDepartement(response.departement);
           this.afterLogin(response);
           this.isLoad = false;
         },
@@ -61,17 +63,6 @@ export class LoginComponent implements OnInit {
       });
   }
   afterLogin(response: LoginResponse) {
-    let role!: string;
-    response.user.roles.forEach((r) => {
-      role = r.name;
-    });
-    switch (role) {
-      case this.authService.super_admin:
-        this.router.navigate(['/admin']);
-        break;
-      case this.authService.editeur:
-        this.router.navigate(['/departement']);
-        break;
-    }
+      this.router.navigate(['/admin/dashboard']);
   }
 }

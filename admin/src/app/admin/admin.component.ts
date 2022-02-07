@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NzIconService } from 'ng-zorro-antd/icon';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { Permission } from '../models/permission';
+import { Role } from '../models/role';
 
 declare interface RouteInfo {
   path: string;
   title: string;
   icon: string;
   class: string;
-  roles: string[];
+  permissions: string[];
 }
 
 export const ROUTES: RouteInfo[] = [
@@ -18,56 +19,70 @@ export const ROUTES: RouteInfo[] = [
     title: 'Dashboard',
     icon: 'space_dashboard',
     class: '',
-    roles: ['super-admin'],
+    permissions: ['*'],
   },
   {
     path: 'batiments',
     title: 'Batiments',
     icon: 'room_preferences',
     class: '',
-    roles: ['super-admin'],
+    permissions: ['voir batiment'],
   },
   {
     path: 'departements',
     title: 'Départements',
     icon: 'school',
     class: '',
-    roles: ['super-admin'],
+    permissions: ['voir departement'],
+  },
+  {
+    path: 'banks',
+    title: 'Banques',
+    icon: 'account_balance',
+    class: '',
+    permissions: ['voir banque'],
   },
   {
     path: 'salles',
     title: 'Salles',
     icon: 'meeting_room',
     class: '',
-    roles: ['super-admin'],
+    permissions: ['voir salle'],
   },
   {
     path: 'professeurs',
     title: 'Professeurs',
     icon: 'groups',
     class: '',
-    roles: ['super-admin'],
+    permissions: ['voir professeur'],
   },
   {
     path: 'courses',
     title: 'Cours',
+    icon: 'history_edu',
+    class: '',
+    permissions: ['voir cour'],
+  },
+  {
+    path: 'semesters',
+    title: 'Semestres',
+    icon: 'low_priority',
+    class: '',
+    permissions: ['voir semestre'],
+  },
+  {
+    path: 'classes',
+    title: 'Classes',
     icon: 'ballot',
     class: '',
-    roles: ['super-admin'],
+    permissions: ['voir classe'],
   },
   {
     path: 'users',
     title: 'Administrateurs',
     icon: 'manage_accounts',
     class: '',
-    roles: ['super-admin'],
-  },
-  {
-    path: 'profile',
-    title: 'Profile',
-    icon: 'account_circle',
-    class: '',
-    roles: [],
+    permissions: ['voir admin'],
   },
 ];
 
@@ -79,12 +94,16 @@ export const ROUTES: RouteInfo[] = [
 export class AdminComponent implements OnInit {
   isCollapsed = true;
   isLoad = true;
+  roles!: Role[];
+  user!: User;
   menuItems!: RouteInfo[];
+  title = 'UFR SET - GPET';
+  depTitle!: string;
+  permissions!: Permission[];
 
   constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter((menuItem) => menuItem);
     this.currentUser();
   }
 
@@ -92,9 +111,19 @@ export class AdminComponent implements OnInit {
     this.isLoad = true;
     this.userService.currentUser().subscribe({
       next: (response: User) => {
-        this.isLoad = false;
         this.userService.setUser(response);
         this.userService.setRoles(response.roles);
+        this.user = response;
+        this.roles = response.roles;
+        this.permissions = response.permissions;
+        if (!this.userService.isSuperAdmin()) {
+          this.depTitle = this.user.departement.name.toUpperCase();
+        }
+        this.menuItems = ROUTES.filter((menuItem) => menuItem);
+        if (this.user.permissions.length == 0) {
+          this.router.navigate(['/any-permission']);
+        }
+        this.isLoad = false;
       },
       error: (errors) => {
         this.isLoad = false;
@@ -102,11 +131,25 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  selected(item: RouteInfo){
+  selected(item: RouteInfo) {
     return this.router.url.indexOf(item.path) !== -1 ? true : false;
   }
 
-  routerLink(item: RouteInfo){
-    this.router.navigate(["/admin/" + item.path]);
+  routerLink(item: RouteInfo) {
+    this.router.navigate(['/admin/' + item.path]);
+  }
+
+  logout() {
+    this.userService.logout();
+  }
+
+  canShowItem(item: RouteInfo) {
+    let r = false;
+    this.permissions.forEach((e) => {
+      if (item.permissions.indexOf(e.name) != -1 || item.permissions.indexOf('*') != -1) {
+        r = true;
+      }
+    });
+    return r;
   }
 }

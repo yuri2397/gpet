@@ -1,22 +1,23 @@
-<div class="card">
+<div class="card shadow">
     <div class="card-header p-3 bg-color">
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h5 class="text-white">Liste des professeurs</h5>
+                <h5 class="text-white">Liste des classes</h5>
             </div>
-            <div>
-                <button mat-mini-fab color="default">
-    <mat-icon>add</mat-icon>
-  </button>
+            <div *ngIf="can('creer classe')">
+                <button mat-mini-fab color="default" (click)="openCreateModal()">
+          <mat-icon>add</mat-icon>
+        </button>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="2" #basicTable [nzData]="classes">
+        <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="classes">
             <thead>
                 <tr>
                     <th>Nom</th>
                     <th class="text-center">Nombre d'étudiants</th>
+                    <th class="text-center">Nombre de cours</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -24,26 +25,26 @@
                 <tr *ngFor="let data of basicTable.data">
                     <td>{{ data.name }}</td>
                     <td class="text-center">{{ data.nb_students }}</td>
+                    <td class="text-center">{{ data.courses.length }}</td>
                     <td class="text-center">
                         <div class="d-flex justify-content-center">
-                            <div>
-                                <a [routerLink]='["show/" + data.id]'>
+                            <div *ngIf="can('voir salle')">
+                                <a [routerLink]="['show/' + data.id]">
                                     <button mat-mini-fab color="primary">
-                      <mat-icon>visibility</mat-icon>
-                    </button>
+                    <mat-icon>visibility</mat-icon>
+                  </button>
                                 </a>
                             </div>
-                            <div class="mx-3">
-                                <button mat-mini-fab color="accent">
-                    <mat-icon>edit</mat-icon>
-                  </button>
+                            <div class="mx-3" *ngIf="can('modifier classe')">
+                                <button mat-mini-fab color="accent" (click)="openEditModal(data)">
+                  <mat-icon>edit</mat-icon>
+                </button>
                             </div>
-                            <div>
-                                <button mat-mini-fab color="warn">
-                    <mat-icon>delete</mat-icon>
-                  </button>
+                            <div *ngIf="can('supprimer classe')">
+                                <button mat-mini-fab color="warn" (click)="openDeleteModal(data)">
+                  <mat-icon>delete</mat-icon>
+                </button>
                             </div>
-
                         </div>
                     </td>
                 </tr>

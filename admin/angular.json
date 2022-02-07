@@ -1,5 +1,8 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "cli": {
+        "analytics": "cfe5efdb-3df5-4b4a-9202-c24e7bbf9518"
+    },
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
@@ -26,6 +29,9 @@
                         "polyfills": "src/polyfills.ts",
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
+                        "allowedCommonJsDependencies": [
+                            "rxjs-compat"
+                        ],
                         "assets": [
                             "src/favicon.ico",
                             "src/assets",
@@ -47,8 +53,8 @@
                         "production": {
                             "budgets": [{
                                     "type": "initial",
-                                    "maximumWarning": "500kb",
-                                    "maximumError": "1mb"
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",

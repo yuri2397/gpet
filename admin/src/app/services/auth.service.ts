@@ -1,24 +1,24 @@
 import { LoginResponse } from './../models/login-response';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseHttp } from '../shared/base-http';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends BaseHttp {
+  protected _baseUrl = 'user';
 
-  protected _baseUrl = 'user/';
-
-  constructor(protected hc: HttpClient,private router: Router) {
+  constructor(protected hc: HttpClient, private router: Router) {
     super();
     this.http = hc;
   }
 
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(
-      this.endPoint + 'login',
+      this.endPointWithSlash + 'login',
       {
         email: email,
         password: password,
@@ -32,18 +32,75 @@ export class AuthService extends BaseHttp {
 
   logOut() {
     sessionStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/']);
   }
 
   alreadyConnect() {
     if (this.isLogIn()) {
-      if (this.isAdmin()) {
-        this.router.navigate(['/admin']);
-      } else {
-        this.router.navigate(['/departement/']);
-      }
+      return this.router.navigate(['/admin']);
     } else {
-      this.router.navigate(['/login']);
+      return this.router.navigate(['/']);
     }
   }
+
+  updatePassword(password: string, new_password: string) {
+    return this.http.post<User>(
+      this.endPointWithSlash + 'update-password',
+      {
+        password: password,
+        new_password: new_password,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  updateAvatar(data: any) {
+    var myFormData = new FormData();
+    myFormData.append('image', data);
+
+    return this.http.post<User>(
+      this.endPointWithSlash + 'update-avatar',
+      myFormData,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + this.getToken(),
+        },
+      }
+    );
+  }
+  public forgotPassword(email:String){
+
+    return this.http.post<any>(
+      this.endPointWithSlash + 'forgot-password',
+      {
+        email: email,
+      },
+      {
+        headers: this.guestHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  public resetPassword(email:string,code:string,password: string){
+    return this.http.post<any>(
+      this.endPointWithSlash + 'reset-password',
+      {
+        email: email,
+        code:  code,
+        password: password,
+      },
+      {
+        headers: this.guestHeaders,
+        observe: 'body',
+      }
+    );
+
+  }
+
 }

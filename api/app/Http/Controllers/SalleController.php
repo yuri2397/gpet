@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Salle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SalleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir salle")->only(["index", "show"]);
+        $this->middleware("permission:modifier salle")->only(["update"]);
+        $this->middleware("permission:creer salle")->only(["store"]);
+        $this->middleware("permission:supprimer salle")->only(["destroy"]);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,12 +25,13 @@ class SalleController extends Controller
      */
     public function index()
     {
-        return DB::table("salles as S")
-            ->join('departements as D', 'S.departement_id', 'D.id')
-            ->join('batiments as B', 'S.batiment_id', 'B.id')
-            ->select('S.*', 'D.name as departement', 'B.name as batiment')
-            ->orderBy('S.created_at', 'desc')
-            ->get();
+        $user = User::find(auth()->id());
+        if($user->isAdmin()){
+            return Salle::with(['batiment', 'departement'])->orderBy('created_at', 'desc')->get();
+        }
+        else{
+            return Salle::with(['batiment', 'departement'])->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        }
     }
 
     /**
@@ -94,5 +105,14 @@ class SalleController extends Controller
     public function destroy($id)
     {
         return response()->json(DB::table("salles")->whereId($id)->delete(), 200);
+    }
+
+    public function search($data)
+    {
+        return Salle::with('batiment')
+            ->where('name', 'like', '%' . $data . '%')
+            ->orWhere('number', 'like', '%' . $data . '%')
+            ->orWhere('capacity', 'like', '%' . $data . '%')
+            ->get();
     }
 }

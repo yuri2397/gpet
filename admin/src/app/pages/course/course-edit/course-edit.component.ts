@@ -33,11 +33,11 @@ export class CourseEditComponent implements OnInit {
   isLoad: boolean = false;
   ecLoad = false;
   profLoad = false;
-
+  serviceAmountFCFA = 'MONTANT HORAIRE';
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
-    private courseService: CourseService,
+    public courseService: CourseService,
     private modal: NzModalRef,
     private profService: ProfessorService,
     private classeService: ClasseService,
@@ -47,11 +47,8 @@ export class CourseEditComponent implements OnInit {
   ngOnInit(): void {
     this.findSelectableList();
     this.validateForm = this.fb.group({
-      acronym: [null, [Validators.required]],
-      name: [null, [Validators.required]],
-      groupe_number: [0, [Validators.required]],
+      groupe_number: [null, [Validators.required]],
       classe_id: [null, [Validators.required]],
-      semester_id: [null, [Validators.required]],
       service_id: [null, [Validators.required]],
       ec_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
@@ -60,20 +57,22 @@ export class CourseEditComponent implements OnInit {
   }
 
   serviceAmout(serviceId: number) {
-    if (serviceId == null) return 'Montant (FCFA)';
+    if (serviceId == null) this.serviceAmountFCFA = 'Montant (FCFA)';
     let amount!: number;
-    this.services.forEach((s) => {
-      if (s.id == serviceId) {
-        amount = s.amount;
-      }
-    });
-    return amount + ' FCFA';
+    if (this.services) {
+      this.services.forEach((s) => {
+        if (s.id == serviceId) {
+          amount = s.amount;
+        }
+      });
+      this.serviceAmountFCFA = amount + ' FCFA';
+    }
   }
 
   onProSearch(value: string) {
     this.profLoad = true;
 
-    if (value.trim().length > 4) {
+    if (value.trim().length > 2) {
       this.profService.search(value.trim()).subscribe({
         next: (response) => {
           this.professors = response;
@@ -93,7 +92,7 @@ export class CourseEditComponent implements OnInit {
 
   onECSearch(value: string) {
     this.ecLoad = true;
-    if (value.trim().length > 4) {
+    if (value.trim().length > 2) {
       this.ecService.search(value.trim()).subscribe({
         next: (response) => {
           this.ecs = response;
@@ -160,7 +159,7 @@ export class CourseEditComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    this.courseService.create(this.course).subscribe({
+    this.courseService.edit(this.course).subscribe({
       next: (response) => {
         this.isLoad = false;
         this.notification.createNotification(

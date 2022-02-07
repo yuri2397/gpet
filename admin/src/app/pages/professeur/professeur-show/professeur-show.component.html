@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="!dataLoad; else loadData">
     <div class="card">
         <!-- TOP -->
         <div *ngIf="!dataLoad" class="card-header bg-color">
@@ -10,10 +10,12 @@
                 </div>
                 <div>
                     <div class="d-flex justify-content-end align-items-center">
-                        <div class="mx-1">
-                            <button nz-tooltip [nzTooltipTitle]="'Export l\'état des paiements'" mat-mini-fab color="default">
-                <mat-icon>print</mat-icon>
-              </button>
+                        <div class="mx-1" *ngIf="can('voir payement')">
+                            <a [routerLink]='["/admin/professeurs/payements/" + professeur.registration_number]'>
+                                <button mat-mini-fab color="default">
+                  <mat-icon>paid</mat-icon>
+                </button>
+                            </a>
                         </div>
                         <div class="mx-1">
                             <button nz-tooltip [nzTooltipTitle]="'Modifier les infos'" (click)="openEditModal()" mat-mini-fab color="accent">
@@ -31,63 +33,139 @@
                     <div class="row justify-content-between align-items-top">
                         <div class="col-xm-8 col-md-6 my-1">
                             <nz-card class="shadow" [nzCover]="coverTemplate">
-                                <div class="mb-3">
-                                    <h5>
-                                        <nz-tag [nzColor]="'geekblue'">
-                                            <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
-                                        </nz-tag>
-                                        - {{ professeur.first_name }} {{ professeur.last_name }}
-                                    </h5>
-                                </div>
-                                <div class="my-2 h6">
-                                    Département :
-                                    <nz-tag [nzColor]="'cyan'">{{ professeur.departement.name }}</nz-tag>
-                                </div>
-                                <div class="my-2 h6">
-                                    Email :
-                                    <nz-tag [nzColor]="'purple'">{{ professeur.email }}</nz-tag>
-                                </div>
-                                <div class="my-2  h6">
-                                    Status :
-                                    <nz-tag [nzColor]="'gold'">{{ professeur.status }}</nz-tag>
-                                </div>
-                                <div class="my-2  h6">
-                                    Métier :
-                                    <nz-tag [nzColor]=" professeur.job == null ? 'red': 'blue'" [innerText]="professeur.job ?? 'Non définie'"></nz-tag>
-                                </div>
-                                <div class="my-2  h6">
-                                    En fonction :
-                                    <nz-tag [nzColor]="professeur.is_active == 1 ? 'green' : 'red'" [innerText]="professeur.is_active == 1 ? 'OUI' : 'NON'"></nz-tag>
-                                </div>
+                                <nz-tabset>
+                                    <nz-tab nzTitle="Personnel">
+                                        <div class="mb-3">
+                                            <nz-tag [nzColor]="'geekblue'">
+                                                <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
+                                            </nz-tag>
+                                            {{ professeur.first_name }} {{ professeur.last_name }}
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Email
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'geekblue'">{{ professeur.email }}</nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Date de naissance
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'lime'">{{ professeur.born_at | date:'d MMMM y' }}</nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Lieu de naissance
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'orange'">{{ professeur.born_in }}</nz-tag>
+                                            </div>
+                                        </div>
+                                    </nz-tab>
+                                    <nz-tab nzTitle="Professionel">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                Département
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'geekblue'">{{ professeur.departement.name }}</nz-tag>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex my-1 justify-content-between align-items-center">
+                                            <div>
+                                                Status
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'volcano'">{{ professeur.status }}</nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Métier
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="professeur.job == null ? 'red': 'orange'" [innerText]="professeur.job ?? 'Non définie'"></nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Dérnier Diplôme
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="professeur.last_degree == null ? 'red': 'magenta'" [innerText]="professeur.last_degree ?? 'Non définie'"></nz-tag>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex my-1 justify-content-between align-items-center">
+                                            <div>
+                                                En fonction
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzMode]="'checkable'" (click)="setAccountStatus()" [nzColor]="professeur.is_active ? 'green' :
+                                                'red'" [innerText]="professeur.is_active ? 'OUI' :
+                                                'NON'"></nz-tag>
+                                            </div>
+                                        </div>
+                                    </nz-tab>
+                                </nz-tabset>
                             </nz-card>
                             <ng-template #coverTemplate>
                                 <img class="user-avatar" [src]="userProfilePath()" />
                             </ng-template>
+                            <mat-progress-bar *ngIf="updateStatusLoad" mode="indeterminate" color="primary"></mat-progress-bar>
+
                         </div>
                         <div class="col-xm-5 col-md-6 my-1">
                             <nz-card class="shadow">
                                 <div class="row">
                                     <div class="col-md-12 col-xs-12">
+
                                         <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert><br>
-                                        <div class="my-2 h6">
-                                            Banque :
-                                            <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Banque
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}
+                                                </nz-tag>
+
+                                            </div>
                                         </div>
-                                        <div class="my-2 h6">
-                                            Code de la banque :
-                                            <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Code de la banque
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}</nz-tag>
+                                            </div>
                                         </div>
-                                        <div class="my-2 h6">
-                                            N° de compte :
-                                            <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                N° de compte
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}</nz-tag>
+                                            </div>
                                         </div>
-                                        <div class="my-2  h6">
-                                            RIP :
-                                            <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}</nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                RIP
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}</nz-tag>
+                                            </div>
                                         </div>
-                                        <div class="my-2  h6">
-                                            Clé :
-                                            <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key"></nz-tag>
+                                        <div class="d-flex my-2 justify-content-between align-items-center">
+                                            <div>
+                                                Clé
+                                            </div>
+                                            <div>
+                                                <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key"></nz-tag>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +174,8 @@
                     </div>
                 </div>
                 <div class="card mt-3 shadow">
-                    <div class="d-flex justify-content-between align-items-center card-header bg-color">
+                    <div class="d-flex justify-content-between align-items-center
+            card-header bg-color">
                         <div>
                             <h5 class="text-white">Informations sur les cours</h5>
                         </div>
@@ -107,80 +186,61 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <nz-collapse nzAccordion>
-                            <nz-collapse-panel [nzActive]="true" [nzExpandedIcon]="'double-right'" nzHeader="Liste des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}">
-                                <div class="col-12">
-                                    <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="professeur.courses">
-                                        <thead>
-                                            <tr>
-                                                <th> Code </th>
-                                                <th><b>Intitulé</b></th>
-                                                <th><b>Groupe</b></th>
-                                                <th><b>Service</b></th>
-                                                <th><b>Semestre</b></th>
-                                                <th><b>Classe</b></th>
-                                                <th><b>UE</b></th>
-                                                <th><b>Actions</b></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let data of basicTable.data">
-                                                <td>{{ data.acronym }}</td>
-                                                <td>{{ data.name }}</td>
-                                                <td>{{ data.groupe_number }}</td>
-                                                <td>{{ data.service.name }}</td>
-                                                <td>{{ data.semester.name }}</td>
-                                                <td>{{ data.classe.name }}</td>
-                                                <td>{{ data.ec.name }}</td>
-                                                <td>
-                                                    <div class="d-flex justify-content-center">
-                                                        <div>
-                                                            <button (click)="openAddHourModal(data)" mat-mini-fab color="primary">
-                                <mat-icon>pending_actions</mat-icon>
-                              </button>
-                                                        </div>
-                                                        <div class="mx-2">
-                                                            <button (click)="openDeleteConf(data)" mat-mini-fab color="warn">
-                                <mat-icon>delete</mat-icon>
-                              </button>
-                                                        </div>
-                                                    </div>
+                        <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="professeur.courses">
+                            <thead>
+                                <tr>
+                                    <th> Code </th>
+                                    <th class="text-center"><b>Intitulé</b></th>
+                                    <th class="text-center"><b>Groupe</b></th>
+                                    <th class="text-center"><b>Service</b></th>
+                                    <th class="text-center"><b>Semestre</b></th>
+                                    <th class="text-center"><b>Classe</b></th>
+                                    <th class="text-center"><b>UE</b></th>
+                                    <th class="text-center"><b>Actions</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of basicTable.data">
+                                    <td class="text-center">{{ data.acronym }}</td>
+                                    <td class="text-center">{{ data.name }}</td>
+                                    <td class="text-center">
 
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </nz-table>
-                                </div>
-                            </nz-collapse-panel>
-                            <nz-collapse-panel [nzExpandedIcon]="'double-right'" nzHeader="Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth()
-                |
-                date }}">
-                                <div class="row">
-                                    <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professeur.coursesDo">
-                                        <thead>
-                                            <tr>
-                                                <th> Code </th>
-                                                <th><b>Cours</b></th>
-                                                <th><b>Classe</b></th>
-                                                <th><b>Service</b></th>
-                                                <th><b>Nombre d'heures</b></th>
-                                                <th><b>Montant</b></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let data of courseDoTable.data">
-                                                <td>{{ data.course.acronym }}</td>
-                                                <td>{{ data.course.name }}</td>
-                                                <td>{{ data.course.classe.name }}</td>
-                                                <td>{{ data.course.service.name }}</td>
-                                                <td>{{ data.total_hours}} heures</td>
-                                                <td>{{ data.total_sales}} FCFA </td>
-                                            </tr>
-                                        </tbody>
-                                    </nz-table>
-                                </div>
-                            </nz-collapse-panel>
-                        </nz-collapse>
+                                        <ng-container *ngIf="data.groupe_number == 0; else
+                      groupeCommune">
+                                            <nz-tag [nzColor]="'geekblue'">
+                                                COMMUN
+                                            </nz-tag>
+                                        </ng-container>
+                                        <ng-template #groupeCommune>
+                                            <nz-tag [nzColor]="'geekblue'">
+                                                {{ data.groupe_number }}
+                                            </nz-tag>
+                                        </ng-template>
+
+
+                                    </td>
+                                    <td class="text-center">{{ data.service.name }}</td>
+                                    <td class="text-center">{{ data.semester.name }}</td>
+                                    <td class="text-center">{{ data.classe.name }}</td>
+                                    <td class="text-center">{{ data.ec.name }}</td>
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center">
+                                            <div>
+                                                <button (click)="openAddHourModal(data)" mat-mini-fab color="primary">
+                          <mat-icon>pending_actions</mat-icon>
+                        </button>
+                                            </div>
+                                            <div class="mx-2">
+                                                <button (click)="openDeleteConf(data)" mat-mini-fab color="warn">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
                     </div>
                 </div>
             </ng-container>
@@ -219,17 +279,28 @@
         </div>
     </div>
 </div>
+<ng-template #loadData>
+    <div class="container">
+        <div class="card card-body shadow">
+            <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
+            <br>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+    </div>
+</ng-template>
 
 
 <!-- ADD HOURS MODAL -->
-<nz-modal [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des heurs de cours">
+<nz-modal [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des
+  heurs de cours">
     <div *nzModalContent>
         <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
             <div class="row">
                 <div class="col-md-6">
                     <nz-form-item>
                         <nz-form-label nzRequired nzFor="hours">Nombre d'heures</nz-form-label>
-                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nombre d'heures est requi">
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
+              nombre d'heures est requi">
                             <input [(ngModel)]="hours" formControlName="hours" nz-input name="hours" type="number" id="hours">
                         </nz-form-control>
                     </nz-form-item>
@@ -248,7 +319,9 @@
                     <nz-form-item>
                         <nz-form-label>Professeur</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ professeur.first_name + '' + professeur.last_name }}">
+                            <input [disabled]="true" nz-input value="{{
+                professeur.first_name + '' + professeur.last_name
+                }}">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -256,7 +329,8 @@
                     <nz-form-item>
                         <nz-form-label>Cours</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ selectedCourse.name }}">
+                            <input [disabled]="true" nz-input value="{{
+                selectedCourse.name }}">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -270,17 +344,21 @@
 </nz-modal>
 
 <!-- ADD COURSE MODAL -->
-<nz-modal [(nzVisible)]="addCourseModalVisible" nzTitle="Affectation des cours" [nzFooter]="addCourFootModal" [nzWidth]="'40em'">
+<nz-modal [(nzVisible)]="addCourseModalVisible" nzTitle="Affectation
+  des cours" [nzFooter]="addCourFootModal" [nzWidth]="'40em'">
     <div *nzModalContent>
         <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addCourForm" (ngSubmit)="submitAddCourseForm()">
             <div class="row">
                 <div class="col-md-6">
                     <nz-form-item>
                         <nz-form-label nzRequired nzFor="hours">Cours</nz-form-label>
-                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le cour requi">
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
+              cour requi">
                             <nz-select (ngModelChange)='currentModel($event)' nzPlaceHolder="Rechercher un professeur" nzAllowClear nzShowSearch nzServerSearch formControlName="course_id" (nzOnSearch)="onCourseSearch($event)">
                                 <ng-container *ngFor="let o of courses">
-                                    <nz-option *ngIf="!coursesLoad" [nzValue]="o.id" [nzLabel]=" '# ' + o.name + ' | ' + o.service.name">
+                                    <nz-option *ngIf="!coursesLoad" [nzValue]="o.id" [nzLabel]="'#
+                    ' + o.name + ' | ' +
+                    o.service.name">
                                     </nz-option>
                                 </ng-container>
                                 <nz-option *ngIf="coursesLoad" nzDisabled nzCustomContent>
@@ -294,7 +372,8 @@
                     <nz-form-item>
                         <nz-form-label nzRequired nzFor="cdDate">Code</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ selectedCourse.acronym }}">
+                            <input [disabled]="true" nz-input value="{{
+                selectedCourse.acronym }}">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -304,7 +383,8 @@
                     <nz-form-item>
                         <nz-form-label>Service</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ selectedCourse.service.name }}">
+                            <input [disabled]="true" nz-input value="{{
+                selectedCourse.service.name }}">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -312,7 +392,8 @@
                     <nz-form-item>
                         <nz-form-label>Montant Horaire</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ selectedCourse.service.amount }} (FCFA)">
+                            <input [disabled]="true" nz-input value="{{
+                selectedCourse.service.amount }} (FCFA)">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -322,7 +403,8 @@
                     <nz-form-item>
                         <nz-form-label>Semestre</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ selectedCourse.semester.name }}">
+                            <input [disabled]="true" nz-input value="{{
+                selectedCourse.semester.name }}">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -330,7 +412,8 @@
                     <nz-form-item>
                         <nz-form-label>UE</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [disabled]="true" nz-input value="{{ selectedCourse.ec.ue.name }}">
+                            <input [disabled]="true" nz-input value="{{
+                selectedCourse.ec.ue.name }}">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -338,7 +421,7 @@
         </nz-form>
     </div>
     <ng-template #addCourFootModal>
-        <button nz-button nzType="default" (click)="addCourseModalVisible = false">Annuler</button>
+        <button nz-button nzType="default" (click)="addCourseModalVisible= false">Annuler</button>
         <button nz-button nzType="primary" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid" [nzLoading]="addHourLaod">Valider</button>
     </ng-template>
 </nz-modal>

@@ -3,28 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\SendNewUserMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Traits\Utils;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    use Utils;
+    public function __construct()
     {
-        return User::all();
+        $this->middleware("permission:voir admin")->only(["index", "show"]);
+        $this->middleware("permission:modifier admin")->only(["update"]);
+        $this->middleware("permission:creer admin")->only(["store"]);
+        $this->middleware("permission:supprimer admin")->only(["destroy"]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        $user = User::find(auth()->id());
+        if ($user->hasRole("chef de département")) {
+            return User::with("roles")->whereDepartementId($user->departement_id)->get();
+        }
+        return User::with("roles")->get();
+    }
+
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -32,18 +39,28 @@ class UserController extends Controller
             "last_name" => "required|min:2",
             "email" => "required|email|unique:users,email",
             "departement_id" => 'required|exists:departements,id',
-            "roles" => "required|exists:roles,name",
+            "roles" => "required|array",
         ]);
 
         $user = new User;
+        $password = Str::random("6");
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->departement_id = $request->departement_id;
-        $user->password = bcrypt("bienvenue");
-        $user->save();
-        $user->assignRole($request->roles);
-        return response()->json(['message' => "Utilisateur crée avec succès."], 200);
+        $user->password = bcrypt($password);
+
+        //SEND MAIL
+        try {
+            Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+            $user->save();
+            $user->assignRole($request->roles);
+            return response()->json(['message' => "Utilisateur crée avec succès."], 200);
+        }
+        catch (\Throwable $th) {
+            return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
+            "], 503);
+        }
     }
 
     /**
@@ -57,13 +74,6 @@ class UserController extends Controller
         return User::find($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -74,7 +84,7 @@ class UserController extends Controller
         ]);
         $user = User::find($id);
         if ($user == null) {
-            return response()->json(['message' => "Utilisateur n'existe pas.",], 404);
+            return response()->json(['message' => "Utilisateur n'existe pas.", ], 404);
         }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -84,14 +94,31 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        return DB::table("users")->wereId($id)->delete();
+        return DB::table("users")->whereId($id)->delete();
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images');
+
+            $user = User::find(auth()->id());
+            if ($user->avatar) {
+                \unlink("storage" . $user->avatar);
+            }
+            $user->avatar = Str::substr($path, 6, strlen($path));
+
+            $user->save();
+            return response()->json($user);
+        }
+        else {
+            return response()->json([
+                "message" => "Veuillez selectionner une image pour votre profile."
+            ], 422);
+
+        }
+
     }
 }

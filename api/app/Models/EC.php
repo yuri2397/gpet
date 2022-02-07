@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class EC extends Model
 {
-    protected $with = ['ue'];
     use HasFactory;
+
+    protected $with = ['ue'];
+
+    protected $fillable = ['*'];
 
     public function ue()
     {

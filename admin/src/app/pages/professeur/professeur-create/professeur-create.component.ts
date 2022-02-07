@@ -1,3 +1,4 @@
+import { ProfessorType } from './../../../models/professor_type';
 import { BankService } from './../../../services/bank.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { Professor } from 'src/app/models/professor';
@@ -8,6 +9,8 @@ import { Departement } from 'src/app/models/departement';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Bank } from 'src/app/models/bank';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
+import { BankCreateComponent } from '../../bank/bank-create/bank-create.component';
 
 @Component({
   selector: 'app-professeur-create',
@@ -22,18 +25,27 @@ export class ProfesseurCreateComponent implements OnInit {
   isLoadDataBat = true;
   professor: Professor = new Professor();
   banks!: Bank[];
+  bankLoad = false;
+  professorTypes!: ProfessorType[];
+
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
     private bankService: BankService,
-    private professorService: ProfessorService,
+    public professorService: ProfessorService,
     private modal: NzModalRef,
-    private deptService: DepartementService
+    private deptService: DepartementService,
+    private drawerService: NzDrawerService
   ) {}
 
   ngOnInit(): void {
+    if (!this.professorService.isSuperAdmin()) {
+      this.professor.departement = this.deptService.departement();
+      console.log(this.professor.departement);
+      
+    }
     this.findDepartement();
-    this.findBank();
+
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],
       last_name: [null, [Validators.required]],
@@ -44,9 +56,44 @@ export class ProfesseurCreateComponent implements OnInit {
       key: [null, [Validators.required]],
       rip: [null, [Validators.required]],
       bank_id: [null, [Validators.required]],
+      last_degree: [null, [Validators.required]],
       job: [null, null],
+      cni: [null, [Validators.required]],
+      born_in: [null, [Validators.required]],
+      born_at: [null, [Validators.required]],
+      professor_type_id: [null, [Validators.required]],
       departement_id: [null, [Validators.required]],
     });
+  }
+
+  onAddBank() {
+    const drawerRef = this.drawerService.create({
+      nzTitle: 'Ajouter une nouvelle banque',
+      nzContent: BankCreateComponent,
+      nzWidth: '350px',
+      nzClosable: false,
+      nzMaskClosable: false,
+    });
+  }
+
+  onBankSearch(data: string) {
+    this.bankLoad = true;
+    if (data.trim().length >= 2) {
+      this.bankService.search(data).subscribe({
+        next: (response) => {
+          this.banks = response;
+          this.bankLoad = false;
+        },
+        error: (errors) => {
+          this.bankLoad = false;
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
+        },
+      });
+    }
   }
 
   findBank() {
@@ -54,8 +101,14 @@ export class ProfesseurCreateComponent implements OnInit {
       next: (response) => {
         this.banks = response;
       },
-      error: (errors) => {}
-    })
+      error: (errors) => {
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
+      },
+    });
   }
 
   submitForm(): void {
@@ -69,16 +122,26 @@ export class ProfesseurCreateComponent implements OnInit {
 
   findDepartement() {
     this.isLoadData = true;
-    this.professorService.findSelectableList(['departements']).subscribe({
-      next: (response) => {
-        this.departements = response.departements;
-        this.isLoadData = false;
-      },
-      error: (errors) => {
-        this.isLoadData = false;
-      },
-    });
+    this.professorService
+      .findSelectableList(['departements', 'professor_types'])
+      .subscribe({
+        next: (response) => {
+          this.departements = response.departements;
+          this.professorTypes = response.professor_types;
+          this.isLoadData = false;
+        },
+        error: (errors) => {
+          this.isLoadData = false;
+          this.notification.createNotification(
+            'error',
+            'Erreur',
+            errors.error.message
+          );
+        },
+      });
   }
+
+  onBornAtChange(date: any) {}
 
   destroyModal(data: Professor | null): void {
     this.modal.destroy(data);
@@ -98,8 +161,7 @@ export class ProfesseurCreateComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        (errors);
-
+        errors;
         this.notification.createNotification(
           'error',
           'Erreur',

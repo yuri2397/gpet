@@ -25,7 +25,7 @@ export class SalleEditComponent implements OnInit {
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
-    private salleService: SalleService,
+    public salleService: SalleService,
     private modal: NzModalRef,
     private deptService: DepartementService,
     private batimentService: BatimentService

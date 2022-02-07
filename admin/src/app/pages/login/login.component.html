@@ -1,42 +1,71 @@
 <div class="frame">
-    <div class="child">
-        <div class="row">
-            <div class="col">
-                <div class="card shadow" style="width: 30em">
-                    <div class="card-header text-center card-header-primary bg">
-                        <h2 class="text-white">GPET</h2>
-                        <p class="card-category">Connectez-vous!</p>
-                    </div>
-                    <div class="card-body my-3 mx-5">
-                        <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-                            <nz-form-item>
-                                <nz-form-control nzErrorTip="Donner votre email!">
-                                    <nz-input-group class="input shadow-sm p-2" nzPrefixIcon="user">
-                                        <input type="email" nz-input formControlName="email" placeholder="Adresse email" />
-                                    </nz-input-group>
-                                </nz-form-control>
-                            </nz-form-item>
-                            <nz-form-item>
-                                <nz-form-control nzErrorTip="Donner votre mot de passe!">
-                                    <nz-input-group class="input shadow-sm p-2" nzPrefixIcon="lock">
-                                        <input type="password" nz-input formControlName="password" placeholder="Password" />
-                                    </nz-input-group>
-                                </nz-form-control>
-                            </nz-form-item>
-                            <div class="d-flex my-3 justify-content-between align-items-center">
-                                <div>
-                                    <button nz-button (click)="login()" [nzLoading]="isLoad" class="bg" [disabled]="!validateForm.valid">Se connecter</button>
-                                </div>
-                                <div>
-                                    <a href="#">Mot de passe oublié?</a>
-                                </div>
-
-                            </div>
-
-                        </form>
-                    </div>
+  <div class="child">
+    <div class="row">
+      <div class="col">
+        <div class="card shadow" style="width: 30em">
+          <div class="card-header text-center card-header-primary bg">
+            <h2 class="text-white">GPET</h2>
+            <p class="card-category">Connectez-vous!</p>
+          </div>
+          <div class="card-body my-3 mx-5">
+            <form
+              nz-form
+              [formGroup]="validateForm"
+              class="login-form"
+              (ngSubmit)="submitForm()"
+            >
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Donner votre email!">
+                  <nz-input-group
+                    class="input shadow-sm p-2"
+                    nzPrefixIcon="user"
+                  >
+                    <input
+                      type="email"
+                      nz-input
+                      formControlName="email"
+                      placeholder="Adresse email"
+                    />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Donner votre mot de passe!">
+                  <nz-input-group
+                    class="input shadow-sm p-2"
+                    nzPrefixIcon="lock"
+                  >
+                    <input
+                      type="password"
+                      nz-input
+                      formControlName="password"
+                      placeholder="Password"
+                    />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              <div
+                class="d-flex my-3 justify-content-between align-items-center"
+              >
+                <div>
+                  <button
+                    nz-button
+                    (click)="login()"
+                    [nzLoading]="isLoad"
+                    class="bg"
+                    [disabled]="!validateForm.valid"
+                  >
+                    Se connecter
+                  </button>
                 </div>
-            </div>
+                <div>
+                  <a routerLink="/forgot-password">Mot de passe oublié?</a>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

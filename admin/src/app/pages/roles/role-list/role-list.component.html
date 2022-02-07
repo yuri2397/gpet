@@ -1,0 +1,61 @@
+<div class="card card-body shadow" *ngIf="!allIsLoad; else loadData">
+    <nz-tabset>
+        <nz-tab (nzSelect)="tabChange(item)" *ngFor="let item of roles" [nzTitle]="item.name.toUpperCase() ">
+            <div class="card card-body border">
+
+                <div class="card card-body shadow-sm m-2 border">
+                    <div class="d-flex justify-content-start
+                    align-items-center">
+                        <div class="m-2">
+                            <button (click)="openCreateModal(item)" mat-mini-fab color="primary">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        </div>
+                        <div>
+                            <h4>Ajouter une permission.</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-body">
+                    <nz-table [nzLoading]="isLoad" nzTableLayout="fixed" #basicTable [nzData]="listOfDisplayData">
+                        <thead>
+                            <th class="text-start">
+                                PERMISSION
+                            </th>
+
+                            <th class="text-end">
+                                ACTIONS
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of basicTable.data">
+                                <td>
+                                    {{ data.name.toUpperCase() }}
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-end align-items center">
+                                        <div>
+                                            <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deletePermissionForRole(data, item)" class="shadow-sm" mat-mini-fab [color]="'warn'">
+                                                <mat-icon class="mat-18">delete</mat-icon>    
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                </div>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+</div>
+
+<ng-template #loadData>
+    <div class="card shadow">
+        <div class="card-body">
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+            <nz-skeleton [nzActive]="true"></nz-skeleton>
+        </div>
+    </div>
+</ng-template>

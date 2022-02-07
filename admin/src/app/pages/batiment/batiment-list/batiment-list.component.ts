@@ -5,6 +5,7 @@ import { Batiment } from 'src/app/models/batiment';
 import { BatimentService } from 'src/app/services/batiment.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { BatimentCreateComponent } from '../batiment-create/batiment-create.component';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-batiment-list',
@@ -19,7 +20,6 @@ export class BatimentListComponent implements OnInit {
   deleteLoad!: boolean;
   constructor(
     private notification: NotificationService,
-
     private modalService: NzModalService,
     private batimentService: BatimentService
   ) {}
@@ -115,4 +115,12 @@ export class BatimentListComponent implements OnInit {
       }
     });
   }
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.batimentService.can(p, this.batimentService.getPermissions());
+    return test;
+  }
+
 }

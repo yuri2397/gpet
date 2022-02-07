@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use UserRole;
+use App\Models\User;
 use App\Models\Batiment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +12,15 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class BatimentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware("permission:voir batiment")->only(["index", "show"]);
+        $this->middleware("permission:modifier batiment")->only(["update"]);
+        $this->middleware("permission:creer batiment")->only(["store"]);
+        $this->middleware("permission:supprimer batiment")->only(["destroy"]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +47,7 @@ class BatimentController extends Controller
 
         $bat->name = $request->name;
         $bat->save();
-        return response()->json($bat, 200);
+        return $bat;
     }
 
     /**
@@ -47,7 +58,7 @@ class BatimentController extends Controller
      */
     public function show($id)
     {
-        //
+        return Batiment::find($id);
     }
 
     /**

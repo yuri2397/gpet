@@ -18,11 +18,7 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['*'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,4 +38,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $with = ['departement', 'permissions'];
+
+    public function isAdmin()
+    {
+        return $this->hasRole('super admin') ? true :  false;
+    }
+
+    public function departement()
+    {
+        return $this->belongsTo(Departement::class);
+    }
+
 }

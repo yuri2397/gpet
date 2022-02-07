@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Batiment } from 'src/app/models/batiment';
+import { Permission } from 'src/app/models/permission';
 import { Salle } from 'src/app/models/salle';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SalleService } from 'src/app/services/salle.service';
@@ -26,6 +27,10 @@ export class SalleListComponent implements OnInit {
 
   ngOnInit(): void {
     this.findAll();
+  }
+
+  isSuperAdmin(){
+    return this.salleService.isSuperAdmin();
   }
 
   findAll() {
@@ -114,6 +119,13 @@ export class SalleListComponent implements OnInit {
         this.findAll();
       }
     });
+  }
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.salleService.can(p, this.salleService.getPermissions());
+    return test;
   }
 
 }
