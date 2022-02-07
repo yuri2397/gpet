@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Course;
 use App\Models\Professor;
 use App\Models\Batiment;
+use App\Models\Salle;
+use App\Models\Classe;
 
 class DepartementController extends Controller
 {
@@ -69,11 +71,22 @@ class DepartementController extends Controller
 
     public function dashboard()
     {
-        $departement = Departement::find(User::find(auth()->id())->departement_id);
+        $user = User::find(auth()->id());
+        if($user->hasRole("super admin")){
+            return response()->json([
+                "courses" => count(Course::all()),
+                "professors" => count(Professor::all()),
+                "classes" => count(Classe::all()),
+                "salles" => count(Salle::all())
+            ]);
+        }
+        $departement = Departement::find($user->departement_id);
 
-        $courses = count(Course::whereDepartementId($departement->id)->get());
-        $professors = count(Professor::whereDepartementId($departement->id)->get());
-        $batiments = count(Batiment::whereDepartementId($departement->id)->get());
-        $courses = count(Course::whereDepartementId($departement->id)->get());
+        return response()->json([
+            "courses" => count(Course::whereDepartementId($departement->id)->get()),
+            "professors" => count(Professor::whereDepartementId($departement->id)->get()),
+            "classes" => count(Classe::whereDepartementId($departement->id)->get()),
+            "salles" => count(Salle::whereDepartementId($departement->id)->get())
+        ]);
     }
 }

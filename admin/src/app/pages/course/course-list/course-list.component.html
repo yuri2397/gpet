@@ -18,7 +18,7 @@
                     <tr>
                         <th class="text-center">Code</th>
                         <th class="text-center">Intitulé</th>
-                        <th class="text-center" *ngIf="courseService.isAdmin()">Département</th>
+                        <th class="text-center" *ngIf="!courseService.isSuperAdmin()">Département</th>
                         <th class="text-center">Groupe</th>
                         <th class="text-center">Volume</th>
                         <th class="text-center">Service</th>
@@ -37,7 +37,7 @@
 
                         </td>
                         <td>{{ data.name }}</td>
-                        <td *ngIf="courseService.isAdmin()">{{ data.departement.name }}</td>
+                        <td *ngIf="!courseService.isSuperAdmin()">{{ data.departement.name }}</td>
                         <td>
                             <ng-container *ngIf="data.groupe_number == 0; else elseGroupe">
                                 <nz-tag [nzColor]="'blue'">Commun</nz-tag>

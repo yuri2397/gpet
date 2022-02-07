@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
   file: any;
-
+  avatarLoad = true;
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
@@ -52,8 +52,9 @@ export class ProfileComponent implements OnInit {
   userProfilePath() {
     if (this.authService.getUser().avatar == null) {
       this.user.avatar = '/assets/img/avatar.png';
-    }
-    this.user.avatar = this.authService.host + 'storage' + this.user.avatar;
+    } else
+      this.user.avatar = this.authService.host + 'storage' + this.user.avatar;
+    this.avatarLoad = false;
   }
 
   confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
@@ -89,7 +90,7 @@ export class ProfileComponent implements OnInit {
           this.notification.createNotification(
             'error',
             'Erreur',
-            'probleme de modification'
+            errors.error.message
           );
           console.log(errors);
         },
@@ -103,7 +104,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateAvatar() {
-    console.log(this.file);
+    this.avatarLoad = true;
     this.authService.updateAvatar(this.file).subscribe({
       next: (response: User) => {
         this.user = response;
@@ -124,6 +125,7 @@ export class ProfileComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
+        this.avatarLoad = false;
         console.log(errors);
       },
     });

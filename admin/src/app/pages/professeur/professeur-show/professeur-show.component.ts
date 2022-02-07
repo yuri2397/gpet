@@ -36,7 +36,7 @@ export class ProfesseurShowComponent implements OnInit {
   addCourseModalVisible: boolean = false;
   deleteCourseLoad!: boolean;
   deleteCourseRef!: NzModalRef;
-
+  updateStatusLoad = false;
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -123,7 +123,7 @@ export class ProfesseurShowComponent implements OnInit {
     this.profService.find(id).subscribe({
       next: (professeur) => {
         console.log(professeur.courses);
-        
+
         this.professeur = professeur;
         this.dataLoad = false;
       },
@@ -311,5 +311,29 @@ export class ProfesseurShowComponent implements OnInit {
     p.name = permission;
     let test = this.profService.can(p, this.profService.getPermissions());
     return test;
+  }
+
+  setAccountStatus() {
+    this.updateStatusLoad = true;
+    this.profService.desableAccount(this.professeur).subscribe({
+      next: (response) => {
+        this.professeur.is_active = !this.professeur.is_active;
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          response.message
+        );
+        this.updateStatusLoad = false;
+      },
+      error: (errors) => {
+        console.log(errors);
+        this.updateStatusLoad = false;
+        this.notification.createNotification(
+          'error',
+          'Notification',
+          errors.error.message
+        );
+      },
+    });
   }
 }

@@ -105,8 +105,8 @@
                                                 En fonction
                                             </div>
                                             <div>
-                                                <nz-tag [nzColor]="professeur.is_active == 1 ? 'green' :
-                                                'red'" [innerText]="professeur.is_active == 1 ? 'OUI' :
+                                                <nz-tag [nzMode]="'checkable'" (click)="setAccountStatus()" [nzColor]="professeur.is_active ? 'green' :
+                                                'red'" [innerText]="professeur.is_active ? 'OUI' :
                                                 'NON'"></nz-tag>
                                             </div>
                                         </div>
@@ -116,6 +116,8 @@
                             <ng-template #coverTemplate>
                                 <img class="user-avatar" [src]="userProfilePath()" />
                             </ng-template>
+                            <mat-progress-bar *ngIf="updateStatusLoad" mode="indeterminate" color="primary"></mat-progress-bar>
+
                         </div>
                         <div class="col-xm-5 col-md-6 my-1">
                             <nz-card class="shadow">
@@ -239,43 +241,6 @@
                                 </tr>
                             </tbody>
                         </nz-table>
-                        <!-- <nz-collapse nzAccordion>
-              <nz-collapse-panel [nzActive]="true" [nzExpandedIcon]="'double-right'"
-                nzHeader="Liste des cours affecté à {{ professeur.first_name }} {{ professeur.last_name }}">
-                <div class="col-12">
-
-                </div>
-              </nz-collapse-panel>
-               <nz-collapse-panel [nzExpandedIcon]="'double-right'" nzHeader="Liste des cours données du {{ previousMouth() | date }} au {{ currentMouth()
-                |
-                date }}">
-                <div class="row">
-                  <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #courseDoTable
-                    [nzData]="professeur.coursesDo">
-                    <thead>
-                      <tr>
-                        <th> Code </th>
-                        <th><b>Cours</b></th>
-                        <th><b>Classe</b></th>
-                        <th><b>Service</b></th>
-                        <th><b>Nombre d'heures</b></th>
-                        <th><b>Montant</b></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let data of courseDoTable.data">
-                        <td>{{ data.course.acronym }}</td>
-                        <td>{{ data.course.name }}</td>
-                        <td>{{ data.course.classe.name }}</td>
-                        <td>{{ data.course.service.name }}</td>
-                        <td>{{ data.total_hours}} heures</td>
-                        <td>{{ data.total_sales}} FCFA </td>
-                      </tr>
-                    </tbody>
-                  </nz-table>
-                </div>
-              </nz-collapse-panel>
-            </nz-collapse> -->
                     </div>
                 </div>
             </ng-container>

@@ -4,6 +4,7 @@
         <div class="col">
             <div class="card body m-3 border">
                 <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
+                <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
                 <div class="d-flex justify-content-center my-3 btn-icon">
                     <div>
                         <button mat-fab color="basic" class="shadow" (click)="image.click()">
