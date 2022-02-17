@@ -103,6 +103,8 @@ import { ProfileComponent } from '../pages/profile/profile.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HasRoleInterceptor } from '../shared/has-role.interceptor';
 import { ForgotPasswordComponent } from '../pages/forgot-password/forgot-password.component';
+import { PayementsPrintComponent } from '../pages/professeur/payements-print/payements-print.component';
+import { PayementsPrintAllComponent } from '../pages/professeur/payements-print-all/payements-print-all.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -214,6 +216,8 @@ registerLocaleData(localeFr, fr);
     RoleListComponent,
     RoleCreateComponent,
     AddPermissionToUserComponent,
+    PayementsPrintComponent,
+    PayementsPrintAllComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

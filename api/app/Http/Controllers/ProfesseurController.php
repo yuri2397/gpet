@@ -182,12 +182,13 @@ class ProfesseurController extends Controller
         if ($prof) {
             $user = User::find(auth()->id());
             if ($user->hasRole("super admin")) {
-                $prof->coursesDo = $prof->coursesDo()
+                $prof->coursesDo = $prof->coursesDo()->with("course.classe")
                     ->whereYear('courses_has_professors.date', date('Y'))
                     ->join('courses', 'courses_has_professors.course_id', 'courses.id')
                     ->select(
                     "courses_has_professors.course_id",
                     "courses_has_professors.professor_id",
+                    "courses_has_professors.is_paid",
                     "courses_has_professors.amount",
                     DB::raw('SUM(courses_has_professors.hours) as total_hours'),
                     DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')

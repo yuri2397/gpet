@@ -1,3 +1,4 @@
+import { Bank } from 'src/app/models/bank';
 import { Service } from './service';
 import { Classe } from './classe';
 import { Departement } from './departement';

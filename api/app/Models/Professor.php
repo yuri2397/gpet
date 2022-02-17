@@ -9,7 +9,7 @@ class Professor extends Model
 {
     use HasFactory;
     protected $fillable = ['*'];
-    protected $with = ["professorType"];
+    protected $with = ["professorType", "account", "account.bank"];
     /**
      * Get the account associated with the user.
      */
