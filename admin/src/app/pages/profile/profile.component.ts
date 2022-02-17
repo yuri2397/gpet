@@ -7,6 +7,8 @@ import {
   Validators,
   FormGroup,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -36,7 +38,15 @@ export class ProfileComponent implements OnInit {
       password: [null, [Validators.required]],
       new_password: [null, [Validators.required]],
       new_password_conf: [null, Validators.required],
-    });
+    }, { validators: this.checkPasswords });
+  }
+
+  checkPasswords: Validators = (
+    group: AbstractControl
+  ): ValidationErrors | null => {
+    let pass = group.value.new_password;
+    let confirmPass = group.value.new_password_conf;
+    return pass === confirmPass ? null : { notSame: true };
   }
 
   userProfilePath() {
