@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UserService extends BaseHttp {
-  
+ 
   protected _baseUrl = 'user';
   constructor(protected hc: HttpClient, private router: Router) {
     super();
@@ -51,10 +51,38 @@ export class UserService extends BaseHttp {
     );
   }
 
+  clone(user: User): User {
+    let u = new User();
+    u.id = user.id;
+    u.first_name = user.first_name;
+    u.last_name = user.last_name;
+    u.email = user.email;
+    u.departement = user.departement;
+    u.departement_id = user.departement.id;
+    u.roles = user.roles;
+    return u;
+  }
+
   findSelectedUser(user: User) {
     return this.http.get<User>(this.endPointWithSlash + 'show/' + user.id, {
       headers: this.authorizationHeaders,
     });
+  }
+
+  edit(user: User, roles: string[]) {
+    return this.http.put<User>(
+      this.endPointWithSlash + 'update/' + user.id,
+      {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        departement_id: user.departement,
+        roles: roles
+      },
+      {
+        headers: this.authorizationHeaders,
+      }
+    );
   }
 
   delete(user: User) {

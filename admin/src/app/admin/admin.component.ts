@@ -4,7 +4,20 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Permission } from '../models/permission';
 import { Role } from '../models/role';
+import {
+  ApexAxisChartSeries,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexChart
+} from "ng-apexcharts";
 
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  title: ApexTitleSubtitle;
+  colors: any;
+};
 declare interface RouteInfo {
   path: string;
   title: string;

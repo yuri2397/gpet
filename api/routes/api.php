@@ -82,6 +82,8 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
     Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
     Route::post('create', [SemesterController::class, 'store']);
+    Route::put('update/{id}', [SemesterController::class, 'update']);
+    Route::delete('delete/{id}', [SemesterController::class, 'destroy']);
 });
 
 Route::prefix("classe")->middleware(['auth:api',])->group(function () {

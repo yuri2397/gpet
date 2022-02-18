@@ -30,7 +30,6 @@ export class AddPermissionToUserComponent implements OnInit {
       permissions: [[], [Validators.required]],
     });
     this.findAllPermissions();
-    console.log(this.user);
   }
 
   destroyModal(data: any | null) {

@@ -41,8 +41,6 @@ export class ProfesseurCreateComponent implements OnInit {
   ngOnInit(): void {
     if (!this.professorService.isSuperAdmin()) {
       this.professor.departement = this.deptService.departement();
-      console.log(this.professor.departement);
-      
     }
     this.findDepartement();
 

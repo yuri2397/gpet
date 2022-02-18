@@ -43,8 +43,6 @@ export class PayementsComponent implements OnInit {
     this.professorService.payments(this.professor).subscribe({
       next: (response) => {
         this.professor = response;
-        console.log(this.professor.coursesDo);
-
         this.dataLoad = false;
       },
       error: (errors) => {
@@ -95,11 +93,6 @@ export class PayementsComponent implements OnInit {
       nzClosable: false,
       nzWidth: "70%",
     });
-
-    modal.afterClose.subscribe((data: any) => {
-      console.log(data);
-      
-    });
   }
 
   printAll(){
@@ -111,11 +104,6 @@ export class PayementsComponent implements OnInit {
       },
       nzClosable: false,
       nzWidth: "80%",
-    });
-
-    modal.afterClose.subscribe((data: any) => {
-      console.log(data);
-      
     });
   }
 

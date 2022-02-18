@@ -229,7 +229,4 @@ export class BaseHttp  extends GestionRole{
     return this.getRoles().some((x) => x.name === role.name);
   }
 
-  clone(item: any) {
-    throw new Error('Method clone unimplemented.');
-  }
 }

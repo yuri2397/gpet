@@ -1,3 +1,4 @@
+import { UserEditComponent } from './../user-edit/user-edit.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AddPermissionToUserComponent } from './../../roles/add-permission-to-user/add-permission-to-user.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -22,7 +23,7 @@ export class UserShowComponent implements OnInit {
   searchValue = '';
   visible = false;
   listOfDisplayData!: Permission[];
-  deleteUserLoad: boolean = false;;
+  deleteUserLoad: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
@@ -42,6 +43,7 @@ export class UserShowComponent implements OnInit {
   findSelectedUser(id: any) {
     let user = new User();
     user.id = id;
+    this.isLoad = true;
     this.userService.findSelectedUser(user).subscribe({
       next: (response) => {
         this.user = response;
@@ -72,6 +74,24 @@ export class UserShowComponent implements OnInit {
     });
   }
 
+  openEditUserModal() {
+    let modal = this.modal.create({
+      nzTitle: 'Modifier les informations',
+      nzContent: UserEditComponent,
+      nzComponentParams: {
+        user: this.userService.clone(this.user),
+      },
+      nzWidth: '50%',
+      nzClosable: false,
+      nzMaskClosable: false,
+    });
+    modal.afterClose.subscribe((e: User | null) => {
+      if (e) {
+        this.findSelectedUser(e.id);
+      }
+    });
+  }
+
   userProfilePath() {
     if (this.userService.getUser().avatar == null) {
       this.user.avatar = '/assets/img/avatar.png';
@@ -94,13 +114,9 @@ export class UserShowComponent implements OnInit {
       },
       error: (errors) => {
         console.log(errors);
-        this.notification.error(
-          'Notification',
-          errors.error.message,
-          {
-            nzDuration: 5000,
-          }
-        );
+        this.notification.error('Notification', errors.error.message, {
+          nzDuration: 5000,
+        });
         this.deleteUserLoad = false;
       },
     });

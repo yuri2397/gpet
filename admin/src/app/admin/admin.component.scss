@@ -5,6 +5,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.bg-admin {
+    background-color: #f1f1f185;
+}
+
 .app-layout {
     height: 100vh;
 }
@@ -78,10 +82,6 @@ nz-content {
     padding: 24px;
     background: rgb(248, 245, 245);
     height: 100%;
-}
-
-.bg-admin {
-    background-color: #f1f1f185;
 }
 
 .link {

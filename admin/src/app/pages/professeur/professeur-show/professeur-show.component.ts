@@ -122,8 +122,6 @@ export class ProfesseurShowComponent implements OnInit {
     this.errorServer = false;
     this.profService.find(id).subscribe({
       next: (professeur) => {
-        console.log(professeur.courses);
-
         this.professeur = professeur;
         this.dataLoad = false;
       },
@@ -326,7 +324,6 @@ export class ProfesseurShowComponent implements OnInit {
         this.updateStatusLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
         this.updateStatusLoad = false;
         this.notification.createNotification(
           'error',

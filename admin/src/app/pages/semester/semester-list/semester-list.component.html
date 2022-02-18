@@ -1,15 +1,13 @@
 <ng-container *ngIf="!isLoad; else elseTemplate">
     <div class="container-fluid pb-3">
         <div class="card shadow">
-            <div class="card-header bg-color" *ngIf="can('creer semestre')">
-                <div class="d-flex align-items-center ">
-                    <div>
+            <div class="card-header bg-color">
+                <div class="d-flex align-items-center justify-content-start">
+                    <div *ngIf="can('creer semestre')" class="mx-2">
                         <button (click)="openCreateSemesterModal()" mat-fab color="default">
-                            <mat-icon>add</mat-icon>
+                            <mat-icon>add</mat-icon> 
                         </button>
-                    </div>
-                    <div class="mx-3">
-                        AJOUTER UN NOUVEAU SEMESTRE
+                        <h5 class="text-white mx-2 d-inline-block">AJOUTER UN SEMESTRE</h5>
                     </div>
                 </div>
             </div>
@@ -18,19 +16,34 @@
                     <nz-tab [nzTitle]="item.name.toUpperCase()" *ngFor="let item of
                         semesters">
                         <div class="card card-body shadow-sm m-2 border">
-                            <div class="d-flex justify-content-start
-                            align-items-center">
-                                <div class="m-2">
-                                    <button (click)="openCreateModal(item)" mat-mini-fab color="primary">
-                                    <mat-icon>add</mat-icon>
-                                </button>
+                            <div class="row">
+                                <div *ngIf="can('modifier semestre')" class="mx-2 col">
+                                    <button (click)="openEditSemesterModal(item)" mat-mini-fab color="primary">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <span class="color-primary mx-2">MODIFIER LE SEMESTRE</span>
                                 </div>
-                                <div>
-                                    <h4>Ajouter un nouveau EC.</h4>
+                                <div *ngIf="can('supprimer semestre')" class="mx-2 col">
+                                    <button (click)="openDeleteSemesterModal(item)" mat-mini-fab color="warn">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                    <span class="color-primary mx-2">SUPPRIMER LE SEMESTRE</span>
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <nz-divider [nzText]="add_ue">
+                        </nz-divider>
+                        <ng-template #add_ue>
+                            <div>
+                                <button (click)="openCreateModal(item)" mat-mini-fab color="primary">
+                                    <mat-icon>add</mat-icon> 
+                                </button> <span class="ms-3">AJOUTER UN NOUVEAU EC</span>
+                            </div>
+                        </ng-template>
+
                         <nz-table [nzShowPagination]="false" #basicTable [nzData]="item.ues">
+
                             <thead class="">
                                 <tr>
                                     <th class="bold text-center">UE</th>

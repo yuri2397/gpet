@@ -6,13 +6,13 @@
                     <nz-card class="shadow border text-center" [nzBodyStyle]="{
                      padding: 0   
                     }" [nzCover]="coverTemplate">
-                        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                        <h6 class="bold mt-3">{{ user.first_name }} {{ user.last_name }}</h6>
                         <span>{{ user.email }}</span>
                         <nz-divider nzText="ACTIONS"></nz-divider>
                         <div class="d-flex justify-content-center align-items center">
 
                             <div class="mx-2">
-                                <button mat-mini-fab [color]="'primary'">
+                                <button (click)="openEditUserModal()" mat-mini-fab [color]="'primary'">
                                     <mat-icon class="mat-18">edit</mat-icon>    
                                 </button>
                             </div>

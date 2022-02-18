@@ -36,8 +36,6 @@ export class SemesterListComponent implements OnInit {
 
   ngOnInit(): void {
     this.findByDepartement(this.semesterService.departement());
-    console.log(this.ecService.getPermissions());
-    
   }
 
   findByDepartement(departement: Departement) {
@@ -47,12 +45,33 @@ export class SemesterListComponent implements OnInit {
         this.semesters = response;
         this.isLoad = false;
         console.log(response);
-        
       },
       error: (errors) => {
         this.isLoad = false;
         console.error(errors);
       },
+    });
+  }
+
+  openDeleteSemesterModal(semester: Semester) {}
+
+  openEditSemesterModal(semester: Semester) {
+    const drawerRef = this.modalService.create({
+      nzTitle: 'Modifier le nom du semestre',
+      nzContent: SemesterEditComponent,
+      nzComponentParams: {
+        semester: this.semesterService.clone(semester),
+      },
+      nzWidth: '500px',
+      nzClosable: false,
+      nzMaskClosable: false,
+    });
+
+    drawerRef.afterClose.subscribe((data) => {
+      if (data) {
+        
+        this.findByDepartement(this.semesterService.departement());
+      }
     });
   }
 
@@ -114,16 +133,19 @@ export class SemesterListComponent implements OnInit {
     });
 
     modal.afterClose.subscribe((data: Semester | null) => {
-      if(data){
+      if (data) {
         this.findByDepartement(this.semesterService.departement());
       }
-    })
+    });
   }
 
-  can(permission: string){
+  can(permission: string) {
     let p = new Permission();
     p.name = permission;
-    let test = this.semesterService.can(p, this.semesterService.getPermissions());
+    let test = this.semesterService.can(
+      p,
+      this.semesterService.getPermissions()
+    );
     return test;
   }
 }

@@ -1,3 +1,4 @@
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Router } from '@angular/router';
 import { UserCreateComponent } from './../user-create/user-create.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -14,10 +15,12 @@ import { Permission } from 'src/app/models/permission';
 export class UserListComponent implements OnInit {
   users!: User[];
   isLoad = true;
+  deleteUserLoad: boolean = false;
   constructor(
     private userService: UserService,
     private modal: NzModalService,
-    private router: Router
+    private router: Router,
+    private notification: NzNotificationService
   ) {}
 
   ngOnInit(): void {
@@ -39,11 +42,38 @@ export class UserListComponent implements OnInit {
     let modal = this.modal.create({
       nzTitle: 'Ajouter un utilisateur',
       nzContent: UserCreateComponent,
-      nzClosable: false,
+      nzClosable: false,nzWidth: "50%"
     });
 
     modal.afterClose.subscribe((data: any) => {
       if (data) this.findUsers();
+    });
+  }
+
+  deleteUser(user: User) {
+    this.deleteUserLoad = true;
+    this.userService.delete(user).subscribe({
+      next: (response) => {
+        this.notification.success(
+          'Notification',
+          'Utilisateur supprimer avec succès',
+          {
+            nzDuration: 5000,
+          }
+        );
+        this.findUsers();
+      },
+      error: (errors) => {
+        console.log(errors);
+        this.notification.error(
+          'Notification',
+          errors.error.message,
+          {
+            nzDuration: 5000,
+          }
+        );
+        this.deleteUserLoad = false;
+      },
     });
   }
 

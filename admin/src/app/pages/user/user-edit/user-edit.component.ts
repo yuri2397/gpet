@@ -1,27 +1,29 @@
-import { Departement } from 'src/app/models/departement';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { RoleService } from './../../../services/role.service';
-import { Role } from './../../../models/role';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { UserService } from 'src/app/services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Role } from 'src/app/models/role';
+import { Departement } from 'src/app/models/departement';
 
 @Component({
-  selector: 'app-user-create',
-  templateUrl: './user-create.component.html',
-  styleUrls: ['./user-create.component.scss'],
+  selector: 'app-user-edit',
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit.component.scss'],
 })
-export class UserCreateComponent implements OnInit {
+export class UserEditComponent implements OnInit {
+  @Input() user!: User;
   validateForm!: FormGroup;
   isLoad = false;
   roles!: Role[];
-  user = new User();
   rolesSelected: Role[] = [];
   isRolesLoad: boolean = true;
   departements: Departement[] = [];
   disableDep = false;
+  selectedRoles: string[] = [];
+
   constructor(
     private userService: UserService,
     private modalRef: NzModalRef,
@@ -31,6 +33,9 @@ export class UserCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('EDIT', this.user);
+    this.formatRoles();
+
     this.findRolesList();
     if (!this.userService.isSuperAdmin()) {
       this.user.departement_id = this.userService.departement().id;
@@ -39,14 +44,19 @@ export class UserCreateComponent implements OnInit {
       this.findDepartements();
     }
     this.validateForm = this.fb.group({
-      first_name: [null, [Validators.required]],
-      last_name: [null, [Validators.required]],
-      email: [null, [Validators.required, Validators.email]],
-      roles: [[], [Validators.required]],
-      departement_id: [[], [Validators.required]],
+      first_name: [this.user.first_name, [Validators.required]],
+      last_name: [this.user.last_name, [Validators.required]],
+      email: [this.user.email, [Validators.required, Validators.email]],
+      roles: [null, [Validators.required]],
+      departement_id: [[this.user.departement_id], [Validators.required]],
     });
   }
-  
+
+  formatRoles(){
+    this.user.roles.forEach( e => {
+      this.selectedRoles.push(e.name);
+    })
+  }
 
   findDepartements() {
     this.isLoad = true;
@@ -66,6 +76,7 @@ export class UserCreateComponent implements OnInit {
         this.isRolesLoad = false;
       },
       error: (errors) => {
+        console.log(errors);
       },
     });
   }
@@ -76,9 +87,10 @@ export class UserCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    this.userService.create(this.user).subscribe({
+    
+    this.userService.edit(this.user, this.selectedRoles).subscribe({
       next: (response) => {
-        this.notification.success('Notification', response.message);
+        this.notification.success('Notification', 'Les modifications sont enregistrées avec succès.');
         this.modalRef.destroy(response);
         this.isLoad = false;
       },

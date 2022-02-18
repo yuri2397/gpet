@@ -1,3 +1,4 @@
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AddPermissionToUserComponent } from './../pages/roles/add-permission-to-user/add-permission-to-user.component';
 import { RoleCreateComponent } from './../pages/roles/role-create/role-create.component';
 import { RoleListComponent } from './../pages/roles/role-list/role-list.component';
@@ -16,7 +17,6 @@ import { BatimentShowComponent } from './../pages/batiment/batiment-show/batimen
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { IconsProviderModule } from 'src/app/icons-provider.module';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -70,7 +70,6 @@ import { ProfesseurListComponent } from '../pages/professeur/professeur-list/pro
 import { ProfesseurShowComponent } from '../pages/professeur/professeur-show/professeur-show.component';
 import { ErrorServerComponent } from '../shared/ui/error-server/error-server.component';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { BrowserModule } from '@angular/platform-browser';
 import { DepartementCreateComponent } from '../pages/departement/departement-create/departement-create.component';
 import { DepartementEditComponent } from '../pages/departement/departement-edit/departement-edit.component';
 import { DepartementListComponent } from '../pages/departement/departement-list/departement-list.component';
@@ -88,6 +87,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 /**
  * TIME AND DATE
@@ -100,11 +100,9 @@ import { SemesterCreateComponent } from '../pages/semester/semester-create/semes
 import { SemesterEditComponent } from '../pages/semester/semester-edit/semester-edit.component';
 import { UnauthorizedComponent } from '../shared/ui/unauthorized/unauthorized.component';
 import { ProfileComponent } from '../pages/profile/profile.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HasRoleInterceptor } from '../shared/has-role.interceptor';
-import { ForgotPasswordComponent } from '../pages/forgot-password/forgot-password.component';
 import { PayementsPrintComponent } from '../pages/professeur/payements-print/payements-print.component';
 import { PayementsPrintAllComponent } from '../pages/professeur/payements-print-all/payements-print-all.component';
+import { UserEditComponent } from '../pages/user/user-edit/user-edit.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -142,13 +140,13 @@ registerLocaleData(localeFr, fr);
     NzButtonModule,
     NzFormModule,
     NzInputModule,
-    IconsProviderModule,
     MatButtonModule,
     NzLayoutModule,
     NzDropDownModule,
     NzDividerModule,
     NzTabsModule,
     NzResultModule,
+    NzIconModule,
     NzStatisticModule,
     NzSelectModule,
     NzModalModule,
@@ -165,7 +163,7 @@ registerLocaleData(localeFr, fr);
     NzTimePickerModule,
     NzSpinModule,
     NzMessageModule,
-    
+    NgApexchartsModule
   ],
   declarations: [
     AdminComponent,
@@ -219,6 +217,7 @@ registerLocaleData(localeFr, fr);
     AddPermissionToUserComponent,
     PayementsPrintComponent,
     PayementsPrintAllComponent,
+    UserEditComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

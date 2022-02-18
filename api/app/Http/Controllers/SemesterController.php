@@ -55,16 +55,17 @@ class SemesterController extends Controller
         return Semester::find($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
-    //
+        $request->validate([
+            "name" => "required"
+        ]);
+        $semester = Semester::find($id);
+        $semester->name = $request->name;
+        $semester->save();
+
+        return response()->json($semester);
     }
 
     /**
