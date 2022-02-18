@@ -165,6 +165,7 @@ registerLocaleData(localeFr, fr);
     NzTimePickerModule,
     NzSpinModule,
     NzMessageModule,
+    
   ],
   declarations: [
     AdminComponent,

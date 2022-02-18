@@ -1,75 +1,99 @@
 <ng-container *ngIf="!isLoad; else elseTemplate">
-    <h2 class="text-primary">Dashboard</h2>
+    <div class="card card-body shadow raduis-sm">
+        <h4 class="color-geekblue bold">Dashboard</h4>
+    </div>
     <br>
     <div class="row">
-        <div class="col">
+        <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
             <div class="card card-body shadow raduis-sm">
-                <div class="d-flex align-items-center">
-                    <div>
-                        <mat-icon class="mat-30 mx-2 color-orange">groups</mat-icon>
+                <a class="link" routerLink="/admin/professeurs">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <mat-icon class="mat-30 mx-2 color-orange">groups</mat-icon>
 
+                        </div>
+                        <div>
+                            <span class="h5 mx-3 color-orange">Professeurs</span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="h5 mx-3 color-orange">Professeurs</span>
-                    </div>
-                </div>
+                </a>
                 <nz-divider class="my-1"></nz-divider>
                 <div>
-                    <h1 class="text-primary">{{ dashboard.professors }}</h1>
+                    <h3 class="color-geekblue bold">{{ dashboard.professors }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
             <div class="card card-body shadow raduis-sm">
-                <div class="d-flex align-items-center">
-                    <div>
-                        <mat-icon class="mat-30 mx-2 color-green">maps_home_work</mat-icon>
+                <a class="link" routerLink="/admin/classes">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <mat-icon class="mat-30 mx-2 color-green">maps_home_work</mat-icon>
 
+                        </div>
+                        <div>
+                            <span class="h5 mx-3 color-green">Classes</span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="h5 mx-3 color-green">Classes</span>
-                    </div>
-                </div>
+                </a>
                 <nz-divider class="my-1"></nz-divider>
                 <div>
-                    <h1 class="text-primary">{{ dashboard.classes }}</h1>
+                    <h3 class="color-geekblue bold">{{ dashboard.classes }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
             <div class="card card-body shadow raduis-sm">
-                <div class="d-flex align-items-center">
-                    <div>
-                        <mat-icon class="mat-30 mx-2 color-volcano">maps_home_work</mat-icon>
+                <a class="link" routerLink="/admin/salles">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <mat-icon class="mat-30 mx-2 color-volcano">maps_home_work</mat-icon>
+                        </div>
+                        <div>
+                            <span class="h5 mx-3 color-volcano">Salles</span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="h5 mx-3 color-volcano">Salles</span>
-                    </div>
-                </div>
+                </a>
+
                 <nz-divider class="my-1"></nz-divider>
                 <div>
-                    <h1 class="text-primary">{{ dashboard.salles }}</h1>
+                    <h3 class="color-geekblue bold">{{ dashboard.salles }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
             <div class="card card-body shadow raduis-sm">
-                <div class="d-flex align-items-center">
-                    <div>
-                        <mat-icon class="mat-30 mx-2 color-geekblue">auto_stories</mat-icon>
-
+                <a class="link" routerLink="/admin/courses">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <mat-icon class="mat-30 mx-2 color-geekblue">auto_stories</mat-icon>
+                        </div>
+                        <div>
+                            <span class="h5 mx-3 color-geekblue">Cours</span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="h5 mx-3 color-geekblue">Cours</span>
-                    </div>
-                </div>
+                </a>
                 <nz-divider class="my-1"></nz-divider>
                 <div>
-                    <h1 class="text-primary">{{ dashboard.courses }}</h1>
+                    <h3 class="color-geekblue bold">{{ dashboard.courses }}</h3>
                 </div>
             </div>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body shadow raduis-sm">
+                <h4 class="color-geekblue bold">Salles Libres</h4>
+            </div>
+            <br>
+            <div class="card card-body raduis-sm shadow">
+
+            </div>
+        </div>
+
+    </div>
+    <br><br><br>
 </ng-container>
 <ng-template #elseTemplate>
     <div class="container">

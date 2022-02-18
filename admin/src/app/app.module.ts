@@ -58,8 +58,7 @@ registerLocaleData(fr);
     NzTableModule,
     MatIconModule,
     NzDividerModule,
-    MatButtonModule,
-
+    MatButtonModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },
@@ -71,4 +70,5 @@ registerLocaleData(fr);
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

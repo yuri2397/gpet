@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 
 trait Utils
-{
+{   
+    protected $start = "08:00";
+    protected $end = "19:00";
     protected $userProfilPath = "user-profile";
     public function hourEmbedHour($start, $end, $emdStart, $emdEnd)
     {

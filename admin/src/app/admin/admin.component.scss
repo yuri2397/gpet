@@ -29,30 +29,21 @@
 }
 
 .sidebar-logo {
-    position: relative;
-    height: 64px;
-    padding-left: 24px;
-    overflow: hidden;
-    line-height: 64px;
-    background: #41729f;
-    transition: all 0.3s;
+    background: white;
+    padding: 10px;
 }
 
 .sidebar-logo img {
     display: inline-block;
-    height: 32px;
-    width: 32px;
+    height: 60px;
+    width: 60px;
     vertical-align: middle;
 }
 
-.sidebar-logo h1 {
+.sidebar-logo h6 {
+    font-size: 20px;
     display: inline-block;
-    margin: 0 0 0 20px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-    vertical-align: middle;
+    margin: 0 10px;
 }
 
 nz-header {
@@ -87,6 +78,10 @@ nz-content {
     padding: 24px;
     background: rgb(248, 245, 245);
     height: 100%;
+}
+
+.bg-admin {
+    background-color: #f1f1f185;
 }
 
 .link {

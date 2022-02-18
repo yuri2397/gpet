@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Salle;
+use App\Models\Classe;
+use App\Models\Course;
+use App\Models\Batiment;
+use App\Models\Professor;
+use App\Models\TimesTable;
 use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Course;
-use App\Models\Professor;
-use App\Models\Batiment;
-use App\Models\Salle;
-use App\Models\Classe;
+use App\Traits\Utils;
 
 class DepartementController extends Controller
 {
-
+    use Utils;
     public function __construct()
     {
         $this->middleware("permission:voir departement")->only(["index", "show"]);
@@ -72,21 +74,32 @@ class DepartementController extends Controller
     public function dashboard()
     {
         $user = User::find(auth()->id());
-        if($user->hasRole("super admin")){
+
+        $salles_libres = collect(Salle::all())->map(function ($salle) {
+            return $salle;
+        })->reject(function ($salle) {
+            return TimesTable::whereSalleId($salle->id)->get()->count() != 0;
+        });
+
+        if ($user->hasRole("super admin")) {
             return response()->json([
                 "courses" => count(Course::all()),
                 "professors" => count(Professor::all()),
                 "classes" => count(Classe::all()),
-                "salles" => count(Salle::all())
+                "salles" => count(Salle::all()),
+                "salles_libre" => $salles_libres
             ]);
         }
         $departement = Departement::find($user->departement_id);
 
-        return response()->json([
+
+        $restult = [
             "courses" => count(Course::whereDepartementId($departement->id)->get()),
             "professors" => count(Professor::whereDepartementId($departement->id)->get()),
             "classes" => count(Classe::whereDepartementId($departement->id)->get()),
-            "salles" => count(Salle::whereDepartementId($departement->id)->get())
-        ]);
+            "salles" => count(Salle::whereDepartementId($departement->id)->get()),
+            "salles_libre" => $salles_libres
+        ];
+        return response()->json($restult);
     }
 }

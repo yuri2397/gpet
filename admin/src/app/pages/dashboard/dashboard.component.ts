@@ -1,5 +1,5 @@
 import { DepartementService } from 'src/app/services/departement.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
   dashboard!: any;
   isLoad = true;
+
   constructor(private departementService: DepartementService) {}
 
   ngOnInit(): void {
@@ -19,8 +20,6 @@ export class DashboardComponent implements OnInit {
     this.isLoad = true;
     this.departementService.dashboard().subscribe({
       next: response => {
-        console.log(response);
-        
         this.dashboard = response;
         this.isLoad = false;
       },

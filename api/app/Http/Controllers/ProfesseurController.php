@@ -219,8 +219,7 @@ class ProfesseurController extends Controller
                     "courses_has_professors.amount",
                     "courses_has_professors.is_paid",
                     "courses_has_professors.professor_id",
-                )
-                    ->get();
+                )->get();
             }
 
         }
