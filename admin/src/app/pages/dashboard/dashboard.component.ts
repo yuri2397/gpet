@@ -2,6 +2,7 @@ import { DepartementService } from 'src/app/services/departement.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { ChartOptions } from 'src/app/admin/admin.component';
+import { color } from 'echarts';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,9 +39,14 @@ export class DashboardComponent implements OnInit {
           dataLabels: {
             enabled: false
           },
-          colors: ["#d4380d"],
+          colors: ["#41729f"],
           title: {
-            text: "Salles Libres"
+            text: "Salles Libres",
+            style: {
+              fontFamily: "Poppins",
+              fontSize: "20px",
+              color: "#41729f"
+            }
           }
         };
         console.log(this.chartOptions.series);
