@@ -165,4 +165,8 @@ export class AdminComponent implements OnInit {
     });
     return r;
   }
+
+  public profile(){
+    this.router.navigate(['profile']);
+  }
 }
