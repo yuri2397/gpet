@@ -84,7 +84,7 @@
             <div class="col">
                 <br>
                 <div class="card card-body border raduis-sm shadow-sm">
-                    <div id="chart">
+                    <div *ngIf="isLoadChart" id="chart">
                         <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!" [colors]="chartOptions.colors!"></apx-chart>
                     </div>
                 </div>
