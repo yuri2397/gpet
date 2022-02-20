@@ -60,11 +60,14 @@ export class ResetPasswordComponent implements OnInit {
             this.notification.createNotification(
               'error',
               'Erreur',
-              'probleme de modification'
+              'Verifier les informations'
             );
           },
         });
+  }
 
+  returnLogin(){
+          this.authService.logOut();
   }
 
 }
