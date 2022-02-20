@@ -23,6 +23,6 @@ export class PayementsPrintAllComponent implements OnInit {
   }
 
   print(){
-
+  
   }
 }

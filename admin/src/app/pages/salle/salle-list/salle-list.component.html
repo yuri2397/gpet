@@ -19,7 +19,7 @@
                         <th>Nom</th>
                         <th>Numéro</th>
                         <th>capacité</th>
-                        <th *ngIf="!isSuperAdmin()">Département</th>
+                        <th *ngIf="isSuperAdmin()">Département</th>
                         <th>Batiment</th>
                         <th class="text-center">Actions</th>
                     </tr>
@@ -37,7 +37,7 @@
                         </td>
                         <td>{{ data.number }}</td>
                         <td>{{ data.capacity }}</td>
-                        <td *ngIf="!isSuperAdmin()">{{ data.departement.name}}</td>
+                        <td *ngIf="isSuperAdmin()">{{ data.departement.name}}</td>
                         <td>{{ data.batiment.name }}</td>
                         <td>
                             <div class="d-flex justify-content-center">

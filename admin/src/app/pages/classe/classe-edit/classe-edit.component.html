@@ -2,13 +2,13 @@
     <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
         <nz-form-item>
             <nz-form-label nzRequired nzFor="name">Nom du batiment</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Le nom est requi">
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
                 <input [(ngModel)]="classe.name" formControlName="name" nz-input name="name" type="text" id="name">
             </nz-form-control>
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzRequired nzFor="nb_etudiants">Nombre d'etudiant</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Nombre étudiants requi">
+            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nombre étudiants requi">
                 <input [(ngModel)]="classe.nb_students" min="0" formControlName="nb_etudiants" nz-input name="nb_etudiants" type="number" id="nb_etudiants">
             </nz-form-control>
         </nz-form-item>

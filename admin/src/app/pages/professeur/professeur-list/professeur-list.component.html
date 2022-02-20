@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des professeurs</h5>
                 </div>
-                <div *ngIf="can('creer professeur')">
+                <div *ngIf="can('creer professeur') && !setView">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -26,7 +26,7 @@
                         <th><b>Nom</b></th>
                         <th><b>Email</b></th>
                         <th><b>Status</b></th>
-                        <th class="text-center"><b>Actions</b></th>
+                        <th *ngIf="!setView" class="text-center"><b>Actions</b></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +36,7 @@
                         <td>{{ data.last_name }}</td>
                         <td>{{ data.email }}</td>
                         <td>{{ data.status }}</td>
-                        <td>
+                        <td *ngIf="!setView">
                             <div class="d-flex justify-content-center">
                                 <div *ngIf="can('voir cour')">
                                     <button (click)="showProfessor(data)" mat-mini-fab color="primary">

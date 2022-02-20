@@ -6,6 +6,7 @@ export class Departement {
   id!: number;
   name!: string;
   classes!: Classe[];
+  classes_count!: number;
   professors!: Professor[];
   courses!: Course[];
 }

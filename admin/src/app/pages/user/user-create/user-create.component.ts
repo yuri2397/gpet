@@ -83,7 +83,6 @@ export class UserCreateComponent implements OnInit {
         this.isLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
         this.notification.error("Message d'erreur", errors.error.message);
         this.modalRef.destroy(null);
         this.isLoad = false;

@@ -11,7 +11,7 @@ class Classe extends Model
 
     protected $fillable = ['*'];
 
-    protected $with = ['courses'];
+    protected $with = ['courses', 'departement'];
 
     public function departement()
     {

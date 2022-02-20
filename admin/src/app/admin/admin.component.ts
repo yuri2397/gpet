@@ -44,7 +44,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: 'departements',
     title: 'Départements',
-    icon: 'school',
+    icon: 'stream',
     class: '',
     permissions: ['voir departement'],
   },

@@ -47,6 +47,7 @@ export class DepartementShowComponent implements OnInit {
       },
       error: (errors) => {
         this.dataLoad = false;
+        
       },
     });
   }

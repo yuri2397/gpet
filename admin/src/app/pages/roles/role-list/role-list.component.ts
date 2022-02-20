@@ -36,7 +36,7 @@ export class RoleListComponent implements OnInit {
         this.allIsLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
+        this.notification.error("Notification", errors.error.message);
       },
     });
   }

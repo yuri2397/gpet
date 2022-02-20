@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des cours</h5>
                 </div>
-                <div *ngIf="can('creer cour')">
+                <div *ngIf="can('creer cour') && !setView">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -18,14 +18,14 @@
                     <tr>
                         <th class="text-center">Code</th>
                         <th class="text-center">Intitulé</th>
-                        <th class="text-center" *ngIf="!courseService.isSuperAdmin()">Département</th>
+                        <th class="text-center" *ngIf="courseService.isSuperAdmin()">Département</th>
                         <th class="text-center">Groupe</th>
                         <th class="text-center">Volume</th>
                         <th class="text-center">Service</th>
                         <th class="text-center">Semestre</th>
                         <th class="text-center">Classe</th>
                         <th class="text-center">Professeur</th>
-                        <th class="text-center" *ngIf="!classe">Actions</th>
+                        <th class="text-center" *ngIf="!classe && !setView">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +37,7 @@
 
                         </td>
                         <td>{{ data.name }}</td>
-                        <td *ngIf="!courseService.isSuperAdmin()">{{ data.departement.name }}</td>
+                        <td *ngIf="courseService.isSuperAdmin()">{{ data.departement.name }}</td>
                         <td>
                             <ng-container *ngIf="data.groupe_number == 0; else elseGroupe">
                                 <nz-tag [nzColor]="'blue'">Commun</nz-tag>
@@ -64,7 +64,7 @@
                                 <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
                             </ng-template>
                         </td>
-                        <td *ngIf="!classe">
+                        <td *ngIf="!classe && !setView">
                             <div class="d-flex justify-content-center">
                                 <div class="mx-3" *ngIf="can('voir cour')">
                                     <a [routerLink]="['show/' + data.id]">

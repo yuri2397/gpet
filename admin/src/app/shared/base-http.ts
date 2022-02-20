@@ -117,7 +117,6 @@ export class BaseHttp  extends GestionRole{
           test = true;
         }
     });
-
     return test;
   }
 

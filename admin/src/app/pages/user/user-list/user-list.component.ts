@@ -64,7 +64,6 @@ export class UserListComponent implements OnInit {
         this.findUsers();
       },
       error: (errors) => {
-        console.log(errors);
         this.notification.error(
           'Notification',
           errors.error.message,

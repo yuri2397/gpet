@@ -6,7 +6,7 @@ import { EcCreateComponent } from './../../ec/ec-create/ec-create.component';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { EC } from 'src/app/models/ec';
 import { SemesterResponse } from './../../../models/semester-response';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Departement } from 'src/app/models/departement';
 import { Semester } from 'src/app/models/semester';
@@ -20,8 +20,13 @@ import { Permission } from 'src/app/models/permission';
   styleUrls: ['./semester-list.component.scss'],
 })
 export class SemesterListComponent implements OnInit {
+  @Input() departement!: Departement;
   isLoad = true;
-
+  deleteError = false;
+  deleteMessage = '';
+  deleteTitle = 'Erreur de suppréssion d\'un semestre.';
+  deleteSub = 'Impossible de supprimer le semestre';
+  erreurs: string[] = [];
   semesters!: Semester[];
   deleteECRef!: NzModalRef;
   deleteLoad = false;
@@ -35,7 +40,10 @@ export class SemesterListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.findByDepartement(this.semesterService.departement());
+    if(!this.departement){
+      this.departement = this.semesterService.departement();
+    }
+    this.findByDepartement(this.departement)
   }
 
   findByDepartement(departement: Departement) {
@@ -44,7 +52,6 @@ export class SemesterListComponent implements OnInit {
       next: (response) => {
         this.semesters = response;
         this.isLoad = false;
-        console.log(response);
       },
       error: (errors) => {
         this.isLoad = false;
@@ -53,7 +60,22 @@ export class SemesterListComponent implements OnInit {
     });
   }
 
-  openDeleteSemesterModal(semester: Semester) {}
+  deleteSemester(semester: Semester) {
+    this.deleteError = false;
+    this.semesterService.delete(semester).subscribe({
+      next: (response) => {
+        this.notification.success(
+          'Notification',
+          'Vous avez supprimé le semetre avec succès.'
+        );
+        this.findByDepartement(this.semesterService.departement());
+      },
+      error: (errors) => {
+        this.deleteError = true;
+        this.erreurs.push(errors.error.message)
+      },
+    });
+  }
 
   openEditSemesterModal(semester: Semester) {
     const drawerRef = this.modalService.create({
@@ -69,8 +91,7 @@ export class SemesterListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe((data) => {
       if (data) {
-        
-        this.findByDepartement(this.semesterService.departement());
+        this.findByDepartement(this.departement);
       }
     });
   }
@@ -81,6 +102,7 @@ export class SemesterListComponent implements OnInit {
       nzContent: EcCreateComponent,
       nzContentParams: {
         semesters: [...[], semester],
+        departements: [this.departement]
       },
       nzWidth: '500px',
       nzClosable: false,
@@ -89,7 +111,7 @@ export class SemesterListComponent implements OnInit {
 
     drawerRef.afterClose.subscribe((data) => {
       if (data) {
-        this.findByDepartement(this.semesterService.departement());
+        this.findByDepartement(this.departement);
       }
     });
   }
@@ -107,7 +129,7 @@ export class SemesterListComponent implements OnInit {
     });
     modal.afterClose.subscribe((data: EC | null) => {
       if (data) {
-        this.findByDepartement(this.semesterService.departement());
+        this.findByDepartement(this.departement);
       }
     });
   }
@@ -129,12 +151,15 @@ export class SemesterListComponent implements OnInit {
     let modal = this.modalService.create({
       nzTitle: 'AJOUTER UN NOUVEAU SEMESTRE',
       nzContent: SemesterCreateComponent,
+      nzComponentParams: {
+          departement: this.departement
+      },
       nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Semester | null) => {
       if (data) {
-        this.findByDepartement(this.semesterService.departement());
+        this.findByDepartement(this.departement);
       }
     });
   }

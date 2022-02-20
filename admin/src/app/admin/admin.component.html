@@ -1,5 +1,5 @@
 <nz-layout *ngIf="!isLoad; else loadingTemplate" class="app-layout">
-    <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
         <div class="sidebar-logo">
             <img src="/assets/img/logo.jpg" alt="logo">
             <h6 *ngIf="!isCollapsed" class="color-geekblue">{{ title }}</h6>
@@ -8,10 +8,9 @@
             <ng-container *ngFor="let item of menuItems">
                 <li (click)="routerLink(item)" *ngIf="canShowItem(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]='selected(item)'>
                     <i nz-icon>
-            <mat-icon style="color:  #41729f;
-          ">{{ item.icon }}</mat-icon>
+            <mat-icon class="icon">{{ item.icon }}</mat-icon>
           </i>
-                    <span>{{ item.title }}</span>
+                    <span class="label">{{ item.title }}</span>
                 </li>
             </ng-container>
         </ul>

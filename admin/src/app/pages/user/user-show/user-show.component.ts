@@ -45,8 +45,9 @@ export class UserShowComponent implements OnInit {
     user.id = id;
     this.isLoad = true;
     this.userService.findSelectedUser(user).subscribe({
-      next: (response) => {
+      next: (response: User) => {
         this.user = response;
+        
         this.listOfDisplayData = this.user.permissions;
         this.userProfilePath();
         this.isLoad = false;
@@ -93,14 +94,15 @@ export class UserShowComponent implements OnInit {
   }
 
   userProfilePath() {
-    if (this.userService.getUser().avatar == null) {
+    if (this.user.avatar == null) {
       this.user.avatar = '/assets/img/avatar.png';
-    }
-    this.user.avatar = this.userService.host + 'storage' + this.user.avatar;
+    } else
+      this.user.avatar = this.userService.host + 'storage' + this.user.avatar;
   }
 
   deleteUser() {
     this.deleteUserLoad = true;
+    
     this.userService.delete(this.user).subscribe({
       next: (response) => {
         this.notification.success(
@@ -113,7 +115,6 @@ export class UserShowComponent implements OnInit {
         this.location.back();
       },
       error: (errors) => {
-        console.log(errors);
         this.notification.error('Notification', errors.error.message, {
           nzDuration: 5000,
         });
@@ -131,6 +132,7 @@ export class UserShowComponent implements OnInit {
       },
       nzClosable: false,
       nzMaskClosable: false,
+      nzWidth: '60%',
     });
 
     m.afterClose.subscribe((data) => {
@@ -150,6 +152,5 @@ export class UserShowComponent implements OnInit {
         return item.name.indexOf(this.searchValue) !== -1;
       }
     );
-    console.log(this.listOfDisplayData);
   }
 }

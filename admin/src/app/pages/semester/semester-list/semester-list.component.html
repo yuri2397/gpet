@@ -24,7 +24,8 @@
                                     <span class="color-primary mx-2">MODIFIER LE SEMESTRE</span>
                                 </div>
                                 <div *ngIf="can('supprimer semestre')" class="mx-2 col">
-                                    <button (click)="openDeleteSemesterModal(item)" mat-mini-fab color="warn">
+                                    <button nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr de supprimer cette {{ item.name.toLocaleUpperCase() }}
+                                    ?" (nzOnConfirm)="deleteSemester(item)" nzPopconfirmPlacement="bottom" mat-mini-fab color="warn">
                                         <mat-icon>delete</mat-icon>
                                     </button>
                                     <span class="color-primary mx-2">SUPPRIMER LE SEMESTRE</span>
@@ -43,8 +44,7 @@
                         </ng-template>
 
                         <nz-table [nzShowPagination]="false" #basicTable [nzData]="item.ues">
-
-                            <thead class="">
+                            <thead>
                                 <tr>
                                     <th class="bold text-center">UE</th>
                                     <th class="bold text-center">Elément Constitutif</th>
@@ -107,3 +107,6 @@
         </div>
     </div>
 </ng-template>
+
+
+<app-can-delete (close)="deleteError = false" [visible]="deleteError" [title]="deleteTitle" [subtitle]="deleteSub" [erreurs]="erreurs"></app-can-delete>

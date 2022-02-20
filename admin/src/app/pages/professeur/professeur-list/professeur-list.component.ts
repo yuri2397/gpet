@@ -16,6 +16,7 @@ import { Permission } from 'src/app/models/permission';
 })
 export class ProfesseurListComponent implements OnInit {
   @Input() professeurs!: Professor[];
+  @Input() setView!: boolean;
   selectedProfessor!: Professor;
   isLoad = false;
   deleteRestoRef!: NzModalRef;

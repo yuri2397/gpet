@@ -5,7 +5,7 @@
                 <div>
                     <h5 class="text-white">Liste des département</h5>
                 </div>
-                <div>
+                <div *ngIf="can('creer departement')">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
@@ -24,7 +24,7 @@
                 <tbody>
                     <tr *ngFor="let data of basicTable.data">
                         <td>{{ data.name }}</td>
-                        <td class="text-center">{{ data.classes.length }}</td>
+                        <td class="text-center">{{ data.classes_count }}</td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center">
                                 <div>
@@ -34,12 +34,12 @@
                     </button>
                                     </a>
                                 </div>
-                                <div class="mx-3">
+                                <div class="mx-3" *ngIf="can('modifier departement')">
                                     <button (click)="openEditModal(data)" mat-mini-fab color="accent">
                     <mat-icon>edit</mat-icon>
                   </button>
                                 </div>
-                                <div>
+                                <div *ngIf="can('supprimer departement')">
                                     <button (click)="openDeleteModal(data)" mat-mini-fab color="warn">
                     <mat-icon>delete</mat-icon>
                   </button>

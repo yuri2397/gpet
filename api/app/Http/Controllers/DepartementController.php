@@ -27,7 +27,7 @@ class DepartementController extends Controller
 
     public function index()
     {
-        return Departement::with('classes')->orderBy('created_at', 'desc')->get();
+        return Departement::withCount("classes")->orderBy('created_at', 'desc')->get();
     }
 
 

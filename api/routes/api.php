@@ -88,6 +88,7 @@ Route::prefix("semester")->middleware(['auth:api'])->group(function () {
 
 Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::get('', [ClasseController::class, "index"]);
+    Route::get('select', [ClasseController::class, "select"]);
     Route::get('departement/{id}', [ClasseController::class, "findByDepartement"]);
     Route::post('create', [ClasseController::class, "store"]);
     Route::get('show/{id}', [ClasseController::class, 'show']);
@@ -173,7 +174,8 @@ Route::prefix("role")->middleware(['auth:api'])->group(function () {
 });
 
 Route::any('test', function (Request $request) {
-    Artisan::call('permission:create-permission "voir payement" api');
+    $user = User::find(1);
+    $user->givePermissionTo(Permission::all());
     return "OKAY";
 });
 

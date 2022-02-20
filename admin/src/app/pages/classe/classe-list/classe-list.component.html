@@ -4,7 +4,7 @@
             <div>
                 <h5 class="text-white">Liste des classes</h5>
             </div>
-            <div *ngIf="can('creer classe')">
+            <div *ngIf="can('creer classe') && !setView">
                 <button mat-mini-fab color="default" (click)="openCreateModal()">
           <mat-icon>add</mat-icon>
         </button>
@@ -18,7 +18,8 @@
                     <th>Nom</th>
                     <th class="text-center">Nombre d'étudiants</th>
                     <th class="text-center">Nombre de cours</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-center" *ngIf="classeService.isSuperAdmin()">Département</th>
+                    <th class="text-center" *ngIf="!setView">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +27,8 @@
                     <td>{{ data.name }}</td>
                     <td class="text-center">{{ data.nb_students }}</td>
                     <td class="text-center">{{ data.courses.length }}</td>
-                    <td class="text-center">
+                    <td *ngIf="classeService.isSuperAdmin()">{{ data.departement.name }}</td>
+                    <td class="text-center" *ngIf="!setView">
                         <div class="d-flex justify-content-center">
                             <div *ngIf="can('voir salle')">
                                 <a [routerLink]="['show/' + data.id]">

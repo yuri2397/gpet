@@ -3,7 +3,7 @@
         <div class="card-body ">
             <div *ngIf="showHeader()" class="row">
                 <div class="col-md-12">
-                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="Département {{ departement.name }}"></nz-page-header>
+                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="{{ departement.name }}"></nz-page-header>
                 </div>
                 <ng-template #backTemp>
                     <button class="m-2" mat-mini-fab color="primary">
@@ -11,7 +11,7 @@
           </button>
                 </ng-template>
             </div>
-            <nz-tabset [nzTabPosition]="'left'">
+            <nz-tabset [nzType]="'card'" [nzTabPosition]="'top'" class="p-3">
                 <nz-tab [nzTitle]="'Vue global'">
                     <div class="row">
                         <div class="col-md-4 my-2">
@@ -45,15 +45,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mx-1 my-2 card card-body raduis-sm border shadow">
+                        <h6>LISTE DES CLASSES POUR LE DEPARTEMENT (BIENTOT DISPONIBLE)</h6>
+                    </div>
                 </nz-tab>
                 <nz-tab [nzTitle]="'Classes'">
-                    <app-classe-list [departement]="departement "></app-classe-list>
+                    <app-classe-list [departement]="departement" [classes]="departement.classes" [setView]="true"></app-classe-list>
                 </nz-tab>
                 <nz-tab [nzTitle]="'Professeurs'">
-                    <app-professeur-list [professeurs]="departement.professors"></app-professeur-list>
+                    <app-professeur-list [professeurs]="departement.professors" [setView]="true"></app-professeur-list>
                 </nz-tab>
                 <nz-tab [nzTitle]="'Cours'">
-                    <app-course-list [(courses)]="departement.courses"></app-course-list>
+                    <app-course-list [(courses)]="departement.courses" [setView]="true"></app-course-list>
+                </nz-tab>
+                <nz-tab [nzTitle]="'Semestres'">
+                    <app-semester-list [departement]="departement"></app-semester-list>
                 </nz-tab>
             </nz-tabset>
         </div>

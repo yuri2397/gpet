@@ -33,7 +33,6 @@ export class UserEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('EDIT', this.user);
     this.formatRoles();
 
     this.findRolesList();
@@ -76,7 +75,7 @@ export class UserEditComponent implements OnInit {
         this.isRolesLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
+        this.notification.error("Notification", errors.error.message)
       },
     });
   }
@@ -95,7 +94,6 @@ export class UserEditComponent implements OnInit {
         this.isLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
         this.notification.error("Message d'erreur", errors.error.message);
         this.modalRef.destroy(null);
         this.isLoad = false;

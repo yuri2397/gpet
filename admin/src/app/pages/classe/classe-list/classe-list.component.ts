@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { find } from 'rxjs/operators';
 import { Classe } from 'src/app/models/classe';
 import { Departement } from 'src/app/models/departement';
 import { Permission } from 'src/app/models/permission';
@@ -18,41 +19,40 @@ import { ClasseEditComponent } from '../classe-edit/classe-edit.component';
 })
 export class ClasseListComponent implements OnInit {
   @Input() departement!: Departement;
-  classes!: Classe[];
+  @Input() setView!: boolean;
+  @Input() classes!: Classe[];
   deleteRestoRef!: NzModalRef;
   isLoad = true;
   deleteLoad = false;
+
   constructor(
     private notification: NotificationService,
     private modalService: NzModalService,
-    private classeService: ClasseService,
+    public classeService: ClasseService
   ) {}
 
   ngOnInit(): void {
-    if (this.classeService.isSuperAdmin()) {
-      this.classes = this.departement.classes;
-      this.isLoad = false;
+    this.find();
+  }
+
+  find() {
+    if (this.setView) {
+      this.findByDepartement();
     } else {
       this.departement = this.classeService.departement();
-      this.findByDepartement();
+      this.selectClasses();
     }
   }
 
-  findAll() {
+  selectClasses() {
     this.isLoad = true;
-    this.classeService.findAll().subscribe({
+    this.classeService.selectClasses().subscribe({
       next: (response) => {
-        this.departement = response;
-        this.classes = this.departement.classes;
+        this.classes = response;
         this.isLoad = false;
       },
       error: (errors) => {
-        this.isLoad = false;
-        this.notification.createNotification(
-          'error',
-          'Erreur',
-          errors.error.message
-        );
+        console.log(errors);
       },
     });
   }
@@ -91,7 +91,7 @@ export class ClasseListComponent implements OnInit {
 
     modal.afterClose.subscribe((data: Classe | null) => {
       if (data != null) {
-        this.findByDepartement();
+        this.find();
       }
     });
   }
@@ -106,12 +106,12 @@ export class ClasseListComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: "400px"
+      nzWidth: '400px',
     });
 
     modal.afterClose.subscribe((data: Classe | null) => {
       if (data != null) {
-        this.findByDepartement();
+        this.find();
       }
     });
   }
@@ -135,7 +135,7 @@ export class ClasseListComponent implements OnInit {
     this.classeService.delete(classe).subscribe({
       next: (response) => {
         this.deleteRestoRef.destroy();
-        this.findByDepartement();
+        this.find();
         this.deleteLoad = false;
       },
       error: (errors) => {
@@ -149,8 +149,7 @@ export class ClasseListComponent implements OnInit {
     });
   }
 
-
-  can(permission: string){
+  can(permission: string) {
     let p = new Permission();
     p.name = permission;
     let test = this.classeService.can(p, this.classeService.getPermissions());

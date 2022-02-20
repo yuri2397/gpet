@@ -4,18 +4,18 @@ import { Permission } from 'src/app/models/permission';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from './../../../services/role.service';
 import { User } from 'src/app/models/user';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-add-permission-to-user',
   templateUrl: './add-permission-to-user.component.html',
   styleUrls: ['./add-permission-to-user.component.scss'],
 })
-export class AddPermissionToUserComponent implements OnInit {
+export class AddPermissionToUserComponent implements OnInit, AfterViewInit {
   @Input() user!: User;
   validateForm!: FormGroup;
   permissions!: Permission[];
-  selectedValue!: string[];
+  selectedValue: string[] = [];
   isLoad = false;
   isDataLoad = true;
   constructor(
@@ -24,8 +24,15 @@ export class AddPermissionToUserComponent implements OnInit {
     private ref: NzModalRef,
     private message: NzMessageService
   ) {}
+  
+  ngAfterViewInit(): void {
+    this.user.permissions.forEach((p) => {
+      this.selectedValue.push(p.name);
+    });
+  }
 
   ngOnInit(): void {
+    
     this.validateForm = this.fb.group({
       permissions: [[], [Validators.required]],
     });
@@ -48,13 +55,11 @@ export class AddPermissionToUserComponent implements OnInit {
             window.location.reload();
           }
           this.ref.destroy(response);
-
         },
         error: (errors) => {
           this.isLoad = false;
           this.message.error(errors.error.message);
           this.ref.destroy(null);
-
         },
       });
   }
