@@ -11,6 +11,8 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { NotificationService } from 'src/app/services/notification.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
+
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +29,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private modalService: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -125,4 +128,19 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+
+  openModal() {
+     this.modalService.confirm({
+      nzTitle: '<span>Confirmez votre deconnexion</span>',
+      nzOkText: 'Valider',
+      nzOkType: 'primary',
+      nzOkDanger: false,
+      nzOnOk: () => this.authService.logOut(),
+      nzCancelText: 'Annuler',
+      //nzOkLoading: this.deleteLoad,
+      nzMaskClosable: false,
+      nzClosable: false,
+    });
+  }
+
 }
