@@ -1,3 +1,5 @@
+import { UEService } from './../../../services/ue.service';
+import { UeEditComponent } from './../../ue/ue-edit/ue-edit.component';
 import { SemesterCreateComponent } from './../semester-create/semester-create.component';
 import { EcEditComponent } from './../../ec/ec-edit/ec-edit.component';
 import { SemesterEditComponent } from './../semester-edit/semester-edit.component';
@@ -13,6 +15,7 @@ import { Semester } from 'src/app/models/semester';
 import { SemesterService } from 'src/app/services/semester.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Permission } from 'src/app/models/permission';
+import { UE } from 'src/app/models/ue';
 
 @Component({
   selector: 'app-semester-list',
@@ -24,26 +27,28 @@ export class SemesterListComponent implements OnInit {
   isLoad = true;
   deleteError = false;
   deleteMessage = '';
-  deleteTitle = 'Erreur de suppréssion d\'un semestre.';
+  deleteTitle = "Erreur de suppréssion d'un semestre.";
   deleteSub = 'Impossible de supprimer le semestre';
   erreurs: string[] = [];
   semesters!: Semester[];
   deleteECRef!: NzModalRef;
   deleteLoad = false;
+  deleteUELoad = false;
 
   constructor(
     private notification: NzNotificationService,
     private semesterService: SemesterService,
     private modalService: NzModalService,
     private drawerService: NzDrawerService,
-    private ecService: ECService
+    private ecService: ECService,
+    private ueService: UEService
   ) {}
 
   ngOnInit(): void {
-    if(!this.departement){
+    if (!this.departement) {
       this.departement = this.semesterService.departement();
     }
-    this.findByDepartement(this.departement)
+    this.findByDepartement(this.departement);
   }
 
   findByDepartement(departement: Departement) {
@@ -72,7 +77,7 @@ export class SemesterListComponent implements OnInit {
       },
       error: (errors) => {
         this.deleteError = true;
-        this.erreurs.push(errors.error.message)
+        this.erreurs.push(errors.error.message);
       },
     });
   }
@@ -102,7 +107,7 @@ export class SemesterListComponent implements OnInit {
       nzContent: EcCreateComponent,
       nzContentParams: {
         semesters: [...[], semester],
-        departements: [this.departement]
+        departements: [this.departement],
       },
       nzWidth: '500px',
       nzClosable: false,
@@ -113,6 +118,38 @@ export class SemesterListComponent implements OnInit {
       if (data) {
         this.findByDepartement(this.departement);
       }
+    });
+  }
+
+  openEditUEModal(ue: UE) {
+    let modal = this.modalService.create({
+      nzTitle: "MODIFIER L'UE",
+      nzContent: UeEditComponent,
+      nzComponentParams: {
+        ue: this.ueService.clone(ue),
+      },
+    });
+
+    modal.afterClose.subscribe((data: UE | null) => {
+      if (data) {
+        this.findByDepartement(this.departement);
+      }
+    });
+  }
+
+  deleteUEConfirmed(ue: UE) {
+    ue.deleted = true;
+    this.ueService.delete(ue).subscribe({
+      next: (response) => {
+        this.notification.success('Notification', 'UE supprimé avec succès.');
+        this.findByDepartement(this.departement);
+        ue.deleted = false;
+      },
+      error: (errors) => {
+        console.log(errors);
+        ue.deleted = false;
+        this.notification.error('Notification', errors.error.message);
+      },
     });
   }
 
@@ -152,7 +189,7 @@ export class SemesterListComponent implements OnInit {
       nzTitle: 'AJOUTER UN NOUVEAU SEMESTRE',
       nzContent: SemesterCreateComponent,
       nzComponentParams: {
-          departement: this.departement
+        departement: this.departement,
       },
       nzClosable: false,
     });

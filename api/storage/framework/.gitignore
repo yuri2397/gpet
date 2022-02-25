@@ -7,6 +7,5 @@ routes.php
 routes.scanned.php
 schedule-*
 services.json
-./cache
-./session
-./testing
+cache/*
+session/*

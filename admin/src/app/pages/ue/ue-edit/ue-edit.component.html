@@ -1,0 +1,19 @@
+<nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm">
+    <nz-form-item>
+        <nz-form-label nzRequired nzFor="name">CODE DE L'UE</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est obligatoire">
+            <input [(ngModel)]="ue.code" formControlName="code" nz-input name="code" type="text" id="code">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label nzRequired nzFor="name">NOM DE L'UE</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est obligatoire">
+            <input [(ngModel)]="ue.name" formControlName="name" nz-input name="name" type="text" id="name">
+        </nz-form-control>
+    </nz-form-item>
+</nz-form>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
+    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Modifier</button>
+</div>
