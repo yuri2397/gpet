@@ -3,7 +3,7 @@
     <div class="card-header p-3 bg-color">
       <div class="d-flex align-items-center justify-content-start">
         <div *ngIf="can('creer semestre')" class="mx-2">
-          <button  mat-fab color="default">
+          <button mat-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
           <h5 class="text-white mx-2 d-inline-block">AJOUTER UNE BANQUE</h5>
@@ -32,24 +32,27 @@
             <td class="text-center">{{ data.name }}</td>
             <td class="text-center">
               <div class="d-flex justify-content-center">
-                <div>
-                  <button class="mx-3"
-                    *ngIf="can('modifier salle')"
+                <div class="mx-3"
+                  *ngIf="can('modifier salle')">
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
                     (click)="openEditModal(data)"
-                    mat-mini-fab
-                    color="primary"
                   >
-                    <mat-icon>edit</mat-icon>
+                  <i nz-icon nzType="edit"></i>
                   </button>
                 </div>
-                <div class="mx-3">
+                <div class="mx-3"
+                  *ngIf="can('supprimer banque')">
                   <button
-                    *ngIf="can('supprimer banque')"
+                    nzDanger
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
                     (click)="openDeleteModal(data)"
-                    mat-mini-fab
-                    color="warn"
                   >
-                    <mat-icon>delete</mat-icon>
+                  <i nz-icon nzType="delete"></i>
                   </button>
                 </div>
               </div>

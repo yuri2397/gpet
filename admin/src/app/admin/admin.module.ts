@@ -103,6 +103,7 @@ import { ProfileComponent } from '../pages/profile/profile.component';
 import { PayementsPrintComponent } from '../pages/professeur/payements-print/payements-print.component';
 import { PayementsPrintAllComponent } from '../pages/professeur/payements-print-all/payements-print-all.component';
 import { UserEditComponent } from '../pages/user/user-edit/user-edit.component';
+import { UeEditComponent } from '../pages/ue/ue-edit/ue-edit.component';
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -218,6 +219,7 @@ registerLocaleData(localeFr, fr);
     PayementsPrintComponent,
     PayementsPrintAllComponent,
     UserEditComponent,
+    UeEditComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],
