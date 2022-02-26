@@ -8,4 +8,4 @@ routes.scanned.php
 schedule-*
 services.json
 /cache
-/session
+/sessions
