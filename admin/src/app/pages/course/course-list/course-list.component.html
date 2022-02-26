@@ -79,7 +79,7 @@
                 <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
               </ng-template>
             </td>
-            <td *ngIf="!classe && !setView">
+            <td class="p-0" *ngIf="!classe && !setView">
               <div class="d-flex justify-content-center">
                 <div class="mx-3" *ngIf="can('voir cour')">
                   <a [routerLink]="['show/' + data.id]">
