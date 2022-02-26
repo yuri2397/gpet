@@ -157,6 +157,9 @@ export class AdminComponent implements OnInit {
   }
 
   canShowItem(item: RouteInfo) {
+    if(item.path == "semesters" && this.userService.isSuperAdmin()){
+      return false;
+    }
     let r = false;
     this.permissions.forEach((e) => {
       if (item.permissions.indexOf(e.name) != -1 || item.permissions.indexOf('*') != -1) {
