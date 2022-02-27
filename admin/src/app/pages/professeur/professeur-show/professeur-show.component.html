@@ -26,7 +26,6 @@
               >
                 <button
                 nz-button
-                nzType="primary"
                 nzShape="circle"
                 color="default">
                  <i><mat-icon>paid</mat-icon></i>
@@ -41,8 +40,6 @@
                 nz-tooltip
                 [nzTooltipTitle]="'Modifier les infos'"
                 (click)="openEditModal()"
-
-                color="accent"
               >
               <i nz-icon nzType="edit"></i>
               </button>
@@ -304,20 +301,25 @@
                     <div class="d-flex justify-content-center">
                       <div>
                         <button
+                          nz-button
+                          nzType="primary"
+                          nzShape="circle"
                           (click)="openAddHourModal(data)"
                           mat-mini-fab
-                          color="primary"
+
                         >
-                          <mat-icon>pending_actions</mat-icon>
+                          <i><mat-icon>pending_actions</mat-icon></i>
                         </button>
                       </div>
                       <div class="mx-2">
                         <button
                           (click)="openDeleteConf(data)"
-                          mat-mini-fab
-                          color="warn"
+                          nz-button
+                          nzDanger
+                          nzType="primary"
+                          nzShape="circle"
                         >
-                          <mat-icon>delete</mat-icon>
+                          <i nz-icon nzType="delete"></i>
                         </button>
                       </div>
                     </div>
