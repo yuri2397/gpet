@@ -1,62 +1,96 @@
 <div class="container-fluid">
-    <div class="card shadow">
-        <div class="card-header p-3 bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="text-white">Liste des professeurs</h5>
-                </div>
-                <div *ngIf="can('creer professeur') && !setView">
-                    <button (click)="openCreateModal()" mat-mini-fab color="default">
+  <div class="card shadow">
+    <div class="card-header p-3 bg-color">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="text-white">Liste des professeurs</h5>
+        </div>
+        <div *ngIf="can('creer professeur') && !setView">
+          <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
-                </div>
-            </div>
         </div>
-        <div class="card-body">
-            <nz-table nzTableLayout="fixed" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="listOfDisplayData">
-                <thead>
-                    <tr>
-                        <th nzCustomFilter>
-                            Matricule
-                            <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-                                <i nz-icon nzType="search"></i>
-                            </nz-filter-trigger>
-                        </th>
-                        <th><b>Prénoms</b></th>
-                        <th><b>Nom</b></th>
-                        <th><b>Email</b></th>
-                        <th><b>Status</b></th>
-                        <th *ngIf="!setView" class="text-center"><b>Actions</b></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of basicTable.data">
-                        <td>{{ data.registration_number }}</td>
-                        <td>{{ data.first_name }}</td>
-                        <td>{{ data.last_name }}</td>
-                        <td>{{ data.email }}</td>
-                        <td>{{ data.status }}</td>
-                        <td *ngIf="!setView">
-                            <div class="d-flex justify-content-center">
-                                <div *ngIf="can('voir cour')">
-                                    <button (click)="showProfessor(data)" mat-mini-fab color="primary">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-        </div>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-            <div class="ant-table-filter-dropdown">
-                <div class="search-box">
-                    <input type="text" (change)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Rechercher</button>
-                    <button nz-button nzSize="small" (click)="reset()">Annuler</button>
-                </div>
-            </div>
-        </nz-dropdown-menu>
+      </div>
     </div>
+    <div class="card-body">
+      <nz-table
+        nzTableLayout="fixed"
+        [nzLoading]="isLoad"
+        nzShowPagination
+        [nzPageSize]="4"
+        #basicTable
+        [nzData]="listOfDisplayData"
+        [nzBordered]="true"
+      >
+        <thead>
+          <tr>
+            <th nzCustomFilter>
+              Matricule
+              <nz-filter-trigger
+                [(nzVisible)]="visible"
+                [nzActive]="searchValue.length > 0"
+                [nzDropdownMenu]="menu"
+              >
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th><b>Prénoms</b></th>
+            <th><b>Nom</b></th>
+            <th><b>Email</b></th>
+            <th><b>Status</b></th>
+            <th *ngIf="!setView" class="text-center"><b>Actions</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{ data.registration_number }}</td>
+            <td>{{ data.first_name }}</td>
+            <td>{{ data.last_name }}</td>
+            <td>{{ data.email }}</td>
+            <td>{{ data.status }}</td>
+            <td *ngIf="!setView"  class="p-0">
+              <div class="d-flex justify-content-center">
+                <div
+                  class="mx-3"
+                  *ngIf="can('voir cour')">
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                    (click)="showProfessor(data)"
+                  >
+                    <i nz-icon nzType="eye"></i>
+                  </button>
+                </div>
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input
+            type="text"
+            (change)="search()"
+            nz-input
+            placeholder="Prénom ou Nom ou Email ..."
+            [(ngModel)]="searchValue"
+          />
+          <button
+            nz-button
+            nzSize="small"
+            nzType="primary"
+            (click)="search()"
+            class="search-button"
+          >
+            Rechercher
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Annuler</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+  </div>
 </div>

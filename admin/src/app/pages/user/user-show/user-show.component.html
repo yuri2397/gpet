@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col">
                     <nz-card class="shadow border text-center" [nzBodyStyle]="{
-                     padding: 0   
+                     padding: 0
                     }" [nzCover]="coverTemplate">
                         <h6 class="bold mt-3">{{ user.first_name }} {{ user.last_name }}</h6>
                         <span>{{ user.email }}</span>
@@ -12,13 +12,25 @@
                         <div class="d-flex justify-content-center align-items center">
 
                             <div class="mx-2">
-                                <button (click)="openEditUserModal()" mat-mini-fab [color]="'primary'">
-                                    <mat-icon class="mat-18">edit</mat-icon>    
+                                <button
+                                  (click)="openEditUserModal()"
+                                  nz-button
+                                  nzType="primary"
+                                  nzShape="circle">
+                                  <i nz-icon nzType="edit"></i>
                                 </button>
                             </div>
                             <div class="mx-2">
-                                <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser()" mat-mini-fab [color]="'warn'">
-                                    <mat-icon class="mat-18">delete</mat-icon>    
+                                <button
+                                  nz-button
+                                  nzType="primary"
+                                  nzShape="circle"
+                                  nzDanger
+                                  nz-popconfirm
+                                  nzPopconfirmTitle="Confirmer votre action."
+                                  (nzOnConfirm)="deleteUser()"
+                                >
+                                  <i nz-icon nzType="delete"></i>
                                 </button>
                             </div>
                         </div>
@@ -37,9 +49,14 @@
                                 Ajouter une permission
                             </div>
                             <div class="mx-2">
-                                <button (click)="openAddPermissionModal()" mat-mini-fab [color]="'primary'">
-                                        <mat-icon class="mat-18">add</mat-icon>    
-                                    </button>
+                                <button
+                                  (click)="openAddPermissionModal()"
+                                  nz-button
+                                  nzType="primary"
+                                  nzShape="circle"
+                                >
+                                <i nz-icon nzType="plus"></i>
+                                </button>
                             </div>
 
                         </div>
@@ -58,8 +75,15 @@
                             <tr *ngFor="let data of basicTable.data">
                                 <td>{{data.name.toUpperCase()}}</td>
                                 <td>
-                                    <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="removePermission(data)" mat-mini-fab [color]="'warn'">
-                                        <mat-icon class="mat-18">delete</mat-icon>    
+                                    <button
+                                      nz-popconfirm
+                                      nzPopconfirmTitle="Confirmer votre action."
+                                      (nzOnConfirm)="removePermission(data)"
+                                      nz-button
+                                      nzType="primary"
+                                      nzShape="circle"
+                                      nzDanger>
+                                      <i nz-icon nzType="delete"></i>
                                     </button>
                                 </td>
                             </tr>
