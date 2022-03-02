@@ -77,6 +77,8 @@ export class ClasseShowComponent implements OnInit {
       next: (data) => {
         this.epts = data;
         this.eptLoad = false;
+        console.log("BONJOUR", data);
+        
       },
       error: (errors) => {
         this.errorNetWork = true;
