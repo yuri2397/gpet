@@ -3,6 +3,7 @@ import { BaseHttp } from './../shared/base-http';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Salle } from '../models/salle';
 
 @Injectable({
   providedIn: 'root',
@@ -75,5 +76,16 @@ export class DepartementService extends BaseHttp {
       },
       { headers: this.authorizationHeaders, observe: 'body' }
     );
+  }
+  listSalleDept(dept:Departement){
+    console.log("id dept: "+dept.id);
+    console.log(this.endPointWithSlash);
+    return this.http.get<Salle[]>(
+      this.endPointWithSlash + 'listSalleDept/' + dept.id,
+      { headers: this.authorizationHeaders, 
+        observe: 'body'
+      }
+    );
+
   }
 }
