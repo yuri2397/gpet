@@ -125,4 +125,10 @@ class DepartementController extends Controller
         ];
         return response()->json($restult);
     }
+
+    public function listSalleDept($departementid)
+    {
+        # code...
+        return Salle::where('departement_id','=',$departementid)->get();
+    }
 }
