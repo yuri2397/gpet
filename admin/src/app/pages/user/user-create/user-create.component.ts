@@ -32,7 +32,7 @@ export class UserCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.findRolesList();
-    if (this.userService.isCD()) {
+    if (!this.userService.isSuperAdmin()) {
       this.user.departement_id = this.userService.departement().id;
       this.disableDep = true;
     } else {
@@ -46,6 +46,7 @@ export class UserCreateComponent implements OnInit {
       departement_id: [[], [Validators.required]],
     });
   }
+  
 
   findDepartements() {
     this.isLoad = true;
@@ -82,7 +83,6 @@ export class UserCreateComponent implements OnInit {
         this.isLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
         this.notification.error("Message d'erreur", errors.error.message);
         this.modalRef.destroy(null);
         this.isLoad = false;

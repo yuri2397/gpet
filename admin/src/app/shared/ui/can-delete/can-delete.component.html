@@ -3,7 +3,6 @@
         <nz-result nzStatus="error" nzTitle="Erreur de suppression" nzSubTitle="{{ subtitle }}">
             <div nz-result-extra>
                 <div>
-                    <h4 nz-title>{{ title }}</h4>
                     <p *ngFor="let item of erreurs" nz-paragraph>
                         <i nz-icon nzType="close-circle"></i> {{ item }}
                     </p>

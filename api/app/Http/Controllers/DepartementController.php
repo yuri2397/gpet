@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Salle;
+use App\Traits\Utils;
+use App\Models\Classe;
+use App\Models\Course;
+use App\Models\Batiment;
+use App\Models\Professor;
+use App\Models\TimesTable;
 use App\Models\Departement;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Course;
-use App\Models\Professor;
-use App\Models\Batiment;
-use App\Models\Salle;
-use App\Models\Classe;
 
 class DepartementController extends Controller
 {
-
+    use Utils;
     public function __construct()
     {
         $this->middleware("permission:voir departement")->only(["index", "show"]);
@@ -25,7 +28,7 @@ class DepartementController extends Controller
 
     public function index()
     {
-        return Departement::with('classes')->orderBy('created_at', 'desc')->get();
+        return Departement::withCount("classes")->orderBy('created_at', 'desc')->get();
     }
 
 
@@ -72,21 +75,60 @@ class DepartementController extends Controller
     public function dashboard()
     {
         $user = User::find(auth()->id());
-        if($user->hasRole("super admin")){
+
+        $salles = Salle::all();
+        $salles_libres = [];
+
+        foreach ($this->hours as $value) {
+            $data = [];
+            // traitement et test
+            foreach ($salles as $salle) {
+                if($this->isSalleFree($salle, $value[0], $value[1])){
+                    $data[] = [
+                        "x" => Str::upper($salle->name),
+                        "y" => 10
+                    ];
+                }
+                else{
+                    $data[] = [
+                        "x" => Str::upper($salle->name),
+                        "y" => 50
+                    ];
+                }
+            }
+
+            $salles_libres[]= [
+                "name" => $value[0],
+                "data" => $data
+            ];
+        }
+
+
+        if ($user->hasRole("super admin")) {
             return response()->json([
                 "courses" => count(Course::all()),
                 "professors" => count(Professor::all()),
                 "classes" => count(Classe::all()),
-                "salles" => count(Salle::all())
+                "salles" => count(Salle::all()),
+                "salles_libre" => $salles_libres
             ]);
         }
         $departement = Departement::find($user->departement_id);
 
-        return response()->json([
+
+        $restult = [
             "courses" => count(Course::whereDepartementId($departement->id)->get()),
             "professors" => count(Professor::whereDepartementId($departement->id)->get()),
             "classes" => count(Classe::whereDepartementId($departement->id)->get()),
-            "salles" => count(Salle::whereDepartementId($departement->id)->get())
-        ]);
+            "salles" => count(Salle::whereDepartementId($departement->id)->get()),
+            "salles_libre" => $salles_libres
+        ];
+        return response()->json($restult);
+    }
+
+    public function listSalleDept($departementid)
+    {
+        # code...
+        return Salle::where('departement_id','=',$departementid)->get();
     }
 }

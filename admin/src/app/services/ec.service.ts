@@ -35,7 +35,7 @@ export class ECService extends BaseHttp {
       {
         name: ec.name,
         code: ec.code,
-        ue_id: ec.ue_id == -1 ? -1 : ec.ue_id,
+        ue_id: ec.ue_id ?? -1,
         ue_name: ec.ue.name,
         ue_code: ec.ue.code,
         departement_id: ec.ue.departement_id,

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classe;
 use App\Models\Day;
-use App\Models\Departement;
+use App\Models\User;
+use App\Models\Classe;
 use App\Models\TimesTable;
+use App\Models\Departement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class ClasseController extends Controller
 {
@@ -23,11 +25,20 @@ class ClasseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
     public function index()
     {
         return Departement::with('classes')->with('courses')->get();
+    }
+
+    public function select()
+    {
+        $user = User::find(auth()->id());
+        if ($user->hasRole("super admin")) {
+            return Classe::with("departement")->get();
+        }
+        return Classe::with("departement")->whereDepartementId($user->departement_id)->get();
     }
 
     public function findByDepartement($departement)
@@ -41,7 +52,7 @@ class ClasseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -63,7 +74,7 @@ class ClasseController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Classe
      */
     public function show($id)
     {
@@ -75,7 +86,7 @@ class ClasseController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Classe
      */
     public function update(Request $request, $id)
     {
@@ -93,7 +104,7 @@ class ClasseController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {

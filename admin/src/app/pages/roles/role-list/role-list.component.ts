@@ -3,7 +3,6 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { RoleService } from './../../../services/role.service';
 import { Component, OnInit } from '@angular/core';
 import { Role } from 'src/app/models/role';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-role-list',
@@ -37,7 +36,7 @@ export class RoleListComponent implements OnInit {
         this.allIsLoad = false;
       },
       error: (errors) => {
-        console.log(errors);
+        this.notification.error("Notification", errors.error.message);
       },
     });
   }
@@ -74,7 +73,6 @@ export class RoleListComponent implements OnInit {
         this.isLoad = false;
       },
       error: errors => {
-        console.log(errors);
       }
     })
   }

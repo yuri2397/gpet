@@ -7,8 +7,12 @@ import {
   Validators,
   FormGroup,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { NotificationService } from 'src/app/services/notification.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
+
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +29,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private modalService: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +41,15 @@ export class ProfileComponent implements OnInit {
       password: [null, [Validators.required]],
       new_password: [null, [Validators.required]],
       new_password_conf: [null, Validators.required],
-    });
+    }, { validators: this.checkPasswords });
+  }
+
+  checkPasswords: Validators = (
+    group: AbstractControl
+  ): ValidationErrors | null => {
+    let pass = group.value.new_password;
+    let confirmPass = group.value.new_password_conf;
+    return pass === confirmPass ? null : { notSame: true };
   }
 
   userProfilePath() {
@@ -58,8 +71,6 @@ export class ProfileComponent implements OnInit {
 
   updatepassword() {
     this.isLoad = true;
-    console.log(this.validateForm.value);
-
     this.authService
       .updatePassword(
         this.validateForm.value.password,
@@ -82,7 +93,6 @@ export class ProfileComponent implements OnInit {
             'Erreur',
             errors.error.message
           );
-          console.log(errors);
         },
       });
   }
@@ -97,15 +107,14 @@ export class ProfileComponent implements OnInit {
     this.avatarLoad = true;
     this.authService.updateAvatar(this.file).subscribe({
       next: (response: User) => {
+        this.authService.setUser(response);
         this.user = response;
         this.userProfilePath();
-        this.authService.setUser(response);
         this.notification.createNotification(
           'success',
           'Notification',
           'Modification avec succes'
         );
-        console.log(response);
         this.isLoad = false;
       },
       error: (errors: any) => {
@@ -116,8 +125,22 @@ export class ProfileComponent implements OnInit {
           errors.error.message
         );
         this.avatarLoad = false;
-        console.log(errors);
       },
     });
   }
+
+  openModal() {
+     this.modalService.confirm({
+      nzTitle: '<span>Confirmez votre deconnexion</span>',
+      nzOkText: 'Valider',
+      nzOkType: 'primary',
+      nzOkDanger: false,
+      nzOnOk: () => this.authService.logOut(),
+      nzCancelText: 'Annuler',
+      //nzOkLoading: this.deleteLoad,
+      nzMaskClosable: false,
+      nzClosable: false,
+    });
+  }
+
 }

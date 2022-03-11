@@ -1,3 +1,5 @@
+import { PayementsPrintAllComponent } from './../payements-print-all/payements-print-all.component';
+import { PayementsPrintComponent } from './../payements-print/payements-print.component';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -77,7 +79,33 @@ export class PayementsComponent implements OnInit {
     this.location.back();
   }
 
-  printPayment(courseDo: CoursesDo) {}
+  printPayment(courseDo: CoursesDo) {
+    let modal = this.modalService.create({
+      nzTitle: "Imprimer l'état de payement",
+      nzContent: PayementsPrintComponent,
+      nzComponentParams: {
+        classe: courseDo.course.classe,
+        semester: courseDo.course.semester,
+        professor: courseDo.professor,
+        course: courseDo.course,
+        courseDo: courseDo
+      },
+      nzClosable: false,
+      nzWidth: "70%",
+    });
+  }
+
+  printAll(){
+    let modal = this.modalService.create({
+      nzTitle: "Imprimer tous les états payés.",
+      nzContent: PayementsPrintAllComponent,
+      nzComponentParams: {
+         professor: this.professor
+      },
+      nzClosable: false,
+      nzWidth: "80%",
+    });
+  }
 
   openDoPaymentModal(courseDo: CoursesDo) {
     this.deleteRestoRef = this.modalService.confirm({

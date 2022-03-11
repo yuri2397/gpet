@@ -67,11 +67,11 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return 
      */
     public function show($id)
     {
-        return User::find($id);
+        return User::with("roles")->find($id);
     }
 
     public function update(Request $request, $id)
@@ -79,7 +79,7 @@ class UserController extends Controller
         $this->validate($request, [
             "first_name" => "required|min:2",
             "last_name" => "required|min:2",
-            "email" => "required|email|exists:users,email",
+            "email" => "required|email",
             "roles" => "required|exists:roles,name",
         ]);
         $user = User::find($id);

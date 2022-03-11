@@ -1,42 +1,62 @@
 <div class="container-fluid">
-    <div class="card shadow">
-        <div class="card-header p-3 bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="text-white">Liste des banques</h5>
-                </div>
-            </div>
+  <div class="card shadow">
+    <div class="card-header p-3 bg-color">
+      <div class="d-flex align-items-center justify-content-start">
+        <div *ngIf="can('creer semestre')" class="mx-2">
+          <h5 class="text-white mx-2 d-inline-block">LISTE DES BANQUES</h5>
         </div>
-        <div class="card-body">
-            <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="banks">
-                <thead>
-                    <tr class="text-center">
-                        <th class="text-center">Code</th>
-                        <th class="text-center">Nom</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of basicTable.data">
-                        <td class="text-center">{{ data.code }}</td>
-                        <td class="text-center">{{ data.name }}</td>
-                        <td class="text-center">
-                            <div class="d-flex justify-content-center">
-                                <div>
-                                    <button *ngIf="can('modifier salle')" (click)="openEditModal(data)" mat-mini-fab color="primary">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                                </div>
-                                <div class="mx-3">
-                                    <button *ngIf="can('supprimer banque')" (click)="openDeleteModal(data)" mat-mini-fab color="warn">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-        </div>
+      </div>
     </div>
+    <div class="card-body">
+      <nz-table
+        [nzLoading]="isLoad"
+        nzShowPagination
+        [nzPageSize]="4"
+        #basicTable
+        [nzData]="banks"
+        [nzBordered]="true"
+      >
+        <thead>
+          <tr class="text-center">
+            <th class="text-center">Code</th>
+            <th class="text-center">Nom</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td class="text-center">{{ data.code }}</td>
+            <td class="text-center">{{ data.name }}</td>
+            <td class="p-0">
+              <div class="d-flex justify-content-center">
+                <div class="mx-3"
+                  *ngIf="can('modifier salle')">
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                    (click)="openEditModal(data)"
+                  >
+                  <i nz-icon nzType="edit"></i>
+                  </button>
+                </div>
+                <div class="mx-3"
+                  *ngIf="can('supprimer banque')">
+                  <button
+                    nzDanger
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                    (click)="openDeleteModal(data)"
+                  >
+                  <i nz-icon nzType="delete"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
 </div>

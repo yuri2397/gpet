@@ -76,16 +76,21 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
+    Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
+
 
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
     Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
     Route::post('create', [SemesterController::class, 'store']);
+    Route::put('update/{id}', [SemesterController::class, 'update']);
+    Route::delete('delete/{id}', [SemesterController::class, 'destroy']);
 });
 
 Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::get('', [ClasseController::class, "index"]);
+    Route::get('select', [ClasseController::class, "select"]);
     Route::get('departement/{id}', [ClasseController::class, "findByDepartement"]);
     Route::post('create', [ClasseController::class, "store"]);
     Route::get('show/{id}', [ClasseController::class, 'show']);
@@ -171,7 +176,8 @@ Route::prefix("role")->middleware(['auth:api'])->group(function () {
 });
 
 Route::any('test', function (Request $request) {
-    Artisan::call('permission:create-permission "voir payement" api');
+    $user = User::find(1);
+    $user->givePermissionTo(Permission::all());
     return "OKAY";
 });
 

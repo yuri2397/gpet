@@ -6,11 +6,7 @@
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="classe_id">Classe</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la classe">
-                        <nz-select [nzLoading]="isLoadClasse" [nzDisabled]="
-                course.departement_id != null &&
-                courseService.isEditeur() &&
-                setDefaultClasse() && isLoadClasse
-              " [nzLoading]="isLoad" formControlName="classe_id" [(ngModel)]="course.classe_id">
+                        <nz-select [nzLoading]="isLoadClasse" formControlName="classe_id" [(ngModel)]="course.classe_id">
                             <ng-container *ngFor="let o of classes">
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>
@@ -96,7 +92,7 @@
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                        <nz-select [nzDisabled]="!courseService.isCD()" (ngModelChange)="findClasseByDepartement($event)" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement_id">
+                        <nz-select [nzDisabled]="!courseService.isSuperAdmin()" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement_id">
                             <ng-container *ngFor="let o of departements">
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                             </ng-container>

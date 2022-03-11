@@ -1,0 +1,87 @@
+<div class="container">
+    <div class="col text-center">
+        <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="logo">
+        <div>
+            UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
+        </div> <br>
+        <h4>
+            ETAT DES RELEVES DE VACATION</h4>
+        <h6>{{ date | date:'EEEE d MMMM y' }}</h6>
+    </div>
+    <div class="row align-items-start my-3">
+        <div class="col-md-6">
+            <nz-list nzBordered>
+                <nz-list-item>
+                    <span nz-typography><b>PRÉNOM</b></span> {{ professor.first_name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>NOM</b></span> {{ professor.last_name }}
+                </nz-list-item>
+            </nz-list>
+        </div>
+        <div class="col-md-6">
+            <nz-list nzBordered>
+                <nz-list-item>
+                    <span nz-typography><b>NOM DE LA BANQUE</b></span> {{ professor.account.bank.name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>RIB</b></span> {{ professor.account.rip }}
+                </nz-list-item>
+            </nz-list>
+        </div>
+    </div>
+    <div class="my-5">
+        <nz-table nzBordered="true" nzP [nzData]="professor.coursesDo" #basicTable>
+            <thead>
+                <tr>
+                    <th class="text-center bold">SERVICES</th>
+                    <th class="text-center bold">TAUX HORAIRE</th>
+                    <th class="text-center bold">NB HEURES</th>
+                    <th class="text-center bold">MONTANT (FCFA)</th>
+                    <th class="text-center bold">UE</th>
+                    <th class="text-center bold">EC</th>
+                    <th class="text-center bold">CLASSE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let data of basicTable.data">
+                    <tr *ngIf="data.is_paid == true">
+                        <td class="text-center"> {{ data.course.service.name }} </td>
+                        <td class="text-center"> {{ data.course.service.amount}} fcfa</td>
+                        <td class="text-center"> {{ data.total_hours }}heures </td>
+                        <td class="text-center"> {{ data.total_sales}} fcfa</td>
+                        <td class="text-center"> {{ data.course.ec.ue.name }} </td>
+                        <td class="text-center"> {{ data.course.ec.name }} </td>
+                        <td class="text-center"> {{ data.course.classe.name}} </td>
+                    </tr>
+                </ng-container>
+
+            </tbody>
+        </nz-table>
+        <div class="text-center my-4 mb-5">
+            <nz-divider nzText="Signature du Vacataire"></nz-divider>
+        </div>
+        <div class="row my-3 mt-5 justify-content-between">
+            <div class="col">
+                Vu pour établir état de paie
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                Certifié service fait
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col bold">
+                LE CHEF DES SERVICES ADMINISTRATIFS
+            </div>
+            <div class="col bold">
+                LE DIRECTEUR
+            </div>
+        </div>
+    </div>
+</div>
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal()">FERMER</button>
+    <button nz-button nzType="primary" (click)="print()">IMPRIMER</button>
+</div>

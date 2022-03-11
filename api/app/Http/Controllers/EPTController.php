@@ -9,11 +9,12 @@ use App\Models\Classe;
 use App\Models\Course;
 use App\Models\Professor;
 use App\Models\TimesTable;
+use App\Models\Departement;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Response as HttpResponse;
-use App\Models\Departement;
 
 class EPTController extends Controller
 {
@@ -78,7 +79,7 @@ class EPTController extends Controller
         foreach ($eptForProfessor as $key => $value) {
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 return response()->json([
-                    "message" => "Le professeur sera occupé le " . $day->name . " à " . $value->start . " À " . $value->end
+                    "message" => "Le professeur est occupé le " . Str::upper($day->name) . " à " . $value->start . " À " . $value->end
                 ], HttpResponse::HTTP_CONFLICT);
             }
         }
@@ -88,7 +89,7 @@ class EPTController extends Controller
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 $c = Course::find($value->course_id);
                 return response()->json([
-                    "message" => "Un cour de  " . $c->name . " est programmé pour le" . $day->name . " de " . $value->start . " À " . $value->end
+                    "message" => "Un cour de  " . Str::upper($c->name) . " est programmé pour le" . Str::upper($day->name) . " de " . $value->start . " À " . $value->end
                 ], HttpResponse::HTTP_CONFLICT);
             }
         }
@@ -98,7 +99,7 @@ class EPTController extends Controller
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 $s = Salle::find($value->salle_id);
                 return response()->json([
-                    "message" => "La salle " . $s->name . " est déjà reservée pour le " . $day->name . " de " . $value->start . " À " . $value->end . " pour le cour de " . Course::find($value->course_id)->name . " avec la classe: " . Classe::find($value->classe_id)->name
+                    "message" => "La salle " . Str::upper($s->name) . " est déjà reservée pour le " . Str::upper($day->name) . " de " . $value->start . " À " . $value->end . " pour le cour de " . Str::upper(Course::find($value->course_id)->name) . " avec la classe: " . Str::upper(Classe::find($value->classe_id)->name)
                 ], HttpResponse::HTTP_CONFLICT);
             }
         }

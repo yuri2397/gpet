@@ -47,7 +47,6 @@ export class ResetPasswordComponent implements OnInit {
   public resetPassword() {
 
     this.isLoad = true;
-        console.log(this.validateForm.value);
         this.authService.resetPassword(this.validateForm.value.email,this.validateForm.value.code,this.validateForm.value.password).subscribe({
           next: (response: any) => {
             this.notification.createNotification(
@@ -61,12 +60,14 @@ export class ResetPasswordComponent implements OnInit {
             this.notification.createNotification(
               'error',
               'Erreur',
-              'probleme de modification'
+              'Verifier les informations'
             );
-            console.log(errors);
           },
         });
+  }
 
+  returnLogin(){
+          this.authService.logOut();
   }
 
 }

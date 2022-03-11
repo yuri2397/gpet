@@ -1,1 +1,14 @@
-<h1>SEMESTER EDIT</h1>
+<nz-form [nzLayout]="'horizontal'" nz-form [formGroup]="validateForm">
+
+    <nz-form-item>
+        <nz-form-label nzRequired nzFor="name">NOM DU SEMESTRE</nz-form-label>
+        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
+            <input [(ngModel)]="semester.name" formControlName="name" nz-input name="name" type="text" id="name">
+        </nz-form-control>
+    </nz-form-item>
+</nz-form>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
+    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Modifier</button>
+</div>

@@ -14,6 +14,11 @@ class Departement extends Model
         return $this->hasMany(Classe::class);
     }
 
+    public function classesLibre()
+    {
+        return $this->hasMany(Classe::class);
+    }
+
     public function professors()
     {
         return $this->hasMany(Professor::class);

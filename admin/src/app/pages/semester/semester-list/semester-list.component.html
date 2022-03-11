@@ -1,96 +1,237 @@
 <ng-container *ngIf="!isLoad; else elseTemplate">
-    <div class="container-fluid pb-3">
-        <div class="card shadow">
-            <div class="card-header bg-color" *ngIf="can('creer semestre')">
-                <div class="d-flex align-items-center ">
-                    <div>
-                        <button (click)="openCreateSemesterModal()" mat-fab color="default">
-                            <mat-icon>add</mat-icon>
-                        </button>
-                    </div>
-                    <div class="mx-3">
-                        AJOUTER UN NOUVEAU SEMESTRE
-                    </div>
-                </div>
-            </div>
-            <div class="card-body border m-2 card">
-                <nz-tabset>
-                    <nz-tab [nzTitle]="item.name.toUpperCase()" *ngFor="let item of
-                        semesters">
-                        <div class="card card-body shadow-sm m-2 border">
-                            <div class="d-flex justify-content-start
-                            align-items-center">
-                                <div class="m-2">
-                                    <button (click)="openCreateModal(item)" mat-mini-fab color="primary">
-                                    <mat-icon>add</mat-icon>
-                                </button>
-                                </div>
-                                <div>
-                                    <h4>Ajouter un nouveau EC.</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <nz-table [nzShowPagination]="false" #basicTable [nzData]="item.ues">
-                            <thead class="">
-                                <tr>
-                                    <th class="bold text-center">UE</th>
-                                    <th class="bold text-center">Elément Constitutif</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let data of basicTable.data">
-                                    <td>{{ data.code.toLocaleUpperCase() }}</td>
-                                    <td>
-                                        <nz-table #ecTable [nzBordered]="true" [nzShowPagination]="false" [nzData]="data.ecs">
-                                            <thead>
-                                                <tr>
-                                                    <th class="text-center">Nom</th>
-                                                    <th class="text-center" nzWidth="200px">Volume Horaire</th>
-                                                    <th class="text-center" nzWidth="100px">Actions
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let ec of ecTable.data">
-                                                    <td>{{ ec.code }} - {{ ec.name }} </td>
-                                                    <td>{{ ec.vht }}</td>
-                                                    <td class="p-0">
-                                                        <div class="d-flex justify-content-center">
-                                                            <div class="mx-3" *ngIf="can('modifier semestre')">
-                                                                <button (click)="openEditModal(ec, item)" mat-mini-fab color="primary">
-                                                                    <mat-icon>edit</mat-icon>
-                                                                </button>
-                                                            </div>
-                                                            <div class="mx-3" *ngIf="can('supprimer semestre')">
-                                                                <button nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr de supprimer cet EC
-                                                                ?" (nzOnConfirm)="onDeleteOk(ec, item)" nzPopconfirmPlacement="top" mat-mini-fab color="warn">
-                                                                    <mat-icon>delete</mat-icon>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <mat-progress-bar *ngIf="ec.deleted" [color]="'warn'" class="mt-3" mode="indeterminate"></mat-progress-bar>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </nz-table>
-                                    </td>
-
-                                </tr>
-                            </tbody>
-                        </nz-table>
-                    </nz-tab>
-                </nz-tabset>
-            </div>
+  <div class="container-fluid pb-3">
+    <div class="card shadow">
+      <div class="card-header bg-color">
+        <div class="d-flex align-items-center justify-content-start">
+          <div *ngIf="can('creer semestre')" class="mx-2">
+            <button (click)="openCreateSemesterModal()" mat-fab color="default">
+              <mat-icon>add</mat-icon>
+            </button>
+            <h5 class="text-white mx-2 d-inline-block">AJOUTER UN SEMESTRE</h5>
+          </div>
         </div>
+      </div>
+      <div class="card-body border m-2 card">
+        <nz-tabset>
+          <nz-tab
+            [nzTitle]="item.name.toUpperCase()"
+            *ngFor="let item of semesters"
+          >
+            <div
+              class="card card-body shadow-sm m-2 border"
+              *ngIf="can('modifier semestre') || can('supprimer semestre')"
+            >
+              <div class="row">
+                <div *ngIf="can('modifier semestre')" class="mx-2 col">
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                    (click)="openEditSemesterModal(item)"
+                  >
+                    <i nz-icon nzType="edit"></i>
+                  </button>
+
+                  <span class="color-primary mx-2">MODIFIER LE SEMESTRE</span>
+                </div>
+                <div *ngIf="can('supprimer semestre')" class="mx-2 col">
+                  <button
+                    nzDanger="true"
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                    nz-popconfirm
+                    nzPopconfirmTitle="Êtes-vous sûr de supprimer cette {{
+                      item.name.toLocaleUpperCase()
+                    }}
+                                    ?"
+                    (nzOnConfirm)="deleteSemester(item)"
+                    nzPopconfirmPlacement="bottom"
+                  >
+                    <i nz-icon nzType="edit"></i>
+                  </button>
+
+                  <span class="color-primary mx-2">SUPPRIMER LE SEMESTRE</span>
+                </div>
+              </div>
+            </div>
+            <br />
+            <nz-divider [nzText]="add_ue"> </nz-divider>
+            <ng-template #add_ue>
+              <div>
+                <button
+                  nz-button
+                  nzType="primary"
+                  nzShape="circle"
+                  (click)="openCreateModal(item)"
+                >
+                  <i nz-icon nzType="plus"></i>
+                </button>
+                <span class="ms-3">AJOUTER UN NOUVEAU EC</span>
+              </div>
+            </ng-template>
+
+            <nz-table
+              [nzShowPagination]="false"
+              #basicTable
+              [nzData]="item.ues"
+              [nzBordered]="true"
+            >
+              <thead>
+                <tr>
+                  <th class="bold text-center">UE</th>
+                  <th class="bold text-center">Elément Constitutif</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of basicTable.data">
+                  <td class="p-0">
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                    >
+                      <div class="text-center h6 m-0">
+                        {{ data.code.toLocaleUpperCase() }}
+                      </div>
+                      <div class="mx-1">
+                        <button
+                          nz-button
+                          nzType="primary"
+                          nzShape="circle"
+                          (click)="openEditUEModal(data)"
+                        >
+                          <i nz-icon nzType="edit"></i>
+                        </button>
+                      </div>
+                      <ng-template #vide_>
+                        <div class="card p-0 card-body border center raduis-sm">
+                          <span class="h6 text-muted"
+                            >Aucun EC associé à cet UE</span
+                          >
+                          <div class="my-3">
+                            <button
+                              nzDanger
+                              nz-button
+                              nzType="primary"
+                              nzShape="circle"
+                              nz-popconfirm
+                              nzPopconfirmTitle="Êtes-vous sûr de supprimer cet UE
+                                                        ?"
+                              (nzOnConfirm)="deleteUEConfirmed(data)"
+                              nzPopconfirmPlacement="top"
+                            >
+                              <i nz-icon nzType="edit"></i>
+                            </button>
+                            <span class="mx-2">SUPPRIMER L'UE</span>
+                          </div>
+                          <mat-progress-bar
+                            [color]="'warn'"
+                            *ngIf="data.deleted"
+                            class="mt-3"
+                            mode="indeterminate"
+                          ></mat-progress-bar>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </td>
+                  <td>
+                    <nz-table
+                      #ecTable
+                      [nzNoResult]="vide_"
+                      [nzBordered]="true"
+                      [nzShowPagination]="false"
+                      [nzData]="data.ecs"
+                    >
+                      <thead>
+                        <tr>
+                          <th class="text-center">Nom</th>
+                          <th class="text-center" nzWidth="200px">
+                            Volume Horaire
+                          </th>
+                          <th
+                            *ngIf="
+                              can('modifier semestre') ||
+                              can('supprimer semestre')
+                            "
+                            class="text-center"
+                            nzWidth="100px"
+                          >
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let ec of ecTable.data">
+                          <td>{{ ec.code }} - {{ ec.name }}</td>
+                          <td>{{ ec.vht }}</td>
+                          <td class="p-0">
+                            <div class="d-flex justify-content-center">
+                              <div
+                                class="mx-3"
+                                *ngIf="can('modifier semestre')"
+                              >
+                                <button
+                                  nz-button
+                                  nzType="primary"
+                                  nzShape="circle"
+                                  (click)="openEditModal(ec, item)"
+                                >
+                                  <i nz-icon nzType="edit"></i>
+                                </button>
+                              </div>
+                              <div
+                                class="mx-3"
+                                *ngIf="can('supprimer semestre')"
+                              >
+                                <button
+                                  nzDanger
+                                  nz-button
+                                  nzType="primary"
+                                  nzShape="circle"
+                                  nz-popconfirm
+                                  nzPopconfirmTitle="Êtes-vous sûr de supprimer cet EC
+                                                                ?"
+                                  (nzOnConfirm)="onDeleteOk(ec, item)"
+                                  nzPopconfirmPlacement="top"
+                                >
+                                  <i nz-icon nzType="delete"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <mat-progress-bar
+                              *ngIf="ec.deleted"
+                              [color]="'warn'"
+                              class="mt-3"
+                              mode="indeterminate"
+                            ></mat-progress-bar>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </nz-table>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-tab>
+        </nz-tabset>
+      </div>
     </div>
+  </div>
 </ng-container>
 <ng-template #elseTemplate>
-    <div class="container-fluid">
-        <div class="card card-body shadow">
-            <nz-skeleton [nzActive]="true"></nz-skeleton>
-            <br>
-            <nz-skeleton [nzActive]="true"></nz-skeleton>
-            <nz-skeleton [nzActive]="true"></nz-skeleton>
-        </div>
+  <div class="container-fluid">
+    <div class="card card-body shadow">
+      <nz-skeleton [nzActive]="true"></nz-skeleton>
+      <br />
+      <nz-skeleton [nzActive]="true"></nz-skeleton>
+      <nz-skeleton [nzActive]="true"></nz-skeleton>
     </div>
+  </div>
 </ng-template>
+
+<app-can-delete
+  (close)="deleteError = false"
+  [visible]="deleteError"
+  [title]="deleteTitle"
+  [subtitle]="deleteSub"
+  [erreurs]="erreurs"
+></app-can-delete>

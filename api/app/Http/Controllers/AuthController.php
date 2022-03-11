@@ -3,15 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendForgotPasswordMail;
-use App\Models\PasswordResets;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
@@ -104,6 +99,5 @@ class AuthController extends Controller
             DB::table('password_resets')->whereEmail($user->email)->whereToken($request->code)->delete();
             return response()->json(['message' => "Mot de passe modifier avec success."], 200);
         }
-        return  response()->json(["message" => "Votre mot de passe est incorrect"], 422);;
     }
 }

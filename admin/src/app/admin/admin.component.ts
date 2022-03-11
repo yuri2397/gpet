@@ -4,7 +4,20 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { Permission } from '../models/permission';
 import { Role } from '../models/role';
+import {
+  ApexAxisChartSeries,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexChart
+} from "ng-apexcharts";
 
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  title: ApexTitleSubtitle;
+  colors: any;
+};
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -31,7 +44,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: 'departements',
     title: 'Départements',
-    icon: 'school',
+    icon: 'stream',
     class: '',
     permissions: ['voir departement'],
   },
@@ -144,6 +157,9 @@ export class AdminComponent implements OnInit {
   }
 
   canShowItem(item: RouteInfo) {
+    if(item.path == "semesters" && this.userService.isSuperAdmin()){
+      return false;
+    }
     let r = false;
     this.permissions.forEach((e) => {
       if (item.permissions.indexOf(e.name) != -1 || item.permissions.indexOf('*') != -1) {
@@ -151,5 +167,9 @@ export class AdminComponent implements OnInit {
       }
     });
     return r;
+  }
+
+  public profile(){
+    this.router.navigate(['profile']);
   }
 }

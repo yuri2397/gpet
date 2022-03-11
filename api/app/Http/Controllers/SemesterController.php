@@ -7,6 +7,8 @@ use App\Models\UE;
 use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Course;
+use Symfony\Component\HttpFoundation\Response;
 
 class SemesterController extends Controller
 {
@@ -55,27 +57,39 @@ class SemesterController extends Controller
         return Semester::find($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
-    //
+        $request->validate([
+            "name" => "required"
+        ]);
+        $semester = Semester::find($id);
+        $semester->name = $request->name;
+        $semester->save();
+
+        return response()->json($semester);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-    //
+        $semester = Semester::find($id);
+        $courses = Course::whereSemesterId($semester->id)->first();
+        if($courses){
+            return response()->json([
+                "message" => "Certains cours sont liés à cette semestre. Supprime les cours avant de supprimer le semestre."
+            ], Response::HTTP_CONFLICT);
+        }
+
+        $ues = UE::whereSemesterId($semester->id)->first();
+
+        if($ues){
+            return response()->json([
+                "message" => "Certains UE sont liés à cette semestre. Supprime ces EC avant de supprimer le semestre."
+            ], Response::HTTP_CONFLICT);
+        }
+
+        $semester->delete();
+        return $semester;
     }
 
 

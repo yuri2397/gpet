@@ -29,6 +29,7 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { IconsProviderModule } from './icons-provider.module';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -40,6 +41,7 @@ registerLocaleData(fr);
     AnyPermissionComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    ErrorConnectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +60,7 @@ registerLocaleData(fr);
     NzTableModule,
     MatIconModule,
     NzDividerModule,
-    MatButtonModule,
-
+    MatButtonModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },
@@ -71,4 +72,5 @@ registerLocaleData(fr);
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

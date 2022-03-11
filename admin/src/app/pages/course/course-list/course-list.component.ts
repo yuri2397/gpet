@@ -27,6 +27,7 @@ export class CourseListComponent implements OnInit {
   classes!: Classe[];
   @Input() courses!: Course[];
   @Input() classe!: Classe;
+  @Input() setView!: boolean;
   services!: Service[];
   isLoad = false;
   deleteRestoRef!: NzModalRef;
@@ -110,6 +111,10 @@ export class CourseListComponent implements OnInit {
     p.name = permission;
     let test = this.courseService.can(p, this.courseService.getPermissions());
     return test;
+  }
+
+  isSuperAdmin(){
+    return this.courseService.isSuperAdmin();
   }
 
   deleteCourse(course: Course) {

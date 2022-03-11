@@ -9,8 +9,6 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class ClasseService extends BaseHttp {
-
-
   protected _baseUrl = 'classe';
   constructor(protected hc: HttpClient) {
     super();
@@ -25,9 +23,18 @@ export class ClasseService extends BaseHttp {
   }
 
   findByDepartement(id: number) {
-    return this.http.get<Classe[]>(this.endPointWithSlash + 'departement/' + id, {
+    return this.http.get<Classe[]>(
+      this.endPointWithSlash + 'departement/' + id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  selectClasses() {
+    return this.http.get<Classe[]>(this.endPointWithSlash + 'select', {
       headers: this.authorizationHeaders,
-      observe: 'body',
     });
   }
 
@@ -56,10 +63,13 @@ export class ClasseService extends BaseHttp {
   }
 
   delete(classe: Classe) {
-    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + classe.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.delete<any>(
+      this.endPointWithSlash + 'destroy/' + classe.id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   show(classe: Classe) {
@@ -80,6 +90,4 @@ export class ClasseService extends BaseHttp {
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
-
-
 }

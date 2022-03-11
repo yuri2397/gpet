@@ -1,3 +1,5 @@
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { SemesterService } from './../../../services/semester.service';
 import { EC } from './../../../models/ec';
 import { UE } from './../../../models/ue';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -8,23 +10,22 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-semester-edit',
   templateUrl: './semester-edit.component.html',
-  styleUrls: ['./semester-edit.component.scss']
+  styleUrls: ['./semester-edit.component.scss'],
 })
 export class SemesterEditComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
   @Input() semester!: Semester;
-  @Input() ec!: EC;
   constructor(
     private modal: NzModalRef,
     private fb: FormBuilder,
-  ) { }
+    private semesterService: SemesterService,
+    private notification: NzNotificationService
+  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      name: [null, [Validators.required, Validators.min(2)]],
-      vht: [null, [Validators.required, Validators.min(0)]],
-      semester_id: [null, [Validators.required]],
+      name: [this.semester.name, [Validators.required, Validators.min(2)]],
     });
   }
 
@@ -37,9 +38,24 @@ export class SemesterEditComponent implements OnInit {
     }
   }
 
-  destroyModal(data: Semester | null){}
+  destroyModal(data: Semester | null) {
+    this.modal.destroy(data);
+  }
 
-  save(){
-
+  save() {
+    this.isLoad = true;
+    this.semesterService.edit(this.semester).subscribe({
+      next: (response) => {
+        this.notification.success(
+          'Notification',
+          'Semestre modifier avec succès.'
+        );
+        this.destroyModal(response);
+      },
+      error: (errors) => {
+        this.destroyModal(null);
+        this.notification.error('Notification', errors.error.message);
+      },
+    });
   }
 }

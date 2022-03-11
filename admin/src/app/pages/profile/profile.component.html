@@ -1,8 +1,16 @@
 <div class="card car-body shadow">
-    <h3 class="m-3">Paramètres</h3>
-    <div class="row">
+
+    <nz-divider [nzText]="p_t"></nz-divider>
+    <ng-template #p_t>
+        <h4 class="m-3">{{ user.first_name }} {{ user.last_name }}</h4>
+         <button Center nz-button nzType="primary" class="bg" (click)="openModal()">
+          Se Deconnecter
+        </button>
+    </ng-template>
+
+    <div class="row mt-3">
         <div class="col">
-            <div class="card body m-3 border">
+            <div class="card body m-2 shadow raduis-sm">
                 <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
                 <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
                 <div class="d-flex justify-content-center my-3 btn-icon">
@@ -11,19 +19,19 @@
               <mat-icon>edit</mat-icon>
               <form enctype="multipart/form-data">
                 <input
-                #image
-                type="file"
-                nz-input
-                hidden
-                (change)="onChange($event)"
-              />
+                  #image
+                  type="file"
+                  nz-input
+                  hidden
+                  (change)="onChange($event)"
+                />
               </form>
             </button>
                     </div>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                        {{ user.first_name }} {{ user.last_name }} <br />
+                        <br />
                         <ng-container *ngIf="user.departement != null">
                             {{ user.departement.name }}
                         </ng-container>
@@ -38,8 +46,12 @@
             </div>
         </div>
         <div class="col">
-            <div class="card card-body m-3 border">
-                <h3 class="text-muted">Change votre mot de passe</h3>
+            <div class="card card-body shadow m-2 raduis-sm">
+                <nz-divider [nzText]="c_t">
+                    <ng-template #c_t>
+                        <h5 class="my-2">Change votre mot de passe</h5>
+                    </ng-template>
+                </nz-divider>
                 <form nz-form [formGroup]="validateForm" class="login-form">
                     <nz-form-item>
                         <nz-form-control nzErrorTip="Mot de passe actuel requi!">

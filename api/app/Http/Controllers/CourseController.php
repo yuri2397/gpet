@@ -21,7 +21,7 @@ class CourseController extends Controller
         $this->middleware("permission:creer cour")->only(["store"]);
         $this->middleware("permission:supprimer cour")->only(["destroy"]);
         $this->middleware("is_active")->only(["courseToProfessor"]);
-        
+
     }
 
     public function index()
@@ -61,7 +61,7 @@ class CourseController extends Controller
         return $this->show($course->id);
     }
 
-  
+
     public function show($id)
     {
         $cour = Course::with("classe")->find($id);
@@ -96,7 +96,7 @@ class CourseController extends Controller
         return $this->show($id);
     }
 
-    
+
     public function destroy($id)
     {
         return Course::find($id)->delete();

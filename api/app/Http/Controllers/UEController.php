@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EC;
 use App\Models\UE;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UEController extends Controller
 {
@@ -67,8 +69,9 @@ class UEController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $request->validate([
-            'code' => 'required|exists:u_e_s,code',
+            'code' => 'required',
             "name" => 'required'
         ]);
 
@@ -79,18 +82,24 @@ class UEController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function destroy($id)
     {
-        return UE::whereId($id)->delete();
+        $test = EC::where("ue_id", $id)->get()->count();
+        if ($test == 0) {
+            return UE::whereId($id)->delete();
+        }
+        return response()->json([
+            "message" => "Impossible de supprimer un UE qui est attaché à des EC. Merci de supprimer les EC avant."
+        ], Response::HTTP_CONFLICT);
     }
 
     public function search($data)
     {
         return UE::with('departement')
-        ->where('name', 'like', '%' . $data . '%')
-        ->orWhere('code', 'like', '%' . $data . '%')
-        ->get();
+            ->where('name', 'like', '%' . $data . '%')
+            ->orWhere('code', 'like', '%' . $data . '%')
+            ->get();
     }
 }

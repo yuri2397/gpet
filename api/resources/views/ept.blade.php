@@ -17,8 +17,8 @@
             </span> {{ date('d M Y') }}
         </div>
         <div>
-            <table class="table table-light">
-                <thead class="table-dark">
+            <table class="table table-light border border-raduis">
+                <thead class="card-body" style="border-bottom: none">
                     <tr>
                         <th class="text-center">LUNDI</th>
                         <th class="text-center">MARDI</th>

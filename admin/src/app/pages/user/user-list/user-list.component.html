@@ -20,6 +20,7 @@
         [nzPageSize]="4"
         #basicTable
         [nzData]="users"
+        [nzBordered]="true"
       >
         <thead>
           <tr>
@@ -38,18 +39,27 @@
             <td>{{ data.email }}</td>
             <td>
               <div class="d-flex justify-content-center">
-                <div *ngIf="can('voir admin')"> 
+                <div *ngIf="can('voir admin')">
                   <button
                     (click)="showUser(data)"
-                    mat-mini-fab
-                    color="primary"
-                  >
-                    <mat-icon>visibility</mat-icon>
+                    nz-button
+                    nzShape="circle"
+                    class="color-orange"
+                    >
+                    <i class="color" nz-icon nzType="eye"></i>
                   </button>
                 </div>
                 <div class="mx-3" *ngIf="can('supprimer admin')">
-                  <button mat-mini-fab color="warn">
-                    <mat-icon>delete</mat-icon>
+                  <button
+                    nz-popconfirm
+                    nzPopconfirmTitle="Confirmer votre action."
+                    (nzOnConfirm)="deleteUser(data)"
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                    nzDanger
+                  >
+                  <i nz-icon nzType="delete"></i>
                   </button>
                 </div>
               </div>

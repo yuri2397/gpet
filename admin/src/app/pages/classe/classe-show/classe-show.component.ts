@@ -56,19 +56,19 @@ export class ClasseShowComponent implements OnInit {
 
   exportPDF(){
     let DATA = document.getElementById('presentionEPT');
-      
+
     html2canvas(DATA!).then(canvas => {
-        
+
         let fileWidth = 208;
         let fileHeight = canvas.height * fileWidth / canvas.width;
-        
+
         const FILEURI = canvas.toDataURL('image/png')
         let PDF = new jsPDF('p', 'mm', 'a4', false);
         let position = 0;
         PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
-        
+
         PDF.save( this.classe.name + '.pdf');
-    }); 
+    });
   }
 
   getEmploieDuTemps(classe: Classe) {
@@ -77,6 +77,8 @@ export class ClasseShowComponent implements OnInit {
       next: (data) => {
         this.epts = data;
         this.eptLoad = false;
+        console.log("BONJOUR", data);
+        
       },
       error: (errors) => {
         this.errorNetWork = true;

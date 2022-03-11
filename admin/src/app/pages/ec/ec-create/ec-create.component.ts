@@ -62,9 +62,6 @@ export class EcCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    if (this.ecService.isEditeur()) {
-      this.ec.ue.departement_id = this.ecService.getUser().departement.id;
-    }
     this.ecService.create(this.ec).subscribe({
       next: (response) => {
         this.modal.close(response);
@@ -77,6 +74,7 @@ export class EcCreateComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
+        this.modal.close(null);
         this.notification.createNotification(
           'error',
           'Notification',
@@ -92,6 +90,7 @@ export class EcCreateComponent implements OnInit {
 
   addNewUE() {
     this.addUE = true;
+    
     this.validateForm = this.fb.group({
       name: [this.ec.name, [Validators.required, Validators.min]],
       ec_id: [null, []],

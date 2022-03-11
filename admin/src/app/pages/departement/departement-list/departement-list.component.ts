@@ -9,6 +9,7 @@ import { BatimentEditComponent } from '../../batiment/batiment-edit/batiment-edi
 import { NotificationService } from 'src/app/services/notification.service';
 import { DepartementEditComponent } from '../departement-edit/departement-edit.component';
 import { Router } from '@angular/router';
+import { Permission } from 'src/app/models/permission';
 
 @Component({
   selector: 'app-departement-list',
@@ -119,5 +120,12 @@ export class DepartementListComponent implements OnInit {
         this.findAll();
       }
     });
+  }
+
+  can(permission: string){
+    let p = new Permission();
+    p.name = permission;
+    let test = this.depService.can(p, this.depService.getPermissions());
+    return test;
   }
 }

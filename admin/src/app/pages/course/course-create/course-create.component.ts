@@ -52,10 +52,7 @@ export class CourseCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.findSelectableList();
-    if (!this.classeService.isSuperAdmin()) {
-      this.course.departement_id = this.courseService.departementId();
-      this.findClasseByDepartement(this.course.departement_id);
-    }
+      this.findAllClasses();
     this.validateForm = this.fb.group({
       groupe_number: [0, [Validators.required]],
       classe_id: [null, [Validators.required]],
@@ -64,6 +61,20 @@ export class CourseCreateComponent implements OnInit {
       departement_id: [null, [Validators.required]],
       professor_id: [null, null],
     });
+  }
+
+
+  findAllClasses() {
+    this.isLoadClasse = true;
+    this.classeService.selectClasses().subscribe({
+      next: response => {
+        this.classes = response;
+        this.isLoadClasse = false;
+      },
+      error: errors => {
+        console.log(errors);
+      }
+    })
   }
 
   setDefaultClasse() {
@@ -162,18 +173,6 @@ export class CourseCreateComponent implements OnInit {
           );
         },
       });
-  }
-
-  findClasseByDepartement(id: number) {
-    this.isLoadClasse = true;
-    this.classeService.findByDepartement(id).subscribe({
-      next: (response) => {
-        this.classes = response;
-        this.isLoadClasse = false;
-      },
-      error: (errors) => {
-      },
-    });
   }
 
   submitForm(): void {

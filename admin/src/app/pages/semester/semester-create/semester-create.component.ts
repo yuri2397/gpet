@@ -1,8 +1,9 @@
+import { Departement } from 'src/app/models/departement';
 import { Semester } from './../../../models/semester';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { SemesterService } from './../../../services/semester.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -12,6 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class SemesterCreateComponent implements OnInit {
   validateForm!: FormGroup;
+  @Input() departement!: Departement;
   isLoad: boolean = false;
   semester = new Semester();
   constructor(
@@ -22,7 +24,7 @@ export class SemesterCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.semester.departement_id = this.semesterService.departementId();
+    this.semester.departement_id = this.departement.id;
     this.validateForm = this.fb.group({
       name: [null, [Validators.required]],
     });

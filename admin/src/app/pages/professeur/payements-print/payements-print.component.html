@@ -1,0 +1,104 @@
+<div class="container" id="presentionPayement">
+    <div class="row">
+        <div class="col text-center">
+            <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="logo">
+            <div>
+                UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
+            </div> <br> <br>
+            <h1 class="bold">
+                ETAT DES RELEVES DE VACATION {{ classe.name.toLocaleUpperCase() }}, {{ semester.name.toLocaleUpperCase() }} </h1>
+            <h6>{{ date | date:'EEEE d MMMM y' }}</h6>
+        </div>
+    </div>
+    <div class="row align-items-start my-3">
+        <div class="col-md-6">
+            <nz-list nzBordered>
+                <nz-list-item>
+                    <span nz-typography><b>PRÉNOM</b></span> {{ professor.first_name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>NOM</b></span> {{ professor.last_name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>UE</b></span> {{ course.ec.ue.code }} {{ course.ec.ue.name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>EC</b></span> {{ course.ec.code }} {{ course.ec.name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>SERVICE</b></span> {{ course.service.name}}
+                </nz-list-item>
+            </nz-list>
+        </div>
+        <div class="col-md-6">
+            <nz-list nzBordered>
+                <nz-list-item>
+                    <span nz-typography><b>NOM DE LA BANQUE</b></span> {{ professor.account.bank.name }}
+                </nz-list-item>
+                <nz-list-item>
+                    <span nz-typography><b>RIB</b></span> {{ professor.account.rip }}
+                </nz-list-item>
+            </nz-list>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body border">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                SERVICE
+                            </td>
+                            <td>TAUX HORAIRE</td>
+                            <td>
+                                NOMBRE D'HEURES
+                            </td>
+                            <td>MONTANT EN <b>FCFA</b></td>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4">
+                                <hr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bold fw-md">{{ course.service.name }}</td>
+                            <td class="bold fw-md">{{ course.service.amount }} FCFA</td>
+                            <td class="bold fw-md">{{ courseDo.total_hours }} Heures</td>
+                            <td class="bold fw-md"> {{ courseDo.total_sales }} FCFA </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="text-center my-4 mb-5">
+        <nz-divider nzText="Signature du Vacataire"></nz-divider>
+    </div>
+    <div class="row my-3 mt-5 justify-content-between">
+        <div class="col">
+            Vu pour établir état de paie
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            Certifié service fait
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col bold">
+            LE CHEF DES SERVICES ADMINISTRATIFS
+        </div>
+        <div class="col bold">
+            LE DIRECTEUR
+        </div>
+    </div>
+</div>
+
+<div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal()">FERMER</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoad" (click)="print()">IMPRIMER</button>
+</div>

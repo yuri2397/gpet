@@ -1,3 +1,4 @@
+import { UserEditComponent } from './../user-edit/user-edit.component';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AddPermissionToUserComponent } from './../../roles/add-permission-to-user/add-permission-to-user.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
@@ -22,7 +23,7 @@ export class UserShowComponent implements OnInit {
   searchValue = '';
   visible = false;
   listOfDisplayData!: Permission[];
-  deleteUserLoad: boolean = false;;
+  deleteUserLoad: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
@@ -42,9 +43,11 @@ export class UserShowComponent implements OnInit {
   findSelectedUser(id: any) {
     let user = new User();
     user.id = id;
+    this.isLoad = true;
     this.userService.findSelectedUser(user).subscribe({
-      next: (response) => {
+      next: (response: User) => {
         this.user = response;
+        
         this.listOfDisplayData = this.user.permissions;
         this.userProfilePath();
         this.isLoad = false;
@@ -72,15 +75,34 @@ export class UserShowComponent implements OnInit {
     });
   }
 
+  openEditUserModal() {
+    let modal = this.modal.create({
+      nzTitle: 'Modifier les informations',
+      nzContent: UserEditComponent,
+      nzComponentParams: {
+        user: this.userService.clone(this.user),
+      },
+      nzWidth: '50%',
+      nzClosable: false,
+      nzMaskClosable: false,
+    });
+    modal.afterClose.subscribe((e: User | null) => {
+      if (e) {
+        this.findSelectedUser(e.id);
+      }
+    });
+  }
+
   userProfilePath() {
-    if (this.userService.getUser().avatar == null) {
+    if (this.user.avatar == null) {
       this.user.avatar = '/assets/img/avatar.png';
-    }
-    this.user.avatar = this.userService.host + 'storage' + this.user.avatar;
+    } else
+      this.user.avatar = this.userService.host + 'storage' + this.user.avatar;
   }
 
   deleteUser() {
     this.deleteUserLoad = true;
+    
     this.userService.delete(this.user).subscribe({
       next: (response) => {
         this.notification.success(
@@ -93,14 +115,9 @@ export class UserShowComponent implements OnInit {
         this.location.back();
       },
       error: (errors) => {
-        console.log(errors);
-        this.notification.error(
-          'Notification',
-          errors.error.message,
-          {
-            nzDuration: 5000,
-          }
-        );
+        this.notification.error('Notification', errors.error.message, {
+          nzDuration: 5000,
+        });
         this.deleteUserLoad = false;
       },
     });
@@ -115,6 +132,7 @@ export class UserShowComponent implements OnInit {
       },
       nzClosable: false,
       nzMaskClosable: false,
+      nzWidth: '60%',
     });
 
     m.afterClose.subscribe((data) => {
@@ -134,6 +152,5 @@ export class UserShowComponent implements OnInit {
         return item.name.indexOf(this.searchValue) !== -1;
       }
     );
-    console.log(this.listOfDisplayData);
   }
 }

@@ -34,7 +34,6 @@ export class ForgotPasswordComponent implements OnInit {
     this.isLoad = true;
     this.authService.forgotPassword(this.validateForm.value.email).subscribe({
       next: (response: any) => {
-        console.log(response);
 
         this.notification.createNotification(
           'success','Notification','Code de renitialisation envoyer avec succes'
@@ -49,7 +48,6 @@ export class ForgotPasswordComponent implements OnInit {
           'Erreur',
           'Verifier votre email ou connexion'
         );
-        console.log(errors);
       },
     });
   }
