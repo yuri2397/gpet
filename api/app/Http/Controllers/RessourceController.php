@@ -14,13 +14,13 @@ class RessourceController extends Controller
     }
 
     
-    public function create()
+    public function create(Request $request)
     {
         //
     }
 
    
-    public function store()
+    public function store(Request $request)
     {
         //
     }
@@ -38,7 +38,7 @@ class RessourceController extends Controller
     }
 
     
-    public function update($id)
+    public function update(Request $request,$id)
     {
         //
     }
