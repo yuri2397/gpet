@@ -1,3 +1,4 @@
+import { ProfessorComponent } from './modules/professor/professor.component';
 import { AnyPermissionComponent } from './shared/ui/any-permission/any-permission.component';
 import { NotFoundComponent } from './shared/ui/not-found/not-found.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
@@ -5,7 +6,7 @@ import { AdminGuard } from './shared/admin.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './admin/admin.component';
+import { AdminComponent } from './modules/admin/admin.component';
 import { AuthGuard } from './shared/auth.guard';
 import { LoginGuard } from './shared/login.guard';
 import { LocalDataGuard } from './shared/local-data.guard';
@@ -26,7 +27,7 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./admin/admin.module').then((m) => m.AdminModule),
+          import('./modules/admin/admin.module').then((m) => m.AdminModule),
       },
     ],
     canActivate: [AuthGuard, LocalDataGuard],
@@ -36,6 +37,18 @@ const routes: Routes = [
   },
   {
     path: "any-permission", component: AnyPermissionComponent
+  },
+  {
+    path: 'professor',
+    component: ProfessorComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./modules/professor/professor.module').then((m) => m.ProfessorModule),
+      },
+    ],
+    canActivate: [],
   },
   {
     path:"**",

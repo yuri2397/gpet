@@ -179,6 +179,7 @@ Route::prefix("role")->middleware(['auth:api'])->group(function () {
     Route::get('not-super', [RoleController::class, 'findRoleOnUserCreate']);
     Route::get("/search-permission/{data}", [RoleController::class, "searchPermission"]);
 });
+
 Route::prefix("chapitre")->middleware(['auth:api'])->group(function () {
     Route::get('', [ChapitreController::class, "index"]);
     Route::get('show/{id}', [ChapitreController::class, "show"]);
@@ -214,9 +215,6 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
     Route::get('search/{data}', [SyllabusController::class, "search"]);
 });
-
-
-
 
 Route::any('test', function (Request $request) {
     $user = User::find(1);
