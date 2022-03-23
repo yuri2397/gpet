@@ -20,9 +20,13 @@ use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BatimentController;
+use App\Http\Controllers\ChapitreController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\RessourceController;
+use App\Http\Controllers\SeanceController;
+use App\Http\Controllers\SyllabusController;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -104,6 +108,7 @@ Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::get('show/{id}', [EPTController::class, "show"]);
     Route::delete('destroy/{id}', [EPTController::class, "destroy"]);
 });
+
 Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('', [SalleController::class, "index"]);
     Route::post('create', [SalleController::class, "store"]);
@@ -173,6 +178,42 @@ Route::prefix("role")->middleware(['auth:api'])->group(function () {
     Route::put('/give-permission-to-user', [RoleController::class, "givePermissionToUser"]);
     Route::get('not-super', [RoleController::class, 'findRoleOnUserCreate']);
     Route::get("/search-permission/{data}", [RoleController::class, "searchPermission"]);
+});
+
+Route::prefix("chapitre")->middleware(['auth:api'])->group(function () {
+    Route::get('', [ChapitreController::class, "index"]);
+    Route::get('show/{id}', [ChapitreController::class, "show"]);
+    Route::post('create', [ChapitreController::class, "store"]);
+    Route::put('update/{id}', [ChapitreController::class, "update"]);
+    Route::delete('destroy/{id}', [ChapitreController::class, "destroy"]);
+    Route::get('search/{data}', [ChapitreController::class, "search"]);
+});
+
+Route::prefix("ressource")->middleware(['auth:api'])->group(function () {
+    Route::get('', [RessourceController::class, "index"]);
+    Route::get('show/{id}', [RessourceController::class, "show"]);
+    Route::post('create', [RessourceController::class, "store"]);
+    Route::put('update/{id}', [RessourceController::class, "update"]);
+    Route::delete('destroy/{id}', [RessourceController::class, "destroy"]);
+    Route::get('search/{data}', [RessourceController::class, "search"]);
+});
+
+Route::prefix("seance")->middleware(['auth:api'])->group(function () {
+    Route::get('', [SeanceController::class, "index"]);
+    Route::get('show/{id}', [SeanceController::class, "show"]);
+    Route::post('create', [SeanceController::class, "store"]);
+    Route::put('update/{id}', [SeanceController::class, "update"]);
+    Route::delete('destroy/{id}', [SeanceController::class, "destroy"]);
+    Route::get('search/{data}', [SeanceController::class, "search"]);
+});
+
+Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
+    Route::get('', [SyllabusController::class, "index"]);
+    Route::get('show/{id}', [SyllabusController::class, "show"]);
+    Route::post('create', [SyllabusController::class, "store"]);
+    Route::put('update/{id}', [SyllabusController::class, "update"]);
+    Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
+    Route::get('search/{data}', [SyllabusController::class, "search"]);
 });
 
 Route::any('test', function (Request $request) {

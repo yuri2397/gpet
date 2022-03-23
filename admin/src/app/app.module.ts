@@ -30,6 +30,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { IconsProviderModule } from './icons-provider.module';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 registerLocaleData(fr);
 
 @NgModule({
@@ -60,7 +61,8 @@ registerLocaleData(fr);
     NzTableModule,
     MatIconModule,
     NzDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    AngularEditorModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },

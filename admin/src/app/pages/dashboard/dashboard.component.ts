@@ -1,7 +1,7 @@
 import { DepartementService } from 'src/app/services/departement.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
-import { ChartOptions } from 'src/app/admin/admin.component';
+import { ChartOptions } from 'src/app/modules/admin/admin.component';
 import { color } from 'echarts';
 
 @Component({
