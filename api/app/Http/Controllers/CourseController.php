@@ -185,4 +185,13 @@ class CourseController extends Controller
             "message" => "Paiements effectué avec succès."
         ], 200);
     }
+
+    public function listCoursesProfesor(Request $request)
+    {
+        # code...
+        //pas encore ajouter sur la route api
+        CoursesHasProfessors::whereCourseId($request->course_id)
+        ->whereProfessorId($request->professor_id)->get();
+
+    }
 }

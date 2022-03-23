@@ -31,6 +31,11 @@ export const ROUTES: RouteInfo[] = [
     icon: 'space_dashboard',
   },
   {
+    path: 'profile',
+    title: 'Profile',
+    icon: 'person',
+  },
+  {
     path: 'courses',
     title: 'Mes cours',
     icon: 'checklist_rtl',
@@ -45,6 +50,24 @@ export const ROUTES: RouteInfo[] = [
     title: 'Comptabilité',
     icon: 'credit_score',
   },
+  {
+    path: 'pointing',
+    title: 'Pointage',
+    icon: 'schedule',
+  },
+
+  {
+    path: 'resources',
+    title: 'Ressource',
+    icon: 'description',
+  },
+
+  {
+    path: 'securite',
+    title: 'Securite',
+    icon: 'admin_panel_settings',
+  },
+
 ];
 @Component({
   selector: 'app-professor',
@@ -76,7 +99,7 @@ export class ProfessorComponent implements OnInit {
   selected(item: RouteInfo) {
     return this.router.url.indexOf(item.path) !== -1 ? true : false;
   }
-  
+
   routerLink(item: RouteInfo) {
     this.router.navigate(['/professor/' + item.path]);
   }

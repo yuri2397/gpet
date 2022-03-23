@@ -14,6 +14,7 @@ import { EdtShowComponent } from './pages/edt/edt-show/edt-show.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
+import { ProfesseurGuard } from './shared/guards/professeur.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent,canActivate: [LoginGuard]},
@@ -30,7 +31,7 @@ const routes: Routes = [
           import('./modules/admin/admin.module').then((m) => m.AdminModule),
       },
     ],
-    canActivate: [AuthGuard, LocalDataGuard],
+    canActivate: [ LocalDataGuard,AuthGuard,AdminGuard],
   },
   {
     path: 'edt/:departement/:classe', component: EdtShowComponent
@@ -48,7 +49,7 @@ const routes: Routes = [
           import('./modules/professor/professor.module').then((m) => m.ProfessorModule),
       },
     ],
-    canActivate: [],
+    canActivate: [ LocalDataGuard,AuthGuard,ProfesseurGuard],
   },
   {
     path:"**",

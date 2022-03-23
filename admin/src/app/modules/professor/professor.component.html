@@ -28,25 +28,7 @@
             </span>
                 </div>
                 <span class="bold">{{ depTitle! }}</span>
-                <div class="mx-3">
-                    <a [routerLink]="['profile']" routerLinkActive="router-link-active" style="text-decoration: none">
-                        <button mat-mini-fab color="primary" nzTrigger="click">
-                <mat-icon>account_circle</mat-icon>
-              </button>
-                    </a>
-                    <nz-dropdown-menu #menu="nzDropdownMenu">
-                        <ul nz-menu>
-                            <li nz-menu-item>
-                                <a [routerLink]="['profile']" routerLinkActive="router-link-active">
-                    Profile
-                  </a>
-                            </li>
-                            <li (click)="logout()" nz-menu-item>
-                                <a> Déconnexion </a>
-                            </li>
-                        </ul>
-                    </nz-dropdown-menu>
-                </div>
+
             </div>
         </nz-header>
         <nz-content>
