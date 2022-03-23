@@ -5,7 +5,9 @@ import { CourseService } from 'src/app/services/course.service';
 import { Location } from '@angular/common';
 import { NotificationService } from 'src/app/services/notification.service';
 import { EChartsOption } from 'echarts';
-
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Classe } from 'src/app/models/classe';
+import { SyllabusCreateComponent } from '../syllabus/syllabus-create/syllabus-create.component';
 @Component({
   selector: 'app-course-show',
   templateUrl: './course-show.component.html',
@@ -35,7 +37,8 @@ export class CourseShowComponent implements OnInit {
     private router: Router,
     private location: Location,
     private notification: NotificationService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private modalService: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -105,4 +108,25 @@ export class CourseShowComponent implements OnInit {
   }
 
   openEditModal() {}
+
+  openCreateModal() {
+    const modal = this.modalService.create({
+      nzTitle: 'Créer le syllabus',
+      nzContent: SyllabusCreateComponent,
+      // nzComponentParams: {
+      //   classe: this.classe,
+      // },
+      nzCentered: true,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzWidth: '70%',
+    });
+
+    // modal.afterClose.subscribe((data: Course | null) => {
+    //   if (data != null) {
+    //     this.courses = [...this.courses, data];
+    //   }
+    // });
+  }
+
 }
