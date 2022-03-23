@@ -333,4 +333,8 @@ export class ProfesseurShowComponent implements OnInit {
       },
     });
   }
+
+  isPayable(): boolean {
+    return this.professeur.professor_type.name === 'permanent' ? false : true;
+  }
 }
