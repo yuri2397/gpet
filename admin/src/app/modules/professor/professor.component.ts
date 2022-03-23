@@ -10,6 +10,7 @@ import {
   ApexDataLabels,
   ApexChart
 } from "ng-apexcharts";
+import { ProfUser } from 'src/app/models/prof-user';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -80,6 +81,7 @@ export class ProfessorComponent implements OnInit {
   isLoad = true;
   roles!: Role[];
   user!: User;
+  profuser!:ProfUser;
   menuItems!: RouteInfo[];
   title = 'UFR SET - GPET';
   depTitle!: string;
@@ -88,12 +90,38 @@ export class ProfessorComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter((menuItem) => menuItem);
+
     this.currentUser()
   }
 
   currentUser() {
-    this.isLoad = false;
+    //this.isLoad = false;
+    this.isLoad = true;
+    this.userService.currentUser().subscribe({
+      next: (response: User) => {
+        this.userService.setUser(response);
+        this.userService.setRoles(response.roles);
+        this.user = response;
+        this.roles = response.roles;
+        this.permissions = response.permissions;
+        this.menuItems = ROUTES.filter((menuItem) => menuItem);
+        this.userService.getProfesseur(this.user.id).subscribe({
+          next: (response: ProfUser) => {
+            this.profuser=response;
+            console.log(this.profuser);
+          },
+          error: (errors) => {
+
+          },
+        });
+
+        this.isLoad = false;
+      },
+      error: (errors) => {
+        this.isLoad = false;
+      },
+    });
+
   }
 
   selected(item: RouteInfo) {

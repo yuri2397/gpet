@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\SendNewUserMail;
+use App\Models\Professor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -67,7 +68,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function show($id)
     {
@@ -120,5 +121,13 @@ class UserController extends Controller
 
         }
 
+    }
+    public function showuserwithprof($id)
+    {
+        $user= User::with("roles")->find($id);
+        $prof=Professor::whereemail($user->email)->first();
+
+        return response()->json(["user"=>$user,"professor"=>$prof]
+            , 200);
     }
 }
