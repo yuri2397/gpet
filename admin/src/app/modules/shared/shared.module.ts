@@ -45,9 +45,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { SeanceCreateComponent } from '../../pages/course/seance/seance-create/seance-create.component';
 import { SeanceListComponent } from '../../pages/course/seance/seance-list/seance-list.component';
 import { SeanceEditComponent } from '../../pages/course/seance/seance-edit/seance-edit.component';
-import { SyllabusCreateComponent } from '../../pages/course/syllabus/syllabus-create/syllabus-create.component';
-import { SyllabusEditComponent } from '../../pages/course/syllabus/syllabus-edit/syllabus-edit.component';
-import { SyllabusListComponent } from '../../pages/course/syllabus/syllabus-list/syllabus-list.component';
 import { ChapitreCreateComponent } from '../../pages/course/chapitre/chapitre-create/chapitre-create.component';
 import { ChapitreListComponent } from '../../pages/course/chapitre/chapitre-list/chapitre-list.component';
 import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit/chapitre-edit.component';
@@ -59,9 +56,6 @@ import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit
     SeanceCreateComponent,
     SeanceListComponent,
     SeanceEditComponent,
-    SyllabusCreateComponent,
-    SyllabusEditComponent,
-    SyllabusListComponent,
     ChapitreCreateComponent,
     ChapitreListComponent,
     ChapitreEditComponent,
@@ -129,9 +123,6 @@ import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit
     SeanceCreateComponent,
     SeanceListComponent,
     SeanceEditComponent,
-    SyllabusCreateComponent,
-    SyllabusEditComponent,
-    SyllabusListComponent,
     ChapitreCreateComponent,
     ChapitreListComponent,
     ChapitreEditComponent,

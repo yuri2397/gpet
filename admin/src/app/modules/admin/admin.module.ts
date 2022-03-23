@@ -64,9 +64,11 @@ import { ProfileComponent } from '../../pages/profile/profile.component';
 import { PayementsPrintComponent } from '../../pages/professeur/payements-print/payements-print.component';
 import { PayementsPrintAllComponent } from '../../pages/professeur/payements-print-all/payements-print-all.component';
 import { UserEditComponent } from '../../pages/user/user-edit/user-edit.component';
-import { UeEditComponent } from '../../pages/ue/ue-edit/ue-edit.component';
-import { SyllabusCreateComponent } from '../../pages/syllabus/syllabus-create/syllabus-create.component';
 import { SyllabusEditComponent } from '../../pages/syllabus/syllabus-edit/syllabus-edit.component';
+import { SyllabusCreateComponent } from '../../pages/syllabus/syllabus-create/syllabus-create.component';
+import { UeEditComponent } from '../../pages/ue/ue-edit/ue-edit.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -75,6 +77,7 @@ registerLocaleData(localeFr, fr);
       echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
     }),
     SharedModule,
+    AngularEditorModule
   ],
   declarations: [
     AdminComponent,
@@ -130,8 +133,8 @@ registerLocaleData(localeFr, fr);
     UserEditComponent,
     UeEditComponent,
     UserShowComponent,
-    SyllabusCreateComponent,
-    SyllabusEditComponent
+    SyllabusEditComponent,
+    SyllabusCreateComponent
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

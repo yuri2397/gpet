@@ -7,7 +7,8 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { EChartsOption } from 'echarts';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Classe } from 'src/app/models/classe';
-import { SyllabusCreateComponent } from '../syllabus/syllabus-create/syllabus-create.component';
+import { SyllabusCreateComponent } from '../../syllabus/syllabus-create/syllabus-create.component';
+
 @Component({
   selector: 'app-course-show',
   templateUrl: './course-show.component.html',
