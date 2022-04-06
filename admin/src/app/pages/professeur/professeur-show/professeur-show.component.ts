@@ -44,7 +44,8 @@ export class ProfesseurShowComponent implements OnInit {
     private courseService: CourseService,
     private notification: NotificationService,
     private modalService: NzModalService,
-    private profService: ProfessorService
+    private profService: ProfessorService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -336,5 +337,11 @@ export class ProfesseurShowComponent implements OnInit {
 
   isPayable(): boolean {
     return this.professeur.professor_type.name === 'permanent' ? false : true;
+  }
+
+  openPayementPage() {
+    this.router.navigate([
+      '/admin/professeurs/payements/' + this.professeur.registration_number,
+    ]);
   }
 }

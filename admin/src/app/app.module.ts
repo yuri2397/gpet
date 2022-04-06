@@ -30,6 +30,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { IconsProviderModule } from './icons-provider.module';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
+import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(fr);
 
@@ -51,17 +52,12 @@ registerLocaleData(fr);
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NzCardModule,
-    NzInputModule,
-    NzFormModule,
-    NzButtonModule,
-    NzNotificationModule,
-    NzMessageModule,
-    NzResultModule,
-    NzTableModule,
-    MatIconModule,
-    NzDividerModule,
-    MatButtonModule,
+   
+
+    /**
+     * SHARED MODULE
+     */
+    SharedModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },

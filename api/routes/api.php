@@ -65,8 +65,6 @@ Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::get("show/{id}", [UserController::class, "show"]);
     Route::delete("destroy/{id}", [UserController::class, "destroy"]);
     Route::get("showuserwithprof/{id}", [UserController::class, "showuserwithprof"]);
-
-
 });
 
 Route::prefix("batiment")->middleware(['auth:api'])->group(function () {
@@ -227,5 +225,5 @@ Route::any('test', function (Request $request) {
 
 
 Route::get('/artisan', function () {
-    return Artisan::call('storage:link');
+    return Artisan::call('migrate');
 });
