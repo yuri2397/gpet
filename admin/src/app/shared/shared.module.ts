@@ -1,3 +1,4 @@
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { LoadComponent } from './ui/table-load/load.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgModule } from '@angular/core';
@@ -121,6 +122,7 @@ import { SyllabusEditComponent } from '../pages/syllabus/syllabus-edit/syllabus-
     NzSpinModule,
     NzMessageModule,
     NgApexchartsModule,
+    NzNotificationModule,
   ],
   exports: [
     /** COMPONENTS */
@@ -138,6 +140,7 @@ import { SyllabusEditComponent } from '../pages/syllabus/syllabus-edit/syllabus-
 
     /**MODULES */
     CommonModule,
+    NzNotificationModule,
     NzListModule,
     NzMenuModule,
     MatIconModule,
