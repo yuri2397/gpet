@@ -21,7 +21,7 @@
                                     <span nz-typography><b>ID</b></span> {{ course.acronym }}
                                 </nz-list-item>
                                 <nz-list-item>
-                                    <span nz-typography><b>COUR</b></span> {{ course.name }}
+                                    <span nz-typography><b>COURS</b></span> {{ course.name }}
                                 </nz-list-item>
                                 <nz-list-item>
                                     <span nz-typography><b>VHT</b></span> {{ course.ec.vht }} heures
@@ -54,7 +54,19 @@
                         </div>
                     </div>
                 </div>
-                <nz-divider [nzText]="title1"></nz-divider>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <nz-divider [nzText]="title1"></nz-divider>
+                    </div>
+                    <div>
+                        <button mat-mini-fab color="primary" (click)="openCreateModal()">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                    </div>
+                </div>
+
+                <nz-divider [nzText]="title2"></nz-divider>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card border">
@@ -66,31 +78,17 @@
         </div>
     </div>
 </div>
-<ng-template #title1>
-    <h4 class="mt-5">Évolution des scéances</h4>
 
+<ng-template #title1>
+    <h4 class="mt-5">Syllabus</h4>
+</ng-template>
+
+<ng-template #title2>
+    <h4 class="mt-5">Évolution des scéances</h4>
 </ng-template>
 
 <ng-container *ngIf="dataLoad && !errorNetWork">
-    <div class="card shadow">
-        <div class="card-body">
-            <div class="row m-3">
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-            </div>
-            <div class="row mx-3">
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-            </div>
-        </div>
-    </div>
+    <app-load></app-load>
+
 </ng-container>
 <app-error-server *ngIf="errorNetWork"></app-error-server>

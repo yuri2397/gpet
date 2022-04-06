@@ -1,4 +1,3 @@
-import { SharedModule } from './../shared/shared.module';
 import { AddPermissionToUserComponent } from '../../pages/roles/add-permission-to-user/add-permission-to-user.component';
 import { RoleCreateComponent } from '../../pages/roles/role-create/role-create.component';
 import { RoleListComponent } from '../../pages/roles/role-list/role-list.component';
@@ -64,7 +63,11 @@ import { ProfileComponent } from '../../pages/profile/profile.component';
 import { PayementsPrintComponent } from '../../pages/professeur/payements-print/payements-print.component';
 import { PayementsPrintAllComponent } from '../../pages/professeur/payements-print-all/payements-print-all.component';
 import { UserEditComponent } from '../../pages/user/user-edit/user-edit.component';
+import { SyllabusCreateComponent } from '../../pages/syllabus/syllabus-create/syllabus-create.component';
 import { UeEditComponent } from '../../pages/ue/ue-edit/ue-edit.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 registerLocaleData(localeFr, fr);
 @NgModule({
   imports: [
@@ -72,6 +75,7 @@ registerLocaleData(localeFr, fr);
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
     }),
+    AngularEditorModule,
     SharedModule,
   ],
   declarations: [
@@ -127,7 +131,7 @@ registerLocaleData(localeFr, fr);
     PayementsPrintAllComponent,
     UserEditComponent,
     UeEditComponent,
-    UserShowComponent
+    UserShowComponent,
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
   exports: [AdminComponent],

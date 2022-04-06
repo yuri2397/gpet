@@ -1,4 +1,3 @@
-import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -9,6 +8,10 @@ import { CalendarComponent } from '../../pages/professeur/calendar/calendar.comp
 import { ComptabityComponent } from '../../pages/professeur/comptabity/comptabity.component';
 import { CourseListComponent } from '../../pages/professeur/course/course-list/course-list.component';
 import { CourseShowComponent } from '../../pages/professeur/course/course-show/course-show.component';
+import { PointingComponent } from '../../pages/professeur/pointing/pointing.component';
+import { ResourcesComponent } from '../../pages/professeur/resources/resources.component';
+import { SecuriteComponent } from '../../pages/professeur/securite/securite.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -19,6 +22,9 @@ import { CourseShowComponent } from '../../pages/professeur/course/course-show/c
     ComptabityComponent,
     CourseListComponent,
     CourseShowComponent,
+    PointingComponent,
+    ResourcesComponent,
+    SecuriteComponent,
   ],
   imports: [
     ProfessorRoutingModule,

@@ -140,7 +140,7 @@ export class CourseListComponent implements OnInit {
 
   openCreateModal() {
     const modal = this.modalService.create({
-      nzTitle: 'Ajouter un cour',
+      nzTitle: 'Ajouter un cours',
       nzContent: CourseCreateComponent,
       nzComponentParams: {
         classe: this.classe,

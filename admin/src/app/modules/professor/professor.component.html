@@ -28,25 +28,7 @@
             </span>
                 </div>
                 <span class="bold">{{ depTitle! }}</span>
-                <div class="mx-3">
-                    <a [routerLink]="['profile']" routerLinkActive="router-link-active" style="text-decoration: none">
-                        <button mat-mini-fab color="primary" nzTrigger="click">
-                <mat-icon>account_circle</mat-icon>
-              </button>
-                    </a>
-                    <nz-dropdown-menu #menu="nzDropdownMenu">
-                        <ul nz-menu>
-                            <li nz-menu-item>
-                                <a [routerLink]="['profile']" routerLinkActive="router-link-active">
-                    Profile
-                  </a>
-                            </li>
-                            <li (click)="logout()" nz-menu-item>
-                                <a> Déconnexion </a>
-                            </li>
-                        </ul>
-                    </nz-dropdown-menu>
-                </div>
+
             </div>
         </nz-header>
         <nz-content>
@@ -57,18 +39,5 @@
     </nz-layout>
 </nz-layout>
 <ng-template #loadingTemplate>
-    <div class="center">
-        <div class="loader">
-            <svg viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
-          <circle class="load one" cx="60" cy="60" r="40" />
-          <circle class="load two" cx="60" cy="60" r="40" />
-          <circle class="load three" cx="60" cy="60" r="40" />
-          <g>
-            <circle class="point one" cx="45" cy="70" r="5" />
-            <circle class="point two" cx="60" cy="70" r="5" />
-            <circle class="point three" cx="75" cy="70" r="5" />
-          </g>
-        </svg>
-        </div>
-    </div>
+    <app-load></app-load>
 </ng-template>

@@ -1,3 +1,5 @@
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { LoadComponent } from './ui/table-load/load.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -42,15 +44,14 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { SeanceCreateComponent } from '../../pages/course/seance/seance-create/seance-create.component';
-import { SeanceListComponent } from '../../pages/course/seance/seance-list/seance-list.component';
-import { SeanceEditComponent } from '../../pages/course/seance/seance-edit/seance-edit.component';
-import { SyllabusCreateComponent } from '../../pages/course/syllabus/syllabus-create/syllabus-create.component';
-import { SyllabusEditComponent } from '../../pages/course/syllabus/syllabus-edit/syllabus-edit.component';
-import { SyllabusListComponent } from '../../pages/course/syllabus/syllabus-list/syllabus-list.component';
-import { ChapitreCreateComponent } from '../../pages/course/chapitre/chapitre-create/chapitre-create.component';
-import { ChapitreListComponent } from '../../pages/course/chapitre/chapitre-list/chapitre-list.component';
-import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit/chapitre-edit.component';
+import { ChapitreCreateComponent } from '../pages/course/chapitre/chapitre-create/chapitre-create.component';
+import { ChapitreEditComponent } from '../pages/course/chapitre/chapitre-edit/chapitre-edit.component';
+import { ChapitreListComponent } from '../pages/course/chapitre/chapitre-list/chapitre-list.component';
+import { SeanceCreateComponent } from '../pages/course/seance/seance-create/seance-create.component';
+import { SeanceEditComponent } from '../pages/course/seance/seance-edit/seance-edit.component';
+import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-list.component';
+import { SyllabusCreateComponent } from '../pages/syllabus/syllabus-create/syllabus-create.component';
+import { SyllabusEditComponent } from '../pages/syllabus/syllabus-edit/syllabus-edit.component';
 
 @NgModule({
   declarations: [
@@ -61,9 +62,9 @@ import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit
     SeanceEditComponent,
     SyllabusCreateComponent,
     SyllabusEditComponent,
-    SyllabusListComponent,
     ChapitreCreateComponent,
     ChapitreListComponent,
+    LoadComponent,
     ChapitreEditComponent,
   ],
   imports: [
@@ -121,6 +122,7 @@ import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit
     NzSpinModule,
     NzMessageModule,
     NgApexchartsModule,
+    NzNotificationModule,
   ],
   exports: [
     /** COMPONENTS */
@@ -131,13 +133,14 @@ import { ChapitreEditComponent } from '../../pages/course/chapitre/chapitre-edit
     SeanceEditComponent,
     SyllabusCreateComponent,
     SyllabusEditComponent,
-    SyllabusListComponent,
     ChapitreCreateComponent,
     ChapitreListComponent,
     ChapitreEditComponent,
+    LoadComponent,
 
     /**MODULES */
     CommonModule,
+    NzNotificationModule,
     NzListModule,
     NzMenuModule,
     MatIconModule,

@@ -1,65 +1,45 @@
 <div class="container-fluid">
-  <div class="card shadow">
-    <div class="card-header p-3 bg-color">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h5 class="text-white">Liste des batiments</h5>
-        </div>
-        <div *ngIf="can('creer batiment')">
-          <button (click)="openCreateModal()" mat-mini-fab color="default">
+    <div class="card shadow-sm border">
+        <div class="card-header p-3 bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white">Liste des batiments</h5>
+                </div>
+                <div *ngIf="can('creer batiment')">
+                    <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <nz-table
-        [nzLoading]="isLoad"
-        nzShowPagination
-        [nzPageSize]="4"
-        #basicTable
-        [nzData]="batiments"
-        [nzBordered]="true"
-      >
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td>{{ data.name }}</td>
-            <td class="p-0">
-              <div class="d-flex justify-content-center">
-                <div
-                  class="mx-3"
-                 *ngIf="can('modifier salle')">
-                  <button
-                  nz-button
-                  nzType="primary"
-                  nzShape="circle"
-                    (click)="openEditModal(data)"
-                  >
+        <div class="card-body">
+            <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="batiments" [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data">
+                        <td>{{ data.name }}</td>
+                        <td class="p-0">
+                            <div class="d-flex justify-content-center">
+                                <div class="mx-3" *ngIf="can('modifier salle')">
+                                    <button nz-button nzType="primary" nzShape="circle" (click)="openEditModal(data)">
                     <i nz-icon nzType="edit"></i>
                   </button>
-                </div>
-                <div class="mx-3" *ngIf="can('supprimer salle')">
-                  <button
-                  nzDanger
-                  nz-button
-                  nzType="primary"
-                  nzShape="circle"
-                    (click)="openDeleteModal(data)"
-                  >
+                                </div>
+                                <div class="mx-3" *ngIf="can('supprimer salle')">
+                                    <button nzDanger nz-button nzType="primary" nzShape="circle" (click)="openDeleteModal(data)">
                     <i nz-icon nzType="delete"></i>
                   </button>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </div>
-  </div>
 </div>
