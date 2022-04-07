@@ -14,10 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            GenDays::class,
-            GenDep::class,
-            GenBat::class,
-            GenService::class,
+            GenRoles::class
         ]);
     }
 }

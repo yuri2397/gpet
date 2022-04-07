@@ -34,9 +34,6 @@ const routes: Routes = [
     canActivate: [ LocalDataGuard,AuthGuard,AdminGuard],
   },
   {
-    path: 'edt/:departement/:classe', component: EdtShowComponent
-  },
-  {
     path: "any-permission", component: AnyPermissionComponent
   },
   {

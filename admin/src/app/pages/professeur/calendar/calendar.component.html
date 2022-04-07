@@ -1,1 +1,21 @@
-<p>calendar works!</p>
+<div class="container-fluid">
+    <div class="card shadow-sm border">
+        <h4 class="color-geekblue bold m-3">Emplois du temps</h4>
+        <div>
+            <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="[]">
+                <thead>
+                    <tr>
+                        <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">
+                            {{ item.name.toUpperCase() }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <td *ngFor="let ept of presentionEPT.data">
+
+                    </td>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</div>
