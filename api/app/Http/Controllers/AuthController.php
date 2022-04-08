@@ -28,7 +28,8 @@ class AuthController extends Controller
                 'token' => $token,
                 'user' => $user,
                 'permissions' => $user->permissions,
-                'departement' => $user->departement
+                'departement' => $user->departement, 
+                'roles' => $user->roles
             ], 200);
         } else {
             $response = ["message" => "Email ou mot de password incorrect."];
@@ -39,6 +40,9 @@ class AuthController extends Controller
     public function user()
     {
         $user = User::with("roles", "roles.permissions")->find(auth()->id());
+        if($user->hasRole("professor")){
+            $user->professor;
+        }
         return $user;
     }
     public function updatePassword(Request $request)
