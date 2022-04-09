@@ -39,9 +39,9 @@ class AuthController extends Controller
 
     public function user()
     {
-        $user = User::with("roles", "roles.permissions")->find(auth()->id());
-        if($user->hasRole("professor")){
-            $user->professor;
+        $user = User::with("roles", "roles.permissions", "professor")->find(auth()->id());
+        if(!$user->hasRole("professeur")){
+            unset($user->professor);
         }
         return $user;
     }

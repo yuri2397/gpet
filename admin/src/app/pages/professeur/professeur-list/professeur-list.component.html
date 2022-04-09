@@ -1,5 +1,4 @@
 <div class="container-fluid">
-<<<<<<< HEAD
     <div class="card shadow-sm border">
         <div class="card-header p-3 bg-color">
             <div class="d-flex justify-content-between align-items-center">
@@ -8,72 +7,8 @@
                 </div>
                 <div *ngIf="can('creer professeur') && !setView">
                     <button (click)="openCreateModal()" mat-mini-fab color="default">
-                        <mat-icon>add</mat-icon>
-                    </button>
-=======
-  <div class="card shadow">
-    <div class="card-header p-3 bg-color">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h5 class="text-white">Liste des professeurs</h5>
-        </div>
-        <div *ngIf="can('creer professeur') && !setView">
-          <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
-        </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <nz-table
-        nzTableLayout="fixed"
-        [nzLoading]="isLoad"
-        nzShowPagination
-        [nzPageSize]="10"
-        #basicTable
-        [nzData]="listOfDisplayData"
-        [nzBordered]="true"
-      >
-        <thead>
-          <tr>
-            <th nzCustomFilter>
-              Matricule
-              <nz-filter-trigger
-                [(nzVisible)]="visible"
-                [nzActive]="searchValue.length > 0"
-                [nzDropdownMenu]="menu"
-              >
-                <i nz-icon nzType="search"></i>
-              </nz-filter-trigger>
-            </th>
-            <th>Prénoms</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th *ngIf="!setView" class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td>{{ data.registration_number }}</td>
-            <td>{{ data.first_name }}</td>
-            <td>{{ data.last_name }}</td>
-            <td>{{ data.email }}</td>
-            <td>{{ data.status }}</td>
-            <td *ngIf="!setView"  class="p-0">
-              <div class="d-flex justify-content-center">
-                <div
-                  class="mx-3"
-                  *ngIf="can('voir cour')">
-                  <button
-                    nz-button
-                    nzShape="circle"
-                    class="color-orange"
-                    (click)="showProfessor(data)"
-                  >
-                    <i class="color" nz-icon nzType="eye"></i>
-                  </button>
->>>>>>> 6750d05471a3f43f07131f67ab32fd6108b88f8a
                 </div>
             </div>
         </div>
@@ -105,8 +40,8 @@
                             <div class="d-flex justify-content-center">
                                 <div class="mx-3" *ngIf="can('voir cour')">
                                     <button nz-button nzShape="circle" class="color-orange" (click)="showProfessor(data)">
-                                        <i class="color" nz-icon nzType="eye"></i>
-                                    </button>
+                    <i class="color" nz-icon nzType="eye"></i>
+                  </button>
                                 </div>
 
                             </div>

@@ -1,3 +1,4 @@
+import { Professor } from 'src/app/models/professor';
 import { Departement } from './departement';
 import { Permission } from './permission';
 import { Role } from './role';
@@ -12,4 +13,5 @@ export class User {
   roles!: Role[];
   permissions!: Permission[];
   departement!: Departement;
+  professor?:   Professor;
 }
