@@ -104,7 +104,7 @@ class ProfesseurController extends Controller
             "], 503);
         }
 
-       
+
 
         return response()->json($this->show($prof->id), 200);
     }
@@ -200,7 +200,7 @@ class ProfesseurController extends Controller
                 ->orWhere('email', 'like', '%' . $data . '%')
                 ->orWhere('phone_number', 'like', '%' . $data . '%')
                 ->orderBy('created_at', 'desc')->get();
-        }
+       }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 

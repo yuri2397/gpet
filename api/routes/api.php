@@ -48,7 +48,7 @@ Route::post('selectable', function (Request $request) {
     }
     return $res;
 });
-
+Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
@@ -119,8 +119,9 @@ Route::prefix("salle")->middleware(['auth:api'])->group(function () {
 });
 
 Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
-    Route::get('', [ProfesseurController::class, "index"]);
     Route::get('search/{data}', [ProfesseurController::class, "search"]);
+    Route::get('', [ProfesseurController::class, "index"]);
+    //Route::get('search/{data}', [ProfesseurController::class, "search"]);
     Route::get('show/{id}', [ProfesseurController::class, "show"]);
     Route::post('create', [ProfesseurController::class, "store"]);
     Route::put('update/{id}', [ProfesseurController::class, "update"]);
