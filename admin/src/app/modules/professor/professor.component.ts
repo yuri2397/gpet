@@ -1,3 +1,4 @@
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
@@ -87,15 +88,13 @@ export class ProfessorComponent implements OnInit {
   depTitle!: string;
   permissions!: Permission[];
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private notification: NzNotificationService) {}
 
   ngOnInit() {
-
     this.currentUser()
   }
 
   currentUser() {
-    //this.isLoad = false;
     this.isLoad = true;
     this.userService.currentUser().subscribe({
       next: (response: User) => {
@@ -105,19 +104,10 @@ export class ProfessorComponent implements OnInit {
         this.roles = response.roles;
         this.permissions = response.permissions;
         this.menuItems = ROUTES.filter((menuItem) => menuItem);
-        this.userService.getProfesseur(this.user.id).subscribe({
-          next: (response: ProfUser) => {
-            this.profuser=response;
-            console.log(this.profuser);
-          },
-          error: (errors) => {
-
-          },
-        });
-
         this.isLoad = false;
       },
       error: (errors) => {
+        this.notification.error("Notification", errors.error)
         this.isLoad = false;
       },
     });
@@ -135,9 +125,4 @@ export class ProfessorComponent implements OnInit {
   logout() {
     this.userService.logout();
   }
-
-  public profile(){
-    this.router.navigate(['profile']);
-  }
-
 }

@@ -51,4 +51,7 @@ class User extends Authenticatable
         return $this->belongsTo(Departement::class);
     }
 
+    public function professor(){
+        return $this->belongsTo(Professor::class, 'model');
+    }
 }

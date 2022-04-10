@@ -11,16 +11,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendNewUserMail;
-
-
+use App\Traits\Utils;
 
 
 class ProfesseurController extends Controller
 {
-
+    use Utils;
     public function __construct()
     {
         $this->middleware("permission:voir professeur")->only(["index", "show"]);
+        $this->middleware("role:professeur")->only(["profile"]);
         $this->middleware("permission:modifier professeur")->only(["update"]);
         $this->middleware("permission:creer professeur")->only(["store"]);
         $this->middleware("permission:supprimer professeur")->only(["destroy"]);
@@ -90,13 +90,14 @@ class ProfesseurController extends Controller
         $user->email = $request->email;
         $user->departement_id = $request->departement_id;
         $user->password = bcrypt($password);
+        $user->model_type = "Professor";
+        $user->model = $prof->id;
 
-
-         //SEND MAIL
-         try {
+        try {
             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
+            $user->givePermissionTo(['voir professeur', 'modifier professeur']);
             return response()->json(['message' => "Professeur crée avec succès."], 200);
         }
         catch (\Throwable $th) {
@@ -108,7 +109,6 @@ class ProfesseurController extends Controller
 
         return response()->json($this->show($prof->id), 200);
     }
-
 
     public function show($id)
     {
@@ -254,5 +254,9 @@ class ProfesseurController extends Controller
         }
 
         return $prof;
+    }
+
+    public function profile(){
+        return response()->json($this->currentUser()->professor);
     }
 }
