@@ -16,7 +16,8 @@
             <div class="my-2">
                 <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
             </div>
-            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
+            <nz-table class="scroll-table" [nzLoading]="isLoad"               nzShowSizeChanger
+            [nzPageSize]="4" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
                 <thead>
                     <tr>
                         <th>Avatar</th>

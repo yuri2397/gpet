@@ -54,10 +54,8 @@ Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
     Route::post("/update-password", [AuthController::class, "updatePassword"]);
-
     Route::post("/forgot-password", [AuthController::class, "forgotPassword"])->withoutMiddleware("auth:api");
     Route::post("/reset-password", [AuthController::class, "resetPassword"])->withoutMiddleware("auth:api");
-
     Route::get("/", [UserController::class, "index"]);
     Route::post("create", [UserController::class, "store"]);
     Route::put("update/{id}", [UserController::class, "update"]);

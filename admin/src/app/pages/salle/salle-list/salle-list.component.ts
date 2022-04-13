@@ -18,7 +18,6 @@ import { SalleEditComponent } from '../salle-edit/salle-edit.component';
 export class SalleListComponent implements OnInit {
   @Input() salles!:Salle[];
   isLoad = true;
- // salles!: Salle[];
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedSalle!: Salle;
@@ -139,11 +138,10 @@ export class SalleListComponent implements OnInit {
     return test;
   }
 
-
   search(): void{
     this.visible = false;
     this.listOfDisplayData = this.salles.filter((item : Salle) => {
-      this.searchValue =this.searchValue.toLowerCase();
+      this.searchValue = this.searchValue.toLowerCase();
       return (
         item.name.toLowerCase().indexOf(this.searchValue) !== -1 ||
         item.number.toLocaleString().indexOf(this.searchValue)!== -1

@@ -13,7 +13,9 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="courses" [nzBordered]="true">
+            <nz-table class="scroll-table" [nzLoading]="isLoad"
+            nzShowSizeChanger
+            [nzPageSize]="4" #basicTable [nzData]="courses" [nzBordered]="true">
                 <thead>
                     <tr>
                         <th class="text-center">Code</th>

@@ -18,8 +18,8 @@
       </div>
       <nz-table nzTableLayout="fixed"
         [nzLoading]="isLoad"
-        nzShowPagination
-        [nzPageSize]="4"
+        nzShowSizeChanger
+        [nzPageSize]="5"
         #basicTable
         [nzData]="listOfDisplayData"
         [nzBordered]="true"
@@ -66,8 +66,7 @@
                     nz-button
                     nzType="primary"
                     nzShape="circle"
-                    (click)="openDeleteModal(data)"
-                  >
+                    (click)="openDeleteModal(data)">
                     <i nz-icon nzType="delete"></i>
                   </button>
                 </div>
