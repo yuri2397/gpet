@@ -68,6 +68,7 @@ export class SyllabusCreateComponent implements OnInit {
           'Notification',
           'Syllabus ajouté avec succès.'
         );
+        console.log(response);
         this.destroyModal();
       },
       error: (errors) => {
@@ -75,6 +76,7 @@ export class SyllabusCreateComponent implements OnInit {
         if (errors.status != 403)
           this.notification.error('Notification', errors.error.message);
         this.destroyModal();
+        console.log(errors);
       },
     });
   }

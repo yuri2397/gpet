@@ -124,7 +124,8 @@ export class CourseShowComponent implements OnInit {
       nzCentered: true,
       nzMaskClosable: false,
       nzClosable: false,
-      nzWidth: '70%',
+      nzWidth: '80%',
+
     });
 
     modal.afterClose.subscribe((data: Syllabus | null) => {
@@ -132,6 +133,7 @@ export class CourseShowComponent implements OnInit {
         [this.syllabusService, data];
       }
     });
+    // this.router.navigate(['syllabus/create']);
   }
 
 }
