@@ -14,6 +14,18 @@ class GenRoles extends Seeder
      */
     public function run()
     {
+        $roles = [
+            "admin",
+            "chef de département",
+            "super admin",
+            "professeur",
+        ];
 
+        foreach($roles as $r){
+            $role = new Role;
+            $role->name = $r;
+            $role->guard_name = "api";
+            $role->save();
+        }
     }
 }

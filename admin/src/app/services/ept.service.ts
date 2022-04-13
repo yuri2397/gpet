@@ -82,4 +82,14 @@ export class EptService extends BaseHttp {
       }
     );
   }
+
+  getEDTByCurrentProfessor() {
+    return this.http.get<EptRow[]>(
+      this.endPointWithSlash + 'ept_by_current_professor',
+      {
+        headers: this.guestHeaders,
+        observe: 'body',
+      }
+    );
+  }
 }

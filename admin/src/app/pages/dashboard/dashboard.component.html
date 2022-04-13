@@ -1,5 +1,5 @@
 <ng-container *ngIf="!isLoad; else elseTemplate">
-    <div class="card card-body raduis-sm shadow">
+    <div class="container-fluid ">
         <h4 class="color-geekblue bold">Dashboard</h4>
         <br>
         <div class="row">
@@ -79,10 +79,8 @@
                 </div>
             </div>
         </div>
-        <br>
         <div class="row">
             <div class="col">
-                <br>
                 <div class="card card-body border raduis-sm shadow-sm">
                     <div *ngIf="isLoadChart" id="chart">
                         <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!" [colors]="chartOptions.colors!"></apx-chart>
@@ -95,9 +93,5 @@
     <br><br><br>
 </ng-container>
 <ng-template #elseTemplate>
-    <div class="card card-body shadow">
-        <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
-        <br>
-        <nz-skeleton [nzActive]="true"></nz-skeleton>
-    </div>
+    <app-load></app-load>
 </ng-template>

@@ -1,4 +1,3 @@
-import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -12,6 +11,7 @@ import { CourseShowComponent } from '../../pages/professeur/course/course-show/c
 import { PointingComponent } from '../../pages/professeur/pointing/pointing.component';
 import { ResourcesComponent } from '../../pages/professeur/resources/resources.component';
 import { SecuriteComponent } from '../../pages/professeur/securite/securite.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({

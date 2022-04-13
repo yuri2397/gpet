@@ -1,60 +1,67 @@
-<div class="card shadow">
-    <div class="card-header p-3 bg-color">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="text-white">Liste des classes</h5>
-            </div>
-            <div *ngIf="can('creer classe') && !setView">
-                <button mat-mini-fab color="default" (click)="openCreateModal()">
-          <mat-icon>add</mat-icon>
-        </button>
+<div class="container-fluid">
+    <div class="card  shadow-sm border">
+        <div class="card-header bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white">Liste des classes</h5>
+                </div>
+                <div *ngIf="can('creer classe') && !setView">
+                    <button mat-mini-fab color="default" (click)="openCreateModal()">
+              <mat-icon>add</mat-icon>
+            </button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-body">
-        <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="classes" [nzBordered]="true">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th class="text-center">Nombre d'étudiants</th>
-                    <th class="text-center">Nombre de cours</th>
-                    <th class="text-center" *ngIf="classeService.isSuperAdmin()">
-                        Département
-                    </th>
-                    <th class="text-center" *ngIf="!setView">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of basicTable.data">
-                    <td>{{ data.name }}</td>
-                    <td class="text-center">{{ data.nb_students }}</td>
-                    <td class="text-center">{{ data.courses.length }}</td>
-                    <td *ngIf="classeService.isSuperAdmin()">
-                        {{ data.departement.name }}
-                    </td>
-                    <td class="p-0" *ngIf="!setView">
-                        <div class="d-flex justify-content-center">
-                            <div *ngIf="can('voir salle')">
-                                <a [routerLink]="['show/' + data.id]">
-                                    <button nz-button nzShape="circle" class="color-orange">
-                    <i class="color" nz-icon nzType="eye"></i>
-                  </button>
-                                </a>
+        <div class="card-body">
+            <nz-table class="scroll-table" [nzLoading]="isLoad"
+            nzShowSizeChanger
+            [nzPageSize]="4"
+            #basicTable
+            [nzData]="classes"
+            [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th class="text-center">Nombre d'étudiants</th>
+                        <th class="text-center">Nombre de cours</th>
+                        <th class="text-center" *ngIf="classeService.isSuperAdmin()">
+                            Département
+                        </th>
+                        <th class="text-center" *ngIf="!setView">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data">
+                        <td>{{ data.name }}</td>
+                        <td class="text-center">{{ data.nb_students }}</td>
+                        <td class="text-center">{{ data.courses.length }}</td>
+                        <td *ngIf="classeService.isSuperAdmin()">
+                            {{ data.departement.name }}
+                        </td>
+                        <td class="p-0" *ngIf="!setView">
+                            <div class="d-flex justify-content-center">
+                                <div *ngIf="can('voir salle')">
+                                    <a [routerLink]="['show/' + data.id]">
+                                        <button nz-button nzShape="circle" class="color-orange">
+                        <i class="color" nz-icon nzType="eye"></i>
+                      </button>
+                                    </a>
+                                </div>
+                                <div class="mx-3" *ngIf="can('modifier classe')">
+                                    <button nz-button nzType="primary" nzShape="circle" (click)="openEditModal(data)">
+                    <i nz-icon nzType="edit"></i>
+                    </button>
+                                </div>
+                                <div *ngIf="can('supprimer classe')">
+                                    <button nzDanger nz-button nzType="primary" nzShape="circle" (click)="openDeleteModal(data)">
+                    <i nz-icon nzType="delete"></i>
+                    </button>
+                                </div>
                             </div>
-                            <div class="mx-3" *ngIf="can('modifier classe')">
-                                <button nz-button nzType="primary" nzShape="circle" (click)="openEditModal(data)">
-                <i nz-icon nzType="edit"></i>
-                </button>
-                            </div>
-                            <div *ngIf="can('supprimer classe')">
-                                <button nzDanger nz-button nzType="primary" nzShape="circle" (click)="openDeleteModal(data)">
-                <i nz-icon nzType="delete"></i>
-                </button>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </nz-table>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </div>
 </div>

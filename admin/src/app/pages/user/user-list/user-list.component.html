@@ -1,72 +1,55 @@
 <div class="container-fluid">
-  <div class="card shadow">
-    <div class="card-header p-3 bg-color">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h5 class="text-white">Liste des utilisateurs</h5>
-        </div>
-        <div *ngIf="can('creer admin')">
-          <button (click)="openCreateModal()" mat-mini-fab color="default">
+    <div class="card shadow">
+        <div class="card-header p-3 bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white">Liste des utilisateurs</h5>
+                </div>
+                <div *ngIf="can('creer admin')">
+                    <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <nz-table
-        class="scroll-table"
-        [nzLoading]="isLoad"
-        nzShowPagination
-        [nzPageSize]="4"
-        #basicTable
-        [nzData]="users"
-        [nzBordered]="true"
-      >
-        <thead>
-          <tr>
-            <th>Avatar</th>
-            <th>Prénoms</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td>AVATAR</td>
-            <td>{{ data.first_name }}</td>
-            <td>{{ data.last_name }}</td>
-            <td>{{ data.email }}</td>
-            <td>
-              <div class="d-flex justify-content-center">
-                <div *ngIf="can('voir admin')">
-                  <button
-                    (click)="showUser(data)"
-                    nz-button
-                    nzShape="circle"
-                    class="color-orange"
-                    >
+        <div class="card-body">
+            <div class="my-2">
+                <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
+            </div>
+            <nz-table class="scroll-table" [nzLoading]="isLoad"               nzShowSizeChanger
+            [nzPageSize]="4" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th>Avatar</th>
+                        <th>Prénoms</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicTable.data">
+                        <td>AVATAR</td>
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.last_name }}</td>
+                        <td>{{ data.email }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <div *ngIf="can('voir admin')">
+                                    <button (click)="showUser(data)" nz-button nzShape="circle" class="color-orange">
                     <i class="color" nz-icon nzType="eye"></i>
                   </button>
-                </div>
-                <div class="mx-3" *ngIf="can('supprimer admin')">
-                  <button
-                    nz-popconfirm
-                    nzPopconfirmTitle="Confirmer votre action."
-                    (nzOnConfirm)="deleteUser(data)"
-                    nz-button
-                    nzType="primary"
-                    nzShape="circle"
-                    nzDanger
-                  >
-                  <i nz-icon nzType="delete"></i>
+                                </div>
+                                <div class="mx-3" *ngIf="can('supprimer admin')">
+                                    <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser(data)" nz-button nzType="primary" nzShape="circle" nzDanger>
+                    <i nz-icon nzType="delete"></i>
                   </button>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </div>
-  </div>
 </div>

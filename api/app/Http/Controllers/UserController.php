@@ -40,7 +40,6 @@ class UserController extends Controller
             "last_name" => "required|min:2",
             "email" => "required|email|unique:users,email",
             "departement_id" => 'required|exists:departements,id',
-            "roles" => "required|array",
         ]);
 
         $user = new User;
@@ -55,7 +54,7 @@ class UserController extends Controller
         try {
             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
-            $user->assignRole($request->roles);
+            $user->assignRole('professeur');
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);
         }
         catch (\Throwable $th) {
@@ -91,7 +90,7 @@ class UserController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->save();
-        $user->assignRole($request->roles);
+        $user->syncRoles($request->roles);
         return response()->json($user, 200);
     }
 

@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\Http\Request;
 use App\Models\Salle;
 use App\Models\TimesTable;
+use App\Models\User;
 
 
 trait Utils
@@ -61,5 +62,9 @@ trait Utils
             }
         }
         return $test;
+    }
+
+    public function currentUser(){
+        return User::find(auth()->id());
     }
 }

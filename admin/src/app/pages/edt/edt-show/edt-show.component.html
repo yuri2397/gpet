@@ -63,9 +63,7 @@
     </div>
 </ng-container>
 <ng-container *ngIf="isLoad && !hasError">
-    <div class="center">
-        CHARGEMENT DES DONNÉES EN COURS...
-    </div>
+    <app-load></app-load>
 </ng-container>
 <ng-container *ngIf="hasError && !isLoad">
     <div class="center">

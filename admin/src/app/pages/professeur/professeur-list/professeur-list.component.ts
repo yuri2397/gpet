@@ -120,11 +120,12 @@ export class ProfesseurListComponent implements OnInit {
   search(): void {
     this.visible = false;
     this.listOfDisplayData = this.professeurs.filter((item: Professor) => {
+      this.searchValue = this.searchValue.toLocaleLowerCase();
       return (
         item.registration_number.indexOf(this.searchValue) !== -1 ||
-        item.first_name.indexOf(this.searchValue) !== -1 ||
-        item.last_name.indexOf(this.searchValue) !== -1 ||
-        item.email.indexOf(this.searchValue) !== -1
+        item.first_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
+        item.last_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
+        item.email.toLocaleLowerCase().indexOf(this.searchValue) !== -1
       );
     });
   }

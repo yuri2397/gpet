@@ -12,24 +12,12 @@
                         <div class="d-flex justify-content-center align-items center">
 
                             <div class="mx-2">
-                                <button
-                                  (click)="openEditUserModal()"
-                                  nz-button
-                                  nzType="primary"
-                                  nzShape="circle">
+                                <button (click)="openEditUserModal()" nz-button nzType="primary" nzShape="circle">
                                   <i nz-icon nzType="edit"></i>
                                 </button>
                             </div>
                             <div class="mx-2">
-                                <button
-                                  nz-button
-                                  nzType="primary"
-                                  nzShape="circle"
-                                  nzDanger
-                                  nz-popconfirm
-                                  nzPopconfirmTitle="Confirmer votre action."
-                                  (nzOnConfirm)="deleteUser()"
-                                >
+                                <button nz-button nzType="primary" nzShape="circle" nzDanger nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser()">
                                   <i nz-icon nzType="delete"></i>
                                 </button>
                             </div>
@@ -49,12 +37,7 @@
                                 Ajouter une permission
                             </div>
                             <div class="mx-2">
-                                <button
-                                  (click)="openAddPermissionModal()"
-                                  nz-button
-                                  nzType="primary"
-                                  nzShape="circle"
-                                >
+                                <button (click)="openAddPermissionModal()" nz-button nzType="primary" nzShape="circle">
                                 <i nz-icon nzType="plus"></i>
                                 </button>
                             </div>
@@ -75,14 +58,7 @@
                             <tr *ngFor="let data of basicTable.data">
                                 <td>{{data.name.toUpperCase()}}</td>
                                 <td>
-                                    <button
-                                      nz-popconfirm
-                                      nzPopconfirmTitle="Confirmer votre action."
-                                      (nzOnConfirm)="removePermission(data)"
-                                      nz-button
-                                      nzType="primary"
-                                      nzShape="circle"
-                                      nzDanger>
+                                    <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="removePermission(data)" nz-button nzType="primary" nzShape="circle" nzDanger>
                                       <i nz-icon nzType="delete"></i>
                                     </button>
                                 </td>
@@ -103,11 +79,5 @@
     </div>
 </ng-container>
 <ng-template #loadData>
-    <div class="card shadow">
-        <div class="card-body">
-            <nz-skeleton [nzActive]="true"></nz-skeleton>
-            <nz-skeleton [nzActive]="true"></nz-skeleton>
-            <nz-skeleton [nzActive]="true"></nz-skeleton>
-        </div>
-    </div>
+    <app-load></app-load>
 </ng-template>
