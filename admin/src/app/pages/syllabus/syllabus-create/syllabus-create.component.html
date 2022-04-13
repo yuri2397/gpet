@@ -1,7 +1,13 @@
 <div class="container">
   <header class="header">
-    <h5>AngularEditor</h5> 
+    <h5>AngularEditor</h5>
   </header>
-  <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="htmlContent"></angular-editor>
- 
+  <angular-editor class="editor" [placeholder]="'Enter text here...'" [(ngModel)]="syllabus.description"></angular-editor>
+  <div *nzModalFooter>
+    <button nz-button nzType="default" (click)="destroyModal()">
+    Annuler
+  </button>
+    <button nz-button nzType="primary" (click)="save()"[nzLoading]="isLoad">
+    Ajouter
+  </button>
 </div>
