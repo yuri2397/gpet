@@ -13,11 +13,7 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table [nzLoading]="isLoad"
-            nzShowSizeChanger
-            [nzPageSize]="4"
-            #basicTable [nzData]="batiments"
-            [nzBordered]="true">
+            <nz-table [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="batiments" [nzBordered]="true">
                 <thead>
                     <tr>
                         <th>Nom</th>
