@@ -20,6 +20,7 @@ import { CourseShowComponent } from '../../pages/course/course-show/course-show.
 import { PayementsComponent } from '../../pages/professeur/payements/payements.component';
 import { UeListComponent } from '../../pages/ue/ue-list/ue-list.component';
 import { SemesterListComponent } from '../../pages/semester/semester-list/semester-list.component';
+import { SyllabusCreateComponent} from '../../pages/syllabus/syllabus-create/syllabus-create.component';
 import { UnauthorizedComponent } from '../../shared/ui/unauthorized/unauthorized.component';
 import { ForgotPasswordComponent } from '../../pages/forgot-password/forgot-password.component';
 import { AuthGuard } from 'src/app/shared/guards/auth.guard';
@@ -69,6 +70,8 @@ const routes: Routes = [
   { path: 'roles', component: RoleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
   { path: 'users/show/:id', component: UserShowComponent },
+  { path: 'syllabus/create', component: SyllabusCreateComponent },
+
 ];
 
 @NgModule({
