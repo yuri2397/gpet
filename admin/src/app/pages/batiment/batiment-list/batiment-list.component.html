@@ -15,7 +15,7 @@
         <div class="card-body">
             <nz-table [nzLoading]="isLoad"
             nzShowSizeChanger
-            [nzPageSize]="4"
+            [nzPageSizeOptions]="[10,20,30]"
             #basicTable [nzData]="batiments"
             [nzBordered]="true">
                 <thead>

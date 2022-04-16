@@ -19,7 +19,7 @@
             <nz-table nzTableLayout="fixed"
               [nzLoading]="isLoad"
               nzShowSizeChanger
-              [nzPageSize]="10"
+              [nzPageSizeOptions]="[10,20,30]"
               #basicTable
               [nzData]="listOfDisplayData"
               [nzBordered]="true">

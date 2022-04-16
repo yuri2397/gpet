@@ -17,7 +17,7 @@ import { SalleEditComponent } from '../salle-edit/salle-edit.component';
 })
 export class SalleListComponent implements OnInit {
   @Input() salles!:Salle[];
-  isLoad = true;
+  isLoad = false;
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedSalle!: Salle;
