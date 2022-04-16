@@ -46,7 +46,7 @@ export class ForgotPasswordComponent implements OnInit {
         this.notification.createNotification(
           'error',
           'Erreur',
-          'Verifier votre email ou connexion'
+          'Verifier votre email ou la connexion'
         );
       },
     });

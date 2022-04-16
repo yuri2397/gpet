@@ -16,6 +16,8 @@ export class UserListComponent implements OnInit {
   users!: User[];
   isLoad = true;
   deleteUserLoad: boolean = false;
+  searchValue: any;
+  listOfDisplayData!: User[];
   constructor(
     private userService: UserService,
     private modal: NzModalService,
@@ -31,6 +33,7 @@ export class UserListComponent implements OnInit {
     this.isLoad = true;
     this.userService.findByAuthDepartement().subscribe({
       next: (response) => {
+        this.listOfDisplayData = response;
         this.users = response;
         this.isLoad = false;
       },
@@ -73,6 +76,18 @@ export class UserListComponent implements OnInit {
         );
         this.deleteUserLoad = false;
       },
+    });
+  }
+
+  search(): void {
+    this.listOfDisplayData = this.users.filter((item: User) => {
+      this.searchValue = this.searchValue.toLocaleLowerCase();
+      return (
+        item.first_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
+        (item.first_name.toLocaleLowerCase() + " " + item.last_name.toLocaleLowerCase()).indexOf(this.searchValue) !== -1 ||
+        item.last_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
+        item.email.toLocaleLowerCase().indexOf(this.searchValue) !== -1
+      );
     });
   }
 

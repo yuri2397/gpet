@@ -17,7 +17,7 @@ class SalleController extends Controller
         $this->middleware("permission:creer salle")->only(["store"]);
         $this->middleware("permission:supprimer salle")->only(["destroy"]);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -109,10 +109,14 @@ class SalleController extends Controller
 
     public function search($data)
     {
-        return Salle::with('batiment')
+        $user = User::find(auth()->id());
+        //if ($user->hasRole("super admin")) {
+            return Salle::with('batiment')
             ->where('name', 'like', '%' . $data . '%')
             ->orWhere('number', 'like', '%' . $data . '%')
             ->orWhere('capacity', 'like', '%' . $data . '%')
             ->get();
+        //}
+
     }
 }

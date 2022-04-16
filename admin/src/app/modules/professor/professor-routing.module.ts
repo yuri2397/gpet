@@ -7,6 +7,9 @@ import { DashboardComponent } from 'src/app/pages/professeur/dashboard/dashboard
 import { ProfessorComponent } from './professor.component';
 import { CourseListComponent } from 'src/app/pages/professeur/course/course-list/course-list.component';
 import { CourseShowComponent } from 'src/app/pages/professeur/course/course-show/course-show.component';
+import { ResourcesComponent } from 'src/app/pages/professeur/resources/resources.component';
+import { PointingComponent } from 'src/app/pages/professeur/pointing/pointing.component';
+import { SecuriteComponent } from 'src/app/pages/professeur/securite/securite.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch:"full"},
@@ -16,6 +19,9 @@ const routes: Routes = [
   { path: 'courses/:id', component: CourseShowComponent },
   { path: 'reliquat', component: ComptabityComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'resources', component:ResourcesComponent},
+  { path: 'pointing', component:PointingComponent},
+  { path: 'securite', component:SecuriteComponent}
 ];
 
 @NgModule({

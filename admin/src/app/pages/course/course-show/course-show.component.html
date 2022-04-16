@@ -1,96 +1,101 @@
 <div *ngIf="!dataLoad && !errorNetWork" style="width: 100%">
-    <div class="card shadow">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="{{ course.acronym }} - {{
-            course.name }}"></nz-page-header>
-                </div>
-                <ng-template #backTemp>
-                    <button class="m-2" mat-mini-fab color="primary">
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <nz-page-header
+            class="site-page-header"
+            (nzBack)="onBack()"
+            [nzBackIcon]="backTemp"
+            nzTitle="{{ course.acronym }} - {{ course.name }}"
+          ></nz-page-header>
+        </div>
+        <ng-template #backTemp>
+          <button class="m-2" mat-mini-fab color="primary">
             <mat-icon>arrow_back</mat-icon>
           </button>
-                </ng-template>
+        </ng-template>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="card card-body">
+              <nz-list nzBordered>
+                <nz-list-item>
+                  <span nz-typography><b>ID</b></span> {{ course.acronym }}
+                </nz-list-item>
+                <nz-list-item>
+                  <span nz-typography><b>COURS</b></span> {{ course.name }}
+                </nz-list-item>
+                <nz-list-item>
+                  <span nz-typography><b>VHT</b></span>
+                  {{ course.ec.vht }} heures
+                </nz-list-item>
+              </nz-list>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="card card-body">
-                            <nz-list nzBordered>
-                                <nz-list-item>
-                                    <span nz-typography><b>ID</b></span> {{ course.acronym }}
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>COUR</b></span> {{ course.name }}
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>VHT</b></span> {{ course.ec.vht }} heures
-                                </nz-list-item>
-                            </nz-list>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card card-body">
-                            <nz-list nzBordered>
-                                <nz-list-item>
-                                    <span nz-typography><b>PROF</b></span>
-                                    <ng-container *ngIf="course.professor; else emptyProf">
-                                        {{ course.professor.first_name }} {{ course.professor.last_name.toUpperCase() }}
-                                    </ng-container>
-                                    <ng-template #emptyProf>
-                                        <nz-tag nzColor="error">
-                                            <i nz-icon nzType="close-circle"></i>
-                                            <span>Non définie</span>
-                                        </nz-tag>
-                                    </ng-template>
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>CLASSE</b></span> {{ course.classe.name.toUpperCase() }}
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>SEMESTRE</b></span> {{ course.semester.name.toUpperCase() }}
-                                </nz-list-item>
-                            </nz-list>
-                        </div>
-                    </div>
-                </div>
-                <nz-divider [nzText]="title1"></nz-divider>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card border">
-                            <div echarts [options]="chartOption"></div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="col">
+            <div class="card card-body">
+              <nz-list nzBordered>
+                <nz-list-item>
+                  <span nz-typography><b>PROF</b></span>
+                  <ng-container *ngIf="course.professor; else emptyProf">
+                    {{ course.professor.first_name }}
+                    {{ course.professor.last_name.toUpperCase() }}
+                  </ng-container>
+                  <ng-template #emptyProf>
+                    <nz-tag nzColor="error">
+                      <i nz-icon nzType="close-circle"></i>
+                      <span>Non définie</span>
+                    </nz-tag>
+                  </ng-template>
+                </nz-list-item>
+                <nz-list-item>
+                  <span nz-typography><b>CLASSE</b></span>
+                  {{ course.classe.name.toUpperCase() }}
+                </nz-list-item>
+                <nz-list-item>
+                  <span nz-typography><b>SEMESTRE</b></span>
+                  {{ course.semester.name.toUpperCase() }}
+                </nz-list-item>
+              </nz-list>
             </div>
+          </div>
         </div>
-    </div>
-</div>
-<ng-template #title1>
-    <h4 class="mt-5">Évolution des scéances</h4>
 
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <nz-divider [nzText]="title1"></nz-divider>
+          </div>
+          <div>
+            <button mat-mini-fab color="primary" (click)="openCreateModal()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <nz-divider [nzText]="title2"></nz-divider>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card border">
+              <div echarts [options]="chartOption"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #title1>
+  <h4 class="mt-5">Syllabus</h4>
+</ng-template>
+
+<ng-template #title2>
+  <h4 class="mt-5">Évolution des scéances</h4>
 </ng-template>
 
 <ng-container *ngIf="dataLoad && !errorNetWork">
-    <div class="card shadow">
-        <div class="card-body">
-            <div class="row m-3">
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-            </div>
-            <div class="row mx-3">
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-                <div class="col-md-6">
-                    <nz-skeleton [nzActive]="true"></nz-skeleton>
-                </div>
-            </div>
-        </div>
-    </div>
+  <app-load></app-load>
 </ng-container>
 <app-error-server *ngIf="errorNetWork"></app-error-server>

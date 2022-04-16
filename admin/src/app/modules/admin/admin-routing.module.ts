@@ -1,6 +1,5 @@
 import { UserShowComponent } from '../../pages/user/user-show/user-show.component';
 import { RoleListComponent } from '../../pages/roles/role-list/role-list.component';
-import { AuthGuard } from '../../shared/auth.guard';
 import { ProfileComponent } from '../../pages/profile/profile.component';
 import { DepartementShowComponent } from '../../pages/departement/departement-show/departement-show.component';
 import { ClasseShowComponent } from '../../pages/classe/classe-show/classe-show.component';
@@ -15,15 +14,17 @@ import { ProfesseurListComponent } from '../../pages/professeur/professeur-list/
 import { UserListComponent } from '../../pages/user/user-list/user-list.component';
 import { ClasseListComponent } from '../../pages/classe/classe-list/classe-list.component';
 import { DepartementListComponent } from '../../pages/departement/departement-list/departement-list.component';
-import { AdminGuard } from '../../shared/admin.guard';
+import { AdminGuard } from '../../shared/guards/admin.guard';
 import { BankListComponent } from '../../pages/bank/bank-list/bank-list.component';
 import { CourseShowComponent } from '../../pages/course/course-show/course-show.component';
 import { PayementsComponent } from '../../pages/professeur/payements/payements.component';
 import { UeListComponent } from '../../pages/ue/ue-list/ue-list.component';
 import { SemesterListComponent } from '../../pages/semester/semester-list/semester-list.component';
-import { CdGuard } from '../../shared/cd.guard';
+import { SyllabusCreateComponent} from '../../pages/syllabus/syllabus-create/syllabus-create.component';
 import { UnauthorizedComponent } from '../../shared/ui/unauthorized/unauthorized.component';
 import { ForgotPasswordComponent } from '../../pages/forgot-password/forgot-password.component';
+import { AuthGuard } from 'src/app/shared/guards/auth.guard';
+import { CdGuard } from 'src/app/shared/guards/cd.guard';
 
 const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
@@ -69,6 +70,8 @@ const routes: Routes = [
   { path: 'roles', component: RoleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
   { path: 'users/show/:id', component: UserShowComponent },
+  { path: 'syllabus/create', component: SyllabusCreateComponent },
+
 ];
 
 @NgModule({

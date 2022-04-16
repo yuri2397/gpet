@@ -30,7 +30,8 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { IconsProviderModule } from './icons-provider.module';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SharedModule } from './shared/shared.module';
+
 registerLocaleData(fr);
 
 @NgModule({
@@ -51,18 +52,12 @@ registerLocaleData(fr);
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NzCardModule,
-    NzInputModule,
-    NzFormModule,
-    NzButtonModule,
-    NzNotificationModule,
-    NzMessageModule,
-    NzResultModule,
-    NzTableModule,
-    MatIconModule,
-    NzDividerModule,
-    MatButtonModule,
-    AngularEditorModule
+   
+
+    /**
+     * SHARED MODULE
+     */
+    SharedModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },

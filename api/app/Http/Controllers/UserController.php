@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\SendNewUserMail;
+use App\Models\Professor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -39,7 +40,6 @@ class UserController extends Controller
             "last_name" => "required|min:2",
             "email" => "required|email|unique:users,email",
             "departement_id" => 'required|exists:departements,id',
-            "roles" => "required|array",
         ]);
 
         $user = new User;
@@ -54,7 +54,7 @@ class UserController extends Controller
         try {
             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
-            $user->assignRole($request->roles);
+            $user->assignRole('professeur');
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);
         }
         catch (\Throwable $th) {
@@ -67,7 +67,7 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return 
+     * @return
      */
     public function show($id)
     {
@@ -90,7 +90,7 @@ class UserController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->save();
-        $user->assignRole($request->roles);
+        $user->syncRoles($request->roles);
         return response()->json($user, 200);
     }
 
@@ -120,5 +120,13 @@ class UserController extends Controller
 
         }
 
+    }
+    public function showuserwithprof($id)
+    {
+        $user= User::with("roles")->find($id);
+        $prof=Professor::whereemail($user->email)->first();
+
+        return response()->json(["user"=>$user,"professor"=>$prof]
+            , 200);
     }
 }

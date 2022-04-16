@@ -15,6 +15,7 @@ export class BaseHttp  extends GestionRole{
   private _editeur = 'chef de département';
   private _secretaire = 'editeur';
   private _admin = 'admin';
+  private _professeur='professeur';
   protected httpClient!: HttpClient;
   public DAYS: Day[] = [
     {id: 1, name: "Lundi"},
@@ -98,6 +99,15 @@ export class BaseHttp  extends GestionRole{
 
     return test;
   }
+  isProfesseur():boolean{
+    let test=false;
+    this.getRoles().forEach(element => {
+      if(element.name==this.professeur)
+      test=true;
+    });
+
+    return test;
+  }
 
   isCD(): boolean {
     let test = false;
@@ -142,7 +152,9 @@ export class BaseHttp  extends GestionRole{
   get admin(){
     return this._admin;
   }
-
+  get professeur(){
+    return this._professeur;
+  }
   get secretaire(){
     return this._secretaire;
   }

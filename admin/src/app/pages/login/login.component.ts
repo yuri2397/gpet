@@ -63,6 +63,9 @@ export class LoginComponent implements OnInit {
       });
   }
   afterLogin(response: LoginResponse) {
+    if(this.authService.isAdmin())
       this.router.navigate(['/admin/dashboard']);
+    else
+      this.router.navigate(['/professor'])
   }
 }

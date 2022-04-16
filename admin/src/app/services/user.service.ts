@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseHttp } from '../shared/base-http';
 import { Router } from '@angular/router';
+import { Professor } from '../models/professor';
+import { ProfUser } from '../models/prof-user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService extends BaseHttp {
- 
+
   protected _baseUrl = 'user';
   constructor(protected hc: HttpClient, private router: Router) {
     super();
@@ -17,6 +19,12 @@ export class UserService extends BaseHttp {
 
   currentUser() {
     return this.http.get<User>(this.endPointWithSlash + 'profile', {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
+  }
+  getProfesseur(id:number) {
+    return this.http.get<ProfUser>(this.endPointWithSlash + 'showuserwithprof/'+id, {
       headers: this.authorizationHeaders,
       observe: 'body',
     });

@@ -1,3 +1,4 @@
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
@@ -10,6 +11,7 @@ import {
   ApexDataLabels,
   ApexChart
 } from "ng-apexcharts";
+import { ProfUser } from 'src/app/models/prof-user';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -31,6 +33,11 @@ export const ROUTES: RouteInfo[] = [
     icon: 'space_dashboard',
   },
   {
+    path: 'profile',
+    title: 'Profile',
+    icon: 'person',
+  },
+  {
     path: 'courses',
     title: 'Mes cours',
     icon: 'checklist_rtl',
@@ -45,6 +52,24 @@ export const ROUTES: RouteInfo[] = [
     title: 'Comptabilité',
     icon: 'credit_score',
   },
+  {
+    path: 'pointing',
+    title: 'Pointage',
+    icon: 'schedule',
+  },
+
+  {
+    path: 'resources',
+    title: 'Ressource',
+    icon: 'description',
+  },
+
+  {
+    path: 'securite',
+    title: 'Securite',
+    icon: 'admin_panel_settings',
+  },
+
 ];
 @Component({
   selector: 'app-professor',
@@ -57,26 +82,42 @@ export class ProfessorComponent implements OnInit {
   isLoad = true;
   roles!: Role[];
   user!: User;
+  profuser!:ProfUser;
   menuItems!: RouteInfo[];
   title = 'UFR SET - GPET';
   depTitle!: string;
   permissions!: Permission[];
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private notification: NzNotificationService) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter((menuItem) => menuItem);
     this.currentUser()
   }
 
   currentUser() {
-    this.isLoad = false;
+    this.isLoad = true;
+    this.userService.currentUser().subscribe({
+      next: (response: User) => {
+        this.userService.setUser(response);
+        this.userService.setRoles(response.roles);
+        this.user = response;
+        this.roles = response.roles;
+        this.permissions = response.permissions;
+        this.menuItems = ROUTES.filter((menuItem) => menuItem);
+        this.isLoad = false;
+      },
+      error: (errors) => {
+        this.notification.error("Notification", errors.error)
+        this.isLoad = false;
+      },
+    });
+
   }
 
   selected(item: RouteInfo) {
     return this.router.url.indexOf(item.path) !== -1 ? true : false;
   }
-  
+
   routerLink(item: RouteInfo) {
     this.router.navigate(['/professor/' + item.path]);
   }
@@ -84,9 +125,4 @@ export class ProfessorComponent implements OnInit {
   logout() {
     this.userService.logout();
   }
-
-  public profile(){
-    this.router.navigate(['profile']);
-  }
-
 }
