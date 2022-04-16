@@ -123,6 +123,7 @@ export class ProfesseurShowComponent implements OnInit {
     this.errorServer = false;
     this.profService.find(id).subscribe({
       next: (professeur) => {
+        console.log(professeur)
         this.professeur = professeur;
         this.dataLoad = false;
       },

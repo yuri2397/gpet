@@ -7,8 +7,8 @@
                 </div>
                 <ng-template #backTemp>
                     <button class="m-2" mat-mini-fab color="primary">
-                        <mat-icon>arrow_back</mat-icon>
-                    </button>
+            <mat-icon>arrow_back</mat-icon>
+          </button>
                 </ng-template>
             </div>
             <nz-tabset [nzTabPosition]="'left'">
@@ -26,15 +26,15 @@
                                         <nz-empty [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
                                             <ng-template #contentTpl>
                                                 <span>PAS DE COURS LE
-                                                    <span class="text-danger">{{
-                                                        panel.day.name | uppercase
-                                                        }}</span>
+                          <span class="text-danger">{{
+                            panel.day.name | uppercase
+                            }}</span>
                                                 </span>
                                             </ng-template>
                                             <ng-template #footerTpl>
                                                 <button (click)="openCreateModal(panel)" nz-button nzType="primary">
-                                                    Ajouter un cour
-                                                </button>
+                          Ajouter un cour
+                        </button>
                                             </ng-template>
                                         </nz-empty>
                                     </ng-container>
@@ -74,11 +74,11 @@
                                                     </mat-card-content>
                                                     <mat-card-actions>
                                                         <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzDanger nz-popconfirm nzPopconfirmTitle="Merci de confirmer votre action." nzPopconfirmPlacement="bottom" (nzOnConfirm)="removeEPT(panel, item)">
-                                                            <i nz-icon nzType="delete"></i>
-                                                        </button>
+                              <i nz-icon nzType="delete"></i>
+                            </button>
                                                         <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" class="mx-2" (click)="editEPT(panel, item)">
-                                                            <i nz-icon nzType="edit"></i>
-                                                        </button>
+                              <i nz-icon nzType="edit"></i>
+                            </button>
                                                     </mat-card-actions>
                                                     <mat-card-footer>
                                                         <mat-progress-bar *ngIf="item.removeLoad" mode="indeterminate">
@@ -91,8 +91,8 @@
                                                     <mat-card-subtitle>Ajouter un nouveau cours</mat-card-subtitle>
                                                     <mat-card-content>
                                                         <button mat-mini-fab color="primary" (click)="openCreateModal(panel)">
-                                                            <mat-icon>add</mat-icon>
-                                                        </button>
+                              <mat-icon>add</mat-icon>
+                            </button>
                                                     </mat-card-content>
                                                     <mat-card-footer>
                                                         <mat-progress-bar *ngIf="panel.addLoad" mode="indeterminate">
@@ -110,22 +110,22 @@
                                 <div class="mx-1">Exporter en PDF</div>
                                 <div>
                                     <button (click)="exportPDF()" mat-mini-fab class="shadow m-2" color="primary">
-                                        <mat-icon class="mat-18">file_download</mat-icon>
-                                    </button>
+                    <mat-icon class="mat-18">file_download</mat-icon>
+                  </button>
                                 </div>
                             </div>
                             <div id="presentionEPT">
                                 <div class="card card-body text-center">
                                     <div>
                                         <span>REPUBLIQUE DU SENEGAL <br />
-                                            Un Peuple Un But Une Foi</span>
+                      Un Peuple Un But Une Foi</span>
                                     </div>
                                     <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
                                     <span class="text-center">
-                                        UNITÉ DE FORMATION ET DE RECHERCHE <br />
-                                        EN SCIENCES ET TECHNOLOGIES <br />
-                                        {{ depName }}
-                                    </span>
+                    UNITÉ DE FORMATION ET DE RECHERCHE <br />
+                    EN SCIENCES ET TECHNOLOGIES <br />
+                    {{ depName }}
+                  </span>
                                     <h3>{{ classe.name }}</h3>
                                     {{ now | date: "EEEE d MMMM y" }}
                                 </div>
@@ -187,6 +187,5 @@
 </div>
 <ng-container *ngIf="eptLoad && !errorNetWork">
     <app-load></app-load>
-
 </ng-container>
 <app-error-server *ngIf="errorNetWork"></app-error-server>

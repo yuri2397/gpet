@@ -10,6 +10,7 @@ class TimesTable extends Model
     use HasFactory;
 
     protected $with = ['day','salle', 'course'];
+    protected $fillable = ['*'];
 
     public function day()
     {

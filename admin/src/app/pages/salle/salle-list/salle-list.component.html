@@ -14,15 +14,14 @@
     </div>
     <div class="card-body">
       <div class="my-2">
-        <input type="text" nzSize="large"  nz-input placeholder="numéro de salle"  />
+        <input type="text" nzSize="large" (input)="search()" nz-input placeholder="numéro de salle"  [(ngModel)]="searchValue"/>
       </div>
-      <nz-table
-        [nzScroll]="{ x: '250px' }"
+      <nz-table nzTableLayout="fixed"
         [nzLoading]="isLoad"
-        nzShowPagination
-        [nzPageSize]="4"
+        [nzShowSizeChanger]="true"
+        [nzPageSizeOptions] ="[10,20,30]"
         #basicTable
-        [nzData]="salles"
+        [nzData]="listOfDisplayData"
         [nzBordered]="true"
       >
         <thead>
@@ -67,8 +66,7 @@
                     nz-button
                     nzType="primary"
                     nzShape="circle"
-                    (click)="openDeleteModal(data)"
-                  >
+                    (click)="openDeleteModal(data)">
                     <i nz-icon nzType="delete"></i>
                   </button>
                 </div>

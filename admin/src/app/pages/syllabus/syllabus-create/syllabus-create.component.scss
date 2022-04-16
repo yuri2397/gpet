@@ -1,3 +1,29 @@
-.editor{
-  height: 200px;
+.html-header {
+    margin: 15px 0 5px;
+}
+
+.html {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem;
+    background-color: #f1f1f1;
+    min-height: 70px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+:host ::ng-deep .angular-editor-textarea {
+    outline: none !important;
+    font-family: "Poppins" !important;
+    height: 50% !important;
+}
+
+::ng-deep {
+    .NgxEditor {
+        height: 400px;
+        overflow-y: scroll;
+    }
+    .NgxEditor__Content {
+        min-height: 400px;
+    }
 }

@@ -4,7 +4,7 @@
             <img src="/assets/img/logo.jpg" alt="logo" />
             <h6 *ngIf="!isCollapsed" class="color-geekblue">{{ title }}</h6>
         </div>
-        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="px-1">
             <ng-container *ngFor="let item of menuItems">
                 <li (click)="routerLink(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]="selected(item)">
                     <i nz-icon>
@@ -39,5 +39,30 @@
     </nz-layout>
 </nz-layout>
 <ng-template #loadingTemplate>
-    <app-load></app-load>
+    <div class="center" style="flex-direction: column;">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:transparent;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <g transform="translate(50 50) scale(0.8)">
+          <g>
+            <animateTransform attributeName="transform" type="scale" repeatCount="indefinite" calcMode="spline"
+              dur="1.7543859649122806s" values="0.8;0.5;0.8" keyTimes="0;0.5;1" keySplines="0.5 0 0.5 1;0.5 0 0.5 1">
+            </animateTransform>
+            <rect x="-45" y="-45" width="90" height="90" fill="#ffffff" stroke="#41729f" stroke-width="8"
+              stroke-linejoin="round" rx="1" ry="1">
+              <animate attributeName="rx" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
+                keyTimes="0;0.5;1"></animate>
+              <animate attributeName="ry" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
+                keyTimes="0;0.5;1"></animate>
+              <animate attributeName="stroke-width" repeatCount="indefinite" dur="1.7543859649122806s" values="8;12.8;8"
+                keyTimes="0;0.5;1"></animate>
+              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite"
+                dur="1.7543859649122806s" values="0 0 0;270 0 0;540 0 0" keyTimes="0;0.5;1" calcMode="spline"
+                keySplines="0.5 0 0.5 1;0.5 0 0.5 1"></animateTransform>
+            </rect>
+          </g>
+        </g>
+      </svg>
+        </div>
+        <h4>Bienvenue sur <span class="bold">GPET</span>...</h4>
+    </div>
 </ng-template>
