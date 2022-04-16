@@ -52,6 +52,7 @@ import { SeanceEditComponent } from '../pages/course/seance/seance-edit/seance-e
 import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-list.component';
 import { SyllabusCreateComponent } from '../pages/syllabus/syllabus-create/syllabus-create.component';
 import { SyllabusEditComponent } from '../pages/syllabus/syllabus-edit/syllabus-edit.component';
+import { InfoUserComponent } from './ui/info-user/info-user.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { SyllabusEditComponent } from '../pages/syllabus/syllabus-edit/syllabus-
     ChapitreListComponent,
     LoadComponent,
     ChapitreEditComponent,
+    InfoUserComponent,
   ],
   imports: [
     CommonModule,

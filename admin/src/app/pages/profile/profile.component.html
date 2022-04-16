@@ -1,16 +1,16 @@
-<div class="card car-body shadow">
+<div class="card car-body shadow-sm">
 
     <nz-divider [nzText]="p_t"></nz-divider>
     <ng-template #p_t>
         <h4 class="m-3">{{ user.first_name }} {{ user.last_name }}</h4>
-         <button Center nz-button nzType="primary" class="bg" (click)="openModal()">
+        <button Center nz-button nzType="primary" class="bg" (click)="openModal()">
           Se Deconnecter
         </button>
     </ng-template>
 
     <div class="row mt-3">
         <div class="col">
-            <div class="card body m-2 shadow raduis-sm">
+            <div class="card body m-2 shadow-sm border raduis-sm">
                 <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
                 <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
                 <div class="d-flex justify-content-center my-3 btn-icon">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="card card-body shadow m-2 raduis-sm">
+            <div class="card card-body shadow-sm border m-2 raduis-sm">
                 <nz-divider [nzText]="c_t">
                     <ng-template #c_t>
                         <h5 class="my-2">Change votre mot de passe</h5>

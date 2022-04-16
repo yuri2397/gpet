@@ -184,3 +184,17 @@ svg {
         transform: rotate(360deg);
     }
 }
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #1d617a;
+    border-radius: 6px;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected>*,
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected>*>* {
+    color: white !important;
+}
+
+.ant-menu-inline .ant-menu-item::after {
+    border-right: rgba(0, 0, 0, 0.05) !important;
+}

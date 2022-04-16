@@ -1,3 +1,4 @@
+import { InfoUserComponent } from './shared/ui/info-user/info-user.component';
 import { ProfessorComponent } from './modules/professor/professor.component';
 import { AnyPermissionComponent } from './shared/ui/any-permission/any-permission.component';
 import { NotFoundComponent } from './shared/ui/not-found/not-found.component';
@@ -35,6 +36,9 @@ const routes: Routes = [
   },
   {
     path: "any-permission", component: AnyPermissionComponent
+  },
+  {
+    path: "info", component: InfoUserComponent
   },
   {
     path: 'professor',

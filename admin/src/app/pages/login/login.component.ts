@@ -44,11 +44,6 @@ export class LoginComponent implements OnInit {
       .login(this.validateForm.value.email, this.validateForm.value.password)
       .subscribe({
         next: (response: LoginResponse) => {
-          this.authService.setRoles(response.user.roles);
-          this.authService.setPermissions(response.user.permissions);
-          this.authService.setToken(response.token);
-          this.authService.setUser(response.user);
-          this.authService.setDepartement(response.departement);
           this.afterLogin(response);
           this.isLoad = false;
         },
@@ -63,9 +58,13 @@ export class LoginComponent implements OnInit {
       });
   }
   afterLogin(response: LoginResponse) {
-    if(this.authService.isAdmin())
-      this.router.navigate(['/admin/dashboard']);
-    else
-      this.router.navigate(['/professor'])
+    this.authService.setRoles(response.user.roles);
+    this.authService.setPermissions(response.user.permissions);
+    this.authService.setToken(response.token);
+    this.authService.setUser(response.user);
+    this.authService.setDepartement(response.departement);
+    if (this.authService.isAdmin()) this.router.navigate(['/admin/dashboard']);
+    else this.router.navigate(['/professor']);
   }
 }
+x

@@ -58,6 +58,8 @@ class ProfesseurController extends Controller
             'professor_type_id' => 'required|exists:professor_types,id',
             'last_degree' => "required|string",
         ]);
+
+        DB::beginTransaction();
         $prof = new Professor;
         $prof->registration_number = $request->registration_number ?? $this->randomInt('professors', 'registration_number');
         $prof->first_name = $request->first_name;
@@ -98,16 +100,14 @@ class ProfesseurController extends Controller
             $user->save();
             $user->assignRole('professeur');
             $user->givePermissionTo(['voir professeur', 'modifier professeur']);
+            DB::commit();
             return response()->json(['message' => "Professeur crée avec succès."], 200);
         }
         catch (\Throwable $th) {
+            DB::rollBack();
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
         }
-
-
-
-        return response()->json($this->show($prof->id), 200);
     }
 
     public function show($id)
