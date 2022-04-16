@@ -200,7 +200,7 @@ class ProfesseurController extends Controller
                 ->orWhere('email', 'like', '%' . $data . '%')
                 ->orWhere('phone_number', 'like', '%' . $data . '%')
                 ->orderBy('created_at', 'desc')->get();
-        }
+       }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 

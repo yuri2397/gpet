@@ -74,7 +74,7 @@ export class CourseListComponent implements OnInit {
   openEditModal() {
     let c: Course = this.selectedCourse;
     const modal = this.modalService.create({
-      nzTitle: 'Modifier le cour',
+      nzTitle: 'Modifier le cours',
       nzContent: CourseEditComponent,
       nzComponentParams: {
         course: this.courseService.clone(c),
@@ -105,7 +105,7 @@ export class CourseListComponent implements OnInit {
       nzClosable: false,
     });
   }
-  
+
   can(permission: string){
     let p = new Permission();
     p.name = permission;

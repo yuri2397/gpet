@@ -13,7 +13,12 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="departements" [nzBordered]="true">
+            <nz-table [nzLoading]="isLoad"
+            nzShowSizeChanger
+            [nzPageSize]="4"
+            #basicTable
+            [nzData]="departements"
+            [nzBordered]="true">
                 <thead>
                     <tr>
                         <th>Nom</th>

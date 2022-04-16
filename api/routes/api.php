@@ -48,16 +48,14 @@ Route::post('selectable', function (Request $request) {
     }
     return $res;
 });
-
+Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
     Route::post("/update-password", [AuthController::class, "updatePassword"]);
-
     Route::post("/forgot-password", [AuthController::class, "forgotPassword"])->withoutMiddleware("auth:api");
     Route::post("/reset-password", [AuthController::class, "resetPassword"])->withoutMiddleware("auth:api");
-
     Route::get("/", [UserController::class, "index"]);
     Route::post("create", [UserController::class, "store"]);
     Route::put("update/{id}", [UserController::class, "update"]);
@@ -118,9 +116,11 @@ Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('search/{data}', [SalleController::class, "search"]);
 });
 
-Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
+Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
     Route::get('', [ProfesseurController::class, "index"]);
     Route::get('profile', [ProfesseurController::class, "profile"]);
+    Route::get('search/{data}', [ProfesseurController::class, "search"]);
+    Route::get('', [ProfesseurController::class, "index"]);
     Route::get('search/{data}', [ProfesseurController::class, "search"]);
     Route::get('show/{id}', [ProfesseurController::class, "show"]);
     Route::post('create', [ProfesseurController::class, "store"]);
@@ -216,6 +216,7 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::put('update/{id}', [SyllabusController::class, "update"]);
     Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
     Route::get('search/{data}', [SyllabusController::class, "search"]);
+
 });
 
 Route::any('test', function (Request $request) {

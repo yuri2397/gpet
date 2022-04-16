@@ -8,7 +8,12 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="banks" [nzBordered]="true">
+            <nz-table [nzLoading]="isLoad"
+            nzShowSizeChanger
+            [nzPageSize]="4"
+            #basicTable
+            [nzData]="banks"
+            [nzBordered]="true">
                 <thead>
                     <tr class="text-center">
                         <th class="text-center">Code</th>

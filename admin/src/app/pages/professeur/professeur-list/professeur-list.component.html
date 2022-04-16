@@ -16,7 +16,13 @@
             <div class="my-2">
                 <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
             </div>
-            <nz-table nzTableLayout="fixed" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="10" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
+            <nz-table nzTableLayout="fixed"
+              [nzLoading]="isLoad"
+              nzShowSizeChanger
+              [nzPageSize]="10"
+              #basicTable
+              [nzData]="listOfDisplayData"
+              [nzBordered]="true">
                 <thead>
                     <tr>
                         <th>
