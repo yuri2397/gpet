@@ -25,6 +25,7 @@ use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\SyllabusController;
 use Spatie\Permission\Models\Role;
+use Facade\FlareClient\Contracts\ProvidesFlareContext;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -134,6 +135,8 @@ Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
      */
 
      Route::get('timestables/{professor}', [ProfesseurController::class, 'timestable']);
+    Route::post("update-avatar", [ProfesseurController::class, "updateAvatar"]);
+
 });
 
 Route::prefix("ue")->middleware(['auth:api'])->group(function () {

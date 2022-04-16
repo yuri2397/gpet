@@ -129,6 +129,7 @@ class ProfesseurController extends Controller
         }
 
         return $prof;
+
     }
 
 
@@ -260,7 +261,7 @@ class ProfesseurController extends Controller
     }
 
     public function profile(){
-        return response()->json($this->currentUser()->professor);
+        return $this->show($this->currentUser()->professor->id);
     }
 
     public function timestable($id){
@@ -270,7 +271,7 @@ class ProfesseurController extends Controller
         foreach ($days as $day) {
             $ept[] = [
                 "day" => $day,
-                "data" => TimesTable::whereProfessorId($id)
+                "data" => TimesTable::with("classe")->whereProfessorId($id)
                 ->whereDayId($day->id)
                 ->orderBy("start")
                 ->get()
@@ -278,5 +279,25 @@ class ProfesseurController extends Controller
         }
 
         return $ept;
+    }
+
+    public function updateAvatar(Request $request){
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images');
+
+            $user = Professor::find($this->currentUser()->professor->id);
+            if ($user->avatar) {
+                \unlink("storage" . $user->avatar);
+            }
+            $user->avatar = Str::substr($path, 6, strlen($path));
+
+            $user->save();
+            return response()->json($user);
+        }
+        else {
+            return response()->json([
+                "message" => "Veuillez selectionner une image pour votre profile."
+            ], 422);
+        }
     }
 }

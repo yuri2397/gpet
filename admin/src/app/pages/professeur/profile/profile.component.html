@@ -1,208 +1,175 @@
-<div *ngIf="dataLoad; else loadData">
-  <!-- TOP -->
-  <div class="card card-body mb-3">
-      <div class="d-flex justify-content-between align-items-center ">
-          <div>
-              <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="Précedent"></nz-page-header>
-          </div>
-          <div>
-              <div class="mx-1">
-                  <button mat-mini-fab class="edit-btn" (click)="openEditModal()">
-                      <mat-icon>edit</mat-icon>
-                  </button>
-              </div>
-          </div>
-          <ng-template #backTemp>
-              <button class="m-2" mat-mini-fab color="primary">
-                  <mat-icon>arrow_back</mat-icon>
-              </button>
-          </ng-template>
-      </div>
-      <ng-container *ngIf="!dataLoad && !errorServer">
-          <!-- MIDDLE -->
-          <div class="row">
-              <div class="row justify-content-between align-items-top">
-                  <div class="col-xm-8 col-md-6 my-1">
-                      <nz-card class="border card" [nzCover]="coverTemplate">
-                          <nz-tabset>
-                              <nz-tab nzTitle="Personnel">
-                                  <div class="mb-3">
-                                      <nz-tag [nzColor]="'geekblue'">
-                                          <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
-                                      </nz-tag>
-                                      {{ professeur.first_name }} {{ professeur.last_name }}
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>Email</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'geekblue'">{{ professeur.email }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>Date de naissance</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'lime'">{{ professeur.born_at | date: "d MMMM y" }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>Lieu de naissance</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'orange'">{{ professeur.born_in }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                              </nz-tab>
-                              <nz-tab nzTitle="Professionel">
-                                  <div class="d-flex justify-content-between
-                    align-items-center">
-                                      <div>Département</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'geekblue'">{{ professeur.departement.name }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
+<div *ngIf="!dataLoad; else loadData">
+    <!-- TOP -->
+    <div class="card card-body shadow-sm mb-3">
+        <div class="d-flex justify-content-between align-items-center ">
+            <div>
+                <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="Précedent"></nz-page-header>
+            </div>
+            <ng-template #backTemp>
+                <button class="m-2" mat-mini-fab color="primary">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </ng-template>
+        </div>
+        <div *ngIf="!dataLoad && !errorServer" class="row justify-content-between align-items-top">
+            <div class="col-xm-8 col-md-6 my-1">
+                <div class="card body m-2 border raduis-sm">
+                    <img class="" [src]="userProfilePath()" class="user-avatar card-img-top" alt="" />
+                    <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
+                    <div class="d-flex justify-content-center btn-icon">
+                        <div>
+                            <button mat-fab color="basic" class="shadow" (click)="image.click()">
+                                <mat-icon>edit</mat-icon>
+                                <form enctype="multipart/form-data">
+                                    <input #image type="file" nz-input hidden (change)="onChange($event)" />
+                                </form>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <nz-tabset>
+                            <nz-tab nzTitle="Personnel">
+                                <div class="mb-3">
+                                    <nz-tag [nzColor]="'geekblue'">
+                                        <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
+                                    </nz-tag>
+                                    {{ professeur.first_name }} {{ professeur.last_name }}
+                                </div>
+                                <div class="d-flex my-2 justify-content-between
+                        align-items-center">
+                                    <div>Email</div>
+                                    <div>
+                                        <nz-tag [nzColor]="'geekblue'">{{ professeur.email }}
+                                        </nz-tag>
+                                    </div>
+                                </div>
+                                <div class="d-flex my-2 justify-content-between
+                        align-items-center">
+                                    <div>Date de naissance</div>
+                                    <div>
+                                        <nz-tag [nzColor]="'lime'">{{ professeur.born_at | date: "d MMMM y" }}
+                                        </nz-tag>
+                                    </div>
+                                </div>
+                                <div class="d-flex my-2 justify-content-between
+                        align-items-center">
+                                    <div>Lieu de naissance</div>
+                                    <div>
+                                        <nz-tag [nzColor]="'orange'">{{ professeur.born_in }}
+                                        </nz-tag>
+                                    </div>
+                                </div>
+                            </nz-tab>
+                            <nz-tab nzTitle="Professionel">
+                                <div class="d-flex justify-content-between
+                        align-items-center">
+                                    <div>Département</div>
+                                    <div>
+                                        <nz-tag [nzColor]="'geekblue'">{{ professeur.departement.name }}
+                                        </nz-tag>
+                                    </div>
+                                </div>
 
-                                  <div class="d-flex justify-content-between my-2
-                    align-items-center">
-                                      <div>Type</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'geekblue'">{{ professeur.professor_type.name | uppercase }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
+                                <div class="d-flex justify-content-between my-2
+                        align-items-center">
+                                    <div>Type</div>
+                                    <div>
+                                        <nz-tag [nzColor]="'geekblue'">{{ professeur.professor_type.name | uppercase }}
+                                        </nz-tag>
+                                    </div>
+                                </div>
 
-                                  <div class="d-flex my-2 justify-content-between
+                                <div class="d-flex my-2 justify-content-between
+                        align-items-center">
+                                    <div>Status</div>
+                                    <div>
+                                        <nz-tag [nzColor]="'volcano'">{{ professeur.status }}
+                                        </nz-tag>
+                                    </div>
+                                </div>
+                                <div class="d-flex my-2 justify-content-between
+                        align-items-center">
+                                    <div>Métier</div>
+                                    <div>
+                                        <nz-tag [nzColor]="professeur.job == null ? 'red' : 'orange'" [innerText]="professeur.job ?? 'Non
+                            définie'"></nz-tag>
+                                    </div>
+                                </div>
+                                <div class="d-flex my-2 justify-content-between
+                        align-items-center">
+                                    <div>Dérnier Diplôme</div>
+                                    <div>
+                                        <nz-tag [nzColor]="professeur.last_degree == null ?
+                            'red' :
+                            'magenta'" [innerText]="professeur.last_degree ?? 'Non
+                            définie'"></nz-tag>
+                                    </div>
+                                </div>
+                                <div class="d-flex my-1 justify-content-between
+                        align-items-center">
+                                    <div>En fonction</div>
+                                    <div>
+                                        <nz-tag [nzColor]="professeur.is_active ? 'green' : 'red'" [innerText]="professeur.is_active ? 'OUI' : 'NON'"></nz-tag>
+                                    </div>
+                                </div>
+                            </nz-tab>
+                        </nz-tabset>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xm-5 col-md-6 my-1">
+                <nz-card class="border card">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert>
+                            <br />
+                            <div class="d-flex my-2 justify-content-between
                     align-items-center">
-                                      <div>Status</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'volcano'">{{ professeur.status }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
+                                <div>Banque</div>
+                                <div>
+                                    <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}
+                                    </nz-tag>
+                                </div>
+                            </div>
+                            <div class="d-flex my-2 justify-content-between
                     align-items-center">
-                                      <div>Métier</div>
-                                      <div>
-                                          <nz-tag [nzColor]="professeur.job == null ? 'red' : 'orange'" [innerText]="professeur.job ?? 'Non
-                        définie'"></nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
+                                <div>Code de la banque</div>
+                                <div>
+                                    <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}
+                                    </nz-tag>
+                                </div>
+                            </div>
+                            <div class="d-flex my-2 justify-content-between
                     align-items-center">
-                                      <div>Dérnier Diplôme</div>
-                                      <div>
-                                          <nz-tag [nzColor]="professeur.last_degree == null ?
-                        'red' :
-                        'magenta'" [innerText]="professeur.last_degree ?? 'Non
-                        définie'"></nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-1 justify-content-between
+                                <div>N° de compte</div>
+                                <div>
+                                    <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}
+                                    </nz-tag>
+                                </div>
+                            </div>
+                            <div class="d-flex my-2 justify-content-between
                     align-items-center">
-                                      <div>En fonction</div>
-                                      <div>
-                                      </div>
-                                  </div>
-                              </nz-tab>
-                          </nz-tabset>
-                      </nz-card>
-                      <ng-template #coverTemplate>
-                          <img class="user-avatar" [src]="userProfilePath()" />
-                      </ng-template>
-
-                  </div>
-                  <div class="col-xm-5 col-md-6 my-1">
-                      <nz-card class="border card">
-                          <div class="row">
-                              <div class="col-md-12 col-xs-12">
-                                  <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert>
-                                  <br />
-                                  <div class="d-flex my-2 justify-content-between
+                                <div>RIP</div>
+                                <div>
+                                    <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}
+                                    </nz-tag>
+                                </div>
+                            </div>
+                            <div class="d-flex my-2 justify-content-between
                     align-items-center">
-                                      <div>Banque</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>Code de la banque</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>N° de compte</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>RIP</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                                  <div class="d-flex my-2 justify-content-between
-                    align-items-center">
-                                      <div>Clé</div>
-                                      <div>
-                                          <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key">
-                                          </nz-tag>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </nz-card>
-                  </div>
-              </div>
-          </div>
-
-      </ng-container>
-      <!-- SKELTON -->
-      <ng-template *ngIf="!errorServer && dataLoad">
-          <div class="row col-12">
-              <nz-skeleton [nzParagraph]="{ rows: 1 }" [nzActive]="true"></nz-skeleton>
-          </div>
-          <div class="row justify-content-between align-items-top">
-              <div class="col-xm-6 col-md-4 my-1">
-                  <nz-card>
-                      <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad" [nzAvatar]="true">
-                      </nz-skeleton>
-                  </nz-card>
-              </div>
-              <div class="col-xm-6 col-md-4 my-1">
-                  <nz-card>
-                      <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad">
-                      </nz-skeleton>
-                  </nz-card>
-              </div>
-              <div class="col-xm-3 col-md-4 my-1">
-                  <nz-card>
-                      <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad">
-                      </nz-skeleton>
-                  </nz-card>
-              </div>
-          </div>
-          <div class="row mt-2">
-              <div class="col-12">
-                  <nz-skeleton [nzActive]="true"></nz-skeleton>
-              </div>
-          </div>
-      </ng-template>
-  </div>
+                                <div>Clé</div>
+                                <div>
+                                    <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key">
+                                    </nz-tag>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nz-card>
+            </div>
+        </div>
+    </div>
 </div>
 <ng-template #loadData>
-  <app-load></app-load>
+    <app-load></app-load>
 </ng-template>

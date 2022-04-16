@@ -25,7 +25,15 @@
                                 }}"></nz-divider>
                                 <div class="row justify-content-between">
                                     <div class="col text-start">
-                                        <mat-icon [color]="'primary'" class="mat-24">room</mat-icon>
+                                        Classe:
+                                    </div>
+                                    <div class="col text-end">
+                                        {{ row.classe.name }}
+                                    </div>
+                                </div>
+                                <div class="row justify-content-between">
+                                    <div class="col text-start">
+                                        Salle:
                                     </div>
                                     <div class="col text-end">
                                         {{ row.salle.name }}

@@ -14,54 +14,34 @@ import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.comp
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  isLoad = false;
-  professeur:any;
+  professeur!: Professor;
   dataLoad = true;
   errorServer = false;
-
-  constructor(private userService: UserService,private notification: NotificationService,
-    private modalService: NzModalService,private profService: ProfessorService,private location: Location,
-    ) {}
+  avatarLoad = false;
+  file: any;
+  constructor(
+    private modalService: NzModalService,
+    private profService: ProfessorService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.profile();
   }
 
   profile() {
-    this.isLoad = true;
-
-    this.userService.currentUser().subscribe({
+    this.dataLoad = true;
+    this.profService.profile().subscribe({
       next: (response) => {
-        this.professeur=response.professor;
-        console.log(response.professor);
-        console.log(this.professeur);
-        console.log("prof bi "+this.professeur.first_name);
-        this.isLoad = false;
+        this.professeur = response;
+        console.log(response);
+        this.dataLoad = false;
+        this.errorServer = false;
       },
       error: (errors) => {
-
+        this.errorServer = true;
+        this.dataLoad = false;
       },
-    });
-  }
-
-
-  openEditModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier les information',
-      nzContent: ProfesseurEditComponent,
-      nzComponentParams: {
-        professor: this.profService.clone(this.professeur),
-      },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '60em',
-    });
-
-    modal.afterClose.subscribe((data: Professor | null) => {
-      if (data != null) {
-        this.professeur = data;
-      }
     });
   }
 
@@ -69,9 +49,27 @@ export class ProfileComponent implements OnInit {
     if (this.professeur.avatar == null) {
       return '/assets/img/avatar.png';
     }
-    return this.profService.host + this.professeur.avatar;
+    return this.profService.host + 'storage' + this.professeur.avatar;;
   }
   onBack() {
     this.location.back();
+  }
+  onChange(event: any) {
+    this.file = event.target.files[0];
+    if (this.file != null) {
+      this.updateAvatar();
+    }
+  }
+
+  updateAvatar() {
+    this.avatarLoad = true;
+    this.profService.updateAvatar(this.file).subscribe({
+      next: (response: Professor) => {
+        this.professeur.avatar = response.avatar;
+      },
+      error: (errors: any) => {
+        console.log(errors);
+      },
+    });
   }
 }

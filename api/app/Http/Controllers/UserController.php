@@ -27,9 +27,9 @@ class UserController extends Controller
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("chef de département")) {
-            return User::with("roles")->whereDepartementId($user->departement_id)->get();
+            return User::with("roles")->whereDepartementId($user->departement_id)->whereModelType("User")->get();
         }
-        return User::with("roles")->get();
+        return User::with("roles")->whereModelType("User")->get();
     }
 
 
