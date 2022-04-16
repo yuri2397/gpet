@@ -1,3 +1,5 @@
+import { EptRow } from 'src/app/models/ept-row';
+import { EPT } from 'src/app/models/ept';
 import { CourseDoService } from './course-do.service';
 import { CourseService } from './course.service';
 import { BankService } from './bank.service';
@@ -225,6 +227,16 @@ export class ProfessorService extends BaseHttp {
   payments(professor: Professor) {
     return this.http.get<Professor>(
       this.endPointWithSlash + 'payments/' + professor.registration_number,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  getProfeseurEPT() {
+    return this.http.get<EptRow[]>(
+      this.endPointWithSlash + 'timestables/' + this.getUser().professor?.id,
       {
         headers: this.authorizationHeaders,
         observe: 'body',

@@ -202,3 +202,35 @@ input,
 .ant-tabs-tab-btn:hover {
     color: #1d617a !important;
 }
+
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: #1d617a;
+    box-shadow: 0 0 0 2px #1d617a59;
+}
+
+// LIST SELECTED ITEM
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+    color: white;
+    background-color: #1d617a;
+}
+
+// SIDEBAR
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #1d617a;
+    border-radius: 6px;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected>*,
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected>*>* {
+    color: white !important;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+}
+
+.ant-menu-inline .ant-menu-item::after {
+    border-right: rgba(0, 0, 0, 0.05) !important;
+}
+
+.ant-menu-item,
+.ant-menu-inline.ant-menu-root .ant-menu-item {
+    transition: none;
+}

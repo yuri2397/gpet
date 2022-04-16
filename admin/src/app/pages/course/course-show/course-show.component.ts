@@ -125,7 +125,6 @@ export class CourseShowComponent implements OnInit {
       nzMaskClosable: false,
       nzClosable: false,
       nzWidth: '80%',
-
     });
 
     modal.afterClose.subscribe((data: Syllabus | null) => {

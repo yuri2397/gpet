@@ -69,19 +69,19 @@ export class SyllabusCreateComponent implements OnInit {
           'Syllabus ajouté avec succès.'
         );
         console.log(response);
-        this.destroyModal();
+        this.destroyModal(response);
       },
       error: (errors) => {
         this.isLoad = false;
         if (errors.status != 403)
           this.notification.error('Notification', errors.error.message);
-        this.destroyModal();
+        this.destroyModal(null);
         console.log(errors);
       },
     });
   }
 
-  destroyModal(): void {
+  destroyModal(data: any): void {
     this.modal.destroy();
   }
 

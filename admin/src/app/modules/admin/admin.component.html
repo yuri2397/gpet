@@ -6,7 +6,7 @@
         </div>
         <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="px-1">
             <ng-container *ngFor="let item of menuItems">
-                <li (click)="routerLink(item)" *ngIf="canShowItem(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]="selected(item)">
+                <li class="sider-bar-item" (click)="routerLink(item)" *ngIf="canShowItem(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]="selected(item)">
                     <i nz-icon>
             <mat-icon class="icon">{{ item.icon }}</mat-icon>
           </i>

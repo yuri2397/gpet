@@ -50,13 +50,8 @@ import { ChapitreListComponent } from '../pages/course/chapitre/chapitre-list/ch
 import { SeanceCreateComponent } from '../pages/course/seance/seance-create/seance-create.component';
 import { SeanceEditComponent } from '../pages/course/seance/seance-edit/seance-edit.component';
 import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-list.component';
-<<<<<<< HEAD
-import { SyllabusCreateComponent } from '../pages/syllabus/syllabus-create/syllabus-create.component';
-import { SyllabusEditComponent } from '../pages/syllabus/syllabus-edit/syllabus-edit.component';
 import { InfoUserComponent } from './ui/info-user/info-user.component';
 
-=======
->>>>>>> a8d7836e20f2c992d1af0307cc91e0c76e877d94
 @NgModule({
   declarations: [
     RessourceListComponent,

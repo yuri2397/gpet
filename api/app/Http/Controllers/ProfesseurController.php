@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use UserRole;
+use App\Models\Day;
 use App\Models\User;
+use App\Traits\Utils;
 use App\Models\Account;
 use App\Models\Professor;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\TimesTable;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use App\Mail\SendNewUserMail;
-use App\Traits\Utils;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 
 class ProfesseurController extends Controller
@@ -25,6 +27,7 @@ class ProfesseurController extends Controller
         $this->middleware("permission:creer professeur")->only(["store"]);
         $this->middleware("permission:supprimer professeur")->only(["destroy"]);
         $this->middleware("permission:voir payement")->only(["payments"]);
+        $this->middleware("role:professeur")->only(["timestable"]);
 
     }
 
@@ -122,7 +125,7 @@ class ProfesseurController extends Controller
             $prof->courses = $prof->courses()->with("classe")->get();
         }
         else {
-            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
+            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();    
         }
 
         return $prof;
@@ -258,5 +261,22 @@ class ProfesseurController extends Controller
 
     public function profile(){
         return response()->json($this->currentUser()->professor);
+    }
+
+    public function timestable($id){
+        $ept = [];
+        $days = Day::all();
+
+        foreach ($days as $day) {
+            $ept[] = [
+                "day" => $day,
+                "data" => TimesTable::whereProfessorId($id)
+                ->whereDayId($day->id)
+                ->orderBy("start")
+                ->get()
+            ];
+        }
+
+        return $ept;
     }
 }
