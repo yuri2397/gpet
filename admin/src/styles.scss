@@ -1,22 +1,22 @@
 // CSS Reset, comment out if not required or using a different module
-@import '~minireset.css/minireset';
+@import "~minireset.css/minireset";
 
 /* You can add global styles to this file, and also import other style files */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "~igniteui-angular/lib/core/styles/themes/index";
+// Uncomment the following lines if you want to add a custom palette:
+// $primary: #731963 !default;
+// $secondary: #ce5712 !default;
+// $app-palette: igx-palette($primary, $secondary);
+
+/* autoprefixer grid: on */
+
+@include igx-core();
+@include igx-typography( $font-family: $material-typeface, $type-scale: $material-type-scale);
+@include igx-theme($default-palette);
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 * {
     font-family: "Poppins";
-}
-
-html,
-body {
-    height: 100%;
-    font-family: "Poppins";
-}
-
-body {
-    margin: 0;
-    font-family: Poppins, "Helvetica Neue", sans-serif;
 }
 
 .scroll-table {
@@ -26,11 +26,6 @@ body {
 
 table {
     width: 100%;
-}
-
-.table-header-color {
-    background-color: #1890ff;
-    color: white;
 }
 
 .center {
@@ -52,18 +47,6 @@ table {
     }
 }
 
-@import "~igniteui-angular/lib/core/styles/themes/index";
-// Uncomment the following lines if you want to add a custom palette:
-// $primary: #731963 !default;
-// $secondary: #ce5712 !default;
-// $app-palette: igx-palette($primary, $secondary);
-
-/* autoprefixer grid: on */
-
-@include igx-core();
-@include igx-typography($font-family: $material-typeface,
-$type-scale: $material-type-scale);
-@include igx-theme($default-palette);
 .bold {
     font-weight: bold;
 }
@@ -111,11 +94,7 @@ $type-scale: $material-type-scale);
 html,
 body {
     height: 100%;
-}
-
-body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 h1,
@@ -141,4 +120,117 @@ h6 {
 
 .delete-btn {
     background-color: red;
+}
+
+.txt-primary {
+    color: #1d617a !important;
+}
+
+.ant-btn {
+    border-radius: 6px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+    padding: 3px 10px;
+    text-transform: uppercase;
+}
+
+.ant-btn-primary {
+    color: #fff;
+    border-color: #1d617a;
+    background: #1d617a;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+    background-color: white;
+    color: #1d617a;
+}
+
+input,
+.ant-select-single .ant-select-selector {
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+}
+
+.ant-input:hover,
+.ant-input:focus,
+.ant-input-focused,
+.ant-btn:hover,
+.ant-btn:focus,
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: #1d617a;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+    border-right-width: 1px !important;
+    color: #1d617a;
+}
+
+.bg-color {
+    background-color: #1d617a !important;
+}
+
+.ant-modal-content {
+    border-radius: 6px !important;
+}
+
+.ant-modal-header {
+    background-color: #1d617a !important;
+    border-radius: 6px 6px 0 0 !important;
+}
+
+.ant-modal-title {
+    color: white !important;
+}
+
+.ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab+.ant-tabs-tab,
+.ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab {
+    border-radius: 6px;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    color: #1d617ab2;
+    font-weight: 700;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+}
+
+.ant-tabs-card.ant-tabs-top>.ant-tabs-nav .ant-tabs-tab {
+    border-bottom: 1px solid #1d617a;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #1d617a !important;
+}
+
+.ant-tabs-tab-btn:hover {
+    color: #1d617a !important;
+}
+
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: #1d617a;
+    box-shadow: 0 0 0 2px #1d617a59;
+}
+
+// LIST SELECTED ITEM
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+    color: white;
+    background-color: #1d617a;
+}
+
+// SIDEBAR
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #1d617a;
+    border-radius: 6px;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected>*,
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected>*>* {
+    color: white !important;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.3s;
+}
+
+.ant-menu-inline .ant-menu-item::after {
+    border-right: rgba(0, 0, 0, 0.05) !important;
+}
+
+.ant-menu-item,
+.ant-menu-inline.ant-menu-root .ant-menu-item {
+    transition: none;
 }

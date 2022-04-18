@@ -70,7 +70,7 @@ const routes: Routes = [
   { path: 'roles', component: RoleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
   { path: 'users/show/:id', component: UserShowComponent },
-  { path: 'syllabus/create', component: SyllabusCreateComponent },
+  { path: 'courses/show/syllabus/create/:id', component: SyllabusCreateComponent },
 
 ];
 

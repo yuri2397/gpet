@@ -1,3 +1,5 @@
+import { EptRow } from 'src/app/models/ept-row';
+import { EPT } from 'src/app/models/ept';
 import { CourseDoService } from './course-do.service';
 import { CourseService } from './course.service';
 import { BankService } from './bank.service';
@@ -13,6 +15,7 @@ import { CoursesDo } from '../models/coures-do';
   providedIn: 'root',
 })
 export class ProfessorService extends BaseHttp {
+  
   protected _baseUrl = 'professeur';
   constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
@@ -228,6 +231,39 @@ export class ProfessorService extends BaseHttp {
       {
         headers: this.authorizationHeaders,
         observe: 'body',
+      }
+    );
+  }
+
+  getProfeseurEPT() {
+    return this.http.get<EptRow[]>(
+      this.endPointWithSlash + 'timestables/' + this.getUser().professor?.id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  profile(){
+    return this.http.get<Professor>(this.endPointWithSlash + "profile", {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    })
+  }
+
+  updateAvatar(file: any) {
+    var myFormData = new FormData();
+    myFormData.append('image', file);
+
+    return this.http.post<Professor>(
+      this.endPointWithSlash + 'update-avatar',
+      myFormData,
+      {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + this.getToken(),
+        },
       }
     );
   }

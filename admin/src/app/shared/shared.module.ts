@@ -50,6 +50,8 @@ import { ChapitreListComponent } from '../pages/course/chapitre/chapitre-list/ch
 import { SeanceCreateComponent } from '../pages/course/seance/seance-create/seance-create.component';
 import { SeanceEditComponent } from '../pages/course/seance/seance-edit/seance-edit.component';
 import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-list.component';
+import { InfoUserComponent } from './ui/info-user/info-user.component';
+
 @NgModule({
   declarations: [
     RessourceListComponent,
@@ -61,6 +63,7 @@ import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-l
     ChapitreListComponent,
     LoadComponent,
     ChapitreEditComponent,
+    InfoUserComponent,
   ],
   imports: [
     CommonModule,

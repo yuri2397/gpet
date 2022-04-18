@@ -236,6 +236,10 @@ export class BaseHttp  extends GestionRole{
     return this._host;
   }
 
+  get imagePath(): string{
+    return this.host.substring(0, this.host.length - 1 );
+  }
+
   hasRole(role: Role): boolean {
     return this.getRoles().some((x) => x.name === role.name);
   }

@@ -1,6 +1,7 @@
 import { Course } from "./course";
 import { Salle } from "./salle";
 import { Day } from "./day";
+import { Classe } from "./classe";
 
 export class EPT {
   id!: number;
@@ -16,6 +17,7 @@ export class EPT {
   day!: Day;
   salle!: Salle;
   course!: Course;
+  classe!: Classe;
   active!: boolean;
   disabled!: boolean;
   removeLoad!: boolean;

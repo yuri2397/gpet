@@ -18,8 +18,8 @@
       </div>
       <nz-table nzTableLayout="fixed"
         [nzLoading]="isLoad"
-        nzShowSizeChanger
-        [nzPageSize]="5"
+        [nzShowSizeChanger]="true"
+        [nzPageSizeOptions] ="[10,20,30]"
         #basicTable
         [nzData]="listOfDisplayData"
         [nzBordered]="true"
