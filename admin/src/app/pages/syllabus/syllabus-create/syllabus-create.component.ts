@@ -18,7 +18,7 @@ export class SyllabusCreateComponent implements OnInit {
   @Input() course!: Course;
 
   constructor(
-    private modal: NzModalRef,
+    // private modal: NzModalRef,
     private syllabusService: SyllabusService,
     private notification : NzNotificationService
     ) { }
@@ -33,8 +33,8 @@ export class SyllabusCreateComponent implements OnInit {
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '40rem',
-    minHeight: '20rem',
+    height: '120rem',
+    minHeight: '100rem',
     placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
@@ -68,22 +68,22 @@ export class SyllabusCreateComponent implements OnInit {
           'Notification',
           'Syllabus ajouté avec succès.'
         );
-        console.log(response);
-        this.destroyModal();
+        // console.log(response);
+        // this.destroyModal();
       },
       error: (errors) => {
         this.isLoad = false;
         if (errors.status != 403)
           this.notification.error('Notification', errors.error.message);
-        this.destroyModal();
-        console.log(errors);
+        // this.destroyModal();
+        // console.log(errors);
       },
     });
   }
 
-  destroyModal(): void {
-    this.modal.destroy();
-  }
+  // destroyModal(): void {
+  //   this.modal.destroy();
+  // }
 
 
 }

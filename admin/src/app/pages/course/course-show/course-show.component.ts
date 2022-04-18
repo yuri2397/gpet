@@ -115,25 +115,25 @@ export class CourseShowComponent implements OnInit {
   openEditModal() {}
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Créer le syllabus',
-      nzContent: SyllabusCreateComponent,
-      nzComponentParams: {
-        course: this.course,
-      },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '80%',
+    // const modal = this.modalService.create({
+    //   nzTitle: 'Créer le syllabus',
+    //   nzContent: SyllabusCreateComponent,
+    //   nzComponentParams: {
+    //     course: this.course,
+    //   },
+    //   nzCentered: true,
+    //   nzMaskClosable: false,
+    //   nzClosable: false,
+    //   nzWidth: '80%',
 
-    });
+    // });
 
-    modal.afterClose.subscribe((data: Syllabus | null) => {
-      if (data != null) {
-        [this.syllabusService, data];
-      }
-    });
-    // this.router.navigate(['syllabus/create']);
+    // modal.afterClose.subscribe((data: Syllabus | null) => {
+    //   if (data != null) {
+    //     [this.syllabusService, data];
+    //   }
+    // });
+    this.router.navigate(['/admin/syllabus/create']);
   }
 
 }
