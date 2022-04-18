@@ -47,12 +47,16 @@ export class DepartementShowComponent implements OnInit {
       },
       error: (errors) => {
         this.dataLoad = false;
-        
+
       },
     });
   }
 
   onCoursesChanged(courses: Course[]) {
     this.departement.courses = courses;
+  }
+
+  listSalleDept(){
+    
   }
 }
