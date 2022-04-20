@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { SyllabusService } from 'src/app/services/syllabus.service';
 import { Location } from '@angular/common';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { on } from 'events';
 
 @Component({
   selector: 'app-syllabus-edit',
@@ -31,6 +32,7 @@ export class SyllabusEditComponent implements OnInit {
     this.syllabus.course_id = params['id'];
     this.find(this.syllabus.course_id);
     });
+    console.log(this.syllabus)
   }
 
   name = 'Angular 6';
@@ -78,6 +80,7 @@ export class SyllabusEditComponent implements OnInit {
           'Notification',
           'Syllabus modifié avec succès.',
         );
+        this.onBack();
       },
       error: (errors) => {
         this.isLoad = false;

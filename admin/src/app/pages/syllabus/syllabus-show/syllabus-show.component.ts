@@ -5,6 +5,7 @@ import { SyllabusService } from 'src/app/services/syllabus.service';
 import { Location } from '@angular/common';
 import { Course } from 'src/app/models/course';
 import { Syllabus } from 'src/app/models/syllabus';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-syllabus-show',
@@ -21,18 +22,46 @@ export class SyllabusShowComponent implements OnInit {
 
   constructor(
     private syllabusService: SyllabusService,
-    private notification : NzNotificationService,
     private route: ActivatedRoute,
     private location: Location,
   ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.syllabus.course_id = params['id'];
-      this.find(this.syllabus.course_id);
-      console.log(this.syllabus)
-      });
+    this.syllabus.course_id = params['id'];
+    });
+    this.find(this.syllabus.course_id);
   }
+
+  name = 'Angular 6';
+  config: AngularEditorConfig = {
+    editable: false,
+    spellcheck: false,
+    height: '50rem',
+    minHeight: '35rem',
+    placeholder: this.syllabus.description,
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['bold']
+      ],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
 
   onBack() {
     this.location.back();
@@ -41,7 +70,7 @@ export class SyllabusShowComponent implements OnInit {
   find(id: number){
     this.dataLoad = true;
     this.errorServer = false;
-    this.syllabusService.findSyllabus(id).subscribe({
+    this.syllabusService.find(id).subscribe({
       next: (syllabus) => {
         this.syllabus = syllabus;
         this.dataLoad = false;

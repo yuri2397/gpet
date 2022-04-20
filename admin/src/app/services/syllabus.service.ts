@@ -32,12 +32,6 @@ export class SyllabusService extends BaseHttp {
       }
     );
   }
-  findSyllabus(id: number) {
-    return this.http.get<Syllabus>(this.endPointWithSlash + 'show/' + id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
-  }
 
   create(syllabus: Syllabus) {
     return this.http.post<Syllabus>(
@@ -52,6 +46,8 @@ export class SyllabusService extends BaseHttp {
       }
     );
   }
+
+
 
   edit(syllabus: Syllabus){
     return this.http.put<Syllabus>(

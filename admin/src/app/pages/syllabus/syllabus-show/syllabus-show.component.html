@@ -1,1 +1,24 @@
-<p>syllabus-show works!</p>
+<div class="row">
+  <div class="col-md-12">
+    <nz-page-header
+    class="site-page-header center"
+    class="site-page-header"
+    (nzBack)="onBack()"
+    [nzBackIcon]="backTemp"
+    nzTitle = "Syllabus du cours {{ syllabus.course_id }}"
+    >
+  </nz-page-header>
+  </div>
+  <ng-template #backTemp>
+    <button class="m-2" mat-mini-fab color="primary">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </ng-template>
+</div>
+
+<div class="card card-body">
+  <angular-editor
+  [placeholder]="this.syllabus.description"
+  [(ngModel)]="syllabus.description"
+  [config]="config"
+></angular-editor>
