@@ -128,7 +128,6 @@ class DepartementController extends Controller
 
     public function listSalleDept($departementid)
     {
-        # code...
         return Salle::where('departement_id','=',$departementid)->get();
     }
 }

@@ -107,11 +107,16 @@ export class CourseShowComponent implements OnInit {
     this.location.back();
   }
 
-  openEditModal() {}
+  openEditModal() {
+    this.router.navigate(['/admin/courses/show/syllabus/edit/' + this.course.id ]);
+  }
 
   openCreateModal() {
     this.router.navigate(['/admin/courses/show/syllabus/create/' + this.course.id ]);
   }
 
+  openShowModal() {
+    this.router.navigate(['/admin/courses/show/syllabus/show/' + this.course.id ]);
+  }
 }
 

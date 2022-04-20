@@ -221,6 +221,7 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::put('update/{id}', [SyllabusController::class, "update"]);
     Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
     Route::get('search/{data}', [SyllabusController::class, "search"]);
+    Route::get('syllabusDesc/{courseid}', [SyllabusController::class, "syllabusDesc"]);
 
 });
 
