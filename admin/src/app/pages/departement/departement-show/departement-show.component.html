@@ -47,25 +47,30 @@
                     </div>
                     <div class="row mx-1 my-2 card card-header raduis-sm border shadow-sm border">
                         <h6>LISTE DES SALLES POUR LE DEPARTEMENT </h6>
-                        <nz-table [nzLoading]="dataLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listes" [nzBordered]="true">
-                          <thead>
-                              <tr>
-                                  <th>Nom</th>
-                                  <th class="text-center">Numero</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr *ngFor="let data of basicTable.data">
-                                  <td>{{ data.name }}</td>
-                                  <td class="text-center">{{ data.number }}</td>
-                                  <td class="p-0">
-                                      <div class="d-flex justify-content-center">
-                                      </div>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </nz-table>
+
+
                     </div>
+                    <div class="card-body">
+                      <nz-table [nzLoading]="dataLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listes" [nzBordered]="true">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th class="text-center">Numero</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let data of basicTable.data">
+                                <td>{{ data.name }}</td>
+                                <td class="text-center">{{ data.number }}</td>
+                                <td class="p-0">
+                                    <div class="d-flex justify-content-center">
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </nz-table>
+                    </div>
+
                 </nz-tab>
                 <nz-tab [nzTitle]="'Classes'">
                     <app-classe-list [departement]="departement" [classes]="departement.classes" [setView]="true"></app-classe-list>
