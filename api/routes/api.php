@@ -79,11 +79,7 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
     Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
-
-
 });
-//Route::get('show/{id}', [DepartementController::class, "show1"]);
-Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
     Route::get('by-departement/{departement}', [SemesterController::class, 'findByDepartement']);
@@ -101,7 +97,6 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
 });
-Route::get('departement/{id}', [ClasseController::class, "findByDepartement"]);
 
 Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::get('', [EPTController::class, "index"]);
@@ -225,6 +220,7 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::put('update/{id}', [SyllabusController::class, "update"]);
     Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
     Route::get('search/{data}', [SyllabusController::class, "search"]);
+    Route::get('syllabusDesc/{courseid}', [SyllabusController::class, "syllabusDesc"]);
 
 });
 

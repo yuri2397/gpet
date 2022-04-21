@@ -14,7 +14,7 @@ import { Course } from 'src/app/models/course';
 export class DepartementShowComponent implements OnInit {
   dataLoad = true;
   errorNetWork = false;
-
+  listes!:Salle[];
   departement: Departement = new Departement();
   salle : Salle = new Salle();
   constructor(

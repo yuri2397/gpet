@@ -26,10 +26,10 @@ export class SyllabusCreateComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-   this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
     this.syllabus.course_id = params['id'];
-  });
-   }
+    });
+  }
 
   name = 'Angular 6';
   config: AngularEditorConfig = {
@@ -66,7 +66,6 @@ export class SyllabusCreateComponent implements OnInit {
   }
 
   save() {
-    console.log(this.syllabus);
     this.isLoad = true;
     this.syllabusService.create(this.syllabus).subscribe({
       next: (response) => {

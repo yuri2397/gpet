@@ -141,7 +141,7 @@ export class ProfesseurShowComponent implements OnInit {
     if (this.professeur.avatar == null) {
       return '/assets/img/avatar.png';
     }
-    return this.profService.host + this.professeur.avatar;
+    return this.profService.host +"storage" + this.professeur.avatar;
   }
 
   onBack() {

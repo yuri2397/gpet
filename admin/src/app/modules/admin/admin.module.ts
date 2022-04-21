@@ -68,6 +68,7 @@ import { SyllabusCreateComponent } from '../../pages/syllabus/syllabus-create/sy
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SyllabusShowComponent } from '../../pages/syllabus/syllabus-show/syllabus-show.component';
+import { SyllabusEditComponent } from '../../pages/syllabus/syllabus-edit/syllabus-edit.component';
 
 registerLocaleData(localeFr, fr);
 @NgModule({
@@ -134,7 +135,8 @@ registerLocaleData(localeFr, fr);
     UeEditComponent,
     UserShowComponent,
     SyllabusCreateComponent,
-    SyllabusShowComponent
+    SyllabusShowComponent,
+    SyllabusEditComponent,
   ],
 
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
