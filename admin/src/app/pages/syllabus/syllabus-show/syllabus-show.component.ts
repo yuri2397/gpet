@@ -37,6 +37,7 @@ export class SyllabusShowComponent implements OnInit {
   config: AngularEditorConfig = {
     editable: false,
     spellcheck: false,
+    showToolbar : false,
     height: '50rem',
     minHeight: '35rem',
     placeholder: this.syllabus.description,
