@@ -1,3 +1,4 @@
+import { Salle } from './../../../models/salle';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Departement } from 'src/app/models/departement';
@@ -15,7 +16,7 @@ export class DepartementShowComponent implements OnInit {
   errorNetWork = false;
 
   departement: Departement = new Departement();
-
+  salle : Salle = new Salle();
   constructor(
     private deptService: DepartementService,
     private route: ActivatedRoute,
@@ -54,9 +55,5 @@ export class DepartementShowComponent implements OnInit {
 
   onCoursesChanged(courses: Course[]) {
     this.departement.courses = courses;
-  }
-
-  listSalleDept(){
-    
   }
 }

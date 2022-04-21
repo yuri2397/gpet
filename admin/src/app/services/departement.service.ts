@@ -38,6 +38,8 @@ export class DepartementService extends BaseHttp {
     );
   }
 
+ 
+
   clone(batiment: Departement): any {
     let b = new Departement();
     b.id = batiment.id;
@@ -77,15 +79,15 @@ export class DepartementService extends BaseHttp {
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
-  listSalleDept(dept:Departement){
+ /* listSalleDept(dept:Departement){
     console.log("id dept: "+dept.id);
     console.log(this.endPointWithSlash);
     return this.http.get<Salle[]>(
       this.endPointWithSlash + 'listSalleDept/' + dept.id,
-      { headers: this.authorizationHeaders, 
+      { headers: this.authorizationHeaders,
         observe: 'body'
       }
     );
 
-  }
+  }*/
 }
