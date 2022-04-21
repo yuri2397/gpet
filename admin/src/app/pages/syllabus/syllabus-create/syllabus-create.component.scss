@@ -7,9 +7,12 @@
     border-radius: 4px;
     padding: 0.5rem;
     background-color: #f1f1f1;
-    min-height: 70px;
-    max-height: 500px;
+    min-height: 50px;
+    max-height: 40rem;
     overflow: auto;
+}
+.angular-editor-textarea {
+  min-height : 500px;
 }
 
 :host ::ng-deep .angular-editor-textarea {
@@ -21,9 +24,14 @@
 ::ng-deep {
     .NgxEditor {
         height: 400px;
+        min-height: 400px;
         overflow-y: scroll;
     }
     .NgxEditor__Content {
-        min-height: 400px;
+      min-height: 400px;
     }
+}
+.editor {
+ min-height: 500px;
+ margin-bottom: 20px;
 }

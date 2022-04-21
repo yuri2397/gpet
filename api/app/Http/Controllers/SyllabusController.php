@@ -43,10 +43,13 @@ class SyllabusController extends Controller
     {
         $this->validate($request, [
             'description' => 'required',
-            "course_id" => 'required|exists:courses,id|unique:syllabus,course_id'
         ]);
-        DB::table('syllabus')->whereId($id)->update($request->all());
-        return $this->show($id);
+        $syllabus=Syllabus::find($id);
+        $syllabus->description=$request->description;
+        $syllabus->save();
+      // DB::table('syllabus')->whereId($id)->update($request->all());
+        //return $this->show($id);
+        return  response()->json($syllabus, 200);;
     }
 
     public function destroy($id)
@@ -57,5 +60,10 @@ class SyllabusController extends Controller
     public function search($data)
     {
         //
+    }
+
+    public function syllabusDesc($courseid)
+    {
+        return Syllabus::where('course_id','=',$courseid)->first();
     }
 }

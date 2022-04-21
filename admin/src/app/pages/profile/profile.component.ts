@@ -140,6 +140,9 @@ export class ProfileComponent implements OnInit {
       //nzOkLoading: this.deleteLoad,
       nzMaskClosable: false,
       nzClosable: false,
+      nzCentered : true
+
+
     });
   }
 

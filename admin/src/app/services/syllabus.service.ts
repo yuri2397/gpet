@@ -10,7 +10,6 @@ import { BaseHttp } from '../shared/base-http';
 export class SyllabusService extends BaseHttp {
 
   protected _baseUrl = 'syllabus';
-
   constructor(private hc : HttpClient){
     super();
     this.http = hc;
@@ -22,6 +21,16 @@ export class SyllabusService extends BaseHttp {
     c.description = item.description;
     c.course_id = item.course_id;
     return c;
+  }
+
+  find(id: number) {
+    return this.http.get<Syllabus>(
+      this.endPointWithSlash + 'syllabusDesc/' + id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   create(syllabus: Syllabus) {
@@ -36,6 +45,21 @@ export class SyllabusService extends BaseHttp {
         observe: 'body',
       }
     );
+  }
+
+
+
+  edit(syllabus: Syllabus){
+    return this.http.put<Syllabus>(
+      this.endPointWithSlash + 'update/'+ syllabus.id,
+    {
+      description : syllabus.description,
+      course_id : syllabus.course_id,
+    },
+    {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    })
   }
 
 }

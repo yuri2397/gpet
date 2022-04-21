@@ -4,6 +4,7 @@ import { Departement } from 'src/app/models/departement';
 import { Location } from '@angular/common';
 import { DepartementService } from 'src/app/services/departement.service';
 import { Course } from 'src/app/models/course';
+import { Salle } from 'src/app/models/salle';
 
 @Component({
   selector: 'app-departement-show',
@@ -13,7 +14,7 @@ import { Course } from 'src/app/models/course';
 export class DepartementShowComponent implements OnInit {
   dataLoad = true;
   errorNetWork = false;
-
+  listes!:Salle[];
   departement: Departement = new Departement();
 
   constructor(
@@ -28,6 +29,7 @@ export class DepartementShowComponent implements OnInit {
       this.departement.id = params['id'];
     });
     this.find(this.departement);
+    this.listSalleDept();
   }
 
   showHeader() {
@@ -47,12 +49,28 @@ export class DepartementShowComponent implements OnInit {
       },
       error: (errors) => {
         this.dataLoad = false;
-        
+
       },
     });
   }
 
   onCoursesChanged(courses: Course[]) {
     this.departement.courses = courses;
+  }
+
+  listSalleDept(){
+    this.dataLoad = true;
+    this.deptService.listSalleDept(this.departement).subscribe({
+      next: (response) => {
+        this.listes = response;
+        this.dataLoad = false;
+        // console.log(this.listes);
+
+      },
+      error: (errors) => {
+        this.dataLoad = false;
+
+      },
+    });
   }
 }
