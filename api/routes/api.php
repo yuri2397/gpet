@@ -79,8 +79,6 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
     Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
-
-
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
