@@ -10,18 +10,8 @@
                 </div>
                 <div>
                     <div class="d-flex justify-content-end align-items-center">
-                        <div class="mx-1" *ngIf="can('voir payement') && isPayable()">
-                            <a [routerLink]="[
-                '/admin/professeurs/payements/' +
-                professeur.registration_number
-                ]">
-                                <button nz-button nzShape="circle" color="default">
-                  <i><mat-icon>paid</mat-icon></i>
-                </button>
-                            </a>
-                        </div>
                         <div class="mx-1">
-                            <button nz-button nzType="primary" nzShape="circle" nz-tooltip [nzTooltipTitle]="'Modifier les infos'" (click)="openEditModal()">
+                            <button nz-button nzShape="circle" nz-tooltip [nzTooltipTitle]="'Modifier les infos'" (click)="openEditModal()">
                 <i nz-icon nzType="edit"></i>
               </button>
                         </div>
@@ -35,7 +25,7 @@
                 <div class="row mt-2">
                     <div class="row justify-content-between align-items-top">
                         <div class="col-xm-8 col-md-6 my-1">
-                            <nz-card class="shadow" [nzCover]="coverTemplate">
+                            <nz-card class="border card" [nzCover]="coverTemplate">
                                 <nz-tabset>
                                     <nz-tab nzTitle="Personnel">
                                         <div class="mb-3">
@@ -119,13 +109,15 @@
                             <ng-template #coverTemplate>
                                 <img class="user-avatar" [src]="userProfilePath()" />
                             </ng-template>
-                            <mat-progress-bar *ngIf="updateStatusLoad" mode="indeterminate" color="primary"></mat-progress-bar>
+                            <mat-progress-bar *ngIf="updateStatusLoad" mode="indeterminate" color="primary">
+                            </mat-progress-bar>
                         </div>
                         <div class="col-xm-5 col-md-6 my-1">
-                            <nz-card class="shadow">
+                            <nz-card class="border card">
                                 <div class="row">
                                     <div class="col-md-12 col-xs-12">
-                                        <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert><br />
+                                        <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert>
+                                        <br />
                                         <div class="d-flex my-2 justify-content-between
                       align-items-center">
                                             <div>Banque</div>
@@ -162,7 +154,8 @@
                       align-items-center">
                                             <div>Clé</div>
                                             <div>
-                                                <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key"></nz-tag>
+                                                <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key">
+                                                </nz-tag>
                                             </div>
                                         </div>
                                     </div>
@@ -171,14 +164,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mt-3 shadow">
-                    <div class="d-flex justify-content-between align-items-center
-            card-header
-            bg-color">
+                <div class="card mt-3 border card">
+                    <div class="d-flex justify-content-between align-items-center card-header bg-color">
                         <div>
                             <h5 class="text-white">Informations sur les cours</h5>
                         </div>
                         <div>
+                            <button class="mx-2" *ngIf="can('voir payement') && isPayable()" nz-tooltip [nzTooltipTitle]="'Historique des paiements'" (click)="openPayementPage()" mat-mini-fab color="warn">
+                <mat-icon>paid</mat-icon>
+              </button>
                             <button nz-tooltip [nzTooltipTitle]="'Ajoute un cour'" (click)="openAddCourseModal()" mat-mini-fab color="default">
                 <mat-icon>add</mat-icon>
               </button>
@@ -220,7 +214,8 @@
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                             <div>
-                                                <button nz-button nzType="primary" nzShape="circle" (click)="openAddHourModal(data)"><mat-icon>pending_actions</mat-icon>
+                                                <button nz-button nzType="primary" nzShape="circle" (click)="openAddHourModal(data)">
+                          <mat-icon>pending_actions</mat-icon>
                         </button>
                                             </div>
                                             <div class="mx-2">

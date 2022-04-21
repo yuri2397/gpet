@@ -103,13 +103,11 @@ class UserController extends Controller
     {
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('public/images');
-
             $user = User::find(auth()->id());
             if ($user->avatar) {
                 \unlink("storage" . $user->avatar);
             }
             $user->avatar = Str::substr($path, 6, strlen($path));
-
             $user->save();
             return response()->json($user);
         }
@@ -117,9 +115,7 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Veuillez selectionner une image pour votre profile."
             ], 422);
-
         }
-
     }
     public function showuserwithprof($id)
     {
