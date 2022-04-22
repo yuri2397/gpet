@@ -16,7 +16,6 @@ export class DepartementShowComponent implements OnInit {
   errorNetWork = false;
   listes!:Salle[];
   departement: Departement = new Departement();
-  salle : Salle = new Salle();
   constructor(
     private deptService: DepartementService,
     private route: ActivatedRoute,
