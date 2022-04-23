@@ -278,7 +278,7 @@
 </ng-template>
 
 <!-- ADD HOURS MODAL -->
-<nz-modal [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des
+<nz-modal nzCentered="true" [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des
   heurs de cours">
     <div *nzModalContent>
         <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
