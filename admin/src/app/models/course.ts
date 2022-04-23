@@ -1,3 +1,4 @@
+import { Syllabus } from 'src/app/models/syllabus';
 import { Bank } from 'src/app/models/bank';
 import { Service } from './service';
 import { Classe } from './classe';
@@ -27,6 +28,7 @@ export class Course extends Model<Course> {
   ec!: EC;
   semester!: Semester;
   service!: Service;
+  syllabus!: Syllabus;
 
   constructor() {
     super();

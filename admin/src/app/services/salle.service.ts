@@ -80,4 +80,14 @@ export class SalleService extends BaseHttp{
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
+
+  listSalleDept(id:number){
+    return this.http.get<Salle[]>(
+      this.endPointWithSlash + 'listSalleDept/' + id,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    )
+  }
 }

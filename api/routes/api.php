@@ -80,8 +80,6 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
     Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
-
-
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
@@ -100,6 +98,7 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
 });
+
 Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::get('', [EPTController::class, "index"]);
     Route::post('create', [EPTController::class, "store"]);
