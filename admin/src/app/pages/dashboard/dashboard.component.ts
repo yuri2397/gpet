@@ -19,17 +19,15 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDashboard();
-    
-    
+
   }
 
-  
+
   getDashboard(){
     this.isLoad = true;
     this.departementService.dashboard().subscribe({
       next: response => {
         this.dashboard = response;
-        console.log(this.dashboard);
         this.chartOptions = {
           series: response.salles_libre,
           chart: {
@@ -49,7 +47,6 @@ export class DashboardComponent implements OnInit {
             }
           }
         };
-        console.log(this.chartOptions.series);
         this.isLoad = false;
       },
       error: errors => {

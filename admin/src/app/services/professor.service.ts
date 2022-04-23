@@ -15,7 +15,8 @@ import { CoursesDo } from '../models/coures-do';
   providedIn: 'root',
 })
 export class ProfessorService extends BaseHttp {
-  
+
+  professor = new Professor();
   protected _baseUrl = 'professeur';
   constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
