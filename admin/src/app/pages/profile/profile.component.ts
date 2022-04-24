@@ -142,7 +142,7 @@ export class ProfileComponent implements OnInit {
       nzOkDanger: false,
       nzOnOk: () =>this.logout(),
       nzCancelText: 'Annuler',
-      //nzOkLoading: this.deleteLoad,
+      nzOkLoading: this.isLoad,
       nzMaskClosable: false,
       nzClosable: false,
       nzCentered : true
