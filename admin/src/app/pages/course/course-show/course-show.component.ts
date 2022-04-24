@@ -45,7 +45,7 @@ export class CourseShowComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.course.id = params['id'];
     });
-    this.findCourse();
+
   }
 
   findCourseWithEvolution(){
@@ -56,7 +56,6 @@ export class CourseShowComponent implements OnInit {
     this.dataLoad = true;
     this.courseService.show(this.course).subscribe({
       next: (response) => {
-        console.log(response);
         this.course = response;
         this.setChartData(response);
         this.dataLoad = false;

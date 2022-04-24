@@ -129,6 +129,8 @@ Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
     Route::post('course-to-professor', [CourseController::class, 'courseToProfessor']);
     Route::put('remove-course-professor', [CourseController::class, 'removeCourseProfessor']);
     Route::get("payments/{register_number}", [ProfesseurController::class, "payments"]);
+    Route::get('listCoursProf/{professorid}', [ProfesseurController::class, 'listCoursProf']);
+
 
     /**
      * MODULE PROFESSEUR
