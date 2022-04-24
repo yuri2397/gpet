@@ -47,8 +47,6 @@ export class SyllabusService extends BaseHttp {
     );
   }
 
-
-
   edit(syllabus: Syllabus){
     return this.http.put<Syllabus>(
       this.endPointWithSlash + 'update/'+ syllabus.id,

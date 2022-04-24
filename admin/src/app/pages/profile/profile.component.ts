@@ -12,6 +12,9 @@ import {
 } from '@angular/forms';
 import { NotificationService } from 'src/app/services/notification.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { Router } from '@angular/router';
+import { LoginResponse } from 'src/app/models/login-response';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -30,7 +33,9 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private notification: NotificationService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private router: Router,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -135,15 +140,37 @@ export class ProfileComponent implements OnInit {
       nzOkText: 'Valider',
       nzOkType: 'primary',
       nzOkDanger: false,
-      nzOnOk: () => this.authService.logOut(),
+      nzOnOk: () =>this.logout(),
       nzCancelText: 'Annuler',
-      //nzOkLoading: this.deleteLoad,
+      nzOkLoading: this.isLoad,
       nzMaskClosable: false,
       nzClosable: false,
       nzCentered : true
 
-
     });
+
+  }
+
+  logout(){
+    this.isLoad = true;
+    this.authService.logOut().subscribe({
+      next:() => {
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          'Déconnexion réussie',
+        );
+      },
+      error:(errors : any) => {
+        this.isLoad = false;
+        if (errors.status != 403)
+          this.notification.createNotification(
+            'erreur',
+            'Notification',
+             errors.error.message);
+      },
+    });
+    this.userService.logout();
   }
 
 }

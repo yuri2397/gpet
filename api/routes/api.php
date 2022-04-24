@@ -51,6 +51,7 @@ Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
+    Route::get('/logout', [AuthController::class, "logout"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
     Route::post("/update-password", [AuthController::class, "updatePassword"]);
     Route::post("/forgot-password", [AuthController::class, "forgotPassword"])->withoutMiddleware("auth:api");
