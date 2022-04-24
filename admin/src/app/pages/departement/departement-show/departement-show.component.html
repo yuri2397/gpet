@@ -1,92 +1,129 @@
 <div *ngIf="!dataLoad; else dataLoadTemp" style="width: 100%">
-    <div class="card shadow">
-        <div class="card-body ">
-            <div *ngIf="showHeader()" class="row">
-                <div class="col-md-12">
-                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="{{ departement.name }}"></nz-page-header>
-                </div>
-                <ng-template #backTemp>
-                    <button class="m-2" mat-mini-fab color="primary">
-                        <mat-icon>arrow_back</mat-icon>
-                    </button>
-                </ng-template>
-            </div>
-            <nz-tabset [nzType]="'card'" [nzTabPosition]="'top'" class="p-3">
-                <nz-tab [nzTitle]="'Vue global'">
-                    <div class="row">
-                        <div class="col-md-4 my-2">
-                            <div class="card shadow-sm border">
-                                <div class="card-body">
-                                    <nz-statistic [nzValue]="(departement.professors.length| number)!" [nzTitle]="'Professeurs'" [nzPrefix]="prefixTplProf" [nzValueStyle]="{ color: '#3F8600' }"></nz-statistic>
-                                    <ng-template #prefixTplProf>
-                                        <mat-icon>people</mat-icon>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 my-2">
-                            <div class="card shadow-sm border">
-                                <div class="card-body">
-                                    <nz-statistic [nzValue]="(departement.classes.length| number)!" [nzTitle]="'Classes'" [nzPrefix]="prefixTplClasses" [nzValueStyle]="{ color: '#41729f' }"></nz-statistic>
-                                    <ng-template #prefixTplClasses>
-                                        <mat-icon>school</mat-icon>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 my-2">
-                            <div class="card shadow-sm border">
-                                <div class="card-body">
-                                    <nz-statistic [nzValue]="(departement.courses.length| number)!" [nzTitle]="'Cours'" [nzPrefix]="prefixTplCours" [nzValueStyle]="{ color: '#3F8600' }"></nz-statistic>
-                                    <ng-template #prefixTplCours>
-                                        <mat-icon>emoji_objects</mat-icon>
-                                    </ng-template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mx-1 my-2 card card-header raduis-sm border shadow-sm border">
-                        <h6>LISTE DES SALLES POUR LE DEPARTEMENT </h6>
-                    </div>
-                    <div class="card-body">
-                      <nz-table [nzLoading]="dataLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listes" [nzBordered]="false">
-                        <thead>
-                            <tr>
-                                <th>Nom</th>
-                                <th class="text-center">Numero</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let data of basicTable.data">
-                                <td>{{ data.name }}</td>
-                                <td class="text-center">{{ data.number }}</td>
-                                <td class="p-0">
-                                    <div class="d-flex justify-content-center">
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </nz-table>
-                    </div>
-
-                </nz-tab>
-                <nz-tab [nzTitle]="'Classes'">
-                    <app-classe-list [departement]="departement" [classes]="departement.classes" [setView]="true"></app-classe-list>
-                </nz-tab>
-                <nz-tab [nzTitle]="'Professeurs'">
-                    <app-professeur-list [professeurs]="departement.professors" [setView]="true"></app-professeur-list>
-                </nz-tab>
-                <nz-tab [nzTitle]="'Cours'">
-                    <app-course-list [(courses)]="departement.courses" [setView]="true"></app-course-list>
-                </nz-tab>
-                <nz-tab [nzTitle]="'Semestres'">
-                    <app-semester-list [departement]="departement"></app-semester-list>
-                </nz-tab>
-            </nz-tabset>
+  <div class="card shadow">
+    <div class="card-body">
+      <div *ngIf="showHeader()" class="row">
+        <div class="col-md-12">
+          <nz-page-header
+            class="site-page-header"
+            (nzBack)="onBack()"
+            [nzBackIcon]="backTemp"
+            nzTitle="{{ departement.name }}"
+          ></nz-page-header>
         </div>
+        <ng-template #backTemp>
+          <button class="m-2" mat-mini-fab color="primary">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </ng-template>
+      </div>
+      <nz-tabset [nzType]="'card'" [nzTabPosition]="'top'" class="p-3">
+        <nz-tab [nzTitle]="'Vue global'">
+          <div class="row">
+            <div class="col-md-4 my-2">
+              <div class="card shadow-sm border">
+                <div class="card-body">
+                  <nz-statistic
+                    [nzValue]="(departement.professors.length | number)!"
+                    [nzTitle]="'Professeurs'"
+                    [nzPrefix]="prefixTplProf"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  ></nz-statistic>
+                  <ng-template #prefixTplProf>
+                    <mat-icon>people</mat-icon>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 my-2">
+              <div class="card shadow-sm border">
+                <div class="card-body">
+                  <nz-statistic
+                    [nzValue]="(departement.classes.length | number)!"
+                    [nzTitle]="'Classes'"
+                    [nzPrefix]="prefixTplClasses"
+                    [nzValueStyle]="{ color: '#41729f' }"
+                  ></nz-statistic>
+                  <ng-template #prefixTplClasses>
+                    <mat-icon>school</mat-icon>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 my-2">
+              <div class="card shadow-sm border">
+                <div class="card-body">
+                  <nz-statistic
+                    [nzValue]="(departement.courses.length | number)!"
+                    [nzTitle]="'Cours'"
+                    [nzPrefix]="prefixTplCours"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  ></nz-statistic>
+                  <ng-template #prefixTplCours>
+                    <mat-icon>emoji_objects</mat-icon>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row mx-1 my-2 card card-header raduis-sm border shadow-sm border"
+          >
+            <h6>LISTE DES SALLES POUR LE DEPARTEMENT</h6>
+          </div>
+          <div class="card-body">
+            <nz-table
+              [nzLoading]="dataLoad"
+              nzShowSizeChanger
+              [nzPageSizeOptions]="[5, 10, 20, 30]"
+              #basicTable
+              [nzData]="listes"
+              [nzBordered]="false"
+            >
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th class="text-center">Numero</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of basicTable.data">
+                  <td>{{ data.name }}</td>
+                  <td class="text-center">{{ data.number }}</td>
+                  <td class="p-0">
+                    <div class="d-flex justify-content-center"></div>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Classes'">
+          <app-classe-list
+            [departement]="departement"
+            [classes]="departement.classes"
+            [setView]="true"
+          ></app-classe-list>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Professeurs'">
+          <app-professeur-list
+            [professeurs]="departement.professors"
+            [setView]="true"
+          ></app-professeur-list>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Cours'">
+          <app-course-list
+            [(courses)]="departement.courses"
+            [setView]="true"
+          ></app-course-list>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Semestres'">
+          <app-semester-list [departement]="departement"></app-semester-list>
+        </nz-tab>
+      </nz-tabset>
     </div>
+  </div>
 </div>
 <ng-template #dataLoadTemp>
-    <app-load></app-load>
+  <app-load></app-load>
 </ng-template>
 <app-error-server *ngIf="errorNetWork"></app-error-server>

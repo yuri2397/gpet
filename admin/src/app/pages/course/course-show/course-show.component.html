@@ -63,17 +63,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col">
-
-        <nz-divider [nzText]="title2"></nz-divider>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card border">
-              <div echarts [options]="chartOption"></div>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <div class="container-fluide mt-3">
         <div class="card shadow-sm border">
@@ -84,7 +73,7 @@
               </div>
               <div>
                 <button
-                *ngIf="course.syllabus == null"
+                  *ngIf="course.syllabus == null"
                   (click)="openCreateModal()"
                   mat-mini-fab
                   color="default"
@@ -92,7 +81,7 @@
                   <mat-icon>add</mat-icon>
                 </button>
                 <button
-                *ngIf="course.syllabus != null"
+                  *ngIf="course.syllabus != null"
                   (click)="openEditModal()"
                   mat-mini-fab
                   color="default"
@@ -102,10 +91,8 @@
               </div>
             </div>
           </div>
-          <div
-          *ngIf="course.syllabus"
-          class="card-body">
-          <div [innerHtml]="course.syllabus.description"></div>
+          <div *ngIf="course.syllabus" class="card-body">
+            <div [innerHtml]="course.syllabus.description"></div>
           </div>
         </div>
       </div>

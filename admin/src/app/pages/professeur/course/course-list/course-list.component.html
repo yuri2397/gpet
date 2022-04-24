@@ -10,11 +10,11 @@
     <div class="card-body">
       <nz-table
         class="scroll-table"
-
+        [nzLoading]="isLoad"
         nzShowSizeChanger
         [nzPageSizeOptions]="[5, 10, 20, 30]"
         #basicTable
-
+        [nzData]="course"
         [nzBordered]="true"
       >
         <thead>
@@ -23,13 +23,36 @@
             <th class="text-center">Intitulé</th>
             <th class="text-center">Département</th>
             <th class="text-center">Groupe</th>
-            <th class="text-center">Volume</th>
+            <th class="text-center">Volume horaire</th>
             <th class="text-center">Service</th>
             <th class="text-center">Semestre</th>
             <th class="text-center">Classe</th>
             <th class="text-center">Actions</th>
           </tr>
         </thead>
+        <tbody>
+          <tr *ngFor="let data of professor.courses ">
+            <td>{{ data.acronym }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.departement.name }}</td>
+            <td>{{ data.groupe_number }}</td>
+            <td>{{ data.hours }}</td>
+            <td>{{ data.service.name }}</td>
+            <td>{{ data.semester.name }}</td>
+            <td>{{ data.classe.name }}</td>
+            <td class="p-0">
+              <div class="d-flex justify-content-center">
+                <div class="mx-3">
+                  <a [routerLink]="">
+                    <button nz-button nzShape="circle" class="color-orange">
+                      <i class="color" nz-icon nzType="eye"></i>
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
       </nz-table>
     </div>
   </div>

@@ -22,7 +22,7 @@ export class ClasseListComponent implements OnInit {
   @Input() setView!: boolean;
   @Input() classes!: Classe[];
   deleteRestoRef!: NzModalRef;
-  isLoad = true;
+  isLoad = false;
   deleteLoad = false;
   searchValue = '';
   listOfDisplayData!:Classe[];
