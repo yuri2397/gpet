@@ -125,7 +125,7 @@ class ProfesseurController extends Controller
             $prof->courses = $prof->courses()->with("classe")->get();
         }
         else {
-            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();    
+            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
         }
 
         return $prof;

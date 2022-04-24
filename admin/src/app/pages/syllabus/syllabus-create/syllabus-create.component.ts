@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./syllabus-create.component.scss']
 })
 export class SyllabusCreateComponent implements OnInit {
-  isLoad: boolean = false;
+  isLoad = false;
   syllabus = new Syllabus();
   @Input() course!: Course;
 
@@ -62,11 +62,18 @@ export class SyllabusCreateComponent implements OnInit {
   };
 
   onBack() {
+    this.isLoad = true;
+    setTimeout(() => {
+      this.isLoad = false;
+    }, 10000)
     this.location.back();
   }
 
   save() {
     this.isLoad = true;
+    setTimeout(() => {
+      this.isLoad = false;
+    }, 10000)
     this.syllabusService.create(this.syllabus).subscribe({
       next: (response) => {
         this.notification.success(
@@ -80,6 +87,7 @@ export class SyllabusCreateComponent implements OnInit {
           this.notification.error('Notification', errors.error.message);
       },
     });
+    this.onBack();
   }
 
 

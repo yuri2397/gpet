@@ -47,11 +47,9 @@
                     </div>
                     <div class="row mx-1 my-2 card card-header raduis-sm border shadow-sm border">
                         <h6>LISTE DES SALLES POUR LE DEPARTEMENT </h6>
-
-
                     </div>
                     <div class="card-body">
-                      <nz-table [nzLoading]="dataLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listes" [nzBordered]="true">
+                      <nz-table [nzLoading]="dataLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listes" [nzBordered]="false">
                         <thead>
                             <tr>
                                 <th>Nom</th>

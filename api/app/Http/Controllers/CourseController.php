@@ -120,7 +120,6 @@ class CourseController extends Controller
             'course_id' => 'required|exists:courses,id',
             'professor_id' => 'required|exists:professors,id'
         ]);
-
         $chp = new CoursesHasProfessors();
         $chp->amount = $request->amount;
         $chp->date = $request->date;

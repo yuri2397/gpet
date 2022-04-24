@@ -51,6 +51,7 @@ Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
+    Route::get('/logout', [AuthController::class, "logout"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
     Route::post("/update-password", [AuthController::class, "updatePassword"]);
     Route::post("/forgot-password", [AuthController::class, "forgotPassword"])->withoutMiddleware("auth:api");
@@ -78,9 +79,8 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
+    Route::get('charts_data', [DepartementController::class, 'chartsData']);
     Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
-
-
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
@@ -99,6 +99,7 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
 });
+
 Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::get('', [EPTController::class, "index"]);
     Route::post('create', [EPTController::class, "store"]);

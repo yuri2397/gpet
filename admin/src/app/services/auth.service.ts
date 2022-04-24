@@ -31,9 +31,13 @@ export class AuthService extends BaseHttp {
   }
 
   logOut() {
-    sessionStorage.clear();
-    sessionStorage.clear();
-    this.router.navigate(['/']);
+    return this.http.get(
+      this.endPointWithSlash + 'logout',
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   alreadyConnect() {
