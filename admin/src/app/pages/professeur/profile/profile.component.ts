@@ -108,7 +108,7 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
-  openAddCourseModal() {
+  openAddProfModal() {
     this.modifierleprofe=true;
     this.professor=this.profService.clone(this.professeur);
     console.log(this.professor);

@@ -5,6 +5,7 @@ import { Role } from 'src/app/models/role';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-securite',
@@ -23,7 +24,8 @@ export class SecuriteComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private notification: NotificationService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -128,12 +130,35 @@ export class SecuriteComponent implements OnInit {
       nzOkText: 'Valider',
       nzOkType: 'primary',
       nzOkDanger: false,
-      nzOnOk: () => this.authService.logOut(),
+      nzOnOk: () => this.logout(),
       nzCancelText: 'Annuler',
       //nzOkLoading: this.deleteLoad,
       nzMaskClosable: false,
       nzClosable: false,
+      nzCentered : true
     });
+  }
+
+  logout(){
+    this.isLoad = true;
+    this.authService.logOut().subscribe({
+      next:() => {
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          'Déconnexion réussie',
+        );
+      },
+      error:(errors : any) => {
+        this.isLoad = false;
+        if (errors.status != 403)
+          this.notification.createNotification(
+            'erreur',
+            'Notification',
+             errors.error.message);
+      },
+    });
+    this.userService.logout();
   }
 
 
