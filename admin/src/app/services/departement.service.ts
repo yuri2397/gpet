@@ -28,6 +28,12 @@ export class DepartementService extends BaseHttp {
     });
   }
 
+  chartsData(day: number) {
+    return this.http.get<any>(this.endPointWithSlash + `charts_data/?day=${day}` , {
+      headers: this.authorizationHeaders,
+    });
+  }
+
   find(departement: Departement) {
     return this.http.get<Departement>(
       this.endPointWithSlash + 'show/' + departement.id,

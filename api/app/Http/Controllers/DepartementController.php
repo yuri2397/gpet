@@ -74,60 +74,65 @@ class DepartementController extends Controller
 
     public function dashboard()
     {
+
         $user = User::find(auth()->id());
-
-        $salles = Salle::all();
-        $salles_libres = [];
-
-        foreach ($this->hours as $value) {
-            $data = [];
-            // traitement et test
-            foreach ($salles as $salle) {
-                if($this->isSalleFree($salle, $value[0], $value[1])){
-                    $data[] = [
-                        "x" => Str::upper($salle->name),
-                        "y" => 10
-                    ];
-                }
-                else{
-                    $data[] = [
-                        "x" => Str::upper($salle->name),
-                        "y" => 50
-                    ];
-                }
-            }
-
-            $salles_libres[]= [
-                "name" => $value[0],
-                "data" => $data
-            ];
-        }
-
-
         if ($user->hasRole("super admin")) {
             return response()->json([
                 "courses" => count(Course::all()),
                 "professors" => count(Professor::all()),
                 "classes" => count(Classe::all()),
                 "salles" => count(Salle::all()),
-                "salles_libre" => $salles_libres
             ]);
         }
         $departement = Departement::find($user->departement_id);
-
 
         $restult = [
             "courses" => count(Course::whereDepartementId($departement->id)->get()),
             "professors" => count(Professor::whereDepartementId($departement->id)->get()),
             "classes" => count(Classe::whereDepartementId($departement->id)->get()),
             "salles" => count(Salle::whereDepartementId($departement->id)->get()),
-            "salles_libre" => $salles_libres
         ];
         return response()->json($restult);
     }
 
+    public function chartsData(Request $request){
+        $currentDay = $request->day;
+        if (!$currentDay) $currentDay = date('N');
+        $salles = Salle::all();
+        $salles_libres = [];
+        $allFree = true;
+        foreach ($this->hours as $value) {
+            $data = [];
+            // traitement et test
+            foreach ($salles as $salle) {
+                if ($this->isSalleFree($salle, $value[0], $value[1], $currentDay)) {
+                    $data[] = [
+                        "x" => Str::upper($salle->name),
+                        "y" => 10
+                    ];
+                } else {
+                    $data[] = [
+                        "x" => Str::upper($salle->name),
+                        "y" => 50
+                    ];
+                    $allFree = false;
+                }
+            }
+
+            $salles_libres[] = [
+                "name" => $value[0],
+                "data" => $data
+            ];
+        }
+        return response()->json([
+            "salles_libre" => $salles_libres,
+            "all_free" => $allFree,
+            "day" => $currentDay
+        ]);
+    }
+
     public function listSalleDept($departementid)
     {
-        return Salle::where('departement_id','=',$departementid)->get();
+        return Salle::where('departement_id', '=', $departementid)->get();
     }
 }

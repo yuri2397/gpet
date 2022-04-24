@@ -114,6 +114,12 @@
                                 </div>
                             </nz-tab>
                         </nz-tabset>
+                        <div>
+                            <button mat-fab color="basic" class="shadow" (click)="openAddProfModal()">
+                          <mat-icon>edit</mat-icon>
+
+                      </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,3 +179,103 @@
 <ng-template #loadData>
     <app-load></app-load>
 </ng-template>
+
+<!-- Update prof -->
+<nz-modal [(nzVisible)]="modifierleprofe" nzTitle="Informations personnel" [nzWidth]="'60em'">
+    <div *nzModalContent>
+        <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="first_name">Prénom(s)</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
+                            <input [(ngModel)]="professor.first_name" formControlName="first_name" nz-input name="first_name" type="text" id="first_name">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="last_name">Nom</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [(ngModel)]="professor.last_name" formControlName="last_name" nz-input name="last_name" type="text" id="last_name">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="cni">CNI</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le cni est requi">
+                            <input [(ngModel)]="professor.cni" formControlName="cni" nz-input name="cni" type="text" id="cni">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzFor="born_in">Lieu de naissance</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Lieu de naissance est requi">
+                            <input [(ngModel)]="professor.born_in" [placeholder]="'Lieu de naissance'" formControlName="born_in" nz-input name="born_in" type="text" id="born_in">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="born_at">Date de Naissance</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <nz-date-picker class="w-100" [(ngModel)]="professor.born_at" nzFormat="dd-MM-yyyy" name="born_at" id="born_at" formControlName="born_at"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="email">Adresse email</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
+                            <input [(ngModel)]="professor.email" formControlName="email" nz-input name="email" type="email" nz-input id="email">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="email">Adresse email</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
+                            <input [(ngModel)]="professor.email" formControlName="email" nz-input name="email" type="email" nz-input id="email">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="phone_number">N° téléphone</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [(ngModel)]="professor.phone_number" formControlName="phone_number" nz-input name="phone_number" type="text" id="phone_number">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-4">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="last_degree">Dernier Diplôme</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Ce champ est requi">
+                            <input [(ngModel)]="professor.last_degree" formControlName="last_degree" nz-input name="last_degree" type="text" id="last_degree">
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+            </div>
+
+        </nz-form>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="modifierleprofe= false">
+      Annuler
+    </button>
+        <button nz-button nzType="primary" (click)="save()" [nzLoading]="isLoad">Valider</button>
+
+    </div>
+</nz-modal>

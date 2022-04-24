@@ -50,8 +50,8 @@ trait Utils
         return null;
     }
 
-    public function isSalleFree(Salle $salle, $start, $end): bool{
-        $tps = TimesTable::whereSalleId($salle->id)->get();
+    public function isSalleFree(Salle $salle, $start, $end, $day): bool{
+        $tps = TimesTable::whereSalleId($salle->id)->whereDayId($day)->get();
         $test = true;
         if($tps){
             foreach ($tps as $value) {
