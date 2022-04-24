@@ -36,6 +36,8 @@ export class CourseListComponent implements OnInit {
     this.professorService.profile().subscribe({
       next: (response) => {
         this.professor = response;
+        console.log(response);
+
         this.isLoad = false;
         this.errorServer = false;
       },

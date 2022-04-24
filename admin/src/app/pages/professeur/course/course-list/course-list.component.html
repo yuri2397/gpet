@@ -32,8 +32,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let data of professor.courses ">
-            <td>{{ data.id }}</td>
             <td>{{ data.acronym }}</td>
+            <td>{{ data.name }}</td>
             <td>{{ data.departement.name }}</td>
             <td>{{ data.groupe_number }}</td>
             <td>{{ data.hours }}</td>
