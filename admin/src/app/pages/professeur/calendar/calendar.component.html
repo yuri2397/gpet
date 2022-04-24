@@ -2,7 +2,7 @@
     <div class="card shadow-sm border">
         <h4 class="color-geekblue bold m-3">Emplois du temps</h4>
         <div>
-            <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="[]">
+            <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="data" [nzLoading]="dataLoad">
                 <thead>
                     <tr>
                         <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">
@@ -12,7 +12,40 @@
                 </thead>
                 <tbody>
                     <td *ngFor="let ept of presentionEPT.data">
-
+                        <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
+                            <div class="card border m-3 card-body text-center m-1" *ngFor="
+                                let row of ept.data;
+                                let index = index;
+                                let isFirst = first;
+                                let isLast = last
+                              ">
+                                {{ row.course.name.toLocaleUpperCase() }} <br />
+                                <nz-divider nzText="{{ pipeHours(row.start) }} À {{
+                                  pipeHours(row.end)
+                                }}"></nz-divider>
+                                <div class="row justify-content-between">
+                                    <div class="col text-start">
+                                        Classe:
+                                    </div>
+                                    <div class="col text-end">
+                                        {{ row.classe.name }}
+                                    </div>
+                                </div>
+                                <div class="row justify-content-between">
+                                    <div class="col text-start">
+                                        Salle:
+                                    </div>
+                                    <div class="col text-end">
+                                        {{ row.salle.name }}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noEPTRow>
+                            <div class="card border m-3 card-body text-center m-1 h-10">
+                                <span class="bold">Temps libre</span>
+                            </div>
+                        </ng-template>
                     </td>
                 </tbody>
             </nz-table>

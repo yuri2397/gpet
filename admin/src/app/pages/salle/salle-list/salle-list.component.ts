@@ -1,3 +1,4 @@
+import { Departement } from 'src/app/models/departement';
 import { number } from 'echarts';
 import { Component, OnInit, Input } from '@angular/core';
 import { filter } from 'jszip';
@@ -17,7 +18,10 @@ import { SalleEditComponent } from '../salle-edit/salle-edit.component';
 })
 export class SalleListComponent implements OnInit {
   @Input() salles!:Salle[];
-  isLoad = true;
+  @Input() setView!: boolean;
+  @Input() departement!:Departement;
+  dataLoad = true;
+  isLoad = false;
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedSalle!: Salle;
@@ -33,9 +37,11 @@ export class SalleListComponent implements OnInit {
   ngOnInit(): void {
     if(this.salles == null){
       this.findAll();
+
     }else{
       this.listOfDisplayData =this.salles;
     }
+
   }
 
   isSuperAdmin(){
@@ -148,5 +154,7 @@ export class SalleListComponent implements OnInit {
       );
     });
   }
+
+  
 
 }

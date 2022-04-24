@@ -27,9 +27,9 @@ class UserController extends Controller
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("chef de département")) {
-            return User::with("roles")->whereDepartementId($user->departement_id)->get();
+            return User::with("roles")->whereDepartementId($user->departement_id)->whereModelType("User")->get();
         }
-        return User::with("roles")->get();
+        return User::with("roles")->whereModelType("User")->get();
     }
 
 
@@ -103,13 +103,11 @@ class UserController extends Controller
     {
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('public/images');
-
             $user = User::find(auth()->id());
             if ($user->avatar) {
                 \unlink("storage" . $user->avatar);
             }
             $user->avatar = Str::substr($path, 6, strlen($path));
-
             $user->save();
             return response()->json($user);
         }
@@ -117,9 +115,7 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Veuillez selectionner une image pour votre profile."
             ], 422);
-
         }
-
     }
     public function showuserwithprof($id)
     {
@@ -129,4 +125,5 @@ class UserController extends Controller
         return response()->json(["user"=>$user,"professor"=>$prof]
             , 200);
     }
+
 }

@@ -1,37 +1,51 @@
-<div class="container">
-  <header class="header">
-    <h5>AngularEditor</h5>
-  </header>
-  <angular-editor
-    class="editor"
-    [placeholder]="'Enter text here...'"
-    [(ngModel)]="syllabus.description"
-  ></angular-editor>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
-    <button nz-button nzType="primary" (click)="save()" [nzLoading]="isLoad">
-      Ajouter
-    </button>
-  </div>
-</div>
-
-<!-- <div class="card shadow">
+<div class="card shadow">
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
+        <nz-page-header
+          class="site-page-header center"
+          class="site-page-header"
+          (nzBack)="onBack()"
+          [nzBackIcon]="backTemp"
+          nzTitle="Création du Syllabus"
+        >
+        </nz-page-header>
+      </div>
+      <ng-template #backTemp>
+        <button class="m-2" mat-mini-fab color="primary">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </ng-template>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card card-body">
+            <angular-editor
+              class="editor"
+              [placeholder]="'Enter text here...'"
+              [(ngModel)]="syllabus.description"
+              [config]="config"
+            ></angular-editor>
 
-        <div class="container">
-          <header class="header">
-            <h5>AngularEditor</h5>
-          </header>
-          <angular-editor
-            class="editor"
-            [placeholder]="'Enter text here...'"
-            [(ngModel)]="syllabus.description"
-          ></angular-editor>
+            <div class="algn-right">
+              <button nz-button nzType="default"
+              (click)="onBack()"
+              [nzLoading]="isLoad"
+              class="m-3">
+                Annuler
+              </button>
+              <button
+              nz-button
+              nzType="primary"
+              (click)="save()"
+              [nzLoading]="isLoad">
+                Ajouter
+              </button>
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
-</div> -->
+</div>

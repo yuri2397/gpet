@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-course-list',
@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./course-list.component.scss']
 })
 export class CourseListComponent implements OnInit {
-
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit(): void {
+
   }
 
 }

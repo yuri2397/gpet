@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { Course } from 'src/app/models/course';
 import { Syllabus } from 'src/app/models/syllabus';
 import { SyllabusService } from './../../../services/syllabus.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -13,28 +14,29 @@ import { SyllabusService } from './../../../services/syllabus.service';
   styleUrls: ['./syllabus-create.component.scss']
 })
 export class SyllabusCreateComponent implements OnInit {
-  isLoad: boolean = false;
+  isLoad = false;
   syllabus = new Syllabus();
   @Input() course!: Course;
 
   constructor(
-    private modal: NzModalRef,
     private syllabusService: SyllabusService,
-    private notification : NzNotificationService
+    private notification : NzNotificationService,
+    private route: ActivatedRoute,
+    private location: Location,
     ) { }
 
   ngOnInit(): void {
-    this.syllabus.course_id = this.course.id;
-    this.syllabus.description = '';
+    this.route.params.subscribe((params) => {
+    this.syllabus.course_id = params['id'];
+    });
   }
 
   name = 'Angular 6';
-
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '40rem',
-    minHeight: '20rem',
+    height: '50rem',
+    minHeight: '35rem',
     placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
@@ -59,30 +61,33 @@ export class SyllabusCreateComponent implements OnInit {
     ]
   };
 
-  save() {
-    console.log(this.syllabus);
+  onBack() {
     this.isLoad = true;
+    setTimeout(() => {
+      this.isLoad = false;
+    }, 10000)
+    this.location.back();
+  }
+
+  save() {
+    this.isLoad = true;
+    setTimeout(() => {
+      this.isLoad = false;
+    }, 10000)
     this.syllabusService.create(this.syllabus).subscribe({
       next: (response) => {
         this.notification.success(
           'Notification',
           'Syllabus ajouté avec succès.'
         );
-        console.log(response);
-        this.destroyModal();
       },
       error: (errors) => {
         this.isLoad = false;
         if (errors.status != 403)
           this.notification.error('Notification', errors.error.message);
-        this.destroyModal();
-        console.log(errors);
       },
     });
-  }
-
-  destroyModal(): void {
-    this.modal.destroy();
+    this.onBack();
   }
 
 

@@ -1,3 +1,7 @@
+* {
+    font-family: Poppins;
+}
+
 .frame {
     position: relative;
     width: 100%;
@@ -38,5 +42,25 @@
 }
 
 .input {
-    border-radius: 10px;
+    border-radius: 6px;
+    padding: 3px;
+}
+
+.login-left {
+    height: 100vh;
+    border-right: 1px solid #eee;
+    border-radius: 0px 15px 15px 0;
+    background: rgba(219, 239, 246, 0.5);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+}
+
+:host ::ng-deep label {
+    color: #1D617A !important;
+    font-size: 18px !important;
+}
+
+.version {
+    position: absolute;
+    bottom: 50px;
+    align-self: center;
 }

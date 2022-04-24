@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SyllabusShowComponent } from './syllabus-show.component';
+import { InfoUserComponent } from './info-user.component';
 
-describe('SyllabusShowComponent', () => {
-  let component: SyllabusShowComponent;
-  let fixture: ComponentFixture<SyllabusShowComponent>;
+describe('InfoUserComponent', () => {
+  let component: InfoUserComponent;
+  let fixture: ComponentFixture<InfoUserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SyllabusShowComponent ]
+      declarations: [ InfoUserComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SyllabusShowComponent);
+    fixture = TestBed.createComponent(InfoUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

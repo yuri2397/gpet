@@ -13,9 +13,7 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="isLoad"
-            nzShowSizeChanger
-            [nzPageSize]="4" #basicTable [nzData]="courses" [nzBordered]="true">
+            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="courses" [nzBordered]="true">
                 <thead>
                     <tr>
                         <th class="text-center">Code</th>
@@ -80,12 +78,12 @@
                                         </button>
                                     </a>
                                 </div>
-                                <div class="mx-1" *ngIf="can('modifier cour')">
+                                <div class="mx-1" *ngIf="can('modifier cours')">
                                     <button (click)="selectedCourse = data; openEditModal()" nz-button nzType="primary" nzShape="circle">
                                         <i nz-icon nzType="edit"></i>
                                     </button>
                                 </div>
-                                <div class="mx-1" *ngIf="can('supprimer cour')">
+                                <div class="mx-1" *ngIf="can('supprimer cours')">
                                     <button (click)="openDeleteModal(data)" nz-button nzDanger nzType="primary" nzShape="circle">
                                         <i nz-icon nzType="delete"></i>
                                     </button>

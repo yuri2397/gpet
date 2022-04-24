@@ -1,1 +1,64 @@
-<p>securite works!</p>
+<div class="card car-body shadow">
+
+    <nz-divider [nzText]="p_t"></nz-divider>
+    <ng-template #p_t>
+        <h4 class="m-3">{{ user.first_name }} {{ user.last_name }}</h4>
+        <button Center nz-button nzType="primary" class="bg" (click)="openModal()">
+            Se Deconnecter
+        </button>
+    </ng-template>
+
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card body m-2 border raduis-sm">
+                <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
+                <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
+                <div class="d-flex justify-content-center btn-icon">
+                    <div>
+                        <button mat-fab color="basic" class="shadow" (click)="image.click()">
+                            <mat-icon>edit</mat-icon>
+                            <form enctype="multipart/form-data">
+                                <input #image type="file" nz-input hidden (change)="onChange($event)" />
+                            </form>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card card-body border m-2 raduis-sm">
+                <nz-divider [nzText]="c_t">
+                    <ng-template #c_t>
+                        <h5 class="my-2">Change votre mot de passe</h5>
+                    </ng-template>
+                </nz-divider>
+                <form nz-form [formGroup]="validateForm" class="login-form">
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Mot de passe actuel requi!">
+                            <nz-input-group nzPrefixIcon="unlock">
+                                <input type="password" nz-input formControlName="password" placeholder="Mot de passe courrant" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Mot de passe requi!">
+                            <nz-input-group nzPrefixIcon="lock">
+                                <input type="password" nz-input formControlName="new_password" placeholder="Nouveau mot de passe" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control nzErrorTip="Mot de passe requi!">
+                            <nz-input-group nzPrefixIcon="lock">
+                                <input type="password" nz-input formControlName="new_password_conf" placeholder="Confirmer le mot de passe" />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <button nz-button [disabled]="!validateForm.valid" class="login-form-button login-form-margin shadow-sm" [nzType]="'primary'" (click)="updatepassword()" [nzLoading]="isLoad">
+                        Valider
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

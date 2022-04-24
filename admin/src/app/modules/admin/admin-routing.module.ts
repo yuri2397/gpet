@@ -21,10 +21,12 @@ import { PayementsComponent } from '../../pages/professeur/payements/payements.c
 import { UeListComponent } from '../../pages/ue/ue-list/ue-list.component';
 import { SemesterListComponent } from '../../pages/semester/semester-list/semester-list.component';
 import { SyllabusCreateComponent} from '../../pages/syllabus/syllabus-create/syllabus-create.component';
+import { SyllabusEditComponent} from '../../pages/syllabus/syllabus-edit/syllabus-edit.component';
 import { UnauthorizedComponent } from '../../shared/ui/unauthorized/unauthorized.component';
 import { ForgotPasswordComponent } from '../../pages/forgot-password/forgot-password.component';
 import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 import { CdGuard } from 'src/app/shared/guards/cd.guard';
+import { SyllabusShowComponent} from '../../pages/syllabus/syllabus-show/syllabus-show.component';
 
 const routes: Routes = [
   { path: 'unauthorized', component: UnauthorizedComponent },
@@ -70,7 +72,9 @@ const routes: Routes = [
   { path: 'roles', component: RoleListComponent },
   { path: 'professeurs/show/:id', component: ProfesseurShowComponent },
   { path: 'users/show/:id', component: UserShowComponent },
-  { path: 'syllabus/create', component: SyllabusCreateComponent },
+  { path: 'courses/show/syllabus/create/:id', component: SyllabusCreateComponent },
+  { path: 'courses/show/syllabus/edit/:id', component: SyllabusEditComponent },
+  { path: 'courses/show/syllabus/show/:id', component: SyllabusShowComponent },
 
 ];
 

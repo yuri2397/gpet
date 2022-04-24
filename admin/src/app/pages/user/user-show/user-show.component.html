@@ -3,7 +3,7 @@
         <div class="card card p-3">
             <div class="row">
                 <div class="col">
-                    <nz-card class="shadow border text-center" [nzBodyStyle]="{
+                    <nz-card class="shadow-sm border raduis-sm text-center" [nzBodyStyle]="{
                      padding: 0
                     }" [nzCover]="coverTemplate">
                         <h6 class="bold mt-3">{{ user.first_name }} {{ user.last_name }}</h6>
@@ -30,8 +30,8 @@
                         <img class="user-avatar" [src]="user.avatar" />
                     </ng-template>
                 </div>
-                <div class="col shadow border py-2">
-                    <div class="card card-body border p-1 shadow-sm my-3">
+                <div class="col shadow-sm border raduis-sm border py-2">
+                    <div class="card card-body shadow-sm border p-1 sm my-3">
                         <div class="d-flex justify-content-end align-items center ">
                             <div>
                                 Ajouter une permission
