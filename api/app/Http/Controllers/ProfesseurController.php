@@ -3,28 +3,31 @@
 namespace App\Http\Controllers;
 
 use UserRole;
+use App\Models\Day;
 use App\Models\User;
+use App\Traits\Utils;
 use App\Models\Account;
 use App\Models\Professor;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\TimesTable;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 use App\Mail\SendNewUserMail;
-
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 
 class ProfesseurController extends Controller
 {
-
+    use Utils;
     public function __construct()
     {
         $this->middleware("permission:voir professeur")->only(["index", "show"]);
+        $this->middleware("role:professeur")->only(["profile"]);
         $this->middleware("permission:modifier professeur")->only(["update"]);
         $this->middleware("permission:creer professeur")->only(["store"]);
         $this->middleware("permission:supprimer professeur")->only(["destroy"]);
         $this->middleware("permission:voir payement")->only(["payments"]);
+        $this->middleware("role:professeur")->only(["timestable"]);
 
     }
 
@@ -58,6 +61,8 @@ class ProfesseurController extends Controller
             'professor_type_id' => 'required|exists:professor_types,id',
             'last_degree' => "required|string",
         ]);
+
+        DB::beginTransaction();
         $prof = new Professor;
         $prof->registration_number = $request->registration_number ?? $this->randomInt('professors', 'registration_number');
         $prof->first_name = $request->first_name;
@@ -90,25 +95,23 @@ class ProfesseurController extends Controller
         $user->email = $request->email;
         $user->departement_id = $request->departement_id;
         $user->password = bcrypt($password);
+        $user->model_type = "Professor";
+        $user->model = $prof->id;
 
-
-         //SEND MAIL
-         try {
+        try {
             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
+            $user->givePermissionTo(['voir professeur', 'modifier professeur']);
+            DB::commit();
             return response()->json(['message' => "Professeur crée avec succès."], 200);
         }
         catch (\Throwable $th) {
+            DB::rollBack();
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
         }
-
-       
-
-        return response()->json($this->show($prof->id), 200);
     }
-
 
     public function show($id)
     {
@@ -122,10 +125,11 @@ class ProfesseurController extends Controller
             $prof->courses = $prof->courses()->with("classe")->get();
         }
         else {
-            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
+            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();    
         }
 
         return $prof;
+
     }
 
 
@@ -200,7 +204,7 @@ class ProfesseurController extends Controller
                 ->orWhere('email', 'like', '%' . $data . '%')
                 ->orWhere('phone_number', 'like', '%' . $data . '%')
                 ->orderBy('created_at', 'desc')->get();
-        }
+       }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
@@ -254,5 +258,46 @@ class ProfesseurController extends Controller
         }
 
         return $prof;
+    }
+
+    public function profile(){
+        return $this->show($this->currentUser()->professor->id);
+    }
+
+    public function timestable($id){
+        $ept = [];
+        $days = Day::all();
+
+        foreach ($days as $day) {
+            $ept[] = [
+                "day" => $day,
+                "data" => TimesTable::with("classe")->whereProfessorId($id)
+                ->whereDayId($day->id)
+                ->orderBy("start")
+                ->get()
+            ];
+        }
+
+        return $ept;
+    }
+
+    public function updateAvatar(Request $request){
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images');
+
+            $user = Professor::find($this->currentUser()->professor->id);
+            if ($user->avatar) {
+                \unlink("storage" . $user->avatar);
+            }
+            $user->avatar = Str::substr($path, 6, strlen($path));
+
+            $user->save();
+            return response()->json($user);
+        }
+        else {
+            return response()->json([
+                "message" => "Veuillez selectionner une image pour votre profile."
+            ], 422);
+        }
     }
 }

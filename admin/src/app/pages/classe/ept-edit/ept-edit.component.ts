@@ -89,7 +89,7 @@ export class EptEditComponent implements OnInit {
 
   edit() {
     this.isLoad = true;
-    this.eptService.create(this.ept).subscribe({
+    this.eptService.update(this.ept).subscribe({
       next: (response) => {
         this.isLoad = false;
         this.notification.createNotification(

@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Classe } from 'src/app/models/classe';
 import { ClasseService } from 'src/app/services/classe.service';
@@ -33,7 +39,7 @@ export class ClasseShowComponent implements OnInit {
   days!: Day[];
   doc = new jsPDF();
   now = new Date();
-  @ViewChild('presentionEPT') htmlData!:ElementRef;
+  @ViewChild('presentionEPT') htmlData!: ElementRef;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -44,7 +50,6 @@ export class ClasseShowComponent implements OnInit {
     private modalService: NzModalService
   ) {}
 
-
   ngOnInit(): void {
     this.days = this.classeService.DAYS;
     this.route.params.subscribe((params) => {
@@ -54,20 +59,19 @@ export class ClasseShowComponent implements OnInit {
     this.getClasse();
   }
 
-  exportPDF(){
+  exportPDF() {
     let DATA = document.getElementById('presentionEPT');
 
-    html2canvas(DATA!).then(canvas => {
+    html2canvas(DATA!).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
 
-        let fileWidth = 208;
-        let fileHeight = canvas.height * fileWidth / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4', false);
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
 
-        const FILEURI = canvas.toDataURL('image/png')
-        let PDF = new jsPDF('p', 'mm', 'a4', false);
-        let position = 0;
-        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
-
-        PDF.save( this.classe.name + '.pdf');
+      PDF.save(this.classe.name + '.pdf');
     });
   }
 
@@ -77,8 +81,7 @@ export class ClasseShowComponent implements OnInit {
       next: (data) => {
         this.epts = data;
         this.eptLoad = false;
-        console.log("BONJOUR", data);
-        
+        console.log('BONJOUR', data);
       },
       error: (errors) => {
         this.errorNetWork = true;
@@ -158,7 +161,19 @@ export class ClasseShowComponent implements OnInit {
 
     modal.afterClose.subscribe((data: EPT | null) => {
       if (data != null) {
-        this.onCreateSuccess(panel, data);
+        panel.data.forEach((element) => {
+          if (element.id == data.id) {
+          }
+        });
+        for (const key in panel.data) {
+          if (Object.prototype.hasOwnProperty.call(panel.data, key)) {
+            const element = panel.data[key];
+            if (element.id == data.id) {
+              panel.data[key] = data;
+              break;
+            }
+          }
+        }
       }
     });
   }

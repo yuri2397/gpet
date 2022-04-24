@@ -73,9 +73,38 @@ export class EptService extends BaseHttp {
     );
   }
 
+  update(item: EPT) {
+    return this.http.put<EPT>(
+      this.endPointWithSlash + 'update/' + item.id,
+      {
+        start: item.start,
+        end: item.end,
+        classe_id: item.classe_id,
+        salle_id: item.salle.id ?? null,
+        course_id: item.course.id,
+        day_id: item.day.id,
+        ept_id: item.id
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
   getEDT(departement: Departement, classe: Classe) {
     return this.http.get<EptRow[]>(
       this.endPointWithSlash + 'ws/' + departement + '/' + classe,
+      {
+        headers: this.guestHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
+  getEDTByCurrentProfessor() {
+    return this.http.get<EptRow[]>(
+      this.endPointWithSlash + 'ept_by_current_professor',
       {
         headers: this.guestHeaders,
         observe: 'body',

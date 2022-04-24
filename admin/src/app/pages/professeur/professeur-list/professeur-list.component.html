@@ -13,14 +13,14 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table nzTableLayout="fixed" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
+            <div class="my-2">
+                <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
+            </div>
+            <nz-table nzTableLayout="fixed" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
                 <thead>
                     <tr>
-                        <th nzCustomFilter>
+                        <th>
                             Matricule
-                            <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-                                <i nz-icon nzType="search"></i>
-                            </nz-filter-trigger>
                         </th>
                         <th>Prénoms</th>
                         <th>Nom</th>
@@ -50,16 +50,5 @@
                 </tbody>
             </nz-table>
         </div>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-            <div class="ant-table-filter-dropdown">
-                <div class="search-box">
-                    <input type="text" (change)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-            Rechercher
-          </button>
-                    <button nz-button nzSize="small" (click)="reset()">Annuler</button>
-                </div>
-            </div>
-        </nz-dropdown-menu>
     </div>
 </div>

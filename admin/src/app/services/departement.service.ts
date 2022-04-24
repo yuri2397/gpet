@@ -28,6 +28,12 @@ export class DepartementService extends BaseHttp {
     });
   }
 
+  chartsData(day: number) {
+    return this.http.get<any>(this.endPointWithSlash + `charts_data/?day=${day}` , {
+      headers: this.authorizationHeaders,
+    });
+  }
+
   find(departement: Departement) {
     return this.http.get<Departement>(
       this.endPointWithSlash + 'show/' + departement.id,
@@ -37,6 +43,8 @@ export class DepartementService extends BaseHttp {
       }
     );
   }
+
+ 
 
   clone(batiment: Departement): any {
     let b = new Departement();
@@ -77,15 +85,15 @@ export class DepartementService extends BaseHttp {
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
-  listSalleDept(dept:Departement){
+ /* listSalleDept(dept:Departement){
     console.log("id dept: "+dept.id);
     console.log(this.endPointWithSlash);
     return this.http.get<Salle[]>(
       this.endPointWithSlash + 'listSalleDept/' + dept.id,
-      { headers: this.authorizationHeaders, 
+      { headers: this.authorizationHeaders,
         observe: 'body'
       }
     );
 
-  }
+  }*/
 }

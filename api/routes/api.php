@@ -2,10 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Mail\SendNewUserMail;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ECController;
 use App\Http\Controllers\UEController;
@@ -27,6 +24,8 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\SyllabusController;
+use Spatie\Permission\Models\Role;
+use Facade\FlareClient\Contracts\ProvidesFlareContext;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -48,16 +47,14 @@ Route::post('selectable', function (Request $request) {
     }
     return $res;
 });
-
+Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
 
 Route::prefix("user")->middleware("auth:api")->group(function () {
     Route::post('/login', [AuthController::class, "login"])->withoutMiddleware("auth:api");
     Route::get("profile", [AuthController::class, "user"]);
     Route::post("/update-password", [AuthController::class, "updatePassword"]);
-
     Route::post("/forgot-password", [AuthController::class, "forgotPassword"])->withoutMiddleware("auth:api");
     Route::post("/reset-password", [AuthController::class, "resetPassword"])->withoutMiddleware("auth:api");
-
     Route::get("/", [UserController::class, "index"]);
     Route::post("create", [UserController::class, "store"]);
     Route::put("update/{id}", [UserController::class, "update"]);
@@ -81,9 +78,8 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [DepartementController::class, "update"]);
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
+    Route::get('charts_data', [DepartementController::class, 'chartsData']);
     Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
-
-
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {
@@ -102,6 +98,7 @@ Route::prefix("classe")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [ClasseController::class, "update"]);
     Route::delete('destroy/{id}', [ClasseController::class, "destroy"]);
 });
+
 Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::get('', [EPTController::class, "index"]);
     Route::post('create', [EPTController::class, "store"]);
@@ -118,8 +115,9 @@ Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('search/{data}', [SalleController::class, "search"]);
 });
 
-Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
+Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
     Route::get('', [ProfesseurController::class, "index"]);
+    Route::get('profile', [ProfesseurController::class, "profile"]);
     Route::get('search/{data}', [ProfesseurController::class, "search"]);
     Route::get('show/{id}', [ProfesseurController::class, "show"]);
     Route::post('create', [ProfesseurController::class, "store"]);
@@ -131,6 +129,14 @@ Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
     Route::post('course-to-professor', [CourseController::class, 'courseToProfessor']);
     Route::put('remove-course-professor', [CourseController::class, 'removeCourseProfessor']);
     Route::get("payments/{register_number}", [ProfesseurController::class, "payments"]);
+
+    /**
+     * MODULE PROFESSEUR
+     */
+
+     Route::get('timestables/{professor}', [ProfesseurController::class, 'timestable']);
+    Route::post("update-avatar", [ProfesseurController::class, "updateAvatar"]);
+
 });
 
 Route::prefix("ue")->middleware(['auth:api'])->group(function () {
@@ -215,11 +221,14 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::put('update/{id}', [SyllabusController::class, "update"]);
     Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
     Route::get('search/{data}', [SyllabusController::class, "search"]);
+    Route::get('syllabusDesc/{courseid}', [SyllabusController::class, "syllabusDesc"]);
+
 });
 
 Route::any('test', function (Request $request) {
-    $user = User::find(1);
+    $user = User::find(20);
     $user->givePermissionTo(Permission::all());
+    $user->assignRole(Role::all());
     return "OKAY";
 });
 

@@ -1,3 +1,4 @@
+import { Salle } from 'src/app/models/salle';
 import { Classe } from "./classe";
 import { Course } from "./course";
 import { Professor } from "./professor";

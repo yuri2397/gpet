@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Departement } from 'src/app/models/departement';
+import { number } from 'echarts';
+import { Component, OnInit, Input } from '@angular/core';
+import { filter } from 'jszip';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Batiment } from 'src/app/models/batiment';
 import { Permission } from 'src/app/models/permission';
@@ -14,11 +17,17 @@ import { SalleEditComponent } from '../salle-edit/salle-edit.component';
   styleUrls: ['./salle-list.component.scss']
 })
 export class SalleListComponent implements OnInit {
-  isLoad = true;
-  salles!: Salle[];
+  @Input() salles!:Salle[];
+  @Input() setView!: boolean;
+  @Input() departement!:Departement;
+  dataLoad = true;
+  isLoad = false;
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedSalle!: Salle;
+  searchValue = '';
+  visible = false;
+  listOfDisplayData!: Salle[];
   constructor(
 
     private notification: NotificationService,
@@ -26,7 +35,13 @@ export class SalleListComponent implements OnInit {
     private salleService: SalleService) { }
 
   ngOnInit(): void {
-    this.findAll();
+    if(this.salles == null){
+      this.findAll();
+
+    }else{
+      this.listOfDisplayData =this.salles;
+    }
+
   }
 
   isSuperAdmin(){
@@ -38,6 +53,7 @@ export class SalleListComponent implements OnInit {
     this.salleService.findAll().subscribe({
       next: (salles) => {
         this.salles = salles;
+        this.listOfDisplayData = salles;
         this.isLoad = false;
       },
       error: (errors) => {
@@ -127,5 +143,18 @@ export class SalleListComponent implements OnInit {
     let test = this.salleService.can(p, this.salleService.getPermissions());
     return test;
   }
+
+  search(): void{
+    this.visible = false;
+    this.listOfDisplayData = this.salles.filter((item : Salle) => {
+      this.searchValue = this.searchValue.toLowerCase();
+      return (
+        item.name.toLowerCase().indexOf(this.searchValue) !== -1 ||
+        item.number.toLocaleString().indexOf(this.searchValue)!== -1
+      );
+    });
+  }
+
+  
 
 }

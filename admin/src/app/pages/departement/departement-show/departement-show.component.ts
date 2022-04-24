@@ -1,3 +1,4 @@
+import { Salle } from './../../../models/salle';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Departement } from 'src/app/models/departement';
@@ -13,9 +14,8 @@ import { Course } from 'src/app/models/course';
 export class DepartementShowComponent implements OnInit {
   dataLoad = true;
   errorNetWork = false;
-
+  listes!:Salle[];
   departement: Departement = new Departement();
-
   constructor(
     private deptService: DepartementService,
     private route: ActivatedRoute,
@@ -47,7 +47,7 @@ export class DepartementShowComponent implements OnInit {
       },
       error: (errors) => {
         this.dataLoad = false;
-        
+
       },
     });
   }

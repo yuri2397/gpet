@@ -5,9 +5,8 @@ import { CourseService } from 'src/app/services/course.service';
 import { Location } from '@angular/common';
 import { NotificationService } from 'src/app/services/notification.service';
 import { EChartsOption } from 'echarts';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Classe } from 'src/app/models/classe';
-import { SyllabusCreateComponent } from '../../syllabus/syllabus-create/syllabus-create.component';
+import { Syllabus } from 'src/app/models/syllabus';
 
 @Component({
   selector: 'app-course-show',
@@ -18,6 +17,7 @@ export class CourseShowComponent implements OnInit {
   dataLoad = true;
   errorNetWork = false;
   course: Course = new Course();
+  @Input() syllabus!: Syllabus;
   chartOption: EChartsOption = {
     xAxis: {
       type: 'category',
@@ -39,7 +39,6 @@ export class CourseShowComponent implements OnInit {
     private location: Location,
     private notification: NotificationService,
     private courseService: CourseService,
-    private modalService: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +56,7 @@ export class CourseShowComponent implements OnInit {
     this.dataLoad = true;
     this.courseService.show(this.course).subscribe({
       next: (response) => {
+        console.log(response);
         this.course = response;
         this.setChartData(response);
         this.dataLoad = false;
@@ -108,26 +108,16 @@ export class CourseShowComponent implements OnInit {
     this.location.back();
   }
 
-  openEditModal() {}
-
-  openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Créer le syllabus',
-      nzContent: SyllabusCreateComponent,
-      // nzComponentParams: {
-      //   classe: this.classe,
-      // },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '70%',
-    });
-
-    // modal.afterClose.subscribe((data: Course | null) => {
-    //   if (data != null) {
-    //     this.courses = [...this.courses, data];
-    //   }
-    // });
+  openEditModal() {
+    this.router.navigate(['/admin/courses/show/syllabus/edit/' + this.course.id ]);
   }
 
+  openCreateModal() {
+    this.router.navigate(['/admin/courses/show/syllabus/create/' + this.course.id ]);
+  }
+
+  openShowModal() {
+    this.router.navigate(['/admin/courses/show/syllabus/show/' + this.course.id ]);
+  }
 }
+

@@ -9,7 +9,7 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $with = ['professor', 'ec', 'service', 'semester', 'departement'];
+    protected $with = ['professor', 'ec', 'service', 'semester', 'departement', "syllabus"];
     protected $fillable = ['*'];
 
     public function professor()
@@ -42,4 +42,7 @@ class Course extends Model
         return $this->belongsTo(Departement::class);
     }
 
+    public function syllabus(){
+        return $this->hasOne(Syllabus::class);
+    }
 }

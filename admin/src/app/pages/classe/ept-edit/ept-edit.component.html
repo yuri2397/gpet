@@ -1,60 +1,58 @@
 <div>
-  <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-    <div class="row">
-      <div class="col-md-6">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="service_id">Cour</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le service">
-            <nz-select formControlName="course_id" [(ngModel)]="ept.course.id">
-              <ng-container *ngFor="let o of courses">
-                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-              </ng-container>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-      <div class="col-md-6">
-        <nz-form-item>
-          <nz-form-label nzFor="service_id">Salle</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la salle">
-            <nz-select nzPlaceHolder="Rechercher une salle" nzAllowClear nzShowSearch nzServerSearch
-            formControlName="professor_id" (nzOnSearch)="onSalleSearch($event)" formControlName="salle_id" [(ngModel)]="ept.salle.id">
-              <ng-container *ngFor="let o of salles">
-                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-              </ng-container>
-              <nz-option *ngIf="isSallesLoad" nzDisabled nzCustomContent>
-                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-              </nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="start">Début cour</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Heure de début requi">
-            <nz-time-picker [nzDisabledHours]="startDes" [nzMinuteStep]="15" [(ngModel)]="ept.start" formControlName="start" nzFormat="HH:mm" name="start" nzId="start" id="start"></nz-time-picker>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
+    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="row">
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="service_id">Cour</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le service">
+                        <nz-select formControlName="course_id" nzShowSearch [(ngModel)]="ept.course.id">
+                            <ng-container *ngFor="let o of courses">
+                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                            </ng-container>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzFor="service_id">Salle</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la salle">
+                        <nz-select nzPlaceHolder="Rechercher une salle" nzAllowClear nzShowSearch nzServerSearch formControlName="professor_id" (nzOnSearch)="onSalleSearch($event)" formControlName="salle_id" [(ngModel)]="ept.salle.id">
+                            <ng-container *ngFor="let o of salles">
+                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
+                            </ng-container>
+                            <nz-option *ngIf="isSallesLoad" nzDisabled nzCustomContent>
+                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher une salle
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="start">Début cour</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Heure de début requi">
+                        <nz-time-picker [nzDisabledHours]="startDes" [nzMinuteStep]="15" [(ngModel)]="ept.start" formControlName="start" nzFormat="HH:mm" name="start" nzId="start" id="start"></nz-time-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
 
-      <div class="col-md-6">
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="end">Fin cour</nz-form-label>
-          <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Heure de fin requi">
-            <nz-time-picker [nzMinuteStep]="15" [nzDisabledHours]="endDes" [(ngModel)]="ept.end" formControlName="end" nzFormat="HH:mm"  nzId="end" name="end" id="end"></nz-time-picker>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
+            <div class="col-md-6">
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="end">Fin cour</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Heure de fin requi">
+                        <nz-time-picker [nzMinuteStep]="15" [nzDisabledHours]="endDes" [(ngModel)]="ept.end" formControlName="end" nzFormat="HH:mm" nzId="end" name="end" id="end"></nz-time-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
 
-  </nz-form>
+    </nz-form>
 </div>
 
 <div *nzModalFooter>
-  <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-  <button nz-button nzType="primary" (click)="edit()" [disabled]="!validateForm.valid"
-    [nzLoading]="isLoad">Ajouter</button>
+    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
+    <button nz-button nzType="primary" (click)="edit()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Enregistrer</button>
 </div>

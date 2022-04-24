@@ -13,7 +13,10 @@
             </div>
         </div>
         <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowPagination [nzPageSize]="4" #basicTable [nzData]="classes" [nzBordered]="true">
+          <div class="my-2">
+            <input type="text" nzSize="large" (input)="search()" nz-input placeholder="nom de classe"  [(ngModel)]="searchValue"/>
+          </div>
+            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true" >
                 <thead>
                     <tr>
                         <th>Nom</th>
