@@ -42,7 +42,7 @@ class AuthController extends Controller
     public function user()
     {
         $user = User::with("roles", "roles.permissions", "professor")->find(auth()->id());
-        if(!$user->hasRole("professeur")){
+        if (!$user->hasRole("professeur")) {
             unset($user->professor);
         }
         return $user;
@@ -106,9 +106,9 @@ class AuthController extends Controller
             return response()->json(['message' => "Mot de passe modifier avec success."], 200);
         }
     }
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         auth()->logout();
-
         // Auth::logout(); bi aussi ça passe
     }
 }
