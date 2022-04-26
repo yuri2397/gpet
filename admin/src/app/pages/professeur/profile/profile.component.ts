@@ -9,6 +9,9 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { timeStamp } from 'console';
+import { Bank } from 'src/app/models/bank';
+import { ProfessorType } from 'src/app/models/professor_type';
+import { Departement } from 'src/app/models/departement';
 
 @Component({
   selector: 'app-profile',
@@ -25,17 +28,27 @@ export class ProfileComponent implements OnInit {
   validateForm!: FormGroup;
   file: any;
   isLoad: boolean = false;
+  banks!: Bank[];
+  professorTypes!: ProfessorType[];
+  departements!: Departement[];
+  isLoadData = false;
+  modifierinfobank=false;
+
+
+
   constructor(
     private modalService: NzModalService,
     private profService: ProfessorService,
     private location: Location,
     private fb: FormBuilder,
      private notification: NotificationService,
+     public professorService: ProfessorService,
 
   ) {}
 
   ngOnInit(): void {
     this.profile();
+    this.findSelectableList();
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],
       last_name: [null, [Validators.required]],
@@ -115,6 +128,12 @@ export class ProfileComponent implements OnInit {
 
   }
 
+  openModalbank() {
+    this.modifierinfobank=true;
+    this.professor=this.profService.clone(this.professeur);
+    console.log(this.professor);
+  }
+
   onBornAtChange(date: any) {}
 
   save() {
@@ -127,9 +146,10 @@ export class ProfileComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          'Professeur modifié avec succés.'
+          'Information modifié avec succés.'
         );
         this.modifierleprofe=false;
+        this.modifierinfobank=false;
         //console.log(response);
         this.professeur=response;
 
@@ -144,6 +164,26 @@ export class ProfileComponent implements OnInit {
           errors.error.message
         );
 
+      },
+    });
+  }
+
+  findSelectableList() {
+    this.isLoadData = true;
+    this.professorService.findSelectableList(['departements', 'professor_types', 'banks']).subscribe({
+      next: (response) => {
+        this.departements = response.departements;
+        this.professorTypes = response.professor_types;
+        this.banks = response.banks;
+        this.isLoadData = false;
+      },
+      error: (errors) => {
+        this.isLoadData = false;
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
       },
     });
   }

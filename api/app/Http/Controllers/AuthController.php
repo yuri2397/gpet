@@ -108,7 +108,8 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
+
         auth()->logout();
-        // Auth::logout(); bi aussi ça passe
+        // Auth::user()->token->delete();
     }
 }
