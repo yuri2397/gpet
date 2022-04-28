@@ -1,12 +1,12 @@
-<div class="container" id="presentionPayement">
+<div class="container mx-2" id="presentionPayement">
     <div class="row">
         <div class="col text-center">
             <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="logo">
             <div>
                 UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
             </div> <br> <br>
-            <h1 class="bold">
-                ETAT DES RELEVES DE VACATION {{ classe.name.toLocaleUpperCase() }}, {{ semester.name.toLocaleUpperCase() }} </h1>
+            <h5 class="bold">
+                ETAT DES RELEVES DE VACATION {{ classe.name.toLocaleUpperCase() }}, {{ semester.name.toLocaleUpperCase() }} </h5>
             <h6>{{ date | date:'EEEE d MMMM y' }}</h6>
         </div>
     </div>
@@ -100,5 +100,5 @@
 
 <div *nzModalFooter>
     <button nz-button nzType="default" (click)="destroyModal()">FERMER</button>
-    <button nz-button nzType="primary" [nzLoading]="isLoad" (click)="print()">IMPRIMER</button>
+    <button nz-button nzType="primary" [nzLoading]="isLoad" (click)="print()">IMPRIMER LE DOCUMENT</button>
 </div>

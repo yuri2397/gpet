@@ -12,6 +12,7 @@ use App\Models\TimesTable;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\SendNewUserMail;
+use App\Models\Course;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -125,7 +126,7 @@ class ProfesseurController extends Controller
             $prof->courses = $prof->courses()->with("classe")->get();
         }
         else {
-            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();    
+            $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
         }
 
         return $prof;
@@ -299,5 +300,10 @@ class ProfesseurController extends Controller
                 "message" => "Veuillez selectionner une image pour votre profile."
             ], 422);
         }
+    }
+
+    public function listCoursProf($professorid)
+    {
+        return Course::where('professor_id','=',$professorid)->get();
     }
 }

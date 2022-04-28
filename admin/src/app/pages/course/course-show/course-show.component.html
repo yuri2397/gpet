@@ -63,17 +63,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col">
-
-        <nz-divider [nzText]="title2"></nz-divider>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card border">
-              <div echarts [options]="chartOption"></div>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
       <div class="container-fluide mt-3">
         <div class="card shadow-sm border">
@@ -84,51 +73,26 @@
               </div>
               <div>
                 <button
-                *ngIf="course.syllabus == null"
+                  *ngIf="course.syllabus == null"
                   (click)="openCreateModal()"
                   mat-mini-fab
                   color="default"
                 >
                   <mat-icon>add</mat-icon>
                 </button>
+                <button
+                  *ngIf="course.syllabus != null"
+                  (click)="openEditModal()"
+                  mat-mini-fab
+                  color="default"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
               </div>
             </div>
           </div>
-          <div 
-          *ngIf="course.syllabus"
-          class="card-body">
-          <div [innerHtml]="course.syllabus.description"></div>
-            <!-- <div class="d-flex justify-content-between align-items-center col">
-              <div class="col">
-                <div class="card card-body">
-                  <nz-list nzBordered>
-                    <nz-list-item>
-                      <span nz-typography><b>Modifier le syllabus</b></span>
-                      <button
-                        nz-button
-                        nzShape="circle"
-                        nzType="primary"
-                        (click)="openEditModal()"
-                      >
-                        <i nz-icon nzType="edit"></i>
-                      </button>
-                    </nz-list-item>
-                    <nz-list-item>
-                      <span nz-typography><b>Voir le syllabus</b></span>
-                      <button
-                        nz-button
-                        nzShape="circle"
-                        nzType="primary"
-                        class="color-orange"
-                        (click)="openShowModal()"
-                      >
-                        <i class="color" nz-icon nzType="eye"></i>
-                      </button>
-                    </nz-list-item>
-                  </nz-list>
-                </div>
-              </div>
-            </div> -->
+          <div *ngIf="course.syllabus" class="card-body">
+            <div [innerHtml]="course.syllabus.description"></div>
           </div>
         </div>
       </div>

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
@@ -28,7 +30,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'user' => $user,
                 'permissions' => $user->permissions,
-                'departement' => $user->departement, 
+                'departement' => $user->departement,
                 'roles' => $user->roles
             ], 200);
         } else {
@@ -40,7 +42,7 @@ class AuthController extends Controller
     public function user()
     {
         $user = User::with("roles", "roles.permissions", "professor")->find(auth()->id());
-        if(!$user->hasRole("professeur")){
+        if (!$user->hasRole("professeur")) {
             unset($user->professor);
         }
         return $user;
@@ -103,5 +105,11 @@ class AuthController extends Controller
             DB::table('password_resets')->whereEmail($user->email)->whereToken($request->code)->delete();
             return response()->json(['message' => "Mot de passe modifier avec success."], 200);
         }
+    }
+    public function logout(Request $request)
+    {
+
+        auth()->logout();
+        // Auth::user()->token->delete();
     }
 }

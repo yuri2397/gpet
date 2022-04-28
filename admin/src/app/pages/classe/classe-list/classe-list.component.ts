@@ -22,8 +22,12 @@ export class ClasseListComponent implements OnInit {
   @Input() setView!: boolean;
   @Input() classes!: Classe[];
   deleteRestoRef!: NzModalRef;
-  isLoad = true;
+  isLoad = false;
   deleteLoad = false;
+  searchValue = '';
+  listOfDisplayData!:Classe[];
+  visible = false;
+
 
   constructor(
     private notification: NotificationService,
@@ -32,7 +36,12 @@ export class ClasseListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.find();
+    if(this.classes == null){
+      this.find();
+    }else{
+      this.listOfDisplayData = this.classes
+    }
+
   }
 
   find() {
@@ -48,6 +57,7 @@ export class ClasseListComponent implements OnInit {
     this.isLoad = true;
     this.classeService.selectClasses().subscribe({
       next: (response) => {
+        this.listOfDisplayData = response
         this.classes = response;
         this.isLoad = false;
       },
@@ -154,5 +164,15 @@ export class ClasseListComponent implements OnInit {
     p.name = permission;
     let test = this.classeService.can(p, this.classeService.getPermissions());
     return test;
+  }
+
+  search(): void{
+    this.visible = false;
+    this.listOfDisplayData = this.classes.filter((item : Classe) => {
+      this.searchValue = this.searchValue.toLowerCase();
+      return (
+        item.name.toLowerCase().indexOf(this.searchValue) !== -1
+      );
+    });
   }
 }

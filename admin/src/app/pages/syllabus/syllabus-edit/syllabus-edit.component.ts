@@ -70,8 +70,10 @@ export class SyllabusEditComponent implements OnInit {
   }
 
   save() {
-    console.log(this.syllabus.description)
-    this.isLoad = true;
+   this.isLoad = true;
+    setTimeout(() => {
+      this.isLoad = false;
+    }, 10000)
     this.syllabusService.edit(this.syllabus).subscribe({
       next: (response) => {
         this.isLoad = false;

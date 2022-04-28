@@ -34,8 +34,8 @@ export class PayementsPrintComponent implements OnInit {
   }
 
   print() {
+    this.isLoad = true;
     let DATA = document.getElementById('presentionPayement');
-
     html2canvas(DATA!).then((canvas) => {
       this.isLoad = true;
       let fileWidth = 208;
