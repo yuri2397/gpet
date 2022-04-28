@@ -24,6 +24,9 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\SyllabusController;
+use App\Models\Professor;
+use Illuminate\Support\Str;
+
 use Spatie\Permission\Models\Role;
 use Facade\FlareClient\Contracts\ProvidesFlareContext;
 
@@ -224,13 +227,10 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
 });
 
 Route::any('test', function (Request $request) {
-    $user = User::find(20);
-    $user->givePermissionTo(Permission::all());
-    $user->assignRole(Role::all());
-    return "OKAY";
+      return "OKAY";
 });
 
 
 Route::get('/artisan', function () {
-    return Artisan::call('migrate');
+    // return Artisan::call('migrate');
 });
