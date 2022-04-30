@@ -110,6 +110,7 @@ class AuthController extends Controller
     {
 
         auth()->logout();
+        //$request->user()->token()->revoke();
         // Auth::user()->token->delete();
     }
 }

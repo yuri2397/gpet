@@ -1,1 +1,80 @@
-<p>comptabity works!</p>
+<div>
+    <div class="card shadow raduis-sm">
+        <!-- TOP -->
+        <div *ngIf="!dataLoad" class="card-header bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button nz-tooltip [nzTooltipTitle]="'Revenir en arrièr'" class="mx-2" (click)="onBack()" mat-mini-fab color="default">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+                </div>
+                <div>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="mx-1">
+                            <button (click)="printAll()" nz-tooltip [nzTooltipTitle]="'Imprimer tous les états'" mat-mini-fab color="basic">
+              <mat-icon>print</mat-icon>
+            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- LIST OF PAYMENTS -->
+        <div class="card-body">
+            <nz-table class="scroll-table" [nzLoading]="dataLoad" nzShowPagination [nzPageSize]="3" #courseDoTable [nzData]="professor.coursesDo">
+                <thead>
+                    <tr>
+                        <th> Code </th>
+                        <th><b>Cours</b></th>
+                        <th><b>Classe</b></th>
+                        <th><b>Service</b></th>
+                        <th><b>Nombre d'heures</b></th>
+                        <th><b>Montant</b></th>
+                        <th><b>Status</b></th>
+                        <th><b>Imprimer</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of courseDoTable.data">
+                        <td>
+                            <a [routerLink]="['/professor/courses/show/' + data.course.id]">
+              {{ data.course.acronym }}
+            </a>
+                        </td>
+                        <td>{{ data.course.name }}</td>
+                        <td>
+                            <a [routerLink]="['/professor/classes/show/' + data.course.classe.id]">
+              {{ data.course.classe.name }}
+            </a>
+                        </td>
+                        <td>{{ data.course.service.name }}</td>
+                        <td>{{ data.total_hours}} heures</td>
+                        <td>{{ data.total_sales}} FCFA </td>
+                        <td>
+                            <ng-container *ngIf="data.is_paid; else notPaid">
+                                <nz-tag [nzColor]="'success'">
+                                    Payé
+                                </nz-tag>
+                            </ng-container>
+                            <ng-template #notPaid>
+                                <nz-tag [nzColor]="'error'">
+                                    Non Payé
+                                </nz-tag>
+                            </ng-template>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <div>
+                                    <button [disabled]="!data.is_paid" (click)="printPayment(data)" mat-mini-fab color="warn">
+                  <mat-icon>print</mat-icon>
+                </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+
+        </div>
+    </div>
+</div>

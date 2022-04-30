@@ -29,7 +29,6 @@ class ProfesseurController extends Controller
         $this->middleware("permission:supprimer professeur")->only(["destroy"]);
         $this->middleware("permission:voir payement")->only(["payments"]);
         $this->middleware("role:professeur")->only(["timestable"]);
-
     }
 
     public function index()
@@ -103,11 +102,10 @@ class ProfesseurController extends Controller
             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
-            $user->givePermissionTo(['voir professeur', 'modifier professeur']);
+            $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir payement']);
             DB::commit();
             return response()->json(['message' => "Professeur crée avec succès."], 200);
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
@@ -124,13 +122,11 @@ class ProfesseurController extends Controller
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
             $prof->courses = $prof->courses()->with("classe")->get();
-        }
-        else {
+        } else {
             $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
         }
 
         return $prof;
-
     }
 
 
@@ -205,7 +201,7 @@ class ProfesseurController extends Controller
                 ->orWhere('email', 'like', '%' . $data . '%')
                 ->orWhere('phone_number', 'like', '%' . $data . '%')
                 ->orderBy('created_at', 'desc')->get();
-       }
+        }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
     }
 
@@ -220,52 +216,52 @@ class ProfesseurController extends Controller
                     ->whereYear('courses_has_professors.date', date('Y'))
                     ->join('courses', 'courses_has_professors.course_id', 'courses.id')
                     ->select(
-                    "courses_has_professors.course_id",
-                    "courses_has_professors.professor_id",
-                    "courses_has_professors.is_paid",
-                    "courses_has_professors.amount",
-                    DB::raw('SUM(courses_has_professors.hours) as total_hours'),
-                    DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
-                )
+                        "courses_has_professors.course_id",
+                        "courses_has_professors.professor_id",
+                        "courses_has_professors.is_paid",
+                        "courses_has_professors.amount",
+                        DB::raw('SUM(courses_has_professors.hours) as total_hours'),
+                        DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
+                    )
                     ->groupBy(
-                    'courses_has_professors.course_id',
-                    "courses_has_professors.amount",
-                    "courses_has_professors.is_paid",
-                    "courses_has_professors.professor_id",
-                )
+                        'courses_has_professors.course_id',
+                        "courses_has_professors.amount",
+                        "courses_has_professors.is_paid",
+                        "courses_has_professors.professor_id",
+                    )
                     ->get();
-            }
-            else {
+            } else {
                 $prof->coursesDo = $prof->coursesDo()->with("course.classe")
                     ->whereYear('courses_has_professors.date', date('Y'))
                     ->join('courses', 'courses_has_professors.course_id', 'courses.id')
                     ->where('courses.departement_id', $prof->departement_id)
                     ->select(
-                    "courses_has_professors.course_id",
-                    "courses_has_professors.professor_id",
-                    "courses_has_professors.is_paid",
-                    "courses_has_professors.amount",
-                    DB::raw('SUM(courses_has_professors.hours) as total_hours'),
-                    DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
-                )
+                        "courses_has_professors.course_id",
+                        "courses_has_professors.professor_id",
+                        "courses_has_professors.is_paid",
+                        "courses_has_professors.amount",
+                        DB::raw('SUM(courses_has_professors.hours) as total_hours'),
+                        DB::raw(' courses_has_professors.amount * SUM(courses_has_professors.hours) as total_sales')
+                    )
                     ->groupBy(
-                    'courses_has_professors.course_id',
-                    "courses_has_professors.amount",
-                    "courses_has_professors.is_paid",
-                    "courses_has_professors.professor_id",
-                )->get();
+                        'courses_has_professors.course_id',
+                        "courses_has_professors.amount",
+                        "courses_has_professors.is_paid",
+                        "courses_has_professors.professor_id",
+                    )->get();
             }
-
         }
 
         return $prof;
     }
 
-    public function profile(){
+    public function profile()
+    {
         return $this->show($this->currentUser()->professor->id);
     }
 
-    public function timestable($id){
+    public function timestable($id)
+    {
         $ept = [];
         $days = Day::all();
 
@@ -273,16 +269,17 @@ class ProfesseurController extends Controller
             $ept[] = [
                 "day" => $day,
                 "data" => TimesTable::with("classe")->whereProfessorId($id)
-                ->whereDayId($day->id)
-                ->orderBy("start")
-                ->get()
+                    ->whereDayId($day->id)
+                    ->orderBy("start")
+                    ->get()
             ];
         }
 
         return $ept;
     }
 
-    public function updateAvatar(Request $request){
+    public function updateAvatar(Request $request)
+    {
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('public/images');
 
@@ -294,8 +291,7 @@ class ProfesseurController extends Controller
 
             $user->save();
             return response()->json($user);
-        }
-        else {
+        } else {
             return response()->json([
                 "message" => "Veuillez selectionner une image pour votre profile."
             ], 422);
@@ -304,6 +300,6 @@ class ProfesseurController extends Controller
 
     public function listCoursProf($professorid)
     {
-        return Course::where('professor_id','=',$professorid)->get();
+        return Course::where('professor_id', '=', $professorid)->get();
     }
 }
