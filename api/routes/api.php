@@ -232,10 +232,15 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
 });
 
 Route::any('test', function (Request $request) {
-      return "OKAY";
+    $profs = Professor::all();
+    
+    foreach ($profs as $value) {
+        
+    }
 });
-
 
 Route::get('/artisan', function () {
-    // return Artisan::call('migrate');
+    //  return Artisan::call('migrate');
 });
+
+

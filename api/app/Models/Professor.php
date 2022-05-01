@@ -41,4 +41,5 @@ class Professor extends Model
     public function timesTables(){
         return $this->hasMany(TimesTable::class);
     }
+
 }
