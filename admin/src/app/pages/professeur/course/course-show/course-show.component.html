@@ -1,1 +1,82 @@
-<p>course-show works!</p>
+<div *ngIf="!isLoad" style="width: 100%">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
+                        nzTitle="{{ course.acronym }} - {{ course.name }}"></nz-page-header>
+                </div>
+                <ng-template #backTemp>
+                    <button class="m-2" mat-mini-fab color="primary">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                </ng-template>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-body">
+                            <nz-list nzBordered>
+                                <nz-list-item>
+                                    <span nz-typography><b>ID</b></span> {{ course.acronym }}
+                                </nz-list-item>
+                                <nz-list-item>
+                                    <span nz-typography><b>COURS</b></span> {{ course.name }}
+                                </nz-list-item>
+                                <nz-list-item>
+                                    <span nz-typography><b>VHT</b></span>
+                                    {{ course.ec.vht }} heures
+                                </nz-list-item>
+                            </nz-list>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card card-body">
+                            <nz-list nzBordered>
+                                <nz-list-item>
+                                    <span nz-typography><b>PROF</b></span>
+                                    <ng-container *ngIf="course.professor; else emptyProf">
+                                        {{ course.professor.first_name }}
+                                        {{ course.professor.last_name.toUpperCase() }}
+                                    </ng-container>
+                                    <ng-template #emptyProf>
+                                        <nz-tag nzColor="error">
+                                            <i nz-icon nzType="close-circle"></i>
+                                            <span>Non définie</span>
+                                        </nz-tag>
+                                    </ng-template>
+                                </nz-list-item>
+                                <nz-list-item>
+                                    <span nz-typography><b>CLASSE</b></span>
+                                    {{ course.classe.name.toUpperCase() }}
+                                </nz-list-item>
+                                <nz-list-item>
+                                    <span nz-typography><b>SEMESTRE</b></span>
+                                    {{ course.semester.name.toUpperCase() }}
+                                </nz-list-item>
+                            </nz-list>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="courseChart">
+                            <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
+                                [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!"
+                                [colors]="chartOptions.colors!"></apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #title2>
+    <h5 class="mt-5">Évolution des scéances</h5>
+</ng-template>
+
+<ng-container *ngIf="isLoad">
+    <app-load></app-load>
+</ng-container>

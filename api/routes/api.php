@@ -232,11 +232,9 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
 });
 
 Route::any('test', function (Request $request) {
-    $profs = Professor::all();
-    
-    foreach ($profs as $value) {
-        
-    }
+    $user = User::whereEmail("fallou.khouma@gmail.com")->first();
+    $user->givePermissionTo('voir cour');
+    return $user;
 });
 
 Route::get('/artisan', function () {
