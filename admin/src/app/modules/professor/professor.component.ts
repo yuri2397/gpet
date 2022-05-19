@@ -28,20 +28,15 @@ declare interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
   {
-    path: 'dashboard',
-    title: 'Dashboard',
-    icon: 'space_dashboard',
-  },
-  {
+    path: 'courses',
+    title: 'Mes cours',
+    icon: 'checklist_rtl',
+  },{
     path: 'profile',
     title: 'Profile',
     icon: 'person',
   },
-  {
-    path: 'courses',
-    title: 'Mes cours',
-    icon: 'checklist_rtl',
-  },
+  
   {
     path: 'timestable',
     title: 'Emploi du Temps',
@@ -52,12 +47,6 @@ export const ROUTES: RouteInfo[] = [
     title: 'Comptabilité',
     icon: 'credit_score',
   },
-  {
-    path: 'pointing',
-    title: 'Pointage',
-    icon: 'schedule',
-  },
-
   {
     path: 'resources',
     title: 'Ressource',

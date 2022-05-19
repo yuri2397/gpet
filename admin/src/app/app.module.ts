@@ -31,6 +31,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
 import { SharedModule } from './shared/shared.module';
+import { HttpLocalInterceptor } from './shared/http-local.interceptor';
 
 registerLocaleData(fr);
 
@@ -52,12 +53,11 @@ registerLocaleData(fr);
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-   
 
     /**
      * SHARED MODULE
      */
-    SharedModule
+    SharedModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },
@@ -66,8 +66,12 @@ registerLocaleData(fr);
       useClass: HasRoleInterceptor,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpLocalInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

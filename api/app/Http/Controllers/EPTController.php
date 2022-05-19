@@ -136,6 +136,7 @@ class EPTController extends Controller
 
     public function serviceWebEPT($departement_name, $classe_name)
     {
+        
         $classe = Classe::whereName($classe_name)->first();
         if ($classe != null) {
             return view("ept")->with([

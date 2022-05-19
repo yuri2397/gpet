@@ -101,11 +101,11 @@ export class BaseHttp  extends GestionRole{
   }
   isProfesseur():boolean{
     let test=false;
+    
     this.getRoles().forEach(element => {
       if(element.name==this.professeur)
       test=true;
     });
-
     return test;
   }
 

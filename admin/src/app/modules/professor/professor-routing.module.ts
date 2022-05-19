@@ -12,8 +12,7 @@ import { PointingComponent } from 'src/app/pages/professeur/pointing/pointing.co
 import { SecuriteComponent } from 'src/app/pages/professeur/securite/securite.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'dashboard', pathMatch:"full"},
-  { path: 'dashboard', component: DashboardComponent },
+  {path: '', redirectTo: 'courses', pathMatch:"full"},
   { path: 'timestable', component: CalendarComponent },
   { path: 'courses', component: CourseListComponent },
   { path: 'courses/:id', component: CourseShowComponent },

@@ -22,7 +22,7 @@ class AuthController extends Controller
             "password" => "required"
         ]);
 
-        $user = User::with("roles", "roles.permissions")->where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
         if ($user != null && Hash::check($request->password, $user->password)) {
             $token = $user->createToken('Admin Password Grant Client')->accessToken;

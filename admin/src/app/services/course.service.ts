@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Course } from '../models/course';
+import { Course, CourseResponse } from '../models/course';
 import { Professor } from '../models/professor';
 import { BaseHttp } from '../shared/base-http';
 
@@ -8,7 +8,6 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class CourseService extends BaseHttp {
-
   protected _baseUrl = 'course';
 
   constructor(protected hc: HttpClient) {
@@ -16,7 +15,7 @@ export class CourseService extends BaseHttp {
     this.http = hc;
   }
 
-  clone(course: Course):Course{
+  clone(course: Course): Course {
     let c = new Course();
     c.acronym = course.acronym;
     c.name = course.name;
@@ -38,11 +37,14 @@ export class CourseService extends BaseHttp {
     return c;
   }
 
-  findAll() {
-    return this.http.get<Course[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+  findAll(page: number, pageSize: number) {
+    return this.http.get<CourseResponse>(
+      this.endPoint + `?page=${page}&pageSize=${pageSize}`,
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
   }
 
   create(course: Course) {
@@ -63,7 +65,7 @@ export class CourseService extends BaseHttp {
     );
   }
 
-  show(course: Course){
+  show(course: Course) {
     return this.http.get<Course>(this.endPointWithSlash + 'show/' + course.id, {
       headers: this.authorizationHeaders,
       observe: 'body',
@@ -97,10 +99,17 @@ export class CourseService extends BaseHttp {
   }
 
   search(value: string) {
+    return this.http.get<Course[]>(this.endPointWithSlash + 'search/' + value, {
+      headers: this.authorizationHeaders,
+      observe: 'body',
+    });
+  }
+
+  searchMyCourse(value: string) {
+    let professor = this.getUser().professor?.id;
     return this.http.get<Course[]>(
-      this.endPointWithSlash + 'search/' + value,
+      this.endPointWithSlash + `search-my-courses/${value}?professor=${professor}`,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
-
 }

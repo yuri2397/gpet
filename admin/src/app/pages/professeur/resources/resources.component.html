@@ -1,1 +1,62 @@
-<p>resources works!</p>
+<div class="container-fluid">
+    <div class="card shadow-sm border">
+        <div class="card-header p-3 bg-color">
+            <h5 class="text-white">Ressources de vos cours</h5>
+        </div>
+        <div class="card-body mx-5 ">
+            <div class="row justify-content-between-align-items-start">
+                <nz-input-group nzSize="large" [nzPrefix]="preffixIcon" [nzSuffix]="searchLoad ? suffixIcon :  ''">
+                    <input [nzSize]="'large'" placeholder="Rechercher vos cours" nz-input [(ngModel)]="inputValue"
+                        (ngModelChange)="itemSelected($event)" (input)="onSearch($event)" [nzAutocomplete]="auto" />
+                </nz-input-group>
+                <ng-template #suffixIcon>
+                    <i nz-icon nzType="loading" nzTheme="outline"></i>
+                </ng-template>
+                <ng-template #preffixIcon>
+                    <i nz-icon nzType="search"></i>
+                </ng-template>
+                <nz-autocomplete #auto>
+                    <nz-auto-option *ngFor="let option of options" [nzValue]="option.id" [nzLabel]="option.name">
+                        <div class="d-flex justify-content-between align-content-center">
+                            <div>
+                                <span>{{ option.name }}</span>
+                            </div>
+                            <div>
+                                <span>{{ option.classe.name }}</span>
+                            </div>
+                        </div>
+                    </nz-auto-option>
+                </nz-autocomplete>
+            </div>
+            <br>
+            <div>
+                <ng-container *ngIf="selectedCourse; else elseTemplate">
+                    <div class="center">
+                        <h5>{{ selectedCourse.classe.name }} <br><br> {{ selectedCourse.name }}</h5>
+                        <nz-upload nzType="drag" [nzMultiple]="true"
+                            [nzAction]="upload"
+                            [nzFileList]="fileList"
+                            (nzChange)="handleChange($event)">
+                            <p class="ant-upload-drag-icon">
+                                <i nz-icon nzType="inbox"></i>
+                            </p>
+                            <p class="ant-upload-text">Cliquez ou faites glisser le fichier dans cette zone pour le
+                                télécharger</p>
+                            <p class="ant-upload-hint">
+                                Prise en charge d'un téléchargement unique ou en masse. Interdiction stricte de
+                                télécharger des données d'entreprise ou d'autres fichiers de bande.
+                            </p>
+                        </nz-upload>
+                    </div>
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <div class="center">
+                        <img src="/assets/img/upload.gif" alt="IMAGE GIF" width="100">
+                        <h5>Rechercher un cours et uploader les ressources.</h5>
+                    </div>
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
+</div>

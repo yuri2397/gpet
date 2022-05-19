@@ -8,15 +8,8 @@
       </div>
     </div>
     <div class="card-body">
-      <nz-table
-        class="scroll-table"
-        [nzLoading]="isLoad"
-        nzShowSizeChanger
-        [nzPageSizeOptions]="[5, 10, 20, 30]"
-        #basicTable
-        [nzData]="course"
-        [nzBordered]="true"
-      >
+      <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 20, 30]"
+        #basicTable [nzData]="course" [nzBordered]="true">
         <thead>
           <tr>
             <th class="text-center">Code</th>
@@ -34,9 +27,14 @@
             <td>{{ data.service.name }}</td>
             <td>{{ data.semester.name }}</td>
             <td>{{ data.classe.name }}</td>
-            <td class="p-0">
+            <td class="text-center">
               <div class="d-flex justify-content-center">
-                <div class="mx-3">
+                <div>
+                  <button nz-button nzType="primary" nzShape="circle" (click)="openAddHourModal(data)">
+                    <mat-icon>pending_actions</mat-icon>
+                  </button>
+                </div>
+                <div class="mx-2">
                   <a [routerLink]="['/professor/courses/' + data.id]">
                     <button nz-button nzShape="circle" class="color-orange">
                       <i class="color" nz-icon nzType="eye"></i>
@@ -45,6 +43,7 @@
                 </div>
               </div>
             </td>
+
           </tr>
         </tbody>
       </nz-table>

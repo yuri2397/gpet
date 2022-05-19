@@ -48,4 +48,7 @@ export class CourseListComponent implements OnInit {
     });
   }
 
+  openAddHourModal(data: Course){
+  }
+
 }

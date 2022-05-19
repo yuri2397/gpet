@@ -19,20 +19,25 @@ export class DashboardComponent implements OnInit {
   selectedDay!: number;
   dayLabel!: String;
   dashboardLoad = true;
-  @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions!: Partial<ChartOptions>
-  constructor(private departementService: DepartementService) { }
+  @ViewChild('chart') chart!: ChartComponent;
+  public chartOptions!: Partial<ChartOptions>;
+  constructor(private departementService: DepartementService) {}
 
   ngOnInit(): void {
     this.days = this.departementService.DAYS;
     this.days.push({
       id: 7,
-      name: "Dimanche"
+      name: 'Dimanche',
     });
-    this.selectedDay = (new Date).getDay();
-    this.dayLabel = (new Date()).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).toUpperCase();
+    this.selectedDay = new Date().getDay();
+    this.dayLabel = new Date()
+      .toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+      })
+      .toUpperCase();
     this.getDashboard();
-    this.getChartData(this.selectedDay);
   }
 
   updateChart(event: number) {
@@ -40,53 +45,50 @@ export class DashboardComponent implements OnInit {
     this.getChartData(event);
   }
 
-
   getChartData(event: number) {
     this.isLoadChart = true;
     this.departementService.chartsData(event).subscribe({
-      next: response => {
+      next: (response) => {
         console.log(response);
-        
+
         this.chartOptions = {
           series: response.salles_libre,
           chart: {
             height: 350,
-            type: "heatmap"
+            type: 'heatmap',
           },
           dataLabels: {
-            enabled: false
+            enabled: false,
           },
-          colors: [response.all_free ? "#eeeeee" : "#41729f"],
+          colors: [response.all_free ? '#eeeeee' : '#41729f'],
           title: {
             text: `Disponibilté des salles | ${this.dayLabel}`,
             style: {
-              fontFamily: "Poppins",
-              fontSize: "20px",
-              color: "#41729f"
-            }
-          }
+              fontFamily: 'Poppins',
+              fontSize: '20px',
+              color: '#41729f',
+            },
+          },
         };
         this.isLoadChart = false;
       },
-      error: errors => {
+      error: (errors) => {
         console.log(errors);
-        
-      }
-    })
+      },
+    });
   }
-
 
   getDashboard() {
     this.isLoad = true;
     this.departementService.dashboard().subscribe({
-      next: response => {
+      next: (response) => {
         this.dashboard = response;
-
         this.isLoad = false;
+        this.getChartData(this.selectedDay);
       },
-      error: errors => {
+      error: (errors) => {
         console.log(errors);
-      }
-    })
+      },
+    });
   }
 }

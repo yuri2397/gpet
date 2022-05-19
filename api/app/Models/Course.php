@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Course extends Model
+class Course extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
-    protected $with = ['professor', 'ec', 'service', 'semester', 'departement', "syllabus"];
+    protected $with = ['professor', 'ec', 'service', 'semester', 'departement', "syllabus", "media"];
     protected $fillable = ['*'];
 
     public function professor()
@@ -42,7 +44,8 @@ class Course extends Model
         return $this->belongsTo(Departement::class);
     }
 
-    public function syllabus(){
+    public function syllabus()
+    {
         return $this->hasOne(Syllabus::class);
     }
 }

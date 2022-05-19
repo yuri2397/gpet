@@ -24,13 +24,13 @@ class CourseController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
-            return Course::with('classe')->with('departement')->orderBy('created_at', 'desc')->get();
+            return Course::with('classe')->with('departement')->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
         }
-        return Course::with('classe')->with('departement')->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        return Course::with('classe')->with('departement')->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
     }
 
     public function store(Request $request)
@@ -106,6 +106,16 @@ class CourseController extends Controller
     {
         return Course::with('classe')
             ->with('departement')
+            ->where('name', 'like', '%' . $data . '%')
+            ->orWhere('acronym', 'like', '%' . $data . '%')
+            ->get();
+    }
+
+    public function searchMyCourse(Request $request, $data)
+    {
+        return Course::with('classe')
+            ->with('departement')
+            ->whereProfessorId($request->professor)
             ->where('name', 'like', '%' . $data . '%')
             ->orWhere('acronym', 'like', '%' . $data . '%')
             ->get();

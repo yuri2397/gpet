@@ -27,7 +27,6 @@ class ProfesseurController extends Controller
         $this->middleware("permission:modifier professeur")->only(["update"]);
         $this->middleware("permission:creer professeur")->only(["store"]);
         $this->middleware("permission:supprimer professeur")->only(["destroy"]);
-        $this->middleware("permission:voir payement")->only(["payments"]);
         $this->middleware("role:professeur")->only(["timestable"]);
     }
 
@@ -102,7 +101,7 @@ class ProfesseurController extends Controller
             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
-            $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir payement', 'voir cours']);
+            $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
             DB::commit();
             return response()->json(['message' => "Professeur crée avec succès."], 200);
         } catch (\Throwable $th) {
