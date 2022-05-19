@@ -16,11 +16,13 @@
       <nz-table
         class="scroll-table"
         [nzLoading]="isLoad"
-        nzShowSizeChanger
-        [nzPageSizeOptions]="[5, 10, 20, 30]"
         #basicTable
         [nzData]="courses"
-        [nzBordered]="true"
+        [nzBordered]="true" 
+        [nzTotal]="response ? response.total : 0"
+        [nzPageSize]="10"
+        [nzFrontPagination]="false"
+        (nzPageIndexChange)="pageChange($event)"
       >
         <thead>
           <tr>

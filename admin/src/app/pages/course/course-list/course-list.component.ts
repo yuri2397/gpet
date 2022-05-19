@@ -4,13 +4,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Batiment } from 'src/app/models/batiment';
 import { Classe } from 'src/app/models/classe';
-import { Course } from 'src/app/models/course';
+import { Course, CourseResponse } from 'src/app/models/course';
 import { Departement } from 'src/app/models/departement';
 import { Service } from 'src/app/models/service';
 import { CourseService } from 'src/app/services/course.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { DepartementCreateComponent } from '../../departement/departement-create/departement-create.component';
-import { DepartementEditComponent } from '../../departement/departement-edit/departement-edit.component';
 import { Semester } from 'src/app/models/semester';
 import { Professor } from 'src/app/models/professor';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
@@ -38,6 +36,7 @@ export class CourseListComponent implements OnInit {
   selectableLoad!: boolean;
   canDeleteVisible = false;
   canDeleteMessage!: string;
+  response!: CourseResponse;
   constructor(
     private notification: NotificationService,
     private modalService: NzModalService,
@@ -46,7 +45,7 @@ export class CourseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.canDeleteInit();
-    if (this.courses == null) this.findAll();
+    if (this.courses == null) this.findAll(1, 10);
   }
 
   canDeleteInit() {
@@ -57,18 +56,23 @@ export class CourseListComponent implements OnInit {
     ];
   }
 
-  findAll() {
+  findAll(page = 1, pageSize = 5) {
     this.isLoad = true;
-    this.courseService.findAll().subscribe({
+    this.courseService.findAll(page, pageSize).subscribe({
       next: (response) => {
-        this.courses = response;
-        this.coursesChange.emit(response);
+         this.response = response;
+        this.courses = response.data;
+        this.coursesChange.emit(response.data);
         this.isLoad = false;
       },
       error: (errors) => {
         this.isLoad = false;
       },
     });
+  }
+
+  pageChange(index: number){
+    this.findAll(index, this.response.per_page)
   }
 
   openEditModal() {

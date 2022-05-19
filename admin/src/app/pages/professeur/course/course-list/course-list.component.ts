@@ -78,7 +78,7 @@ export class CourseListComponent implements OnInit {
     this.addHourLaod = true;
     this.cdDate;
     this.profService
-      .courseDo(this.hours, this.cdDate, this.selectedCourse, this.professor)
+      .courseDoProf(this.hours, this.cdDate, this.selectedCourse, this.professor)
       .subscribe({
         next: (_) => {
           this.find(this.id);
@@ -192,5 +192,7 @@ export class CourseListComponent implements OnInit {
       },
     });
   }
+
+
 
 }

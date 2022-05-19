@@ -2,7 +2,8 @@
     <div class="card shadow-sm border">
         <h4 class="color-geekblue bold m-3">Emplois du temps</h4>
         <div>
-            <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="data" [nzLoading]="dataLoad">
+            <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3"
+                nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="data" [nzLoading]="dataLoad">
                 <thead>
                     <tr>
                         <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">
@@ -23,7 +24,7 @@
                                 <nz-divider nzText="{{ pipeHours(row.start) }} À {{
                                   pipeHours(row.end)
                                 }}"></nz-divider>
-                                <div class="row justify-content-between">
+                                <div class="d-flex align-items-center justify-content-between">
                                     <div class="col text-start">
                                         Classe:
                                     </div>
@@ -31,7 +32,7 @@
                                         {{ row.classe.name }}
                                     </div>
                                 </div>
-                                <div class="row justify-content-between">
+                                <div class="d-flex align-items-center justify-content-between">
                                     <div class="col text-start">
                                         Salle:
                                     </div>

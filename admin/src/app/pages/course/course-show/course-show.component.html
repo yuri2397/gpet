@@ -3,12 +3,8 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
-          <nz-page-header
-            class="site-page-header"
-            (nzBack)="onBack()"
-            [nzBackIcon]="backTemp"
-            nzTitle="{{ course.acronym }} - {{ course.name }}"
-          ></nz-page-header>
+          <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
+            nzTitle="{{ course.acronym }} - {{ course.name }}"></nz-page-header>
         </div>
         <ng-template #backTemp>
           <button class="m-2" mat-mini-fab color="primary">
@@ -63,32 +59,40 @@
           </div>
         </div>
       </div>
+      <br>
+      <div class="container">
+        <div class="card card-body shadow-sm border">
+          <nz-divider [nzText]="rs_title"></nz-divider>
+          <ng-template #rs_title>
+            <h5 class="mt-0">Ressources assicies au cours.</h5>
+          </ng-template>
 
-      <div class="container-fluide mt-3">
-        <div class="card shadow-sm border">
-          <div class="card-header p-3 bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h5 class="text-white">Syllabus du cours</h5>
+          <div class="row">
+            <div class="col-4 my-1" *ngFor="let item of course.media">
+              <div class="card shodow border">
+                <div class="card-body ">
+                  {{item.name}} ({{ item.mime_type }})
+                </div>
+              <div class="card-footer">
+                <i nz-icon nzType="download" class="me-2" nzTheme="outline"></i>
+                <a href="{{item.original_url}}" target="_blank" rel="noopener noreferrer" download="{{ item.name }}">{{ item.name }}</a>
               </div>
-              <div>
-                <button
-                  *ngIf="course.syllabus == null"
-                  (click)="openCreateModal()"
-                  mat-mini-fab
-                  color="default"
-                >
-                  <mat-icon>add</mat-icon>
-                </button>
-                <button
-                  *ngIf="course.syllabus != null"
-                  (click)="openEditModal()"
-                  mat-mini-fab
-                  color="default"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
               </div>
+              
+            </div>
+          </div>
+          <hr>
+          <div  class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mt-0">Syllabus du cours</h5>
+            </div>
+            <div>
+              <button *ngIf="course.syllabus == null" (click)="openCreateModal()" mat-mini-fab color="default">
+                <mat-icon>add</mat-icon>
+              </button>
+              <button *ngIf="course.syllabus != null" (click)="openEditModal()" mat-mini-fab color="default">
+                <mat-icon>edit</mat-icon>
+              </button>
             </div>
           </div>
           <div *ngIf="course.syllabus" class="card-body">

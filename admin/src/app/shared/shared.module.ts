@@ -51,6 +51,8 @@ import { SeanceCreateComponent } from '../pages/course/seance/seance-create/sean
 import { SeanceEditComponent } from '../pages/course/seance/seance-edit/seance-edit.component';
 import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-list.component';
 import { InfoUserComponent } from './ui/info-user/info-user.component';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @NgModule({
   declarations: [
@@ -189,7 +191,10 @@ import { InfoUserComponent } from './ui/info-user/info-user.component';
     NzSpinModule,
     NzMessageModule,
     NgApexchartsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NzAutocompleteModule,
+    NzUploadModule,
+    NzMessageModule
   ],
 })
 export class SharedModule {}

@@ -25,9 +25,9 @@ export class ComptabityComponent implements OnInit {
   deleteRestoRef!: NzModalRef;
   paymentLoad = false;
   confPayPending = true;
+  isProfesseur: boolean = false;
   constructor(
     private location: Location,
-    private route: ActivatedRoute,
     private professorService: ProfessorService,
     private modalService: NzModalService,
     private notification: NotificationService,
@@ -36,8 +36,8 @@ export class ComptabityComponent implements OnInit {
 
   ngOnInit(): void {
     this.profile();
-
-
+    this.isProfesseur = this.professorService.isProfesseur();
+    console.log("PROFFF",this.isProfesseur);
   }
 
 
@@ -47,7 +47,6 @@ export class ComptabityComponent implements OnInit {
     this.profService.profile().subscribe({
       next: (response) => {
         this.prof = response;
-        console.log(response);
         this.professor= response;
         console.log(this.professor.registration_number);
         console.log(this.professor.coursesDo);

@@ -4,16 +4,18 @@
         <div *ngIf="!dataLoad" class="card-header bg-color">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <button nz-tooltip [nzTooltipTitle]="'Revenir en arrièr'" class="mx-2" (click)="onBack()" mat-mini-fab color="default">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
+                    <button nz-tooltip [nzTooltipTitle]="'Revenir en arrièr'" class="mx-2" (click)="onBack()"
+                        mat-mini-fab color="default">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
                 </div>
                 <div>
                     <div class="d-flex justify-content-end align-items-center">
                         <div class="mx-1">
-                            <button nz-button nzShape="circle" nz-tooltip [nzTooltipTitle]="'Modifier les infos'" (click)="openEditModal()">
-                <i nz-icon nzType="edit"></i>
-              </button>
+                            <button nz-button nzShape="circle" nz-tooltip [nzTooltipTitle]="'Modifier les infos'"
+                                (click)="openEditModal()">
+                                <i nz-icon nzType="edit"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -30,7 +32,8 @@
                                     <nz-tab nzTitle="Personnel">
                                         <div class="mb-3">
                                             <nz-tag [nzColor]="'geekblue'">
-                                                <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{ professeur.registration_number }}
+                                                <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{
+                                                professeur.registration_number }}
                                             </nz-tag>
                                             {{ professeur.first_name }} {{ professeur.last_name }}
                                         </div>
@@ -100,7 +103,9 @@
                       align-items-center">
                                             <div>En fonction</div>
                                             <div>
-                                                <nz-tag [nzMode]="'checkable'" (click)="setAccountStatus()" [nzColor]="professeur.is_active ? 'green' : 'red'" [innerText]="professeur.is_active ? 'OUI' : 'NON'"></nz-tag>
+                                                <nz-tag [nzMode]="'checkable'" (click)="setAccountStatus()"
+                                                    [nzColor]="professeur.is_active ? 'green' : 'red'"
+                                                    [innerText]="professeur.is_active ? 'OUI' : 'NON'"></nz-tag>
                                             </div>
                                         </div>
                                     </nz-tab>
@@ -170,16 +175,20 @@
                             <h5 class="text-white">Informations sur les cours</h5>
                         </div>
                         <div>
-                            <button class="mx-2" *ngIf="can('voir payement') && isPayable()" nz-tooltip [nzTooltipTitle]="'Historique des paiements'" (click)="openPayementPage()" mat-mini-fab color="warn">
-                <mat-icon>paid</mat-icon>
-              </button>
-                            <button nz-tooltip [nzTooltipTitle]="'Ajoute un cour'" (click)="openAddCourseModal()" mat-mini-fab color="default">
-                <mat-icon>add</mat-icon>
-              </button>
+                            <button class="mx-2" *ngIf="can('voir payement') && isPayable()" nz-tooltip
+                                [nzTooltipTitle]="'Historique des paiements'" (click)="openPayementPage()" mat-mini-fab
+                                color="warn">
+                                <mat-icon>paid</mat-icon>
+                            </button>
+                            <button nz-tooltip [nzTooltipTitle]="'Ajoute un cour'" (click)="openAddCourseModal()"
+                                mat-mini-fab color="default">
+                                <mat-icon>add</mat-icon>
+                            </button>
                         </div>
                     </div>
                     <div class="card-body">
-                        <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #basicTable [nzData]="professeur.courses">
+                        <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #basicTable
+                            [nzData]="professeur.courses">
                             <thead>
                                 <tr>
                                     <th>Code</th>
@@ -214,14 +223,16 @@
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
                                             <div>
-                                                <button nz-button nzType="primary" nzShape="circle" (click)="openAddHourModal(data)">
-                          <mat-icon>pending_actions</mat-icon>
-                        </button>
+                                                <button nz-button nzType="primary" nzShape="circle"
+                                                    (click)="openAddHourModal(data)">
+                                                    <mat-icon>pending_actions</mat-icon>
+                                                </button>
                                             </div>
                                             <div class="mx-2">
-                                                <button (click)="openDeleteConf(data)" nz-button nzDanger nzType="primary" nzShape="circle">
-                          <i nz-icon nzType="delete"></i>
-                        </button>
+                                                <button (click)="openDeleteConf(data)" nz-button nzDanger
+                                                    nzType="primary" nzShape="circle">
+                                                    <i nz-icon nzType="delete"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </td>
@@ -287,7 +298,8 @@
                         <nz-form-label nzRequired nzFor="hours">Nombre d'heures</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
               nombre d'heures est requi">
-                            <input [(ngModel)]="hours" formControlName="hours" nz-input min="1" max="100" name="hours" type="number" id="hours" />
+                            <input [(ngModel)]="hours" formControlName="hours" nz-input min="1" max="100" name="hours"
+                                type="number" id="hours" />
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -295,7 +307,8 @@
                     <nz-form-item>
                         <nz-form-label nzRequired nzFor="cdDate">Date</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [(ngModel)]="cdDate" formControlName="cdDate" nz-input name="cdDate" type="date" id="cdDate" />
+                            <input [(ngModel)]="cdDate" formControlName="cdDate" nz-input name="cdDate" type="date"
+                                id="cdDate" />
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -324,11 +337,12 @@
     </div>
     <div *nzModalFooter>
         <button nz-button nzType="default" (click)="addHourModalClose()">
-      Annuler
-    </button>
-        <button nz-button nzType="primary" (click)="addHour()" [disabled]="!addHourForm.valid" [nzLoading]="addHourLaod">
-      Valider
-    </button>
+            Annuler
+        </button>
+        <button nz-button nzType="primary" (click)="addHour()" [disabled]="!addHourForm.valid"
+            [nzLoading]="addHourLaod">
+            Valider
+        </button>
     </div>
 </nz-modal>
 
@@ -343,7 +357,9 @@
                         <nz-form-label nzRequired nzFor="hours">Cours</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
               cour requi">
-                            <nz-select (ngModelChange)="currentModel($event)" nzPlaceHolder="Rechercher un professeur" nzAllowClear nzShowSearch nzServerSearch formControlName="course_id" (nzOnSearch)="onCourseSearch($event)">
+                            <nz-select (ngModelChange)="currentModel($event)" nzPlaceHolder="Rechercher un professeur"
+                                nzAllowClear nzShowSearch nzServerSearch formControlName="course_id"
+                                (nzOnSearch)="onCourseSearch($event)">
                                 <ng-container *ngFor="let o of courses">
                                     <nz-option *ngIf="!coursesLoad" [nzValue]="o.id" [nzLabel]="'#
                     ' + o.name + ' | ' + o.service.name">
@@ -410,10 +426,11 @@
     </div>
     <ng-template #addCourFootModal>
         <button nz-button nzType="default" (click)="addCourseModalVisible= false">
-      Annuler
-    </button>
-        <button nz-button nzType="primary" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid" [nzLoading]="addHourLaod">
-      Valider
-    </button>
+            Annuler
+        </button>
+        <button nz-button nzType="primary" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid"
+            [nzLoading]="addHourLaod">
+            Valider
+        </button>
     </ng-template>
 </nz-modal>

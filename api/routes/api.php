@@ -24,11 +24,14 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\SyllabusController;
+use App\Models\Course;
 use App\Models\Professor;
+use App\Models\Ressource;
 use Illuminate\Support\Str;
 
 use Spatie\Permission\Models\Role;
 use Facade\FlareClient\Contracts\ProvidesFlareContext;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -119,7 +122,7 @@ Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('search/{data}', [SalleController::class, "search"]);
 });
 
-Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
+Route::prefix("professeur")->middleware(['auth:api',])->group(function () {
     Route::get('', [ProfesseurController::class, "index"]);
     Route::get('profile', [ProfesseurController::class, "profile"]);
     Route::get('search/{data}', [ProfesseurController::class, "search"]);
@@ -129,6 +132,7 @@ Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
     Route::delete('destroy/{id}', [ProfesseurController::class, "destroy"]);
     Route::put('desable-account/{id}', [ProfesseurController::class, "desableAccount"]);
     Route::post('course-do', [CourseController::class, 'courseHasProfessor']);
+    Route::post('coursedoprofesseur', [CourseController::class, 'coursedoprofesseur']);
     Route::post('do-payment', [CourseController::class, 'doPayment']);
     Route::post('course-to-professor', [CourseController::class, 'courseToProfessor']);
     Route::put('remove-course-professor', [CourseController::class, 'removeCourseProfessor']);
@@ -140,9 +144,8 @@ Route::prefix("professeur")->middleware(['auth:api',])->group(function (){
      * MODULE PROFESSEUR
      */
 
-     Route::get('timestables/{professor}', [ProfesseurController::class, 'timestable']);
+    Route::get('timestables/{professor}', [ProfesseurController::class, 'timestable']);
     Route::post("update-avatar", [ProfesseurController::class, "updateAvatar"]);
-
 });
 
 Route::prefix("ue")->middleware(['auth:api'])->group(function () {
@@ -170,6 +173,7 @@ Route::prefix("course")->middleware(['auth:api',])->group(function () {
     Route::put('update/{id}', [CourseController::class, "update"]);
     Route::delete('destroy/{id}', [CourseController::class, "destroy"]);
     Route::get('search/{data}', [CourseController::class, "search"]);
+    Route::get('search-my-courses/{data}', [CourseController::class, "searchMyCourse"]);
 });
 
 Route::prefix("bank")->middleware(['auth:api'])->group(function () {
@@ -209,6 +213,9 @@ Route::prefix("ressource")->middleware(['auth:api'])->group(function () {
     Route::put('update/{id}', [RessourceController::class, "update"]);
     Route::delete('destroy/{id}', [RessourceController::class, "destroy"]);
     Route::get('search/{data}', [RessourceController::class, "search"]);
+    Route::get('upload-url/{course}', [RessourceController::class, "getUploadUrl"]);
+    Route::post('upload-for-course/{course}', [RessourceController::class, "uploadForCourse"]);
+    Route::get('download/{media}', [RessourceController::class, 'downloadMedia']);
 });
 
 Route::prefix("seance")->middleware(['auth:api'])->group(function () {
@@ -228,17 +235,44 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::delete('destroy/{id}', [SyllabusController::class, "destroy"]);
     Route::get('search/{data}', [SyllabusController::class, "search"]);
     Route::get('syllabusDesc/{courseid}', [SyllabusController::class, "syllabusDesc"]);
-
 });
 
+
 Route::any('test', function (Request $request) {
-    $user = User::whereEmail("fallou.khouma@gmail.com")->first();
-    $user->givePermissionTo('voir cour');
-    return $user;
+    Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"');
+    Artisan::call('migrate');
+    Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"');
+    return "OKAY";
 });
 
 Route::get('/artisan', function () {
     //  return Artisan::call('migrate');
+
+    $profs = Professor::all();
+    $all = [];
+    foreach ($profs as $p) {
+        $isUser = User::whereEmail($p->email)->first();
+        if ($isUser) {
+            $isUser->assignRole('professeur');
+            $isUser->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
+            continue;
+        }
+        $user = User::whereModelType("Professor")->whereModel($p->id)->first();
+        if (!$user) {
+            $user = new User();
+            $user->first_name = $p->first_name;
+            $user->last_name = $p->last_name;
+            $user->email = $p->email;
+            $user->password = Hash::make("gpet2022");
+            $user->departement_id = $p->departement_id;
+            $user->model_type = "Professor";
+            $user->model = $p->id;
+            $user->save();
+            $user->assignRole('professeur');
+            $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
+        }
+        $all[] = $user;
+    }
+
+    return $all;
 });
-
-

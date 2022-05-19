@@ -39,7 +39,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['departement', 'permissions'];
+    protected $with = ['departement', 'permissions', 'roles'];
 
     public function isAdmin()
     {
