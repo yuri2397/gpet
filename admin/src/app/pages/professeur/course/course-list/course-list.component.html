@@ -1,53 +1,104 @@
 <div class="container-fluid">
-  <div class="card shadow-sm border">
-    <div class="card-header p-3 bg-color">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h5 class="text-white">Mes cours</h5>
-        </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <nz-table
-        class="scroll-table"
-        [nzLoading]="isLoad"
-        nzShowSizeChanger
-        [nzPageSizeOptions]="[5, 10, 20, 30]"
-        #basicTable
-        [nzData]="course"
-        [nzBordered]="true"
-      >
-        <thead>
-          <tr>
-            <th class="text-center">Code</th>
-            <th class="text-center">Intitulé</th>
-            <th class="text-center">Service</th>
-            <th class="text-center">Semestre</th>
-            <th class="text-center">Classe</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of professor.courses ">
-            <td>{{ data.acronym }}</td>
-            <td>{{ data.name }}</td>
-            <td>{{ data.service.name }}</td>
-            <td>{{ data.semester.name }}</td>
-            <td>{{ data.classe.name }}</td>
-            <td class="p-0">
-              <div class="d-flex justify-content-center">
-                <div class="mx-3">
-                  <a [routerLink]="['/professor/courses/' + data.id]">
-                    <button nz-button nzShape="circle" class="color-orange">
-                      <i class="color" nz-icon nzType="eye"></i>
-                    </button>
-                  </a>
+    <div class="card shadow-sm border">
+        <div class="card-header p-3 bg-color">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="text-white">Mes cours</h5>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+            </div>
+        </div>
+        <div class="card-body">
+            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5, 10, 20, 30]" #basicTable [nzData]="course" [nzBordered]="true">
+                <thead>
+                    <tr>
+                        <th class="text-center">Code</th>
+                        <th class="text-center">Intitulé</th>
+                        <th class="text-center">Service</th>
+                        <th class="text-center">Semestre</th>
+                        <th class="text-center">Classe</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of professor.courses ">
+                        <td>{{ data.acronym }}</td>
+                        <td>{{ data.name }}</td>
+                        <td>{{ data.service.name }}</td>
+                        <td>{{ data.semester.name }}</td>
+                        <td>{{ data.classe.name }}</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center">
+                                <div>
+                                    <button nz-button nzType="primary" nzShape="circle" (click)="openAddHourModal(data)">
+                                      <mat-icon>pending_actions</mat-icon>
+                                </button>
+                                </div>
+                                <div class="mx-2">
+                                    <button nz-button nzDanger nzType="primary" nzShape="circle" (click)="openDeleteConf(data)">
+                                      <i nz-icon nzType="delete"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
     </div>
-  </div>
 </div>
+
+<!-- ADD HOURS MODAL -->
+<nz-modal nzCentered="true" [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des
+  heurs de cours">
+    <div *nzModalContent>
+        <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="hours">Nombre d'heures</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
+              nombre d'heures est requi">
+                            <input [(ngModel)]="hours" formControlName="hours" nz-input min="1" max="100" name="hours" type="number" id="hours" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="cdDate">Date</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [(ngModel)]="cdDate" formControlName="cdDate" nz-input name="cdDate" type="date" id="cdDate" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Professeur</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ professor.first_name
+                + '' + professor.last_name }}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="col-md-6">
+                    <nz-form-item>
+                        <nz-form-label>Cours</nz-form-label>
+                        <nz-form-control [nzSm]="24" [nzXs]="24">
+                            <input [disabled]="true" nz-input value="{{ selectedCourse.name
+                }}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </nz-form>
+    </div>
+    <div *nzModalFooter>
+        <button nz-button nzType="default" (click)="addHourModalClose()">
+      Annuler
+    </button>
+        <button nz-button nzType="primary" (click)="addHour()" [disabled]="!addHourForm.valid" [nzLoading]="addHourLaod">
+      Valider
+    </button>
+    </div>
+</nz-modal>
