@@ -5,22 +5,26 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 - Email
 - Mot de passe
 
-![Capture d’écran de 2021-10-02 13-07-30](https://user-images.githubusercontent.com/58815209/135717611-a64013d3-a614-4f2f-aade-cd30f8631ea4.png)
+![gpet_home](https://user-images.githubusercontent.com/58815209/169573006-a81c8b0c-13f4-4dcf-9d09-b4ed0cdae5c4.png)
 
+# Admin page
+- Page d'accueil
+
+![gpet_dash](https://user-images.githubusercontent.com/58815209/169573234-c1af848e-6468-479d-9e52-f276da736bf5.png)
 
 # BATIMENT CRUD
 - Ajouter un nouveau batiment
 - Supprimer un batiment
 - Modifier un batiment
 
-![Capture d’écran de 2021-09-29 18-59-43](https://user-images.githubusercontent.com/58815209/135332009-77d4cd83-78db-4dfa-8ff3-f619d2349e5d.png)
+![gpet_bat](https://user-images.githubusercontent.com/58815209/169573354-c497d5b3-2162-4267-a1b7-b43cea8f2b57.png)
 
 # DEPARTEMENT CRUD
 - Ajouter un nouveau dépatement
 - Supprimer un dépatement
 - Modifier un dépatement
 
-![Capture d’écran de 2021-09-29 23-16-05](https://user-images.githubusercontent.com/58815209/135361185-57f87700-af5d-40e7-81dc-5b05167e8e76.png)
+![det_gpet](https://user-images.githubusercontent.com/58815209/169573791-c5a2b6e1-b521-4975-b107-d352a9e1a934.png)
 
 # CLASSES
 - Ajouter une nouvelle class
