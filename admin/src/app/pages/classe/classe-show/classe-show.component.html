@@ -1,191 +1,284 @@
 <div *ngIf="!eptLoad && !errorNetWork" style="width: 100%">
-    <div class="card shadow">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="{{ classe.name }} - {{ departement.name }}"></nz-page-header>
-                </div>
-                <ng-template #backTemp>
-                    <button class="m-2" mat-mini-fab color="primary">
+  <div class="card shadow">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <nz-page-header
+            class="site-page-header"
+            (nzBack)="onBack()"
+            [nzBackIcon]="backTemp"
+            nzTitle="{{ classe.name }} - {{ departement.name }}"
+          ></nz-page-header>
+        </div>
+        <ng-template #backTemp>
+          <button class="m-2" mat-mini-fab color="primary">
             <mat-icon>arrow_back</mat-icon>
           </button>
-                </ng-template>
-            </div>
-            <nz-tabset [nzTabPosition]="'left'">
-                <nz-tab class="p-5" [nzTitle]="'Cours'">
-                    <app-course-list [courses]="courses" [classe]="classe"></app-course-list>
-                </nz-tab>
-                <nz-tab [nzTitle]="'Emploie du temps'">
-                    <nz-tabset nzType="card">
-                        <nz-tab nzTitle="Édition">
-                            <nz-collapse *ngIf="!eptLoad" nzAccordion>
-                                <nz-collapse-panel *ngFor="let panel of epts" nzHeader="{{ panel.day.name | uppercase }} - {{
+        </ng-template>
+      </div>
+      <nz-tabset >
+        <nz-tab class="p-5" [nzTitle]="'Liste des cours'">
+          <app-course-list
+            [courses]="courses"
+            [classe]="classe"
+          ></app-course-list>
+        </nz-tab>
+        <nz-tab [nzTitle]="'Emploie du temps'">
+          <nz-tabset nzType="card">
+            <nz-tab nzTitle="Édition">
+              <nz-collapse *ngIf="!eptLoad" nzAccordion>
+                <nz-collapse-panel
+                  *ngFor="let panel of epts"
+                  nzHeader="{{ panel.day.name | uppercase }} - {{
                     panel.data.length
-                  }} cours" [nzActive]="panel.active" [nzDisabled]="false">
-                                    <ng-container *ngIf="panel.data.length == 0; else dataEmpty">
-                                        <nz-empty [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
-                                            <ng-template #contentTpl>
-                                                <span>PAS DE COURS LE
+                  }} cours"
+                  [nzActive]="panel.active"
+                  [nzDisabled]="false"
+                >
+                  <ng-container *ngIf="panel.data.length == 0; else dataEmpty">
+                    <nz-empty
+                      [nzNotFoundContent]="contentTpl"
+                      [nzNotFoundFooter]="footerTpl"
+                    >
+                      <ng-template #contentTpl>
+                        <span
+                          >PAS DE COURS LE
                           <span class="text-danger">{{
                             panel.day.name | uppercase
-                            }}</span>
-                                                </span>
-                                            </ng-template>
-                                            <ng-template #footerTpl>
-                                                <button (click)="openCreateModal(panel)" nz-button nzType="primary">
+                          }}</span>
+                        </span>
+                      </ng-template>
+                      <ng-template #footerTpl>
+                        <button
+                          (click)="openCreateModal(panel)"
+                          nz-button
+                          nzType="primary"
+                        >
                           Ajouter un cour
                         </button>
-                                            </ng-template>
-                                        </nz-empty>
-                                    </ng-container>
+                      </ng-template>
+                    </nz-empty>
+                  </ng-container>
 
-                                    <ng-template #dataEmpty>
-                                        <div style="z-index: 500" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                                            <div class="col" *ngFor="let item of panel.data">
-                                                <mat-card class="shadow">
-                                                    <mat-card-subtitle>{{ item.course.name | uppercase }}
-                                                    </mat-card-subtitle>
-                                                    <mat-card-content>
-                                                        <div class="d-flex alig-items-center my-2">
-                                                            <mat-icon class="mx-2">alarm</mat-icon>
-                                                            <nz-tag [nzColor]="'cyan'">{{ item.start }} | {{ item.end }}
-                                                            </nz-tag>
-                                                        </div>
-                                                        <div class="d-flex alig-items-center">
-                                                            <mat-icon class="mx-2">place</mat-icon>
-                                                            <nz-tag [nzColor]="'warning'">
-                                                                <ng-container *ngIf="
-                                    item.salle.name == null;
+                  <ng-template #dataEmpty>
+                    <div
+                      style="z-index: 500"
+                      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+                    >
+                      <div class="col" *ngFor="let item of panel.data">
+                        <mat-card class="shadow">
+                          <mat-card-subtitle
+                            >{{ item.course.name | uppercase }}
+                          </mat-card-subtitle>
+                          <mat-card-content>
+                            <div class="d-flex alig-items-center my-2">
+                              <mat-icon class="mx-2">alarm</mat-icon>
+                              <nz-tag [nzColor]="'cyan'"
+                                >{{ item.start }} | {{ item.end }}
+                              </nz-tag>
+                            </div>
+                            <div class="d-flex alig-items-center">
+                              <mat-icon class="mx-2">place</mat-icon>
+                              <nz-tag [nzColor]="'warning'">
+                                <ng-container
+                                  *ngIf="
+                                    item.salle && item.salle.name != null;
                                     else salleUnName
-                                  ">
-                                                                    Salle N° {{ item.salle.number }}
-                                                                </ng-container>
-                                                                <ng-template #salleUnName>
-                                                                    {{ item.salle.number }} - {{ item.salle.name }}
-                                                                </ng-template>
-                                                            </nz-tag>
-                                                        </div>
-                                                        <nz-alert class="mt-5" nzType="info" [nzMessage]="
-                                item.course.professor.first_name +
+                                  "
+                                >
+                                  Salle N° {{ item.salle.number }}
+                                </ng-container>
+                                <ng-template #salleUnName>
+                                  {{ item.salle?.number }} -
+                                  {{ item.salle?.name }}
+                                </ng-template>
+                              </nz-tag>
+                            </div>
+                            <nz-alert
+                              class="mt-5"
+                              nzType="info"
+                              [nzMessage]="
+                                item.course.professor?.first_name +
                                 ' ' +
-                                item.course.professor.last_name
-                              " nzShowIcon>
-                                                        </nz-alert>
-                                                    </mat-card-content>
-                                                    <mat-card-actions>
-                                                        <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzDanger nz-popconfirm nzPopconfirmTitle="Merci de confirmer votre action." nzPopconfirmPlacement="bottom" (nzOnConfirm)="removeEPT(panel, item)">
+                                item.course.professor?.last_name
+                              "
+                              nzShowIcon
+                            >
+                            </nz-alert>
+                          </mat-card-content>
+                          <mat-card-actions>
+                            <button
+                              [disabled]="item.removeLoad"
+                              nz-button
+                              nzType="primary"
+                              nzShape="circle"
+                              nzDanger
+                              nz-popconfirm
+                              nzPopconfirmTitle="Merci de confirmer votre action."
+                              nzPopconfirmPlacement="bottom"
+                              (nzOnConfirm)="removeEPT(panel, item)"
+                            >
                               <i nz-icon nzType="delete"></i>
                             </button>
-                                                        <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" class="mx-2" (click)="editEPT(panel, item)">
+                            <button
+                              [disabled]="item.removeLoad"
+                              nz-button
+                              nzType="primary"
+                              nzShape="circle"
+                              class="mx-2"
+                              (click)="editEPT(panel, item)"
+                            >
                               <i nz-icon nzType="edit"></i>
                             </button>
-                                                    </mat-card-actions>
-                                                    <mat-card-footer>
-                                                        <mat-progress-bar *ngIf="item.removeLoad" mode="indeterminate">
-                                                        </mat-progress-bar>
-                                                    </mat-card-footer>
-                                                </mat-card>
-                                            </div>
-                                            <div class="col">
-                                                <mat-card class="shadow">
-                                                    <mat-card-subtitle>Ajouter un nouveau cours</mat-card-subtitle>
-                                                    <mat-card-content>
-                                                        <button mat-mini-fab color="primary" (click)="openCreateModal(panel)">
+                          </mat-card-actions>
+                          <mat-card-footer>
+                            <mat-progress-bar
+                              *ngIf="item.removeLoad"
+                              mode="indeterminate"
+                            >
+                            </mat-progress-bar>
+                          </mat-card-footer>
+                        </mat-card>
+                      </div>
+                      <div class="col">
+                        <mat-card class="shadow">
+                          <mat-card-subtitle
+                            >Ajouter un nouveau cours</mat-card-subtitle
+                          >
+                          <mat-card-content>
+                            <button
+                              mat-mini-fab
+                              color="primary"
+                              (click)="openCreateModal(panel)"
+                            >
                               <mat-icon>add</mat-icon>
                             </button>
-                                                    </mat-card-content>
-                                                    <mat-card-footer>
-                                                        <mat-progress-bar *ngIf="panel.addLoad" mode="indeterminate">
-                                                        </mat-progress-bar>
-                                                    </mat-card-footer>
-                                                </mat-card>
-                                            </div>
-                                        </div>
-                                    </ng-template>
-                                </nz-collapse-panel>
-                            </nz-collapse>
-                        </nz-tab>
-                        <nz-tab nzTitle="Présentation">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <div class="mx-1">Exporter en PDF</div>
-                                <div>
-                                    <button (click)="exportPDF()" mat-mini-fab class="shadow m-2" color="primary">
+                          </mat-card-content>
+                          <mat-card-footer>
+                            <mat-progress-bar
+                              *ngIf="panel.addLoad"
+                              mode="indeterminate"
+                            >
+                            </mat-progress-bar>
+                          </mat-card-footer>
+                        </mat-card>
+                      </div>
+                    </div>
+                  </ng-template>
+                </nz-collapse-panel>
+              </nz-collapse>
+            </nz-tab>
+            <nz-tab nzTitle="Présentation">
+              <div class="d-flex align-items-center justify-content-end">
+                <div class="mx-1">Exporter en PDF</div>
+                <div>
+                  <button
+                    (click)="exportPDF()"
+                    mat-mini-fab
+                    class="shadow m-2"
+                    color="primary"
+                  >
                     <mat-icon class="mat-18">file_download</mat-icon>
                   </button>
-                                </div>
-                            </div>
-                            <div id="presentionEPT">
-                                <div class="card card-body text-center">
-                                    <div>
-                                        <span>REPUBLIQUE DU SENEGAL <br />
-                      Un Peuple Un But Une Foi</span>
-                                    </div>
-                                    <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
-                                    <span class="text-center">
+                </div>
+              </div>
+              <div id="presentionEPT">
+                <div class="card card-body text-center">
+                  <div>
+                    <span
+                      >REPUBLIQUE DU SENEGAL <br />
+                      Un Peuple Un But Une Foi</span
+                    >
+                  </div>
+                  <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
+                  <span class="text-center">
                     UNITÉ DE FORMATION ET DE RECHERCHE <br />
                     EN SCIENCES ET TECHNOLOGIES <br />
                     {{ depName }}
                   </span>
-                                    <h3>{{ classe.name }}</h3>
-                                    {{ now | date: "EEEE d MMMM y" }}
-                                </div>
-                                <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="epts">
-                                    <thead>
-                                        <tr>
-                                            <th [nzAlign]="'center'" class="text-center" *ngFor="let item of days">
-                                                {{ item.name.toUpperCase() }}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <td *ngFor="let ept of presentionEPT.data">
-                                            <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
-                                                <div class="card border m-3 card-body text-center m-1" *ngFor="
+                  <h3>{{ classe.name }}</h3>
+                  {{ now | date: "EEEE d MMMM y" }}
+                </div>
+                <nz-table
+                  [nzOuterBordered]="true"
+                  [nzSize]="'middle'"
+                  class="scroll-table p-0 border mb-3 mx-3"
+                  nzShowPagination="false"
+                  nzBordered="true"
+                  #presentionEPT
+                  [nzData]="epts"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        [nzAlign]="'center'"
+                        class="text-center"
+                        *ngFor="let item of days"
+                      >
+                        {{ item.name.toUpperCase() }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <td *ngFor="let ept of presentionEPT.data">
+                      <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
+                        <div
+                          class="card border m-3 card-body text-center m-1"
+                          *ngFor="
                             let row of ept.data;
                             let index = index;
                             let isFirst = first;
                             let isLast = last
-                          ">
-                                                    {{ row.course.name.toLocaleUpperCase() }} <br />
-                                                    <nz-divider nzText="{{ pipeHours(row.start) }} À {{
+                          "
+                        >
+                          {{ row.course.name.toLocaleUpperCase() }} <br />
+                          <nz-divider
+                            nzText="{{ pipeHours(row.start) }} À {{
                               pipeHours(row.end)
-                            }}"></nz-divider>
-                                                    <div class="row justify-content-between">
-                                                        <div class="col text-start">
-                                                            <mat-icon [color]="'primary'" class="mat-24">person
-                                                            </mat-icon>
-                                                        </div>
-                                                        <div class="col text-end">
-                                                            M. {{ row.course.professor.last_name }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-between">
-                                                        <div class="col text-start">
-                                                            <mat-icon [color]="'primary'" class="mat-24">room</mat-icon>
-                                                        </div>
-                                                        <div class="col text-end">
-                                                            {{ row.salle.name }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                            <ng-template #noEPTRow>
-                                                <div class="card m-3 text-center">
-                                                    <nz-tag [nzColor]="'red'">LIBRE</nz-tag>
-                                                </div>
-                                            </ng-template>
-                                        </td>
-                                    </tbody>
-                                </nz-table>
+                            }}"
+                          ></nz-divider>
+                          <div class="row justify-content-between">
+                            <div class="col text-start">
+                              <mat-icon [color]="'primary'" class="mat-24"
+                                >person
+                              </mat-icon>
                             </div>
-                        </nz-tab>
-                    </nz-tabset>
-                </nz-tab>
-            </nz-tabset>
-        </div>
+                            <div class="col text-end">
+                              M. {{ row.course.professor.last_name }}
+                            </div>
+                          </div>
+                          <div
+                            *ngIf="row.salle"
+                            class="row justify-content-between"
+                          >
+                            <div class="col text-start">
+                              <mat-icon [color]="'primary'" class="mat-24"
+                                >room</mat-icon
+                              >
+                            </div>
+                            <div class="col text-end">
+                              {{ row.salle?.name }}
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-template #noEPTRow>
+                        <div class="card m-3 text-center">
+                          <nz-tag [nzColor]="'red'">LIBRE</nz-tag>
+                        </div>
+                      </ng-template>
+                    </td>
+                  </tbody>
+                </nz-table>
+              </div>
+            </nz-tab>
+          </nz-tabset>
+        </nz-tab>
+      </nz-tabset>
     </div>
+  </div>
 </div>
 <ng-container *ngIf="eptLoad && !errorNetWork">
-    <app-load></app-load>
+  <app-load></app-load>
 </ng-container>
 <app-error-server *ngIf="errorNetWork"></app-error-server>

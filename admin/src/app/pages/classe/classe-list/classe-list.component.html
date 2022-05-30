@@ -21,7 +21,6 @@
                     <tr>
                         <th>Nom</th>
                         <th class="text-center">Nombre d'étudiants</th>
-                        <th class="text-center">Nombre de cours</th>
                         <th class="text-center" *ngIf="classeService.isSuperAdmin()">
                             Département
                         </th>
@@ -32,7 +31,6 @@
                     <tr *ngFor="let data of basicTable.data">
                         <td>{{ data.name }}</td>
                         <td class="text-center">{{ data.nb_students }}</td>
-                        <td class="text-center">{{ data.courses.length }}</td>
                         <td *ngIf="classeService.isSuperAdmin()">
                             {{ data.departement.name }}
                         </td>

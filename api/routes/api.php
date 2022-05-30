@@ -27,6 +27,7 @@ use App\Http\Controllers\SyllabusController;
 use App\Models\Course;
 use App\Models\Professor;
 use App\Models\Ressource;
+use App\Models\TimesTable;
 use Illuminate\Support\Str;
 
 use Spatie\Permission\Models\Role;
@@ -248,31 +249,12 @@ Route::any('test', function (Request $request) {
 Route::get('/artisan', function () {
     //  return Artisan::call('migrate');
 
-    $profs = Professor::all();
-    $all = [];
-    foreach ($profs as $p) {
-        $isUser = User::whereEmail($p->email)->first();
-        if ($isUser) {
-            $isUser->assignRole('professeur');
-            $isUser->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
-            continue;
-        }
-        $user = User::whereModelType("Professor")->whereModel($p->id)->first();
-        if (!$user) {
-            $user = new User();
-            $user->first_name = $p->first_name;
-            $user->last_name = $p->last_name;
-            $user->email = $p->email;
-            $user->password = Hash::make("gpet2022");
-            $user->departement_id = $p->departement_id;
-            $user->model_type = "Professor";
-            $user->model = $p->id;
-            $user->save();
-            $user->assignRole('professeur');
-            $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
-        }
-        $all[] = $user;
-    }
+    $timestimes = TimesTable::all();
 
-    return $all;
+    foreach ($timestimes as $key => $value) {
+        $cours = Course::find($value->course_id);
+        if(!$cours->professor_id){
+            $value->delete();
+        }
+    }
 });

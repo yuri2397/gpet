@@ -9,7 +9,7 @@ import { Semester } from './semester';
 import { Model } from './model';
 
 export class Course extends Model<Course> {
-  acronym!: string;
+  acronym?: string;
   name!: string;
   groupe_number!: number;
   classe_id!: number;
@@ -18,8 +18,6 @@ export class Course extends Model<Course> {
   hours!: number;
   ec_id!: number;
   professor_id!: number;
-  created_at!: Date;
-  updated_at!: Date;
   departement_id!: number;
   professor!: Professor;
   departement!: Departement;
