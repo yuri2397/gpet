@@ -37,9 +37,9 @@ export class CourseService extends BaseHttp {
     return c;
   }
 
-  findAll(page: number, pageSize: number) {
+  findAll(page: number, pageSize: number, searchQuery?: string) {
     return this.http.get<CourseResponse>(
-      this.endPoint + `?page=${page}&pageSize=${pageSize}`,
+      this.endPoint + `?page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery ?? ''}`,
       {
         headers: this.authorizationHeaders,
         observe: 'body',

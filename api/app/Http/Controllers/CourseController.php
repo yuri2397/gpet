@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CoursesHasProfessors;
 use App\Models\UE;
 use App\Models\EC;
+use App\Models\TimesTable;
+
+use function PHPUnit\Framework\isEmpty;
 
 class CourseController extends Controller
 {
@@ -27,9 +30,23 @@ class CourseController extends Controller
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
-            return Course::with('classe')->with('departement')->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+            $query = Course::with('classe')->with('departement');
+            if ($request->searchQuery != '') {
+                return $query->where('name', 'like', '%' . $request->searchQuery . '%')
+                    ->orWhere('acronym', 'like', '%' . $request->searchQuery . '%')
+                    ->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+            } else {
+                return $query->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+            }
         }
-        return Course::with('classe')->with('departement')->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+        $query = Course::with('classe')->with('departement')->whereDepartementId($user->departement_id);
+        if ($request->searchQuery != '') {
+            return $query->where('name', 'like', '%' . $request->searchQuery . '%')
+                ->orWhere('acronym', 'like', '%' . $request->searchQuery . '%')
+                ->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+        } else {
+            return $query->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+        }
     }
 
     public function store(Request $request)
@@ -187,6 +204,9 @@ class CourseController extends Controller
         ]);
         $course = Course::find($request->course_id);
         $course->professor_id = null;
+
+        TimesTable::whereCourseId($course->id)->delete();
+
         $course->save();
         return response()->json($course, 200);
     }

@@ -13,6 +13,9 @@
       </div>
     </div>
     <div class="card-body">
+      <div class="my-2">
+        <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Recherche un cours..." [(ngModel)]="searchValue" />
+    </div>
       <nz-table
         class="scroll-table"
         [nzLoading]="isLoad"

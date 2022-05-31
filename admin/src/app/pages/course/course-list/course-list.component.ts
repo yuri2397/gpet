@@ -37,6 +37,9 @@ export class CourseListComponent implements OnInit {
   canDeleteVisible = false;
   canDeleteMessage!: string;
   response!: CourseResponse;
+  searchValue = '';
+  currentPage: number = 1;
+  pageSize: number = 10;
   constructor(
     private notification: NotificationService,
     private modalService: NzModalService,
@@ -45,7 +48,7 @@ export class CourseListComponent implements OnInit {
 
   ngOnInit(): void {
     this.canDeleteInit();
-    if (this.courses == null) this.findAll(1, 10);
+    if (this.courses == null) this.findAll(this.currentPage, this.pageSize);
   }
 
   canDeleteInit() {
@@ -58,7 +61,8 @@ export class CourseListComponent implements OnInit {
 
   findAll(page = 1, pageSize = 5) {
     this.isLoad = true;
-    this.courseService.findAll(page, pageSize).subscribe({
+    this.pageChange
+    this.courseService.findAll(page, pageSize, this.searchValue).subscribe({
       next: (response) => {
          this.response = response;
         this.courses = response.data;
@@ -72,6 +76,8 @@ export class CourseListComponent implements OnInit {
   }
 
   pageChange(index: number){
+    this.currentPage = index;
+    this.pageSize = this.response.per_page;
     this.findAll(index, this.response.per_page)
   }
 
@@ -94,6 +100,14 @@ export class CourseListComponent implements OnInit {
         this.findAll();
       }
     });
+  }
+
+  search(){
+    if(this.searchValue.length >= 3){
+      this.findAll(this.currentPage, this.pageSize)
+    }else{
+      this.findAll(1, this.pageSize);
+    }
   }
 
   openDeleteModal(course: Course) {
