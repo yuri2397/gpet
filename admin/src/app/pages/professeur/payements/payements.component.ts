@@ -23,6 +23,7 @@ export class PayementsComponent implements OnInit {
   deleteRestoRef!: NzModalRef;
   paymentLoad = false;
   confPayPending = true;
+  isProfesseur = false;
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -32,6 +33,7 @@ export class PayementsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     this.route.params.subscribe((params) => {
       this.professor.registration_number = params['register_number'];
       this.findPayments();
@@ -107,7 +109,12 @@ export class PayementsComponent implements OnInit {
     });
   }
 
+  
+
   openDoPaymentModal(courseDo: CoursesDo) {
+    if(this.professorService.isProfesseur()){
+      return;
+    }
     this.deleteRestoRef = this.modalService.confirm({
       nzTitle: "<h3>Paiement d'un cour.</h1>",
       nzContent: `

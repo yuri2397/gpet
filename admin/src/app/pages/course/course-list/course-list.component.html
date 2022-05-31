@@ -1,100 +1,133 @@
 <div class="container-fluid">
-    <div class="card shadow-sm border">
-        <div class="card-header p-3 bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="text-white">Liste des cours</h5>
-                </div>
-                <div *ngIf="can('creer cour') && !setView">
-                    <button (click)="openCreateModal()" mat-mini-fab color="default">
-                        <mat-icon>add</mat-icon>
-                    </button>
-                </div>
-            </div>
+  <div class="card shadow-sm border">
+    <div class="card-header p-3 bg-color">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="text-white">Liste des cours</h5>
         </div>
-        <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="courses" [nzBordered]="true">
-                <thead>
-                    <tr>
-                        <th class="text-center">Code</th>
-                        <th class="text-center">Intitulé</th>
-                        <th class="text-center" *ngIf="courseService.isSuperAdmin()">
-                            Département
-                        </th>
-                        <th class="text-center">Groupe</th>
-                        <th class="text-center">Volume</th>
-                        <th class="text-center">Service</th>
-                        <th class="text-center">Semestre</th>
-                        <th class="text-center">Classe</th>
-                        <th class="text-center">Professeur</th>
-                        <th class="text-center" *ngIf="!classe && !setView">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of basicTable.data">
-                        <td>
-                            <a [routerLink]="['/admin/courses/show/' + data.id]">
-                                {{ data.acronym }}
-                            </a>
-                        </td>
-                        <td>{{ data.name }}</td>
-                        <td *ngIf="courseService.isSuperAdmin()">
-                            {{ data.departement.name }}
-                        </td>
-                        <td>
-                            <ng-container *ngIf="data.groupe_number == 0; else elseGroupe">
-                                <nz-tag [nzColor]="'blue'">Commun</nz-tag>
-                            </ng-container>
-                            <ng-template #elseGroupe>
-                                {{ data.groupe_number }}
-                            </ng-template>
-                        </td>
-                        <td>{{ data.hours }} Heures</td>
-                        <td>{{ data.service.name }}</td>
-                        <td>{{ data.semester.name }}</td>
-                        <td>
-                            <a [routerLink]="['/admin/classes/show/' + data.classe.id]">
-                                {{ data.classe.name }}
-                            </a>
-                        </td>
-                        <td>
-                            <ng-container *ngIf="data.professor != null; else hasNotProf">
-                                <a [routerLink]="[
-                    '/admin/professeurs/show/' + data.professor.id
-                  ]">
-                                    {{ data.professor.first_name }} {{ data.professor.last_name }}
-                                </a>
-                            </ng-container>
-                            <ng-template #hasNotProf>
-                                <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
-                            </ng-template>
-                        </td>
-                        <td class="p-0" *ngIf="!classe && !setView">
-                            <div class="d-flex justify-content-center">
-                                <div class="mx-1" *ngIf="can('voir cour')">
-                                    <a [routerLink]="['show/' + data.id]">
-                                        <button nz-button nzShape="circle" class="color-orange">
-                                            <i class="color" nz-icon nzType="eye"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                                <div class="mx-1" *ngIf="can('modifier cours')">
-                                    <button (click)="selectedCourse = data; openEditModal()" nz-button nzType="primary" nzShape="circle">
-                                        <i nz-icon nzType="edit"></i>
-                                    </button>
-                                </div>
-                                <div class="mx-1" *ngIf="can('supprimer cours')">
-                                    <button (click)="openDeleteModal(data)" nz-button nzDanger nzType="primary" nzShape="circle">
-                                        <i nz-icon nzType="delete"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
+        <div *ngIf="can('creer cour') && !setView">
+          <button (click)="openCreateModal()" mat-mini-fab color="default">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
+      </div>
     </div>
+    <div class="card-body">
+      <div class="my-2">
+        <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Recherche un cours..." [(ngModel)]="searchValue" />
+    </div>
+      <nz-table
+        class="scroll-table"
+        [nzLoading]="isLoad"
+        #basicTable
+        [nzData]="courses"
+        [nzBordered]="true" 
+        [nzTotal]="response ? response.total : 0"
+        [nzPageSize]="10"
+        [nzFrontPagination]="false"
+        (nzPageIndexChange)="pageChange($event)"
+      >
+        <thead>
+          <tr>
+            <th class="text-center">Code</th>
+            <th class="text-center">Intitulé</th>
+            <th class="text-center" *ngIf="courseService.isSuperAdmin()">
+              Département
+            </th>
+            <th class="text-center">Groupe</th>
+            <th class="text-center">Volume</th>
+            <th class="text-center">Service</th>
+            <th class="text-center">Semestre</th>
+            <th class="text-center">Classe</th>
+            <th class="text-center">Professeur</th>
+            <th class="text-center" *ngIf="!classe && !setView">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>
+              <a [routerLink]="['/admin/courses/show/' + data.id]">
+                {{ data.acronym }}
+              </a>
+            </td>
+            <td>{{ data.name }}</td>
+            <td *ngIf="courseService.isSuperAdmin()">
+              {{ data.departement.name }}
+            </td>
+            <td>
+              <ng-container *ngIf="data.groupe_number == 0; else elseGroupe">
+                <nz-tag [nzColor]="'blue'">Commun</nz-tag>
+              </ng-container>
+              <ng-template #elseGroupe>
+                {{ data.groupe_number }}
+              </ng-template>
+            </td>
+            <td>{{ data.hours }} Heures</td>
+            <td>{{ data.service.name }}</td>
+            <td>{{ data.semester.name }}</td>
+            <td>
+              <a [routerLink]="['/admin/classes/show/' + data.classe.id]">
+                {{ data.classe.name }}
+              </a>
+            </td>
+            <td>
+              <ng-container *ngIf="data.professor != null; else hasNotProf">
+                <a
+                  [routerLink]="[
+                    '/admin/professeurs/show/' + data.professor.id
+                  ]"
+                >
+                  {{ data.professor.first_name }} {{ data.professor.last_name }}
+                </a>
+              </ng-container>
+              <ng-template #hasNotProf>
+                <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
+              </ng-template>
+            </td>
+            <td class="p-0" *ngIf="!classe && !setView">
+              <div class="d-flex justify-content-center">
+                <div class="mx-1" *ngIf="can('voir cour')">
+                  <a [routerLink]="['show/' + data.id]">
+                    <button nz-button nzShape="circle" class="color-orange">
+                      <i class="color" nz-icon nzType="eye"></i>
+                    </button>
+                  </a>
+                </div>
+                <div class="mx-1" *ngIf="can('modifier cours')">
+                  <button
+                    (click)="selectedCourse = data; openEditModal()"
+                    nz-button
+                    nzType="primary"
+                    nzShape="circle"
+                  >
+                    <i nz-icon nzType="edit"></i>
+                  </button>
+                </div>
+                <div class="mx-1" *ngIf="can('supprimer cours')">
+                  <button
+                    (click)="openDeleteModal(data)"
+                    nz-button
+                    nzDanger
+                    nzType="primary"
+                    nzShape="circle"
+                  >
+                    <i nz-icon nzType="delete"></i>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
 </div>
 
-<app-can-delete [erreurs]="courseService.canDeleteErreurs" [title]="courseService.canDeleteTitle" [subtitle]="courseService.canDeleteSubTitle" [visible]="canDeleteVisible" [message]="canDeleteMessage" (close)="onCanDeleteClose()"></app-can-delete>
+<app-can-delete
+  [erreurs]="courseService.canDeleteErreurs"
+  [title]="courseService.canDeleteTitle"
+  [subtitle]="courseService.canDeleteSubTitle"
+  [visible]="canDeleteVisible"
+  [message]="canDeleteMessage"
+  (close)="onCanDeleteClose()"
+></app-can-delete>

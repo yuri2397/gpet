@@ -12,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
-
+    public $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
      *
@@ -39,7 +39,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['departement', 'permissions'];
+    protected $with = ['departement', 'permissions', 'roles'];
 
     public function isAdmin()
     {

@@ -7,6 +7,11 @@ import { User } from 'src/app/models/user';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { timeStamp } from 'console';
+import { Bank } from 'src/app/models/bank';
+import { ProfessorType } from 'src/app/models/professor_type';
+import { Departement } from 'src/app/models/departement';
 
 @Component({
   selector: 'app-profile',
@@ -15,18 +20,53 @@ import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.comp
 })
 export class ProfileComponent implements OnInit {
   professeur!: Professor;
+  professor!: Professor;
   dataLoad = true;
   errorServer = false;
   avatarLoad = false;
+  modifierleprofe=false;
+  validateForm!: FormGroup;
   file: any;
+  isLoad: boolean = false;
+  banks!: Bank[];
+  professorTypes!: ProfessorType[];
+  departements!: Departement[];
+  isLoadData = false;
+  modifierinfobank=false;
+
+
+
   constructor(
     private modalService: NzModalService,
     private profService: ProfessorService,
-    private location: Location
+    private location: Location,
+    private fb: FormBuilder,
+     private notification: NotificationService,
+     public professorService: ProfessorService,
+
   ) {}
 
   ngOnInit(): void {
     this.profile();
+    this.findSelectableList();
+    this.validateForm = this.fb.group({
+      first_name: [null, [Validators.required]],
+      last_name: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      phone_number: [null, [Validators.required, Validators.min(9)]],
+      status: [null, [Validators.required]],
+      account_number: [null, [Validators.required]],
+      key: [null, [Validators.required]],
+      rip: [null, [Validators.required]],
+      bank_id: [null, [Validators.required]],
+      last_degree: [null, [Validators.required]],
+      job: [null, null],
+      cni: [null, [Validators.required]],
+      born_in: [null, [Validators.required]],
+      born_at: [null, [Validators.required]],
+      professor_type_id: [null, [Validators.required]],
+      departement_id: [null, [Validators.required]],
+    });
   }
 
   profile() {
@@ -72,4 +112,80 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+
+   submitForm(): void {
+    for (const i in this.validateForm.controls) {
+      if (this.validateForm.controls.hasOwnProperty(i)) {
+        this.validateForm.controls[i].markAsDirty();
+        this.validateForm.controls[i].updateValueAndValidity();
+      }
+    }
+  }
+  openAddProfModal() {
+    this.modifierleprofe=true;
+    this.professor=this.profService.clone(this.professeur);
+    console.log(this.professor);
+
+  }
+
+  openModalbank() {
+    this.modifierinfobank=true;
+    this.professor=this.profService.clone(this.professeur);
+    console.log(this.professor);
+  }
+
+  onBornAtChange(date: any) {}
+
+  save() {
+    this.isLoad = true;
+    console.log("magui ci birr");
+
+    this.profService.edit(this.professor).subscribe({
+      next: (response) => {
+       this.isLoad = false;
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          'Information modifié avec succés.'
+        );
+        this.modifierleprofe=false;
+        this.modifierinfobank=false;
+        //console.log(response);
+        this.professeur=response;
+
+      },
+      error: (errors) => {
+        this.isLoad = false;
+        console.error(errors);
+
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
+
+      },
+    });
+  }
+
+  findSelectableList() {
+    this.isLoadData = true;
+    this.professorService.findSelectableList(['departements', 'professor_types', 'banks']).subscribe({
+      next: (response) => {
+        this.departements = response.departements;
+        this.professorTypes = response.professor_types;
+        this.banks = response.banks;
+        this.isLoadData = false;
+      },
+      error: (errors) => {
+        this.isLoadData = false;
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
+      },
+    });
+  }
+
 }

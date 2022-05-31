@@ -226,6 +226,23 @@ export class ProfessorService extends BaseHttp {
     );
   }
 
+  courseDoProf(hours: number, date: any, course: Course, professor: Professor) {
+    return this.http.post<any>(
+      this.endPointWithSlash + 'coursedoprofesseur',
+      {
+        hours: hours,
+        date: date,
+        professor_id: professor.id,
+        course_id: course.id,
+        amount: course.service.amount,
+      },
+      {
+        headers: this.authorizationHeaders,
+        observe: 'body',
+      }
+    );
+  }
+
   payments(professor: Professor) {
     return this.http.get<Professor>(
       this.endPointWithSlash + 'payments/' + professor.registration_number,
@@ -268,4 +285,5 @@ export class ProfessorService extends BaseHttp {
       }
     );
   }
+
 }

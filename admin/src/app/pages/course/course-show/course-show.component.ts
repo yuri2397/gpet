@@ -1,12 +1,13 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
-import { Course } from 'src/app/models/course';
+import { Course, Media } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { Location } from '@angular/common';
 import { NotificationService } from 'src/app/services/notification.service';
 import { EChartsOption } from 'echarts';
 import { Classe } from 'src/app/models/classe';
 import { Syllabus } from 'src/app/models/syllabus';
+import { RessourceService } from 'src/app/services/ressource.service';
 
 @Component({
   selector: 'app-course-show',
@@ -39,6 +40,7 @@ export class CourseShowComponent implements OnInit {
     private location: Location,
     private notification: NotificationService,
     private courseService: CourseService,
+    private rsService: RessourceService
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class CourseShowComponent implements OnInit {
     this.findCourse();
   }
 
-  findCourseWithEvolution(){
+  findCourseWithEvolution() {
     this.dataLoad = true;
   }
 
@@ -56,9 +58,10 @@ export class CourseShowComponent implements OnInit {
     this.dataLoad = true;
     this.courseService.show(this.course).subscribe({
       next: (response) => {
-        console.log(response);
         this.course = response;
         this.setChartData(response);
+        console.log(response);
+
         this.dataLoad = false;
       },
       error: (errors) => {
@@ -104,20 +107,26 @@ export class CourseShowComponent implements OnInit {
     };
   }
 
+
   onBack() {
     this.location.back();
   }
 
   openEditModal() {
-    this.router.navigate(['/admin/courses/show/syllabus/edit/' + this.course.id ]);
+    this.router.navigate([
+      '/admin/courses/show/syllabus/edit/' + this.course.id,
+    ]);
   }
 
   openCreateModal() {
-    this.router.navigate(['/admin/courses/show/syllabus/create/' + this.course.id ]);
+    this.router.navigate([
+      '/admin/courses/show/syllabus/create/' + this.course.id,
+    ]);
   }
 
   openShowModal() {
-    this.router.navigate(['/admin/courses/show/syllabus/show/' + this.course.id ]);
+    this.router.navigate([
+      '/admin/courses/show/syllabus/show/' + this.course.id,
+    ]);
   }
 }
-

@@ -85,7 +85,7 @@ export class EptCreateComponent implements OnInit {
 
   startDes = () :number[] => {
     let tab = [];
-    for (let index = 20; index < 24; index++) {
+    for (let index = 21; index < 24; index++) {
       tab.push(index);
     }
     for (let index = 0; index < 8; index++) {
@@ -96,7 +96,7 @@ export class EptCreateComponent implements OnInit {
 
   endDes = () :number[] => {
     let tab = [];
-    for (let index = 20; index < 24; index++) {
+    for (let index = 21; index < 24; index++) {
       tab.push(index);
     }
     for (let index = 0; index < 8; index++) {

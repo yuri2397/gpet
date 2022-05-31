@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CoursesHasProfessors;
 use App\Models\UE;
 use App\Models\EC;
+use App\Models\TimesTable;
+
+use function PHPUnit\Framework\isEmpty;
 
 class CourseController extends Controller
 {
@@ -21,16 +24,29 @@ class CourseController extends Controller
         $this->middleware("permission:creer cour")->only(["store"]);
         $this->middleware("permission:supprimer cour")->only(["destroy"]);
         $this->middleware("is_active")->only(["courseToProfessor"]);
-
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = User::find(auth()->id());
         if ($user->hasRole("super admin")) {
-            return Course::with('classe')->with('departement')->orderBy('created_at', 'desc')->get();
+            $query = Course::with('classe')->with('departement');
+            if ($request->searchQuery != '') {
+                return $query->where('name', 'like', '%' . $request->searchQuery . '%')
+                    ->orWhere('acronym', 'like', '%' . $request->searchQuery . '%')
+                    ->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+            } else {
+                return $query->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+            }
         }
-        return Course::with('classe')->with('departement')->whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
+        $query = Course::with('classe')->with('departement')->whereDepartementId($user->departement_id);
+        if ($request->searchQuery != '') {
+            return $query->where('name', 'like', '%' . $request->searchQuery . '%')
+                ->orWhere('acronym', 'like', '%' . $request->searchQuery . '%')
+                ->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+        } else {
+            return $query->orderBy('created_at', 'desc')->paginate($request->pageSize ?? 10);
+        }
     }
 
     public function store(Request $request)
@@ -111,7 +127,37 @@ class CourseController extends Controller
             ->get();
     }
 
+    public function searchMyCourse(Request $request, $data)
+    {
+        return Course::with('classe')
+            ->with('departement')
+            ->whereProfessorId($request->professor)
+            ->where('name', 'like', '%' . $data . '%')
+            ->orWhere('acronym', 'like', '%' . $data . '%')
+            ->get();
+    }
+
     public function courseHasProfessor(Request $request)
+    {
+        $request->validate([
+            'hours' => 'required',
+            'date' => 'required|date',
+            'amount' => 'required',
+            'course_id' => 'required|exists:courses,id',
+            'professor_id' => 'required|exists:professors,id'
+        ]);
+        $chp = new CoursesHasProfessors();
+        $chp->amount = $request->amount;
+        $chp->date = $request->date;
+        $chp->course_id = $request->course_id;
+        $chp->professor_id = $request->professor_id;
+        $chp->hours = $request->hours;
+        $chp->save();
+
+        return response()->json($chp, 200);
+    }
+
+    public function coursedoprofesseur(Request $request)
     {
         $request->validate([
             'hours' => 'required',
@@ -143,8 +189,7 @@ class CourseController extends Controller
             $course->professor_id = $request->professor_id;
             $course->save();
             return response()->json($course, 200);
-        }
-        else {
+        } else {
             $cp = Professor::find($course->professor_id);
             return response()->json([
                 'message' => 'Ce cour est affecté à ' . $cp->first_name . ' ' . $cp->last_name
@@ -159,6 +204,9 @@ class CourseController extends Controller
         ]);
         $course = Course::find($request->course_id);
         $course->professor_id = null;
+
+        TimesTable::whereCourseId($course->id)->delete();
+
         $course->save();
         return response()->json($course, 200);
     }
@@ -177,8 +225,8 @@ class CourseController extends Controller
             ->whereProfessorId($request->professor_id)
             ->whereIsPaid(0)
             ->update([
-            "is_paid" => true
-        ]);
+                "is_paid" => true
+            ]);
 
         return response()->json([
             "message" => "Paiements effectué avec succès."
@@ -190,7 +238,6 @@ class CourseController extends Controller
         # code...
         //pas encore ajouter sur la route api
         CoursesHasProfessors::whereCourseId($request->course_id)
-        ->whereProfessorId($request->professor_id)->get();
-
+            ->whereProfessorId($request->professor_id)->get();
     }
 }

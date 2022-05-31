@@ -29,7 +29,7 @@ export class DepartementService extends BaseHttp {
   }
 
   chartsData(day: number) {
-    return this.http.get<any>(this.endPointWithSlash + `charts_data/?day=${day}` , {
+    return this.http.get<any>(this.endPointWithSlash + `charts_data?day=${day}` , {
       headers: this.authorizationHeaders,
     });
   }

@@ -5,9 +5,10 @@
             <div>
                 UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
             </div> <br> <br>
-            <h5 class="bold">
-                ETAT DES RELEVES DE VACATION {{ classe.name.toLocaleUpperCase() }}, {{ semester.name.toLocaleUpperCase() }} </h5>
-            <h6>{{ date | date:'EEEE d MMMM y' }}</h6>
+            <h6 class="bold">
+                ETAT DES RELEVES DE VACATION {{ classe.name.toLocaleUpperCase() }}, {{ semester.name.toLocaleUpperCase() }} </h6>
+                <h6>{{ date | date:'dd/M/y' }}</h6>
+
         </div>
     </div>
     <div class="row align-items-start my-3">

@@ -1,47 +1,47 @@
 <nz-layout *ngIf="!isLoad; else loadingTemplate" class="app-layout">
-    <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-        <div class="sidebar-logo">
-            <img src="/assets/img/logo.jpg" alt="logo" />
-            <h6 *ngIf="!isCollapsed" class="color-geekblue">{{ title }}</h6>
+  <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <img src="/assets/img/logo.jpg" alt="logo" />
+      <h6 *ngIf="!isCollapsed" class="color-geekblue">{{ title }}</h6>
+    </div>
+    <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="px-1">
+      <ng-container *ngFor="let item of menuItems">
+        <li (click)="routerLink(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right"
+          [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]="selected(item)">
+          <i nz-icon>
+            <mat-icon class="icon">{{ item.icon }}</mat-icon>
+          </i>
+          <span class="label">{{ item.title }}</span>
+        </li>
+      </ng-container>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="d-flex app-header justify-content-between align-items-center">
+        <div>
+          <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+          </span>
         </div>
-        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="px-1">
-            <ng-container *ngFor="let item of menuItems">
-                <li (click)="routerLink(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]="selected(item)">
-                    <i nz-icon>
-              <mat-icon class="icon">{{ item.icon }}</mat-icon>
-            </i>
-                    <span class="label">{{ item.title }}</span>
-                </li>
-            </ng-container>
-        </ul>
-    </nz-sider>
-    <nz-layout>
-        <nz-header>
-            <div class="d-flex app-header justify-content-between align-items-center">
-                <div>
-                    <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-              <i
-                class="trigger"
-                nz-icon
-                [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-              ></i>
-            </span>
-                </div>
-                <span class="bold">{{ depTitle! }}</span>
+        <span class="bold">{{ depTitle! }}</span>
 
-            </div>
-        </nz-header>
-        <nz-content>
-            <div class="bg-admin inner-content">
-                <router-outlet></router-outlet>
-            </div>
-        </nz-content>
-    </nz-layout>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="bg-admin inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
 </nz-layout>
 <ng-template #loadingTemplate>
-    <div class="center" style="flex-direction: column;">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:transparent;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+  <div class="center" style="flex-direction: column;">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        style="margin:auto;background:transparent;display:block;" width="200px" height="200px" viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid">
         <g transform="translate(50 50) scale(0.8)">
           <g>
             <animateTransform attributeName="transform" type="scale" repeatCount="indefinite" calcMode="spline"
@@ -62,7 +62,7 @@
           </g>
         </g>
       </svg>
-        </div>
-        <h4>Bienvenue sur <span class="bold">GPET</span>...</h4>
     </div>
+    <h4>Bienvenue sur <span class="bold">GPET</span>...</h4>
+  </div>
 </ng-template>
