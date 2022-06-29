@@ -15,3 +15,13 @@
     height: 100px;
     margin: auto;
 }
+
+:host ::ng-deep .ant-timeline-item, 
+:host ::ng-deep .ant-timeline-item-last{
+    padding-bottom: 2px !important;
+}
+
+
+:host ::ng-deep .ant-timeline-item-last > .ant-timeline-item-content{
+    min-height: 14px !important;
+}

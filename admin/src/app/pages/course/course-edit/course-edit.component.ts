@@ -119,6 +119,7 @@ export class CourseEditComponent implements OnInit {
           this.departements = response.departements;
           this.services = response.services;
           this.semesters = response.semesters;
+          this.serviceAmout(this.course.service.id)
           this.isLoad = false;
         },
         error: (errors) => {
@@ -132,6 +133,8 @@ export class CourseEditComponent implements OnInit {
         },
       });
   }
+
+  compare = (o1: any, o2: any) => o1 == o2;
 
   findClasseByDepartement(id: number) {
     this.classeService.findByDepartement(id).subscribe({

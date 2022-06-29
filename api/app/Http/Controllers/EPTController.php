@@ -39,7 +39,7 @@ class EPTController extends Controller
             "end" => "required|date",
             "classe_id" => "required|exists:classes,id",
             "course_id" => "required|exists:courses,id",
-            "day_id" => "required|exists:days,id"
+            "day_id" => "required|exists:days,id",
         ]);
 
         $start = date("H:i", strtotime($request->start));
@@ -118,6 +118,7 @@ class EPTController extends Controller
             $ept->professor_id = $course->professor->id;
             $ept->salle_id = $request->salle_id;
             $ept->day_id = $request->day_id;
+            $ept->group = $request->group ?? '1';
             $ept->save();
         } else {
             $ept = TimesTable::find($request->ept_id);
@@ -128,6 +129,7 @@ class EPTController extends Controller
             $ept->professor_id = $course->professor->id;
             $ept->salle_id = $request->salle_id;
             $ept->day_id = $request->day_id;
+            $ept->group = $request->group ?? '1';
             $ept->save();
         }
         return response()->json(TimesTable::find($ept->id), 200);

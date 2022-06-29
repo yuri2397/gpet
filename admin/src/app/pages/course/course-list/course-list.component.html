@@ -93,7 +93,7 @@
                     </button>
                   </a>
                 </div>
-                <div class="mx-1" *ngIf="can('modifier cours')">
+                <div class="mx-1" *ngIf="can('modifier cour')">
                   <button
                     (click)="selectedCourse = data; openEditModal()"
                     nz-button
@@ -103,7 +103,7 @@
                     <i nz-icon nzType="edit"></i>
                   </button>
                 </div>
-                <div class="mx-1" *ngIf="can('supprimer cours')">
+                <div class="mx-1" *ngIf="can('supprimer cour')">
                   <button
                     (click)="openDeleteModal(data)"
                     nz-button

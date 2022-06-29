@@ -53,6 +53,8 @@ import { SeanceListComponent } from '../pages/course/seance/seance-list/seance-l
 import { InfoUserComponent } from './ui/info-user/info-user.component';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzMenuModule,
     MatIconModule,
     MatTableModule,
+    NzTimelineModule,
     NzCardModule,
     NzToolTipModule,
     NzResultModule,
@@ -122,7 +125,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzSpinModule,
     NzMessageModule,
     NgApexchartsModule,
-    NzNotificationModule,
+    NzNotificationModule,NzStepsModule
   ],
   exports: [
     /** COMPONENTS */
@@ -139,6 +142,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     /**MODULES */
     CommonModule,
     NzNotificationModule,
+    NzTimelineModule,
     NzListModule,
     NzMenuModule,
     MatIconModule,
@@ -162,6 +166,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzPopconfirmModule,
     NzDatePickerModule,
     NzCollapseModule,
+    NzStepsModule,
     NzDrawerModule,
     CommonModule,
     FormsModule,

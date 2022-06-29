@@ -8,6 +8,7 @@ export class EPT {
   start!: Date;
   end!: Date;
   classe_id!: number;
+  group!: string;
   day_id!: number;
   course_id!: number;
   salle_id!: number;
