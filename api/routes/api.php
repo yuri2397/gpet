@@ -115,6 +115,10 @@ Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::delete('destroy/{id}', [EPTController::class, "destroy"]);
 });
 
+Route::prefix("pdf")->middleware(['auth:api'])->group(function () {
+    Route::get('edt/{id}', [EPTController::class, "downloadEPT"]);
+});
+
 Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('', [SalleController::class, "index"]);
     Route::post('create', [SalleController::class, "store"]);

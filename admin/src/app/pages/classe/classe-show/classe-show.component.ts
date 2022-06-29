@@ -1,3 +1,4 @@
+import { PdfService } from './../../../services/pdf.service';
 import {
   AfterViewInit,
   Component,
@@ -22,6 +23,7 @@ import { EptEditComponent } from '../ept-edit/ept-edit.component';
 import { Day } from 'src/app/models/day';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Utils } from 'src/app/shared/Utils';
 @Component({
   selector: 'app-classe-show',
   templateUrl: './classe-show.component.html',
@@ -40,6 +42,7 @@ export class ClasseShowComponent implements OnInit {
   doc = new jsPDF();
   now = new Date();
   @ViewChild('presentionEPT') htmlData!: ElementRef;
+  fileLoad: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private location: Location,
@@ -47,7 +50,8 @@ export class ClasseShowComponent implements OnInit {
     private notification: NotificationService,
     public eptService: EptService,
     private fb: FormBuilder,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+    private pdfService: PdfService
   ) {}
 
   ngOnInit(): void {
@@ -60,19 +64,34 @@ export class ClasseShowComponent implements OnInit {
   }
 
   exportPDF() {
-    let DATA = document.getElementById('presentionEPT');
+    this.fileLoad = true;
 
-    html2canvas(DATA!).then((canvas) => {
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;
-
-      const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4', false);
-      let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-
-      PDF.save(this.classe.name + '.pdf');
+    this.pdfService.downloadEDT(this.classe.id).subscribe((response) => {
+      console.log(response);
+      let newIframe = document.createElement('iframe');
+      document.body.appendChild(newIframe);
+      // @ts-ignore
+      newIframe.contentWindow.contents = response;
+      newIframe.src = "javascript:window['contents']"
+      newIframe.focus();
+      setTimeout(() => {
+        newIframe.contentWindow?.print();
+      }, 1);
     });
+
+    // let DATA = document.getElementById('presentionEPT');
+
+    // html2canvas(DATA!).then((canvas) => {
+    //   let fileWidth = 208;
+    //   let fileHeight = (canvas.height * fileWidth) / canvas.width;
+
+    //   const FILEURI = canvas.toDataURL('image/png');
+    //   let PDF = new jsPDF('p', 'mm', 'a4', false);
+    //   let position = 0;
+    //   PDF.addImage(FILEURI, 'PNG', 0, positiojn, fileWidth, fileHeight);
+
+    //   PDF.save(this.classe.name + '.pdf');
+    // });
   }
 
   getEmploieDuTemps(classe: Classe) {

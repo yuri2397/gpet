@@ -9,13 +9,9 @@ use App\Models\Classe;
 use App\Models\Course;
 use App\Models\Professor;
 use App\Models\TimesTable;
-use App\Models\Departement;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Facade\FlareClient\Http\Response;
-use Illuminate\Http\Response as HttpResponse;
-
+use PDF;
 class EPTController extends Controller
 {
     use Utils;
@@ -48,7 +44,7 @@ class EPTController extends Controller
         if ($start >= $end) {
             return response()->json([
                 "message" => "Le cour ne peux pas terminé avant d'avoir commencé."
-            ], HttpResponse::HTTP_CONFLICT);
+            ], 409);
         }
         $course = Course::find($request->course_id);
         if ($course->professor == null) {
@@ -78,7 +74,7 @@ class EPTController extends Controller
                 }
                 return response()->json([
                     "message" => "Le professeur est occupé le " . Str::upper($day->name) . " à " . $value->start . " À " . $value->end
-                ], HttpResponse::HTTP_CONFLICT);
+                ], 409);
             }
         }
         $eptForDay = TimesTable::whereClasseId($classe->id)->whereDayId($day->id)->get();
@@ -91,7 +87,7 @@ class EPTController extends Controller
                 $c = Course::find($value->course_id);
                 return response()->json([
                     "message" => "Un cour de  " . Str::upper($c->name) . " est programmé pour la classe, le" . Str::upper($day->name) . " de " . $value->start . " À " . $value->end
-                ], HttpResponse::HTTP_CONFLICT);
+                ], 409);
             }
         }
         if ($salle) {
@@ -105,7 +101,7 @@ class EPTController extends Controller
                     $s = Salle::find($value->salle_id);
                     return response()->json([
                         "message" => "La salle " . Str::upper($s->name) . " est déjà reservée pour le " . Str::upper($day->name) . " de " . $value->start . " À " . $value->end . " pour le cour de " . Str::upper(Course::find($value->course_id)->name) . " avec la classe: " . Str::upper(Classe::find($value->classe_id)->name)
-                    ], HttpResponse::HTTP_CONFLICT);
+                    ], 409);
                 }
             }
         }
@@ -187,7 +183,7 @@ class EPTController extends Controller
         if ($start >= $end) {
             return response()->json([
                 "message" => "Le cour ne peux pas terminé avant d'avoir commencé."
-            ], HttpResponse::HTTP_CONFLICT);
+            ], 409);
         }
         $course = Course::find($request->course_id);
         if ($course->professor == null) {
@@ -208,5 +204,15 @@ class EPTController extends Controller
     public function destroy($ept)
     {
         return TimesTable::find($ept)->delete();
+    }
+
+    public function downloadEPT($id)
+    {
+        $c = Classe::find($id);
+        $classe = $c->name;
+        $departement = $c->departement->name;
+        $ept = $this->show($c->id);
+
+        return view('ept', compact('classe', 'departement', 'ept'));
     }
 }

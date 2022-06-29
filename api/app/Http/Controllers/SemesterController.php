@@ -8,7 +8,6 @@ use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Course;
-use Symfony\Component\HttpFoundation\Response;
 
 class SemesterController extends Controller
 {
@@ -77,7 +76,7 @@ class SemesterController extends Controller
         if($courses){
             return response()->json([
                 "message" => "Certains cours sont liés à cette semestre. Supprime les cours avant de supprimer le semestre."
-            ], Response::HTTP_CONFLICT);
+            ], 409);
         }
 
         $ues = UE::whereSemesterId($semester->id)->first();
@@ -85,7 +84,7 @@ class SemesterController extends Controller
         if($ues){
             return response()->json([
                 "message" => "Certains UE sont liés à cette semestre. Supprime ces EC avant de supprimer le semestre."
-            ], Response::HTTP_CONFLICT);
+            ], 409);
         }
 
         $semester->delete();

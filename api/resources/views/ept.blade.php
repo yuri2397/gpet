@@ -4,19 +4,20 @@
 @section('content')
 <div class="center container">
     <div id="presentionEPT" style="width: 100% !important;">
-        <div class="card card-body text-center">
+        <div class="d-flex align-items-center">
             <div>
-                <span>REPUBLIQUE DU SENEGAL <br>
-                    Un Peuple Un But Une Foi</span>
+                <img src="{{ asset('img/logo.jpg') }}" class="logo" alt="UIDT">
+
             </div>
-            <img src="{{ asset('img/logo.jpg') }}" class="logo" alt="UIDT">
-            <span class="text-center">
-                UNITÉ DE FORMATION ET DE RECHERCHE <br>
-                EN SCIENCES ET TECHNOLOGIES <br>
-                {{ $departement }} - {{ $classe }}
-            </span> {{ date('d M Y') }}
+            <div>
+                <span class="text-center">
+                    UNITÉ DE FORMATION ET DE RECHERCHE <br>
+                    EN SCIENCES ET TECHNOLOGIES <br>
+                    {{ $departement }} - {{ $classe }}
+                </span> {{ date('d M Y') }}
+            </div>
         </div>
-        <div>
+        <div class="mt-3">
             <table class="table table-light border border-raduis">
                 <thead class="card-body" style="border-bottom: none">
                     <tr>
@@ -51,9 +52,8 @@
                                                         {{ \Carbon\Carbon::createFromFormat('H:i:s',$row->end)->format('h:i') }}
                                                     </div>
                                                 </div>
-                                                <hr>
                                                 <div
-                                                    class="bold d-flex px-2 align-items-center justify-content-between">
+                                                    class="bold d-flex px-2 align-items-center mt-1 justify-content-between">
                                                     <div>
                                                         Prof
                                                     </div>
