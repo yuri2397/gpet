@@ -251,14 +251,14 @@ Route::any('test', function (Request $request) {
 });
 
 Route::get('/artisan', function () {
-    //  return Artisan::call('migrate');
+    return Artisan::call('migrate');
 
-    $timestimes = TimesTable::all();
+    // $timestimes = TimesTable::all();
 
-    foreach ($timestimes as $key => $value) {
-        $cours = Course::find($value->course_id);
-        if(!$cours->professor_id){
-            $value->delete();
-        }
-    }
+    // foreach ($timestimes as $key => $value) {
+    //     $cours = Course::find($value->course_id);
+    //     if(!$cours->professor_id){
+    //         $value->delete();
+    //     }
+    // }
 });
