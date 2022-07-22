@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Professor;
-use Symfony\Component\HttpFoundation\Response;
 
 class ProfessorIsActive
 {
@@ -24,6 +23,6 @@ class ProfessorIsActive
         }
         return response([
             "message" => "Le compte du professeur n'est pas actif. Merci de vérifier son état."
-        ], Response::HTTP_CONFLICT);
+        ], 409);
     }
 }

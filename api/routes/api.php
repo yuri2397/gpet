@@ -115,6 +115,10 @@ Route::prefix("ept")->middleware(['auth:api'])->group(function () {
     Route::delete('destroy/{id}', [EPTController::class, "destroy"]);
 });
 
+Route::prefix("pdf")->middleware(['auth:api'])->group(function () {
+    Route::get('edt/{id}', [EPTController::class, "downloadEPT"]);
+});
+
 Route::prefix("salle")->middleware(['auth:api'])->group(function () {
     Route::get('', [SalleController::class, "index"]);
     Route::post('create', [SalleController::class, "store"]);
@@ -247,14 +251,14 @@ Route::any('test', function (Request $request) {
 });
 
 Route::get('/artisan', function () {
-    //  return Artisan::call('migrate');
+    return Artisan::call('migrate');
 
-    $timestimes = TimesTable::all();
+    // $timestimes = TimesTable::all();
 
-    foreach ($timestimes as $key => $value) {
-        $cours = Course::find($value->course_id);
-        if(!$cours->professor_id){
-            $value->delete();
-        }
-    }
+    // foreach ($timestimes as $key => $value) {
+    //     $cours = Course::find($value->course_id);
+    //     if(!$cours->professor_id){
+    //         $value->delete();
+    //     }
+    // }
 });

@@ -1,5 +1,5 @@
 <nz-layout *ngIf="!isLoad; else loadingTemplate" class="app-layout">
-    <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+    <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md" [nzCollapsed]="isCollapsed" [nzTrigger]="null">
         <div class="sidebar-logo">
             <img src="/assets/img/logo.jpg" alt="logo" />
             <h6 *ngIf="!isCollapsed" class="color-geekblue">{{ title }}</h6>

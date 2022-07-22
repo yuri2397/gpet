@@ -13,10 +13,9 @@ import { SalleService } from 'src/app/services/salle.service';
 @Component({
   selector: 'app-ept-edit',
   templateUrl: './ept-edit.component.html',
-  styleUrls: ['./ept-edit.component.scss']
+  styleUrls: ['./ept-edit.component.scss'],
 })
 export class EptEditComponent implements OnInit {
-
   @Input() day!: EptRow;
   @Input() classe!: Classe;
   @Input() courses!: Course[];
@@ -26,6 +25,7 @@ export class EptEditComponent implements OnInit {
   isLoad: boolean = false;
   endDis: number[] = [];
   @Input() ept = new EPT();
+  groups: string[] = [];
 
   constructor(
     private notification: NotificationService,
@@ -33,7 +33,7 @@ export class EptEditComponent implements OnInit {
     private modal: NzModalRef,
     private eptService: EptService,
     private salleService: SalleService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -41,6 +41,7 @@ export class EptEditComponent implements OnInit {
       end: [null, [Validators.required]],
       course_id: [null, [Validators.required]],
       salle_id: [null, []],
+      group: [null, []],
     });
   }
 
@@ -49,6 +50,16 @@ export class EptEditComponent implements OnInit {
       if (this.validateForm.controls.hasOwnProperty(i)) {
         this.validateForm.controls[i].markAsDirty();
         this.validateForm.controls[i].updateValueAndValidity();
+      }
+    }
+  }
+
+  setGroupes(id: number) {
+    if (id) {
+      let c = this.courses.find((e) => e.id == id)?.groupe_number ?? 1;
+      this.groups = [];
+      for (let index = 0; index < c; index++) {
+        this.groups.push((index + 1).toString());
       }
     }
   }
@@ -80,12 +91,12 @@ export class EptEditComponent implements OnInit {
       tab.push(index);
     }
     return tab;
-  }
+  };
 
-  endDes  = (): number[] =>  {
+  endDes = (): number[] => {
     let tab = this.startDes();
     return tab;
-  }
+  };
 
   edit() {
     this.isLoad = true;
@@ -110,5 +121,4 @@ export class EptEditComponent implements OnInit {
       },
     });
   }
-
 }

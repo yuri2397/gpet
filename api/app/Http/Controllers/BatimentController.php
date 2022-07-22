@@ -8,7 +8,6 @@ use App\Models\Batiment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class BatimentController extends Controller
 {
@@ -87,6 +86,6 @@ class BatimentController extends Controller
     public function destroy($id)
     {
         DB::table('batiments')->whereId($id)->delete();
-        return response()->json([], HttpFoundationResponse::HTTP_NO_CONTENT);
+        return response()->json([], 200);
     }
 }

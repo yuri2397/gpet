@@ -116,7 +116,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private userService: UserService) {}
   ngAfterViewInit(): void {
-    this.isCollapsed = true;
+    this.isCollapsed = false;
   }
 
   ngOnInit() {

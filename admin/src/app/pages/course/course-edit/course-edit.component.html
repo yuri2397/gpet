@@ -19,7 +19,7 @@
                 <nz-form-item>
                     <nz-form-label nzFor="montant">Montant Horaire</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
-                        <input disabled value="{{serviceAmountFCFA}}" nz-input>
+                        <input disabled [value]="serviceAmountFCFA" nz-input>
                     </nz-form-control>
                 </nz-form-item>
             </div>
@@ -64,7 +64,7 @@
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="ec_id">EC</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
-                        <nz-select nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec.id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
+                        <nz-select [compareWith]="compare" nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec.id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
                             <ng-container *ngFor="let o of ecs">
                                 <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
                             </ng-container>

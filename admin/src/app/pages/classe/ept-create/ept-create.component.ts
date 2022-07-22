@@ -21,6 +21,7 @@ export class EptCreateComponent implements OnInit {
   @Input() classe!: Classe;
   @Input() courses!: Course[];
   salles!: Salle[];
+  groups: string[] = [];
   isSallesLoad = true;
   validateForm!: FormGroup;
   isLoad: boolean = false;
@@ -42,8 +43,19 @@ export class EptCreateComponent implements OnInit {
       start: [null, [Validators.required]],
       end: [null, [Validators.required]],
       course_id: [null, [Validators.required]],
+      group: [1, []],
       salle_id: [null, []],
     });
+  }
+
+  setGroupes(id: number) {
+    if (id) {
+      let c = this.courses.find((e) => e.id == id)?.groupe_number ?? 1;
+      this.groups = [];
+      for (let index = 0; index < c; index++) {
+        this.groups.push((index + 1).toString());
+      }
+    }
   }
 
   findSalle() {
@@ -83,7 +95,7 @@ export class EptCreateComponent implements OnInit {
     this.modal.destroy(data);
   }
 
-  startDes = () :number[] => {
+  startDes = (): number[] => {
     let tab = [];
     for (let index = 21; index < 24; index++) {
       tab.push(index);
@@ -92,9 +104,9 @@ export class EptCreateComponent implements OnInit {
       tab.push(index);
     }
     return tab;
-  }
+  };
 
-  endDes = () :number[] => {
+  endDes = (): number[] => {
     let tab = [];
     for (let index = 21; index < 24; index++) {
       tab.push(index);
@@ -103,7 +115,7 @@ export class EptCreateComponent implements OnInit {
       tab.push(index);
     }
     return tab;
-  }
+  };
 
   save() {
     this.isLoad = true;
@@ -125,7 +137,7 @@ export class EptCreateComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
-        
+
         this.destroyModal(null);
       },
     });

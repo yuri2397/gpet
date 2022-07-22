@@ -6,7 +6,6 @@ use App\Models\EC;
 use App\Models\UE;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class UEController extends Controller
 {
@@ -92,7 +91,7 @@ class UEController extends Controller
         }
         return response()->json([
             "message" => "Impossible de supprimer un UE qui est attaché à des EC. Merci de supprimer les EC avant."
-        ], Response::HTTP_CONFLICT);
+        ], 409);
     }
 
     public function search($data)
