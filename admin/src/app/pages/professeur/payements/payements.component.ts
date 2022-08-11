@@ -128,6 +128,7 @@ export class PayementsComponent implements OnInit {
       nzOkLoading: this.paymentLoad,
       nzMaskClosable: false,
       nzClosable: false,
+      nzCentered: true
     });
   }
 }
