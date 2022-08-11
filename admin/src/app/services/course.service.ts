@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Course, CourseResponse } from '../models/course';
+import { Course, CourseHistory, CourseResponse } from '../models/course';
 import { Professor } from '../models/professor';
 import { BaseHttp } from '../shared/base-http';
 
@@ -39,7 +39,8 @@ export class CourseService extends BaseHttp {
 
   findAll(page: number, pageSize: number, searchQuery?: string) {
     return this.http.get<CourseResponse>(
-      this.endPoint + `?page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery ?? ''}`,
+      this.endPoint +
+        `?page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery ?? ''}`,
       {
         headers: this.authorizationHeaders,
         observe: 'body',
@@ -70,6 +71,16 @@ export class CourseService extends BaseHttp {
       headers: this.authorizationHeaders,
       observe: 'body',
     });
+  }
+
+  finishCourse(course: Course, status: 'finish' | 'load' | 'load' | 'cancel') {
+    return this.http.put<Course>(
+      this.endPointWithSlash + 'change-course-status/' + course.id,
+      {
+        status: status,
+      },
+      { headers: this.authorizationHeaders, observe: 'body' }
+    );
   }
 
   delete(course: Course) {
@@ -108,7 +119,14 @@ export class CourseService extends BaseHttp {
   searchMyCourse(value: string) {
     let professor = this.getUser().professor?.id;
     return this.http.get<Course[]>(
-      this.endPointWithSlash + `search-my-courses/${value}?professor=${professor}`,
+      this.endPointWithSlash +
+        `search-my-courses/${value}?professor=${professor}`,
+      { headers: this.authorizationHeaders, observe: 'body' }
+    );
+  }
+  courseHistory(professor: Professor) {
+    return this.http.get<CourseHistory[]>(
+      this.endPointWithSlash + `course-history/${professor.id}`,
       { headers: this.authorizationHeaders, observe: 'body' }
     );
   }

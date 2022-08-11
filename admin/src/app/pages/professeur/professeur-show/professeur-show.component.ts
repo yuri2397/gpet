@@ -116,6 +116,26 @@ export class ProfesseurShowComponent implements OnInit {
       });
   }
 
+  finishCourse(course: Course) {
+    course.updated = true;
+    this.courseService.finishCourse(course, 'finish').subscribe({
+      next: (response) => {
+        console.log(response);
+
+        this.notification.createNotification(
+          'success',
+          'Notification',
+          'Course terminé avec succès.'
+        );
+        this.find(this.professeur.id);
+        course.updated = false;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
   resetAddHour() {}
 
   find(id: number) {
@@ -123,7 +143,7 @@ export class ProfesseurShowComponent implements OnInit {
     this.errorServer = false;
     this.profService.find(id).subscribe({
       next: (professeur) => {
-        console.log(professeur)
+        console.log(professeur);
         this.professeur = professeur;
         this.dataLoad = false;
       },
@@ -141,7 +161,7 @@ export class ProfesseurShowComponent implements OnInit {
     if (this.professeur.avatar == null) {
       return '/assets/img/avatar.png';
     }
-    return this.profService.host +"storage" + this.professeur.avatar;
+    return this.profService.host + 'storage' + this.professeur.avatar;
   }
 
   onBack() {
@@ -194,7 +214,7 @@ export class ProfesseurShowComponent implements OnInit {
       error: (errors) => {
         this.notification.createNotification(
           'error',
-          'Notification',
+          'Attention',
           errors.error.message
         );
       },
@@ -212,21 +232,20 @@ export class ProfesseurShowComponent implements OnInit {
       .addCourseForProfessor(this.selectedCourse, this.professeur)
       .subscribe({
         next: (response) => {
-          this.notification.createNotification(
-            'success',
-            'Message',
-            'Cour affectation avec succès.'
-          );
+          this.notification.emit({
+            title: 'Notification',
+            content: 'Cour affectation avec succès.',
+            type: 'success',
+          });
           this.addCourseModalVisible = false;
           this.find(this.id);
         },
         error: (errors) => {
-          this.notification.createNotification(
-            'error',
-            'Message',
-            errors.error.message,
-            5000
-          );
+          this.notification.emit({
+            title: 'Notification',
+            content: errors.error.message,
+            type: 'error',
+          });
           this.addCourseModalVisible = false;
         },
       });
@@ -264,21 +283,22 @@ export class ProfesseurShowComponent implements OnInit {
     this.profService.removeCourse(course).subscribe({
       next: (response) => {
         this.find(this.id);
-        this.notification.createNotification(
-          'success',
-          'Message',
-          'Cour supprimer pour ' +
-            this.professeur.first_name +
-            ' ' +
-            this.professeur.last_name
-        );
+        
+        this.notification.emit({
+          title: 'Notification',
+          content: 'Cour supprimer pour ' +
+          this.professeur.first_name +
+          ' ' +
+          this.professeur.last_name,
+          type: 'success',
+        });
         this.deleteCourseLoad = false;
         this.deleteCourseRef.destroy();
       },
       error: (errors) => {
         this.notification.createNotification(
           'error',
-          'Message',
+          'Attention',
           errors.error.message,
           5000
         );
@@ -318,18 +338,19 @@ export class ProfesseurShowComponent implements OnInit {
     this.profService.desableAccount(this.professeur).subscribe({
       next: (response) => {
         this.professeur.is_active = !this.professeur.is_active;
-        this.notification.createNotification(
-          'success',
-          'Notification',
-          response.message
-        );
+        
+        this.notification.emit({
+          title: 'Notification',
+          content: response.message,
+          type: 'success',
+        });
         this.updateStatusLoad = false;
       },
       error: (errors) => {
         this.updateStatusLoad = false;
         this.notification.createNotification(
           'error',
-          'Notification',
+          'Attention',
           errors.error.message
         );
       },

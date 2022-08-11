@@ -25,6 +25,7 @@ use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\SyllabusController;
 use App\Models\Course;
+use App\Models\CourseStatus;
 use App\Models\Professor;
 use App\Models\Ressource;
 use App\Models\TimesTable;
@@ -172,10 +173,13 @@ Route::prefix("ec")->middleware(['auth:api'])->group(function () {
 });
 
 Route::prefix("course")->middleware(['auth:api',])->group(function () {
+    
     Route::get('', [CourseController::class, "index"]);
     Route::get('show/{id}', [CourseController::class, "show"]);
     Route::post('create', [CourseController::class, "store"]);
     Route::put('update/{id}', [CourseController::class, "update"]);
+    Route::put('change-course-status/{id}', [CourseController::class, "changeCourseStatus"]);
+    Route::get('course-history/{id}', [CourseController::class, "courseHistory"]);
     Route::delete('destroy/{id}', [CourseController::class, "destroy"]);
     Route::get('search/{data}', [CourseController::class, "search"]);
     Route::get('search-my-courses/{data}', [CourseController::class, "searchMyCourse"]);
@@ -244,10 +248,21 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
 
 
 Route::any('test', function (Request $request) {
-    Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"');
-    Artisan::call('migrate');
-    Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"');
-    return "OKAY";
+    // Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"');
+    // Artisan::call('migrate');
+    // Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"');
+    // return "OKAY";
+
+    $e = [
+        "name" => "En attente",
+        "code" => "wait",
+        "number" => 1,
+    ];
+    $t = new CourseStatus();
+    $t->label = $e["name"];
+    $t->code = $e["code"];
+    $t->number = $e["number"];
+    $t->save();
 });
 
 Route::get('/artisan', function () {

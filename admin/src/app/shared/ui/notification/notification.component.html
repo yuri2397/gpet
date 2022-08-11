@@ -1,0 +1,45 @@
+<div class="p-0">
+    <div class="header p-0 h-20 pb-1">
+      <div class="d-flex justify-content-end type-{{ notification.type }}">
+        <div class="close-icon" (click)="close(null)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="12" fill="#eee" />
+            <g clip-path="url(#clip0_4602_40802)">
+              <path d="M17.397 7.27047L16.2935 6.16699L11.9187 10.5418L7.54391 6.16699L6.44043
+                                                                          7.27047L10.8152 11.6453L6.44043
+                                                                          16.02L7.54391 17.1235L11.9187
+                                                                          12.7487L16.2935 17.1235L17.397 16.02L13.0222
+                                                                          11.6453L17.397 7.27047Z" fill="#1D617A" />
+            </g>
+            <defs>
+              <clipPath id="clip0_4602_40802">
+                <rect width="13.3043" height="12.5217" fill="white" transform="translate(5.21777
+                                                                                  5.73926)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="text-center">
+        <div class="icon icon-{{ notification.type }} m-auto"></div>
+        <div class="alert-title mt-4">
+          {{ notification.title }}
+        </div>
+        <div class="content my-2 mx-3" [innerHtml]="notification.content">
+        </div>
+        <div class="footer mt-3">
+          <div class="d-flex justify-content-center align-items-center">
+            <div>
+              <button nz-button class="me-3 px-3" type="button"
+                (click)="close('ok')">{{ 'Fermer' }}</button>
+            </div>
+  
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+  

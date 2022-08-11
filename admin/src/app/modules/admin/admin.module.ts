@@ -69,6 +69,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SyllabusShowComponent } from '../../pages/syllabus/syllabus-show/syllabus-show.component';
 import { SyllabusEditComponent } from '../../pages/syllabus/syllabus-edit/syllabus-edit.component';
+import { CourseHistoryComponent } from '../../pages/course/course-history/course-history.component';
 
 registerLocaleData(localeFr, fr);
 @NgModule({

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Course;
+use App\Models\CourseHistory;
 use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\CoursesHasProfessors;
+use App\Models\CourseStatus;
 use App\Models\UE;
 use App\Models\EC;
 use App\Models\TimesTable;
@@ -49,6 +51,9 @@ class CourseController extends Controller
         }
     }
 
+    /**
+     * CREATE COURSE
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -72,6 +77,13 @@ class CourseController extends Controller
         $course->service_id = $request->service_id;
         $course->ec_id = $request->ec_id;
         $course->professor_id = $request->professor_id ?? null;
+
+        if (isset($request->professor_id) && !empty($request->professor_id)) {
+            $course->course_status_id = CourseStatus::whereCode("load")->first()->id;
+        } else {
+            $course->course_status_id = CourseStatus::whereCode("wait")->first()->id;
+        }
+
         $course->save();
 
         return $this->show($course->id);
@@ -112,6 +124,37 @@ class CourseController extends Controller
         return $this->show($id);
     }
 
+    /**
+     * Change course status
+     */
+
+    public function changeCourseStatus($id, Request $request)
+    {
+        $request->validate([
+            "status" => ["required", "exists:course_status,code"],
+        ]);
+        $course = Course::find($id);
+
+        $history = new CourseHistory();
+
+        $history->course_id = $course->id;
+        $history->course_status_id = $course->course_status_id;
+        $history->professor_id = $course->professor_id;
+        $history->classe_id = $course->classe_id;
+        $history->save();
+
+        $course->professor_id = null;
+        $course->course_status_id = CourseStatus::whereCode($request->status)->first()->id;
+        
+        $course->save();
+
+        return $course;
+    }
+
+    public function courseHistory($professeur_id)
+    {
+        return CourseHistory::whereProfessorId($professeur_id)->get();   
+    }
 
     public function destroy($id)
     {
@@ -177,6 +220,9 @@ class CourseController extends Controller
         return response()->json($chp, 200);
     }
 
+    /**
+     * ATTACH COURSE TO ONE PROFESSOR
+     */
     public function courseToProfessor(Request $request)
     {
         $request->validate([
@@ -185,14 +231,17 @@ class CourseController extends Controller
         ]);
 
         $course = Course::find($request->course_id);
+
         if ($course->professor_id == null) {
             $course->professor_id = $request->professor_id;
+            $course->course_status_id = CourseStatus::whereCode("load")->first()->id;
+
             $course->save();
             return response()->json($course, 200);
-        } else {
+        } else if ($course->course_status->code == "load") {
             $cp = Professor::find($course->professor_id);
             return response()->json([
-                'message' => 'Ce cour est affecté à ' . $cp->first_name . ' ' . $cp->last_name
+                'message' => 'Ce cour est affecté à ' . $cp->first_name . ' ' . $cp->last_name . ". Il faut finir le cours ou détacher le cours pour ce professeur."
             ], 404);
         }
     }
@@ -204,6 +253,21 @@ class CourseController extends Controller
         ]);
         $course = Course::find($request->course_id);
         $course->professor_id = null;
+
+        TimesTable::whereCourseId($course->id)->delete();
+
+        $course->save();
+        return response()->json($course, 200);
+    }
+
+    public function finalizeCourse(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id'
+        ]);
+        $course = Course::find($request->course_id);
+        $course->professor_id = null;
+        $course->status = false;
 
         TimesTable::whereCourseId($course->id)->delete();
 
