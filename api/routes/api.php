@@ -173,12 +173,13 @@ Route::prefix("ec")->middleware(['auth:api'])->group(function () {
 });
 
 Route::prefix("course")->middleware(['auth:api',])->group(function () {
-    
+
     Route::get('', [CourseController::class, "index"]);
     Route::get('show/{id}', [CourseController::class, "show"]);
     Route::post('create', [CourseController::class, "store"]);
     Route::put('update/{id}', [CourseController::class, "update"]);
     Route::put('change-course-status/{id}', [CourseController::class, "changeCourseStatus"]);
+    Route::put('restore-course-history/{id}', [CourseController::class, "restoreCourse"]);
     Route::get('course-history/{id}', [CourseController::class, "courseHistory"]);
     Route::delete('destroy/{id}', [CourseController::class, "destroy"]);
     Route::get('search/{data}', [CourseController::class, "search"]);
@@ -248,21 +249,21 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
 
 
 Route::any('test', function (Request $request) {
-    // Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"');
-    // Artisan::call('migrate');
-    // Artisan::call('vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"');
+    // Artisan::call('migrate --seed');
     // return "OKAY";
 
-    $e = [
-        "name" => "En attente",
-        "code" => "wait",
-        "number" => 1,
-    ];
-    $t = new CourseStatus();
-    $t->label = $e["name"];
-    $t->code = $e["code"];
-    $t->number = $e["number"];
-    $t->save();
+    return CourseStatus::all();
+
+    // $e = [
+    //     "name" => "En attente",
+    //     "code" => "wait",
+    //     "number" => 1,
+    // ];
+    // $t = new CourseStatus();
+    // $t->label = $e["name"];
+    // $t->code = $e["code"];
+    // $t->number = $e["number"];
+    // $t->save();
 });
 
 Route::get('/artisan', function () {

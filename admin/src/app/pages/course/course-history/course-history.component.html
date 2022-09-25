@@ -1,19 +1,21 @@
-<nz-table #nzTable [nzData]="histories" [nzPageSize]="10" [nzLoading]="load">       
+<nz-table #nzTable [nzData]="histories" [nzPageSize]="10" [nzLoading]="load">
   <thead>
     <tr>
       <th>Acronym</th>
       <th>Cours</th>
       <th>Classe</th>
       <th>Finaliser</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let i of nzTable.data">
-      <td>{{i.course.acronym}}</td>
-      <td>{{i.course.name}}</td>
-      <td>{{i.classe.name}}</td>
-      <td>{{i.created_at | date: "d/MM/yyyy"}}</td>
-      
+      <td>{{ i.course.acronym }}</td>
+      <td>{{ i.course.name }}</td>
+      <td>{{ i.classe.name }}</td>
+      <td>{{ i.created_at | date: "d/MM/yyyy" }}</td>
+      <td><button nz-button (click)="restore(i)">Restaurer le cour</button></td>
+
     </tr>
   </tbody>
 </nz-table>
