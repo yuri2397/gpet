@@ -176,6 +176,7 @@ Route::prefix("course")->middleware(['auth:api',])->group(function () {
 
     Route::get('', [CourseController::class, "index"]);
     Route::get('show/{id}', [CourseController::class, "show"]);
+    Route::get('show-by', [CourseController::class, "showBy"]);
     Route::post('create', [CourseController::class, "store"]);
     Route::put('update/{id}', [CourseController::class, "update"]);
     Route::put('change-course-status/{id}', [CourseController::class, "changeCourseStatus"]);

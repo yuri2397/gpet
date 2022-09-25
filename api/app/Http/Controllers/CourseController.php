@@ -94,6 +94,16 @@ class CourseController extends Controller
         return $cour;
     }
 
+    public function showBy(Request $request)
+    {
+        if ($request->professor_id) {
+            return Course::whereProfessorId($request->professor_id)->orderBy("updated_at", 'DESC')->get();
+        }
+
+
+        return [];
+    }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -191,7 +201,16 @@ class CourseController extends Controller
 
     public function courseHistory($professeur_id)
     {
-        return CourseHistory::whereProfessorId($professeur_id)->get();
+        $histories = CourseHistory::with(['course'])->whereProfessorId($professeur_id)->get();
+
+        foreach ($histories as $history) {
+            unset($history->course->course_status);
+            unset($history->course->departement);
+            unset($history->course->ec);
+            unset($history->course->semester);
+            unset($history->course->service);
+        }
+        return $histories;
     }
 
     public function destroy($id)

@@ -20,6 +20,7 @@ export class ProfesseurShowComponent implements OnInit {
   courses!: Course[]
   coursesLoad = false
   errorServer = false
+  reloadCourse = false
   id!: number
   professeur!: Professor
   dataLoad = true
@@ -71,6 +72,19 @@ export class ProfesseurShowComponent implements OnInit {
         this.addHourForm.controls[i].updateValueAndValidity()
       }
     }
+  }
+
+  getCourses() {
+    // console.log('HOS')
+    // this.reloadCourse = true
+    // this.courseService.showBy({ professor_id: this.professeur.id }).subscribe({
+    //   next: (response) => (
+    //     (this.professeur.courses = [...response]), (this.reloadCourse = false)
+    //   ),
+    //   error: (error) => {
+    //     console.log(error)
+    //   },
+    // })
   }
 
   submitAddCourseForm() {

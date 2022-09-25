@@ -14,8 +14,7 @@
       <td>{{ i.course.name }}</td>
       <td>{{ i.classe.name }}</td>
       <td>{{ i.created_at | date: "d/MM/yyyy" }}</td>
-      <td><button nz-button (click)="restore(i)">Restaurer le cour</button></td>
-
+      <td><button [nzLoading]="i.loading" nz-button (click)="restore(i)">Restaurer le cour</button></td>
     </tr>
   </tbody>
 </nz-table>

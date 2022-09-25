@@ -172,7 +172,7 @@
         </div>
         <div class="card mt-3 border card card-body">
           <nz-tabset>
-            <nz-tab nzTitle="Informations sur les cours">
+            <nz-tab (nzSelect)="getCourses()" nzTitle="Informations sur les cours">
               <div>
                 <div class="mb-2 d-flex justify-content-between">
 
@@ -192,7 +192,7 @@
                   </div>
                 </div>
 
-                <nz-table class="scroll-table" nzShowPagination [nzPageSize]="3" #basicTable
+                <nz-table class="scroll-table" [nzLoading]="reloadCourse" nzShowPagination [nzPageSize]="3" #basicTable
                   [nzData]="professeur.courses">
                   <thead>
                     <tr>
