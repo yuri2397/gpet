@@ -11,7 +11,7 @@ class Course extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $with = ['professor', 'ec', 'service', 'semester', 'departement', "syllabus", "media"];
+    protected $with = ['professor', 'ec', 'service', 'semester', 'departement', "syllabus", "media", "course_status"];
     protected $fillable = ['*'];
 
     public function professor()
@@ -47,5 +47,10 @@ class Course extends Model implements HasMedia
     public function syllabus()
     {
         return $this->hasOne(Syllabus::class);
+    }
+
+    public function course_status()
+    {
+        return $this->belongsTo(CourseStatus::class, "course_status_id");
     }
 }

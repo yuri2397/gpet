@@ -96,3 +96,18 @@ export interface Media extends Model<Media> {
   original_url: string;
   preview_url: string;
 }
+
+export interface CourseHistory extends Model<CourseHistory> {
+  course: Course;
+  status: CourseStatus;
+  professor_id: number;
+  professor: Professor;
+  classe: Classe;
+  
+}
+
+export interface CourseStatus extends Model<CourseStatus> {
+  label: string;
+  readonly code: string;
+  readonly number: string;
+}
