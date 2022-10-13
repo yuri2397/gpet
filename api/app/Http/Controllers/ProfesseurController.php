@@ -88,7 +88,7 @@ class ProfesseurController extends Controller
         $compte->save();
         //create a user
         $user = new User;
-        $password = Str::random("6");
+        $password = "gpet1234";
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
@@ -98,7 +98,7 @@ class ProfesseurController extends Controller
         $user->model = $prof->id;
 
         try {
-            Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+            // Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
             $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
@@ -106,7 +106,7 @@ class ProfesseurController extends Controller
             return response()->json(['message' => "Professeur crée avec succès."], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
+            return response()->json(["Error" => $th, 'message' => "Service de messagerie temporairement indisponible ou en maintenance.
             "], 503);
         }
     }

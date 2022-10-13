@@ -43,7 +43,7 @@ class UserController extends Controller
         ]);
 
         $user = new User;
-        $password = Str::random("6");
+        $password = "gpet1234";
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
@@ -52,12 +52,11 @@ class UserController extends Controller
 
         //SEND MAIL
         try {
-            Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+            // Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json(["Error" => $th, 'message' => "Service temporairement indisponible ou en maintenance.
             "], 503);
         }
@@ -84,7 +83,7 @@ class UserController extends Controller
         ]);
         $user = User::find($id);
         if ($user == null) {
-            return response()->json(['message' => "Utilisateur n'existe pas.", ], 404);
+            return response()->json(['message' => "Utilisateur n'existe pas.",], 404);
         }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
@@ -110,8 +109,7 @@ class UserController extends Controller
             $user->avatar = Str::substr($path, 6, strlen($path));
             $user->save();
             return response()->json($user);
-        }
-        else {
+        } else {
             return response()->json([
                 "message" => "Veuillez selectionner une image pour votre profile."
             ], 422);
@@ -119,11 +117,12 @@ class UserController extends Controller
     }
     public function showuserwithprof($id)
     {
-        $user= User::with("roles")->find($id);
-        $prof=Professor::whereemail($user->email)->first();
+        $user = User::with("roles")->find($id);
+        $prof = Professor::whereemail($user->email)->first();
 
-        return response()->json(["user"=>$user,"professor"=>$prof]
-            , 200);
+        return response()->json(
+            ["user" => $user, "professor" => $prof],
+            200
+        );
     }
-
 }
