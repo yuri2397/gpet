@@ -55,6 +55,8 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { CourseHistoryComponent } from '../pages/course/course-history/course-history.component';
+import { NotificationComponent } from './ui/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,9 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
     LoadComponent,
     ChapitreEditComponent,
     InfoUserComponent,
+    CourseHistoryComponent,
+    NotificationComponent,
+
   ],
   imports: [
     CommonModule,
@@ -138,6 +143,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
     ChapitreListComponent,
     ChapitreEditComponent,
     LoadComponent,
+    CourseHistoryComponent,
 
     /**MODULES */
     CommonModule,

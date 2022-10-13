@@ -1,0 +1,94 @@
+.close-icon {
+    margin: 8px;
+    cursor: pointer;
+}
+
+* {
+    outline: none !important;
+}
+
+.type-success {
+    border-top: solid 7px #81F499;
+    border-radius: 6px;
+}
+
+.type-error {
+    border-top: solid 7px #FF5757;
+    border-radius: 6px;
+}
+
+.type-warn {
+    border-top: solid 7px #FABC2A;
+    border-radius: 6px;
+}
+
+.type-info {
+    border-top: solid 7px #6EBFDD;
+    border-radius: 6px;
+}
+
+.icon {
+    width: 60px;
+    height: 60px;
+}
+
+.icon-success {
+    background: url('/assets/icons/success.svg') no-repeat;
+}
+
+.icon-error {
+    background: url('/assets/icons/error.svg') no-repeat;
+}
+
+.icon-info {
+    background: url('/assets/icons/info.svg') no-repeat;
+}
+
+
+.icon-warn {
+    background: url('/assets/icons/warn.svg') no-repeat;
+}
+
+.alert-title {
+    font-family: 'Helvetica';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    color: #4D4D4D;
+}
+
+.content {
+    font-family: 'Helvetica';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: 0.0015em;
+    color: #4D4D4D;
+    margin: 8px 0;
+}
+
+
+.oc-caisse-btn {
+    background: #FFFFFF;
+    border: 1px solid #1D617A;
+    box-sizing: border-box;
+    border-radius: 6px;
+    color: #1D617A;
+    white-space: nowrap;
+    padding: 8px;
+}
+
+.retrait-btn {
+    background: #8ec6da;
+    border: 1px solid #a4cad8;
+    box-sizing: border-box;
+    border-radius: 6px;
+    color: white;
+    white-space: nowrap;
+    padding: 8px;
+    height: 40px;
+}
