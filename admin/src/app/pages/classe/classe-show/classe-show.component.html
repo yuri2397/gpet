@@ -146,36 +146,36 @@
                   <tbody>
                     <td class="column" *ngFor="let ept of presentionEPT.data">
                       <ng-container *ngIf="ept.data.length != 0; else noEPTRow">
-                        <div >
+                        <div>
                           <div class="card border m-3 text-center m-1" *ngFor="
                             let row of ept.data;
                             let isLast = last
                           ">
-                          <div class="card-header">
-                            <span>{{ row.course.name.toLocaleUpperCase() }}</span> <br />
-                          </div>
-                          <div class="card-body px-1 pb-0">
-                            <nz-divider class="my-1 py-1" [nzText]="text">
-                              <ng-template #text>
-                                <div style="font-size: 15px" class="d-flex align-items-center">
-                                  <span>{{ pipeHours(row.start) }}
-                                    <i nz-icon nzType="clock-circle" class="mx-1" nzTheme="outline"></i>
-                                    {{
+                            <div class="card-header">
+                              <span>{{ row.course.name.toLocaleUpperCase() }}</span> <br />
+                            </div>
+                            <div class="card-body px-1 pb-0">
+                              <nz-divider class="my-1 py-1" [nzText]="text">
+                                <ng-template #text>
+                                  <div style="font-size: 15px" class="d-flex align-items-center">
+                                    <span>{{ pipeHours(row.start) }}
+                                      <i nz-icon nzType="clock-circle" class="mx-1" nzTheme="outline"></i>
+                                      {{
                                   pipeHours(row.end)
                                 }}</span>
-                                </div>
-                              </ng-template>
-                            </nz-divider>
-                            <nz-timeline class="text-start">
-                              <nz-timeline-item>M. {{ row.course.professor.last_name }}</nz-timeline-item>
-                              <nz-timeline-item *ngIf="row.course.groupe_number != 1">Groupe: 
-                                {{ row?.group }}
-                              </nz-timeline-item>
-                              <nz-timeline-item>{{ row.salle?.name }}</nz-timeline-item>
-                              <nz-timeline-item>{{ row.course.service.name }}</nz-timeline-item>
-                            </nz-timeline>
+                                  </div>
+                                </ng-template>
+                              </nz-divider>
+                              <nz-timeline class="text-start">
+                                <nz-timeline-item>M. {{ row.course.professor?.last_name }}</nz-timeline-item>
+                                <nz-timeline-item *ngIf="row.course.groupe_number != 1">Groupe:
+                                  {{ row?.group }}
+                                </nz-timeline-item>
+                                <nz-timeline-item>{{ row.salle?.name }}</nz-timeline-item>
+                                <nz-timeline-item>{{ row.course.service.name }}</nz-timeline-item>
+                              </nz-timeline>
+                            </div>
                           </div>
-                        </div>
                         </div>
                       </ng-container>
                       <ng-template #noEPTRow>
