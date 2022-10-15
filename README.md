@@ -46,7 +46,8 @@ Application pour la gestion de emploi du temps et le payement des profs vacatair
 
 -Information sur professeur et son compte
 
-![Capture d’écran de 2021-10-01 00-06-06](https://user-images.githubusercontent.com/58815209/135546700-55b07744-856d-46f8-a002-9aa410d048d6.png)
+![Capture d’écran du 2022-10-15 18-47-52](https://user-images.githubusercontent.com/58815209/196003210-54d3fa32-76d5-464b-8125-ac5dffd93115.png)
+
 
 - Les cours afféctés au professeur
 
