@@ -1,12 +1,15 @@
 <div class="container-fluid">
   <div class="row align-items-center">
     <div class="col-md-5 col-sm-5 col-xs-12 border shadow login-left">
-      <div style="width: 30em">
-        <div class="text-center">
-          <h2 class="txt-primary">GPET</h2>
-          <p class="card-category txt-primary">Connectez-vous!</p>
+      <div class="center position-relative" style="width: 35em">
+        <div class="text-center" >
+          <h1 class="bold txt-primary">Bienvenue sur GPET</h1>
+          <p class="lead bold card-category txt-primary">Connectez-vous!</p>
         </div>
-        <div class="my-3 mx-5">
+        <div class="my-3 mx-5 ">
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{errorMessage}}
+          </div>
           <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
             <nz-form-item>
               <nz-form-control nzErrorTip="Donner votre email!">
@@ -22,20 +25,20 @@
                   id="password" placeholder="Password" />
               </nz-form-control>
             </nz-form-item>
+            <br>
             <div class="d-flex my-3 justify-content-between align-items-center">
-              <div>
-                <button nz-button (click)="login()" [nzLoading]="isLoad" class="bg" [disabled]="!validateForm.valid">
-                  Se connecter
-                </button>
-
-              </div>
-              <div>
+              <button nz-button (click)="login()" [nzLoading]="isLoad" class="bg btn-block w-100" [disabled]="!validateForm.valid">
+                Se connecter
+              </button>
+             <!-- <div>
                 <a class="txt-primary" routerLink="/forgot-password">Mot de passe oublié?</a>
-              </div>
+              </div>-->
             </div>
-            <div class="text-center">
-              <span class="version">Version {{ version }}</span>
-            </div>
+
+            <br><br>
+            <span class="text-primary text-center">© Copyright Tous droits reservés - <b>UFR SET</b> - Version {{ version }}</span>
+
+
           </form>
         </div>
       </div>

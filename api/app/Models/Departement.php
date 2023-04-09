@@ -9,6 +9,9 @@ class Departement extends Model
 {
     use HasFactory;
     protected $fillable = ['*'];
+    protected $appends = ['classes_count', 'professors_count', 'courses_count'];
+        
+
     public function classes()
     {
         return $this->hasMany(Classe::class);
@@ -16,7 +19,7 @@ class Departement extends Model
 
     public function classesLibre()
     {
-        return $this->hasMany(Classe::class);
+        return $this->hasMany(ClasseLibre::class);
     }
 
     public function professors()
@@ -27,5 +30,20 @@ class Departement extends Model
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function getClassesCountAttribute()
+    {
+        return $this->classes()->count();
+    }
+
+    public function getProfessorsCountAttribute()
+    {
+        return $this->professors()->count();
+    }
+
+    public function getCoursesCountAttribute()
+    {
+        return $this->courses()->count();
     }
 }

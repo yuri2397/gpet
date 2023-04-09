@@ -1,0 +1,39 @@
+*{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.text-dark{
+    text-decoration: none;
+}
+
+.card-img-top{
+    width: 100%;
+}
+
+.bg-color {
+    background-color: #41729f;
+    color: white;
+}
+
+.example-boundary {
+    width: 400px;
+    height: 400px;
+    max-width: 100%;
+    border: dotted #ccc 2px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+:host ::ng-deep .ant-timeline-item, 
+:host ::ng-deep .ant-timeline-item-last{
+    padding-bottom: 2px !important;
+}
+
+
+:host ::ng-deep .ant-timeline-item-last > .ant-timeline-item-content{
+    min-height: 14px !important;
+}

@@ -13,7 +13,8 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
-  version:string = "2.0.1";
+  version:string = "2.0.9";
+   errorMessage: string  = "";
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.isLoad = true;
+    this.errorMessage = ""
     this.authService
       .login(this.validateForm.value.email, this.validateForm.value.password)
       .subscribe({
@@ -50,11 +52,14 @@ export class LoginComponent implements OnInit {
         },
         error: (errors) => {
           this.isLoad = false;
-          this.notification.createNotification(
+          /*this.notification.createNotification(
             'error',
             'Erreur',
             errors.error.message
-          );
+          );*/
+
+          this.errorMessage = errors.error.message
+
         },
       });
   }
