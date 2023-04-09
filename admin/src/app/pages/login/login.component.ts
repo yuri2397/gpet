@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
-  version:string = "2.0.9";
+  version:string = "2023";
    errorMessage: string  = "";
 
   submitForm(): void {
