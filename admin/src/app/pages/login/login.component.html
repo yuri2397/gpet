@@ -27,17 +27,15 @@
                 <button nz-button (click)="login()" [nzLoading]="isLoad" class="bg" [disabled]="!validateForm.valid">
                   Se connecter
                 </button>
-
               </div>
               <div>
                 <a class="txt-primary" routerLink="/forgot-password">Mot de passe oublié?</a>
               </div>
             </div>
-            <div class="text-center">
-              <span class="version">Version {{ version }}</span>
-            </div>
           </form>
         </div>
+        <br><br><br><br><br>
+        <span class="">{{ version }}</span>
       </div>
     </div>
     <div class="col">

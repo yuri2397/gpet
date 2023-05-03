@@ -98,7 +98,7 @@ class ProfesseurController extends Controller
         $user->model = $prof->id;
 
         try {
-            // Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
             $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);

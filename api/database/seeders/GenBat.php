@@ -15,13 +15,12 @@ class GenBat extends Seeder
     public function run()
     {
         $bats = [
-            "BAT1 UFR SET",
-            "BAT2 UFR SET",
-            "Chapiteau UFR SET",
-            "BAT administratif UFR SET",
-            "Immeuble Bal",
-            "EPT",
-            "BAT3 UFR SET",
+            'BLOC PEDAGOGIQUE I',
+            'BLOC PEDAGOGIQUE II',
+            'BLOC PEDAGOGIQUE III',
+            'BLOC PEDAGOGIQUE IV',
+            'GRANDE SALLE SEG',
+            'AMPITHEATRE Pr IBRAHIMA NDIAYE'
         ];
 
         foreach($bats as $bat){

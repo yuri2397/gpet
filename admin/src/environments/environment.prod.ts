@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  host: 'https://api-edtset.uidt.sn/',
-  api: 'https://api-edtset.uidt.sn/api/',
+  host: 'https://apiedtses.uidt.sn/',
+  api: 'https://apiedtses.uidt.sn/api/',
   version: "1.0.0"
 };

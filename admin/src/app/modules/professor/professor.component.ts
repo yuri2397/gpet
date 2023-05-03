@@ -73,10 +73,10 @@ export class ProfessorComponent implements OnInit {
   user!: User;
   profuser!:ProfUser;
   menuItems!: RouteInfo[];
-  title = 'UFR SET - GPET';
+  title = 'UFR SES - GPET';
   depTitle!: string;
   permissions!: Permission[];
-
+  version:string = "© Copyright Tous droits reservés - UFR SET - Version 2023";
   constructor(private router: Router, private userService: UserService, private notification: NzNotificationService) {}
 
   ngOnInit() {

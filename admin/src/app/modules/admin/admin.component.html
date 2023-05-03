@@ -14,6 +14,8 @@
                 </li>
             </ng-container>
         </ul>
+     
+          <!-- <span class="version">{{ version }}</span> -->
     </nz-sider>
     <nz-layout>
         <nz-header>
@@ -43,14 +45,19 @@
                         </ul>
                     </nz-dropdown-menu>
                 </div>
+                
             </div>
+            
         </nz-header>
         <nz-content>
             <div class="bg-admin inner-content">
                 <router-outlet></router-outlet>
             </div>
+            
         </nz-content>
+        
     </nz-layout>
+    
 </nz-layout>
 <ng-template #loadingTemplate>
     <div class="center" style="flex-direction: column;">

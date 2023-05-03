@@ -59,9 +59,9 @@
         </nz-form-item>
 
         <nz-form-item [hidden]="!addUE">
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_name">Semestre</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_semester">Semestre</nz-form-label>
             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le semestre est requi">
-                <nz-select [nzDisabled]="!addUE" nzPlaceHolder="Selectionner un semestre" formControlName="ue_semester" [(ngModel)]="ec.ue.semester_id">
+                <nz-select (ngModelChange)="currentSemSelected($event)" [nzDisabled]="!addUE" nzPlaceHolder="Selectionner un semestre" formControlName="ue_semester" [(ngModel)]="ec.ue.semester_id">
                     <ng-container *ngFor="let o of semesters">
                         <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                     </ng-container>

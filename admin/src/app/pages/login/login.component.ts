@@ -13,7 +13,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
-  version:string = "2.0.1";
+  version:string = "© Copyright Tous droits reservés - UFR SET - Version 2023";
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {

@@ -52,7 +52,7 @@ class UserController extends Controller
 
         //SEND MAIL
         try {
-            // Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+            Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
             return response()->json(['message' => "Utilisateur crée avec succès."], 200);

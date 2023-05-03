@@ -231,7 +231,6 @@ export class ProfesseurShowComponent implements OnInit {
     this.profService.desableAccount(this.professeur).subscribe({
       next: (response) => {
         this.professeur = response
-
         this.notification.createNotification(
           'success',
           'Notification',

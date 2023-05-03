@@ -15,10 +15,9 @@ class GenDep extends Seeder
     public function run()
     {
         $depts = [
-            "Département Informatique",
-            "Département Mathématique",
-            "Département Physique Chimie",
-            "Département Hydrosciences et Environnement"
+          'Management des Organisations',
+          'Langues, Lettres et Sciences Humaines',
+          'Sciences Economiques et Gestion',
         ];
 
         foreach($depts as $dep){

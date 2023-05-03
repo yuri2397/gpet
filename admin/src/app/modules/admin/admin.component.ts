@@ -110,9 +110,10 @@ export class AdminComponent implements OnInit, AfterViewInit {
   roles!: Role[];
   user!: User;
   menuItems!: RouteInfo[];
-  title = 'UFR SET - GPET';
+  title = 'UFR SES - GPET';
   depTitle!: string;
   permissions!: Permission[];
+  version:string = "© Copyright Tous droits reservés - UFR SET - Version 2023";
 
   constructor(private router: Router, private userService: UserService) {}
   ngAfterViewInit(): void {

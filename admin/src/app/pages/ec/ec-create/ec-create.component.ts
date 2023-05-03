@@ -20,6 +20,7 @@ export class EcCreateComponent implements OnInit {
   @Input() semesters!: Semester[];
   validateForm!: FormGroup;
   ec: EC = new EC();
+  sem : Semester =new Semester();
   isLoad = false;
   isLoadData = true;
   ues!: UE[];
@@ -105,6 +106,10 @@ export class EcCreateComponent implements OnInit {
 
   currentDepSelected(id: number) {
     this.ec.ue.departement_id = id;
+  }
+
+  currentSemSelected(id: number) {
+    this.ec.ue.semester_id = id;
   }
 
   onUESearch(data: string) {

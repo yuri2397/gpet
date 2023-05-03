@@ -154,7 +154,4 @@ export class SalleListComponent implements OnInit {
       );
     });
   }
-
-  
-
 }

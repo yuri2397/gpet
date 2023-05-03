@@ -55,4 +55,9 @@ export class DepartementShowComponent implements OnInit {
   onCoursesChanged(courses: Course[]) {
     this.departement.courses = courses;
   }
+
+  findSalle(){
+    
+
+  }
 }

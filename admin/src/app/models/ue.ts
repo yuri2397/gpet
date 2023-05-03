@@ -13,8 +13,10 @@ export class UE extends Model<UE> {
   departement_id!: number;
   departement!: Departement;
   ecs!: EC[];
+  
   constructor() {
     super();
+    this.semester = new Semester();
     this.departement = new Departement();
   }
 

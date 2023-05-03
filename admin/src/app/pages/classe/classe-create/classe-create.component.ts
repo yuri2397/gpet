@@ -4,6 +4,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Classe } from 'src/app/models/classe';
 import { Departement } from 'src/app/models/departement';
 import { ClasseService } from 'src/app/services/classe.service';
+import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
@@ -13,21 +14,28 @@ import { NotificationService } from 'src/app/services/notification.service';
 })
 export class ClasseCreateComponent implements OnInit {
   classe: Classe = new Classe();
+  departements!: Departement[];
   @Input()  departement!: Departement;
   validateForm!: FormGroup;
+  departementss = Departement;
   isLoad: boolean = false;
+  isLoadData = false;
+  isLoadDataBat = true;
+ 
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
     private modal: NzModalRef,
-    private classeService: ClasseService
+    public classeService: ClasseService,
+    private deptService: DepartementService,
   ) {}
 
   ngOnInit(): void {
-    this.classe.departement_id = this.departement.id;
-
+    //this.classe.departement_id = this.departement.id;
+    this.findDepartement();
     this.validateForm = this.fb.group({
-      name: [null, [Validators.required, Validators.min(2)]],
+      name: [null, [Validators.required]],
+      departement_id: [null, [Validators.required]],
       nb_etudiants: [0, [Validators.required, Validators.min(0)]],
     });
   }
@@ -66,6 +74,19 @@ export class ClasseCreateComponent implements OnInit {
           errors.error.message
         );
         this.destroyModal(null);
+      },
+    });
+  }
+
+  findDepartement() {
+    this.isLoadData = true;
+    this.deptService.findAll().subscribe({
+      next: (response) => {
+        this.departements = response;
+        this.isLoadData = false;
+      },
+      error: (errors) => {
+        this.isLoadData = false;
       },
     });
   }
