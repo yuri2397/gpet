@@ -76,7 +76,6 @@ class ProfesseurController extends Controller
         $prof->departement_id = $request->departement_id;
         $prof->phone_number = $request->phone_number;
         $prof->job = $request->job ?? null;
-
         $prof->save();
 
         $compte = new Account();
@@ -98,7 +97,7 @@ class ProfesseurController extends Controller
         $user->model = $prof->id;
 
         try {
-             Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+            // Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
             $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
