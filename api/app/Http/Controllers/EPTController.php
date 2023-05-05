@@ -215,4 +215,9 @@ class EPTController extends Controller
 
         return view('ept', compact('classe', 'departement', 'ept'));
     }
+
+    public function publicEDT()
+    {
+        
+    }
 }

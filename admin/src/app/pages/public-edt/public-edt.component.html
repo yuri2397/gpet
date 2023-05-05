@@ -1,9 +1,34 @@
 <div
   class="d-flex align-items-start list-group list-group-radio d-grid gap-2 border-0"
 >
-  <nz-carousel nzEffect="fade" [nzAutoPlay]="!load"  [nzAutoPlaySpeed]="10000">
-    <div nz-carousel-content *ngFor="let classe of allDepartementEdt;  let lastItem = last; ">
-      <div id="presentionEPT">
+<div class="logo-content">
+  <img src="assets/img/logo.jpg">
+  <h5 class="bold text-muted">Université Iba Der Thiam</h5>
+  <span class="text-muted">UFR Sciences et Technologies</span>
+</div>
+  <nz-carousel nzEffect="fade" [nzAutoPlay]="!load" [nzAutoPlaySpeed]="20000">
+    <div nz-carousel-content *ngFor="let e of event; let lastItem = last">
+      <div class="event">
+        <div class="d-flex">
+          <div class="content center fw-bold">
+            <div class="card shadow">
+              <div class="card-header">
+                <h1 class="text-dark" [innerHTML]="e.title"></h1>
+              </div>
+              <div class="card-body">
+                <span
+                  class="d-block"
+                  *ngFor="let item of e.innerContent; let i = index"
+                >
+                  <span class="lead text-dark">{{ item.content }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <img src="assets/img/{{ e.img }}" class="event-img" />
+        </div>
+      </div>
+      <!-- <div id="presentionEPT">
         <h1 class="text-center my-4">
           {{ classe?.classe?.departement?.name }} - {{ classe?.classe.name | uppercase }}
         </h1>
@@ -76,7 +101,7 @@
             </td>
           </tbody>
         </table>
-      </div>
+      </div> -->
     </div>
   </nz-carousel>
 </div>

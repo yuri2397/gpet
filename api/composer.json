@@ -2,7 +2,7 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["gpet", "Emplois du temps"],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",

@@ -34,6 +34,7 @@ use App\Http\Controllers\PublicEdtController;
 use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\PublicEventController;
 use Facade\FlareClient\Contracts\ProvidesFlareContext;
 
 /**
@@ -249,30 +250,32 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::get('syllabusDesc/{courseid}', [SyllabusController::class, "syllabusDesc"]);
 });
 
+Route::prefix("public-event")->group(function () {
+    Route::get('', [PublicEventController::class, "index"]);
+    Route::get('show/{id}', [PublicEventController::class, "show"]);
+    Route::post('create', [PublicEventController::class, "store"]);
+    Route::put('update/{id}', [PublicEventController::class, "update"]);
+    Route::delete('destroy/{id}', [PublicEventController::class, "destroy"]);
+});
+
+
 Route::prefix('public-edt')->group(function () {
     Route::get('', [PublicEdtController::class, "index"]);
     Route::get('departements', [PublicEdtController::class, "departements"]);
     Route::get('all', [PublicEdtController::class, "departementClasses"]);
     Route::get('classes/{id}', [EPTController::class, "show"]);
-
 });
 
+Route::any('store-image', [PublicEdtController::class, 'storeImage']);
+
 Route::any('test', function (Request $request) {
-    // Artisan::call('migrate --seed');
-    // return "OKAY";
+    $permissions = Permission::all();
+    $roles = Role::all();
+    $user = User::all()[0];
 
-    return CourseStatus::all();
-
-    // $e = [
-    //     "name" => "En attente",
-    //     "code" => "wait",
-    //     "number" => 1,
-    // ];
-    // $t = new CourseStatus();
-    // $t->label = $e["name"];
-    // $t->code = $e["code"];
-    // $t->number = $e["number"];
-    // $t->save();
+    $user->givePermissionTo($permissions);
+    $user->assignRole($roles);
+    return $user->getAllPermissions();
 });
 
 Route::get('/artisan', function () {
