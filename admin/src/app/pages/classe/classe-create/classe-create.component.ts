@@ -31,7 +31,7 @@ export class ClasseCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //this.classe.departement_id = this.departement.id;
+    this.classe.departement_id = this.departement.id;
     this.findDepartement();
     this.validateForm = this.fb.group({
       name: [null, [Validators.required]],

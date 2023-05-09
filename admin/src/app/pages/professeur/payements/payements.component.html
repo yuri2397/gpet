@@ -68,7 +68,7 @@
                         <td>
                             <div class="d-flex justify-content-center">
                                 <div>
-                                    <button [disabled]="!data.is_paid" (click)="printPayment(data)" mat-mini-fab
+                                    <button [disabled]="!data.is_paid" nz-tooltip (click)="printPayment(data)" mat-mini-fab
                                         color="basic">
                                         <mat-icon>print</mat-icon>
                                     </button>

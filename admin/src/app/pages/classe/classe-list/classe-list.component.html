@@ -6,9 +6,9 @@
                     <h5 class="text-white">Liste des classes</h5>
                 </div>
                 <div *ngIf="can('creer classe') && !setView">
-                    <button mat-mini-fab color="default" (click)="openCreateModal()">
-              <mat-icon>add</mat-icon>
-            </button>
+                    <button (click)="openCreateModal()" mat-mini-fab color="default" >
+                        <mat-icon>add</mat-icon>
+                    </button>
                 </div>
             </div>
         </div>

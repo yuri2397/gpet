@@ -43,7 +43,6 @@ export class ProfesseurCreateComponent implements OnInit {
       this.professor.departement = this.deptService.departement();
     }
     this.findDepartement();
-
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],
       last_name: [null, [Validators.required]],

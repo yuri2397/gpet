@@ -50,7 +50,7 @@ class ProfesseurController extends Controller
             'status' => 'required',
             'phone_number' => 'required',
             'account_number' => 'required',
-            'departement_id' => 'required|exists:departements,id',
+           'departement_id' => 'required|exists:departements,id',
             'rip' => 'required',
             'key' => 'required',
             'bank_id' => 'required|exists:banks,id',
@@ -97,7 +97,7 @@ class ProfesseurController extends Controller
         $user->model = $prof->id;
 
         try {
-            // Mail::to($user->email)->send(new SendNewUserMail($user, $password));
+            //Mail::to($user->email)->send(new SendNewUserMail($user, $password));
             $user->save();
             $user->assignRole('professeur');
             $user->givePermissionTo(['voir professeur', 'modifier professeur', 'voir cour']);
