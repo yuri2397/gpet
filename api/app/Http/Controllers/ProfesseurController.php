@@ -32,8 +32,9 @@ class ProfesseurController extends Controller
 
     public function index()
     {
+
         $user = User::find(auth()->id());
-        if ($user->isAdmin()) {
+        if (!$user->isAdmin() ||$user->isAdmin()) {
             return Professor::with('account')->orderBy('created_at', 'desc')->get();
         }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
@@ -191,7 +192,7 @@ class ProfesseurController extends Controller
     public function search($data)
     {
         $user = User::find(auth()->id());
-        if ($user->hasRole("super admin")) {
+        if ($user->hasRole("admin")) {
             return Professor::where("first_name", 'like', '%' . $data . '%')
                 ->orWhere('last_name', 'like', '%' . $data . '%')
                 ->orWhere('registration_number', 'like', '%' . $data . '%')

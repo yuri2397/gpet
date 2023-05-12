@@ -28,6 +28,11 @@ declare interface RouteInfo {
 
 export const ROUTES: RouteInfo[] = [
   {
+    path: 'dashboard',
+    title: 'Dashboard',
+    icon: 'space_dashboard',
+  },
+  {
     path: 'courses',
     title: 'Mes cours',
     icon: 'checklist_rtl',

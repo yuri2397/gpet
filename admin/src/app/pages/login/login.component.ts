@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
     this.authService.setToken(response.token);
     this.authService.setUser(response.user);
     this.authService.setDepartement(response.departement);
-    if (this.authService.isAdmin()) this.router.navigate(['/admin/dashboard']);
+    if (this.authService.isAdmin() || this.authService.isEditeur()) this.router.navigate(['/admin/dashboard']);
     else this.router.navigate(['/professor']);
   }
 }

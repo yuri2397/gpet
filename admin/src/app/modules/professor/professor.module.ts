@@ -25,6 +25,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     PointingComponent,
     ResourcesComponent,
     SecuriteComponent,
+    
   ],
   imports: [
     ProfessorRoutingModule,
