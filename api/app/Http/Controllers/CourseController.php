@@ -125,7 +125,7 @@ class CourseController extends Controller
             "semester_id" => $ec->ue->semester_id,
             "departement_id" => $request->departement_id,
             "service_id" => $request->service_id,
-            "ec_id" => $ec->id,
+            "ec_id" =>$ec->id,
             "professor_id" => $request->professor_id ?? null,
         ]);
 

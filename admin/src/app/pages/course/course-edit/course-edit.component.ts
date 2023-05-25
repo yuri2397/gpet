@@ -43,6 +43,7 @@ export class CourseEditComponent implements OnInit {
     private classeService: ClasseService,
     private ecService: ECService
   ) {}
+  
 
   ngOnInit(): void {
     this.findSelectableList();
@@ -119,7 +120,7 @@ export class CourseEditComponent implements OnInit {
           this.departements = response.departements;
           this.services = response.services;
           this.semesters = response.semesters;
-          this.serviceAmout(this.course.service.id)
+          this.serviceAmout(this.course.service.id);
           this.isLoad = false;
         },
         error: (errors) => {
