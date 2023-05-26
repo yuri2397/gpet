@@ -108,16 +108,19 @@ class DepartementController extends Controller
                 if ($this->isSalleFree($salle, $value[0], $value[1], $currentDay)) {
                     $data[] = [
                         "x" => Str::upper($salle->name),
-                        "y" => 10
+                        "y" => 10,
                     ];
                 } else {
                     $data[] = [
                         "x" => Str::upper($salle->name),
-                        "y" => 50
+                        "y" => 50,
+                        $s = $salle->times_tables()->where('day_id', $currentDay)->pluck('classe_id'),
+                        "m" => $salle->classes()->wherePivot('classe_id', $s[0])->distinct()->get()
                     ];
                     $allFree = false;
                 }
             }
+
 
             $salles_libres[] = [
                 "name" => $value[0],
