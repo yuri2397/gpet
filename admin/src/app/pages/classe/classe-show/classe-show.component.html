@@ -16,7 +16,7 @@
         <nz-tab class="p-5" [nzTitle]="'Liste des cours'">
           <app-course-list [courses]="courses" [classe]="classe"></app-course-list>
         </nz-tab>
-        <nz-tab [nzTitle]="'Emploie du temps'">
+        <nz-tab [nzTitle]="'Emploi du temps'">
           <nz-tabset nzType="card">
             <nz-tab nzTitle="Édition">
               <nz-collapse *ngIf="!eptLoad" nzAccordion>
@@ -128,7 +128,7 @@
                   <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
                   <span class="text-center">
                     UNITÉ DE FORMATION ET DE RECHERCHE <br />
-                    EN SCIENCES ET SOCIALES <br />
+                    EN SCIENCES ECONOMIQUES ET SOCIAL ET SOCIALES <br />
                     {{ depName }}
                   </span>
                   <h3>{{ classe.name }}</h3>

@@ -21,9 +21,9 @@ class RoleController extends Controller
 
     public function findRoleOnUserCreate()
     {
-        return Role::with("permissions")
-            ->where("name", "!=", "super admin")
-            ->get();
+        return Role::with("permissions")->get();
+            //->where("name", "!=", "super admin")
+           
     }
 
     public function addRoleForUser(Request $request)
