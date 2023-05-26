@@ -73,7 +73,7 @@ export class ProfessorComponent implements OnInit {
   user!: User;
   profuser!:ProfUser;
   menuItems!: RouteInfo[];
-  title = 'UFR SES - GPET';
+  title = 'UFR SET - GPET';
   depTitle!: string;
   permissions!: Permission[];
 

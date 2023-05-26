@@ -6,9 +6,9 @@
   <h5 class="bold text-muted">Université Iba Der Thiam</h5>
   <span class="text-muted">UFR Sciences et Technologies</span>
 </div>
-  <nz-carousel nzEffect="fade" [nzAutoPlay]="!load" [nzAutoPlaySpeed]="20000">
-    <div nz-carousel-content *ngFor="let e of event; let lastItem = last">
-      <div class="event">
+  <nz-carousel class="mt-3" nzEffect="fade" [nzAutoPlay]="!load" [nzAutoPlaySpeed]="10000">
+    <div nz-carousel-content *ngFor="let classe of allDepartementEdt; let lastItem = last">
+      <!-- <div class="event">
         <div class="d-flex">
           <div class="content center fw-bold">
             <div class="card shadow">
@@ -27,8 +27,8 @@
           </div>
           <img src="assets/img/{{ e.img }}" class="event-img" />
         </div>
-      </div>
-      <!-- <div id="presentionEPT">
+      </div> -->
+      <div id="presentionEPT">
         <h1 class="text-center my-4">
           {{ classe?.classe?.departement?.name }} - {{ classe?.classe.name | uppercase }}
         </h1>
@@ -101,7 +101,7 @@
             </td>
           </tbody>
         </table>
-      </div> -->
+      </div>
     </div>
   </nz-carousel>
 </div>

@@ -12,6 +12,7 @@ use App\Models\TimesTable;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use PDF;
+
 class EPTController extends Controller
 {
     use Utils;
@@ -68,12 +69,15 @@ class EPTController extends Controller
         $eptForProfessor = TimesTable::whereProfessorId($professor->id)->whereDayId($day->id)->get();
         // si le prof est dispo
         foreach ($eptForProfessor as $value) {
+
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 if ($update && $value->id == $request->ept_id) {
                     break;
+                } else if (($classe->id == $value->classe_id) && ($value->group != $request->group)) {
+                    continue;
                 }
                 return response()->json([
-                    "message" => "Le professeur est occupé le " . Str::upper($day->name) . " à " . $value->start . " À " . $value->end
+                    "message" => "Le professeur est occupé le " . Str::upper($day->name) . " de " . $value->start . " À " . $value->end . " pour le cour de " . Str::upper(Course::find($value->course_id)->name) . " avec la classe: " . Str::upper(Classe::find($value->classe_id)->name) . " - Groupe " . $value->group ?? 'Tron commun '
                 ], 409);
             }
         }
@@ -83,10 +87,12 @@ class EPTController extends Controller
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 if ($update && $value->id == $request->ept_id) {
                     break;
+                } else if (($classe->id == $value->classe_id) && ($value->group != $request->group)) {
+                    continue;
                 }
                 $c = Course::find($value->course_id);
                 return response()->json([
-                    "message" => "Un cour de  " . Str::upper($c->name) . " est programmé pour la classe, le" . Str::upper($day->name) . " de " . $value->start . " À " . $value->end
+                    "message" => "Un cour de  " . Str::upper($c->name) . " est programmé pour la classe, le" . Str::upper($day->name) . " de " . $value->start . " À " . $value->end . " avec le groupe " . $value->group ?? 'Tron commun '
                 ], 409);
             }
         }
@@ -97,6 +103,9 @@ class EPTController extends Controller
                 if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                     if ($update && $value->id == $request->ept_id) {
                         break;
+                    }
+                    else if (($classe->id == $value->classe_id) && ($value->group != $request->group)) {
+                        continue;
                     }
                     $s = Salle::find($value->salle_id);
                     return response()->json([
@@ -114,7 +123,7 @@ class EPTController extends Controller
             $ept->professor_id = $course->professor->id;
             $ept->salle_id = $request->salle_id;
             $ept->day_id = $request->day_id;
-            $ept->group = $request->group ?? '1';
+            $ept->group = $request->group ?? '0';
             $ept->save();
         } else {
             $ept = TimesTable::find($request->ept_id);
@@ -125,7 +134,7 @@ class EPTController extends Controller
             $ept->professor_id = $course->professor->id;
             $ept->salle_id = $request->salle_id;
             $ept->day_id = $request->day_id;
-            $ept->group = $request->group ?? '1';
+            $ept->group = $request->group ?? '0';
             $ept->save();
         }
         return response()->json(TimesTable::find($ept->id), 200);
@@ -218,6 +227,5 @@ class EPTController extends Controller
 
     public function publicEDT()
     {
-        
     }
 }

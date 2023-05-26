@@ -52,8 +52,8 @@ export class EptCreateComponent implements OnInit {
     if (id) {
       let c = this.courses.find((e) => e.id == id)?.groupe_number ?? 1;
       this.groups = [];
-      for (let index = 0; index < c; index++) {
-        this.groups.push((index + 1).toString());
+      for (let index = 0; index <= c; index++) {
+        this.groups.push((index).toString());
       }
     }
   }

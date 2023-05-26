@@ -46,11 +46,9 @@
       <div class="d-flex app-header justify-content-between align-items-center">
         <div>
           <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-            <i
-              class="trigger"
-              nz-icon
-              [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            ></i>
+            <mat-icon class="trigger">{{
+              'list'
+            }}</mat-icon>
           </span>
         </div>
         <span class="bold">{{ depTitle! }}</span>
