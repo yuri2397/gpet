@@ -2,10 +2,14 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["gpet", "Emplois du temps"],
     "license": "MIT",
     "require": {
+<<<<<<< HEAD
         "php": "^7.3||^8.0",
+=======
+        "php": "^7.3|^8.0",
+>>>>>>> 9490b91f5b19e6da6c1ed78cab674c91e1350bb1
         "barryvdh/laravel-dompdf": "^1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",

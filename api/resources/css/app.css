@@ -1,7 +1,10 @@
+@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
 .center {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 100%;
     width: 100%;
 }
@@ -19,3 +22,35 @@
 .border-raduis {
     border-radius: 10px;
 }
+
+
+*{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.text-dark{
+    text-decoration: none;
+}
+
+.card-img-top{
+    width: 100%;
+}
+
+.bg-color {
+    background-color: #41729f;
+    color: white;
+}
+
+.example-boundary {
+    width: 400px;
+    height: 400px;
+    max-width: 100%;
+    border: dotted #ccc 2px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+

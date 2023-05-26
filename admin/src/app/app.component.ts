@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Notification } from './models/shared.model';
+import { CoreLoadingScreenService } from './services/loading-screen.service';
 import { NotificationService } from './services/notification.service';
 import { NotificationComponent } from './shared/ui/notification/notification.component';
 
@@ -12,7 +13,9 @@ import { NotificationComponent } from './shared/ui/notification/notification.com
 export class AppComponent {
   public version: string = "2.0.1";
 
-  constructor(private notification: NotificationService, private modal: NzModalService){
+  constructor(
+    private _coreLoadingScreenService: CoreLoadingScreenService,
+    private notification: NotificationService, private modal: NzModalService){
     this.notification.notification$.subscribe((data: Notification) => {
       this.showModal(data);
     });

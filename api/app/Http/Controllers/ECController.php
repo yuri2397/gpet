@@ -49,7 +49,10 @@ class ECController extends Controller
             'ue_id' => 'required',
             "ue_code" => "string",
             "ue_name" => "string",
+<<<<<<< HEAD
             "departement_id" => "exists:departements,id",
+=======
+>>>>>>> 9490b91f5b19e6da6c1ed78cab674c91e1350bb1
             "vht" => "required",
             "semester_id" => "exists:semesters,id"
         ]);

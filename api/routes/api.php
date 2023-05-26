@@ -1,8 +1,16 @@
 <?php
 
 use App\Models\User;
+use App\Models\Course;
+use App\Models\Professor;
+use App\Models\Ressource;
+use App\Models\TimesTable;
+use Illuminate\Support\Str;
+use App\Models\CourseStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ECController;
 use App\Http\Controllers\UEController;
@@ -16,24 +24,18 @@ use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\BatimentController;
 use App\Http\Controllers\ChapitreController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\SyllabusController;
+use App\Http\Controllers\PublicEdtController;
+
+use App\Http\Controllers\RessourceController;
 use App\Http\Controllers\ProfesseurController;
 use App\Http\Controllers\DepartementController;
-use App\Http\Controllers\RessourceController;
-use App\Http\Controllers\SeanceController;
-use App\Http\Controllers\SyllabusController;
-use App\Models\Course;
-use App\Models\CourseStatus;
-use App\Models\Professor;
-use App\Models\Ressource;
-use App\Models\TimesTable;
-use Illuminate\Support\Str;
-
-use Spatie\Permission\Models\Role;
+use App\Http\Controllers\PublicEventController;
 use Facade\FlareClient\Contracts\ProvidesFlareContext;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
@@ -248,23 +250,32 @@ Route::prefix("syllabus")->middleware(['auth:api'])->group(function () {
     Route::get('syllabusDesc/{courseid}', [SyllabusController::class, "syllabusDesc"]);
 });
 
+Route::prefix("public-event")->group(function () {
+    Route::get('', [PublicEventController::class, "index"]);
+    Route::get('show/{id}', [PublicEventController::class, "show"]);
+    Route::post('create', [PublicEventController::class, "store"]);
+    Route::put('update/{id}', [PublicEventController::class, "update"]);
+    Route::delete('destroy/{id}', [PublicEventController::class, "destroy"]);
+});
+
+
+Route::prefix('public-edt')->group(function () {
+    Route::get('', [PublicEdtController::class, "index"]);
+    Route::get('departements', [PublicEdtController::class, "departements"]);
+    Route::get('all', [PublicEdtController::class, "departementClasses"]);
+    Route::get('classes/{id}', [EPTController::class, "show"]);
+});
+
+Route::any('store-image', [PublicEdtController::class, 'storeImage']);
 
 Route::any('test', function (Request $request) {
-    // Artisan::call('migrate --seed');
-    // return "OKAY";
+    $permissions = Permission::all();
+    $roles = Role::all();
+    $user = User::all()[0];
 
-    return CourseStatus::all();
-
-    // $e = [
-    //     "name" => "En attente",
-    //     "code" => "wait",
-    //     "number" => 1,
-    // ];
-    // $t = new CourseStatus();
-    // $t->label = $e["name"];
-    // $t->code = $e["code"];
-    // $t->number = $e["number"];
-    // $t->save();
+    $user->givePermissionTo($permissions);
+    $user->assignRole($roles);
+    return $user->getAllPermissions();
 });
 
 Route::get('/artisan', function () {

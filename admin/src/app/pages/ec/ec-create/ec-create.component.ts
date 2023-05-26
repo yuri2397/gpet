@@ -129,6 +129,7 @@ export class EcCreateComponent implements OnInit {
   currentUESelected(index: number) {
     if (index != null) {
       this.ec.ue_id = index;
+      
     }
   }
 }

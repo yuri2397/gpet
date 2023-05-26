@@ -26,4 +26,9 @@ class Classe extends Model
     public function professors(){
         return $this->hasManyThrough(Professor::class, Course::class);
     }
+
+    public function times_table()
+    {
+        return $this->hasMany(TimesTable::class);
+    }
 }

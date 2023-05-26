@@ -13,7 +13,12 @@ import { NotificationService } from 'src/app/services/notification.service';
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
+<<<<<<< HEAD
   version:string = "© Copyright Tous droits reservés - UFR SET - Version 2023";
+=======
+  version:string = "2023";
+   errorMessage: string  = "";
+>>>>>>> 9490b91f5b19e6da6c1ed78cab674c91e1350bb1
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
@@ -41,6 +46,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.isLoad = true;
+    this.errorMessage = ""
     this.authService
       .login(this.validateForm.value.email, this.validateForm.value.password)
       .subscribe({
@@ -50,11 +56,14 @@ export class LoginComponent implements OnInit {
         },
         error: (errors) => {
           this.isLoad = false;
-          this.notification.createNotification(
+          /*this.notification.createNotification(
             'error',
             'Erreur',
             errors.error.message
-          );
+          );*/
+
+          this.errorMessage = errors.error.message
+
         },
       });
   }
