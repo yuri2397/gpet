@@ -119,7 +119,7 @@ export class EptCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-
+    
     this.eptService.create(this.ept).subscribe({
       next: (response) => {
         this.isLoad = false;
