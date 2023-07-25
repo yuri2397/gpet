@@ -4,10 +4,12 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Batiment } from 'src/app/models/batiment';
 import { Departement } from 'src/app/models/departement';
 import { Salle } from 'src/app/models/salle';
+import { User } from 'src/app/models/user';
 import { BatimentService } from 'src/app/services/batiment.service';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SalleService } from 'src/app/services/salle.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-salle-create',
@@ -22,22 +24,24 @@ export class SalleCreateComponent implements OnInit {
   isLoadData = false;
   isLoadDataBat = true;
   salle: Salle = new Salle();
+  disableDep = false;
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
     public salleService: SalleService,
     private modal: NzModalRef,
     private deptService: DepartementService,
-    private batimentService: BatimentService
+    private batimentService: BatimentService,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
     this.findBatiment();
-    if (this.salleService.isAdmin()) {
+    if (!this.userService.isSuperAdmin()) {
+      this.salle.departement_id = this.userService.departement().id;
+      this.disableDep = true;
+    } else {
       this.findDepartement();
-    }
-    else{
-      this.salle.departement_id = this.salleService.getUser().departement_id;
     }
     this.validateForm = this.fb.group({
       name: [null, null],

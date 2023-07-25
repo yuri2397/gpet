@@ -32,8 +32,8 @@ class EPTController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            "start" => "required|date",
-            "end" => "required|date",
+            "start" => "required|date:hh:mm",
+            "end" => "required|date:hh:mm",
             "classe_id" => "required|exists:classes,id",
             "course_id" => "required|exists:courses,id",
             "day_id" => "required|exists:days,id",

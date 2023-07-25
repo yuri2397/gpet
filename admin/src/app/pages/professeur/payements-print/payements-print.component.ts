@@ -27,6 +27,7 @@ export class PayementsPrintComponent implements OnInit {
 
   ngOnInit(): void {
     this.departement = this.eptService.departement();
+    // console.log(this.professor.coursesDo)
   }
 
   destroyModal() {

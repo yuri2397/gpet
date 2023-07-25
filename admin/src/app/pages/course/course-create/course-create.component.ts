@@ -17,6 +17,8 @@ import { ECService } from 'src/app/services/ec.service';
 import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
 import { ClasseEditComponent } from '../../classe/classe-edit/classe-edit.component';
+import { UserService } from 'src/app/services/user.service';
+import { DepartementService } from 'src/app/services/departement.service';
 
 @Component({
   selector: 'app-course-create',
@@ -38,6 +40,7 @@ export class CourseCreateComponent implements OnInit {
   ecs!: EC[];
   ecLoad = false;
   profLoad = false;
+  disableDep = false;
   constructor(
     private notification: NotificationService,
     private fb: FormBuilder,
@@ -47,12 +50,22 @@ export class CourseCreateComponent implements OnInit {
     private classeService: ClasseService,
     private ecService: ECService,
     private drawerService: NzDrawerService,
-    private semesterService: SemesterService
+    private semesterService: SemesterService,
+    private userService: UserService,
+    private deptService: DepartementService,
+
   ) {}
 
   ngOnInit(): void {
     this.findSelectableList();
-      this.findAllClasses();
+    this.findAllClasses();
+
+    if (!this.userService.isProfesseur()) {
+      this.course.departement_id = this.deptService.departement().id;
+      this.disableDep = false;
+
+    }
+    this. findSelectableList() ;
     this.validateForm = this.fb.group({
       groupe_number: [0, [Validators.required]],
       classe_id: [null, [Validators.required]],

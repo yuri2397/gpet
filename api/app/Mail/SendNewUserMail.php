@@ -35,7 +35,7 @@ class SendNewUserMail extends Mailable
         return $this->subject("Nouveau compte sur GPET")
             ->markdown("emails.on-create-user")->with([
                 "user" => $this->user,
-                "password" => $this->password,
+                "password" => bcrypt($this->password),
                 "url" => env("WEB_APP_HOST")
             ]);
     }

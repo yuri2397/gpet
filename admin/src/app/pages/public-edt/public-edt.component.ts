@@ -28,7 +28,7 @@ export class PublicEdtComponent implements OnInit {
         },
         {
           icon: 'location_on',
-          content: 'UFR Sciences et Technologies',
+          content: 'UFR Sciences Economiques et Sociales',
         },
         {
           icon: 'account_circle',
@@ -36,7 +36,7 @@ export class PublicEdtComponent implements OnInit {
         },
       ],
       date: '27 Avril 2023 à 10h00',
-      location: 'UFR Sciences et Technologies',
+      location: 'UFR Sciences Economiques et Sociales',
       img: '27.jpg',
     },
     {
@@ -49,7 +49,7 @@ export class PublicEdtComponent implements OnInit {
         },
         {
           icon: 'location_on',
-          content: 'UFR Sciences et Technologies',
+          content: 'UFR Sciences Economiques et Sociales',
         },
         {
           icon: 'account_circle',

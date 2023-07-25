@@ -23,7 +23,7 @@
             [classe]="classe"
           ></app-course-list>
         </nz-tab>
-        <nz-tab [nzTitle]="'Emploie du temps'">
+        <nz-tab [nzTitle]="'Emploi du temps'">
           <nz-tabset nzType="card">
             <nz-tab nzTitle="Édition">
               <nz-collapse *ngIf="!eptLoad" nzAccordion>
@@ -54,7 +54,7 @@
                           nz-button
                           nzType="primary"
                         >
-                          Ajouter un cour
+                          Ajouter un EPT
                         </button>
                       </ng-template>
                     </nz-empty>
@@ -76,7 +76,7 @@
                             <div class="d-flex alig-items-center my-2">
                               <mat-icon class="mx-2 text-danger">alarm</mat-icon>
                               <span class="text-dark lead">
-                                {{ pipeHours(item.start) }} |
+                                {{ pipeHours(item.start)}}  
                                 {{ pipeHours(item.end) }}
                               </span>
                             </div>
@@ -166,7 +166,7 @@
                       <div class="col">
                         <mat-card class="shadow">
                           <mat-card-subtitle
-                            >Ajouter un nouveau cours</mat-card-subtitle
+                            >Ajouter un nouveau EPT</mat-card-subtitle
                           >
                           <mat-card-content>
                             <button
@@ -216,7 +216,7 @@
                   <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
                   <span class="text-center">
                     UNITÉ DE FORMATION ET DE RECHERCHE <br />
-                    EN SCIENCES ET TECHNOLOGIES <br />
+                    EN SCIENCES ECONOMIQUES ET SOCIALES <br />
                     {{ depName }}
                   </span>
                   <h3>{{ classe.name }}</h3>
@@ -263,14 +263,14 @@
                                     class="d-flex align-items-center"
                                   >
                                     <span
-                                      >{{ pipeHours(row.start) }}
+                                      >{{ pipeHours(row.start)}}
                                       <i
                                         nz-icon
                                         nzType="clock-circle"
                                         class="mx-1"
                                         nzTheme="outline"
                                       ></i>
-                                      {{ pipeHours(row.end) }}</span
+                                      {{ pipeHours(row.end) }} </span
                                     >
                                   </div>
                                 </ng-template>

@@ -12,7 +12,7 @@
     <div class="center">
         <img src="img/logo.jpg" width="80">
         <h6>Université Iba Dér Thiam de Thiès</h6>
-        <h6 class="bold">UFR SET</h6>
+        <h6 class="bold">UFR SES</h6>
     </div>
 
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">

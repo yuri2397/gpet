@@ -81,7 +81,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                                <nz-select [nzDisabled]="!professorService.isSuperAdmin()" [nzLoading]="isLoadData" formControlName="departement_id" [(ngModel)]="professor.departement_id">
+                                <nz-select [nzDisabled]="disableDep" [nzLoading]="isLoadData" formControlName="departement_id" [(ngModel)]="professor.departement_id">
                                     <ng-container *ngFor="let o of departements">
                                         <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
                                     </ng-container>
@@ -123,7 +123,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="account_number">N° de compte</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                                <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="number" id="account_number">
+                                <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="text"  id="account_number">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -131,7 +131,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="rip">RIP</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="number" id="rip">
+                                <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="text" id="rip">
                             </nz-form-control>
                         </nz-form-item>
                     </div>

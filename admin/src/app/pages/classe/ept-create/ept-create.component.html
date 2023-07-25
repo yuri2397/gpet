@@ -23,7 +23,7 @@
               <ng-container *ngFor="let o of courses">
                 <nz-option
                   [nzValue]="o.id"
-                  [nzLabel]="o.service.name + ' - ' + o.name"
+                  [nzLabel]="o.service.name + ' - ' + o.name +' - '+ o.semester.name"
                 ></nz-option>
               </ng-container>
             </nz-select>

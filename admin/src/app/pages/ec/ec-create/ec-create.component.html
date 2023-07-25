@@ -69,7 +69,7 @@
             </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item [hidden]="!addUE || ueService.isEditeur()">
+        <nz-form-item [hidden]="!addUE">
             <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_departement">Département</nz-form-label>
             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
                 <nz-select (ngModelChange)="currentDepSelected($event)" [nzDisabled]="!addUE" nzPlaceHolder="Rechercher un département" formControlName="ue_departement" [(ngModel)]="ec.ue.departement_id">

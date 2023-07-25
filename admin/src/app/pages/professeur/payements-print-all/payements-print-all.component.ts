@@ -5,6 +5,7 @@ import { Professor } from 'src/app/models/professor';
 import { Component, Input, OnInit } from '@angular/core';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { number } from 'echarts';
 @Component({
   selector: 'app-payements-print-all',
   templateUrl: './payements-print-all.component.html',
@@ -16,8 +17,14 @@ export class PayementsPrintAllComponent implements OnInit {
   isLoad = false;
   constructor(private ref: NzModalRef, private userService: UserService) {}
   date = new Date();
+  total: number = 0;
+  i : number = 0
   ngOnInit(): void {
     this.departement = this.userService.departement();
+    for(this.i = 0 ;this.i < this.professor.coursesDo.length ; this.i++){
+      const i =  Number(this.professor.coursesDo[this.i].total_sales)
+      this.total += i;  
+    }
   }
 
   destroyModal() {

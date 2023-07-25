@@ -50,7 +50,7 @@
                     </div>
                     <div class="col-md-4">
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="professor_type_id">Banque</nz-form-label>
+                            <nz-form-label nzRequired nzFor="professor_type_id">Poste</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le champ est requi">
                                 <nz-select [nzLoading]="isLoadData" formControlName="professor_type_id" [(ngModel)]="professor.professor_type.id">
                                     <ng-container *ngFor="let o of professorTypes">
@@ -125,7 +125,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="account_number">N° de compte</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                                <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="number" id="account_number">
+                                <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="text" id="account_number">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
@@ -133,7 +133,7 @@
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="rip">RIP</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="number" id="rip">
+                                <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="text" id="rip">
                             </nz-form-control>
                         </nz-form-item>
                     </div>

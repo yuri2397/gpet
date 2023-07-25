@@ -175,7 +175,6 @@ Route::prefix("ec")->middleware(['auth:api'])->group(function () {
 });
 
 Route::prefix("course")->middleware(['auth:api',])->group(function () {
-
     Route::get('', [CourseController::class, "index"]);
     Route::get('show/{id}', [CourseController::class, "show"]);
     Route::get('show-by', [CourseController::class, "showBy"]);

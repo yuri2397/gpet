@@ -1,18 +1,20 @@
-@extends('layouts.app')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 <div class="center container">
     <div id="presentionEPT" style="width: 100% !important;">
         <div class="d-flex align-items-center">
             <div>
-                <img src="{{ asset('img/logo.jpg') }}" class="logo" alt="UIDT">
+                <img src="<?php echo e(asset('img/logo.jpg')); ?>" class="logo" alt="UIDT">
 
             </div>
             <div>
                 <span class="text-center">
                     UNITÉ DE FORMATION ET DE RECHERCHE <br>
                     EN SCIENCES ECONOMIQUES ET SOCIALES<br>
-                    {{ $departement }} - {{ $classe }}
-                </span> {{ date('d M Y') }}
+                    <?php echo e($departement); ?> - <?php echo e($classe); ?>
+
+                </span> <?php echo e(date('d M Y')); ?>
+
             </div>
         </div>
         <div class="mt-3">
@@ -29,25 +31,27 @@
                 </thead>
                 <tbody>
 
-                    @if(count($ept) != 0)
-                        @foreach($ept as $item)
+                    <?php if(count($ept) != 0): ?>
+                        <?php $__currentLoopData = $ept; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <td>
 
-                                @if(count($item["data"]) != 0)
+                                <?php if(count($item["data"]) != 0): ?>
 
-                                    @foreach($item["data"] as $row)
+                                    <?php $__currentLoopData = $item["data"]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="card border m-3 text-center m-1">
                                             <div class="card-header">
-                                                {{ $row->course->name }}
+                                                <?php echo e($row->course->name); ?>
+
                                             </div>
                                             <div class="card-body p-0">
                                                 <div class="d-flex px-3 align-items-center justify-content-between">
                                                     <div>
-                                                        {{ \Carbon\Carbon::createFromFormat('H:i:s',$row->start)->format('H:i') }}
+                                                        <?php echo e(\Carbon\Carbon::createFromFormat('H:i:s',$row->start)->format('H:i')); ?>
+
                                                     </div>
                                                     <div> - </div>
                                                     <div>
-                                                        {{ \Carbon\Carbon::createFromFormat('H:i:s',$row->end)->format('H:i') }}  
+                                                        <?php echo e(\Carbon\Carbon::createFromFormat('H:i:s',$row->end)->format('H:i')); ?>  
                                                     </div>
                                                 </div>
                                                 <div
@@ -56,54 +60,60 @@
                                                         M. 
                                                     </div>
                                                     <div>
-                                                        {{ $row->course->professor->last_name }}
+                                                        <?php echo e($row->course->professor->last_name); ?>
+
                                                     </div>
                                                 </div>
-                                                @if($row->course->groupe_number != 1 )
-                                                    @if($row->course->service->name == "TP/TD")
+                                                <?php if($row->course->groupe_number != 1 ): ?>
+                                                    <?php if($row->course->service->name == "TP/TD"): ?>
                                                         <div
                                                             class="bold d-flex px-2 align-items-center justify-content-between">
                                                             <div>
                                                                 Groupe
                                                             </div>
                                                             <div>
-                                                                {{ $row->group }}
+                                                                <?php echo e($row->group); ?>
+
                                                             </div>
                                                         </div>
-                                                    @endif 
-                                                @endif
+                                                    <?php endif; ?> 
+                                                <?php endif; ?>
 
-                                                @if($row->salle)
+                                                <?php if($row->salle): ?>
                                                     <div
                                                         class="bold d-flex px-2 align-items-center justify-content-between">
                                                         <div>
                                                             Salle
                                                         </div>
                                                         <div>
-                                                            {{ $row->salle->name }}
+                                                            <?php echo e($row->salle->name); ?>
+
                                                         </div>
                                                     </div>
-                                                @endif
+                                                <?php endif; ?>
 
                                             </div>
                                             <div class="card-footer">
-                                                {{ $row->course->service->name }}
+                                                <?php echo e($row->course->service->name); ?>
+
                                             </div>
                                         </div>
 
-                                    @endforeach
-                                @else
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                <?php else: ?>
                                     <div class="card border m-3 card-body text-center m-1">
                                         LIBRE
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </td>
 
-                        @endforeach
-                    @endif
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\khadykebe\Desktop\SES\gpet\api\resources\views/ept.blade.php ENDPATH**/ ?>

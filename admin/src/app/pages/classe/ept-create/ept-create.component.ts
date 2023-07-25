@@ -55,7 +55,8 @@ export class EptCreateComponent implements OnInit {
       for (let index = 0; index <= c; index++) {
         this.groups.push((index).toString());
       }
-    }
+    } 
+    console.log(this.courses )
   }
 
   findSalle() {
@@ -119,7 +120,6 @@ export class EptCreateComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-
     this.eptService.create(this.ept).subscribe({
       next: (response) => {
         this.isLoad = false;

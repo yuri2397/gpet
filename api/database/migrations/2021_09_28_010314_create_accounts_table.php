@@ -17,7 +17,7 @@ class CreateAccountsTable extends Migration
             $table->id();
             $table->string("rip")->unique();
             $table->string("account_number");
-            $table->string("key")->unique();
+            $table->string("key");
             $table->unsignedBigInteger("professor_id");
             $table->unsignedBigInteger("bank_id")->nullable();
 

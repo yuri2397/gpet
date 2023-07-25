@@ -3,7 +3,7 @@
     <div class="col text-center">
         <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="logo">
         <div>
-            UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
+            UNIVERSITE DE THIES <br> UFR SCIENCES ECONOMIQUES ET SOCIALES <br> {{ departement.name.toUpperCase() }}
         </div> <br>
         <h5>
             ETAT DES RELEVES DE VACATION</h5>
@@ -35,13 +35,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class="text-center bold">SERVICES</th>
+                    <th class="text-center bold">MODALITE D'ENSEIGNEMENT</th>
                     <th class="text-center bold">TAUX HORAIRE</th>
                     <th class="text-center bold">NB HEURES</th>
                     <th class="text-center bold">MONTANT (FCFA)</th>
                     <th class="text-center bold">UE</th>
                     <th class="text-center bold">EC</th>
-                    <th class="text-center bold">CLASSE</th>
+                    <th class="text-center bold">CLASSE </th>
                 </tr>
             </thead>
             <tbody>
@@ -49,13 +49,21 @@
                     <tr *ngIf="data.is_paid == true">
                         <td class="text-center"> {{ data.course.service.name }} </td>
                         <td class="text-center"> {{ data.course.service.amount}} fcfa</td>
-                        <td class="text-center"> {{ data.total_hours }}heures </td>
+                        <td class="text-center"> {{ data.total_hours }} heures </td>
                         <td class="text-center"> {{ data.total_sales}} fcfa</td>
                         <td class="text-center"> {{ data.course.ec.ue.name }} </td>
                         <td class="text-center"> {{ data.course.ec.name }} </td>
                         <td class="text-center"> {{ data.course.classe.name}} </td>
+                         
                     </tr>
                 </ng-container>
+                
+                <tr>
+                    <td class="text-center bold">TOTAL</td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center bold">{{total}} fcfa</td>
+                </tr>
 
             </tbody>
         </table>

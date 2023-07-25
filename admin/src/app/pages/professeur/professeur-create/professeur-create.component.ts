@@ -27,6 +27,7 @@ export class ProfesseurCreateComponent implements OnInit {
   banks!: Bank[];
   bankLoad = false;
   professorTypes!: ProfessorType[];
+  disableDep = false;
 
   constructor(
     private notification: NotificationService,
@@ -39,8 +40,10 @@ export class ProfesseurCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (!this.professorService.isSuperAdmin()) {
-      this.professor.departement = this.deptService.departement();
+    if (!this.professorService.isProfesseur()) {
+      this.professor.departement_id = this.deptService.departement().id;
+      this.disableDep = false;
+
     }
     this.findDepartement();
 

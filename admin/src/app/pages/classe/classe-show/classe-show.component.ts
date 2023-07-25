@@ -24,6 +24,7 @@ import { Day } from 'src/app/models/day';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Utils } from 'src/app/shared/Utils';
+import { log } from 'console';
 @Component({
   selector: 'app-classe-show',
   templateUrl: './classe-show.component.html',
@@ -100,7 +101,7 @@ export class ClasseShowComponent implements OnInit {
       next: (data) => {
         this.epts = data;
         this.eptLoad = false;
-        console.log('DATA', data);
+        //console.log('DATA', data);
       },
       error: (errors) => {
         this.errorNetWork = true;
@@ -128,6 +129,7 @@ export class ClasseShowComponent implements OnInit {
         this.depName = this.departement.name;
         this.dataLoad = false;
         this.getEmploieDuTemps(response);
+         
       },
       error: (errors) => {
         this.errorNetWork = true;

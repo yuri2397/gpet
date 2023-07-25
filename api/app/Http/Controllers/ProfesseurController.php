@@ -33,7 +33,7 @@ class ProfesseurController extends Controller
     public function index()
     {
         $user = User::find(auth()->id());
-        if ($user->isAdmin()) {
+        if ($user->isAdmin() || !$user->isAdmin()) {
             return Professor::with('account')->orderBy('created_at', 'desc')->get();
         }
         return Professor::whereDepartementId($user->departement_id)->orderBy('created_at', 'desc')->get();
@@ -119,7 +119,7 @@ class ProfesseurController extends Controller
             ->find($id);
 
         $user = User::find(auth()->id());
-        if ($user->hasRole("super admin")) {
+        if ( !$user->hasRole("super admin") ) {
             $prof->courses = $prof->courses()->with("classe")->get();
         } else {
             $prof->courses = $prof->courses()->whereDepartementId($prof->departement_id)->with("classe")->get();
@@ -134,7 +134,7 @@ class ProfesseurController extends Controller
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|exists:professors,email',
+            'email' => 'required',
             'status' => 'required',
             'phone_number' => 'required',
             'account_number' => 'required',
@@ -148,7 +148,7 @@ class ProfesseurController extends Controller
             'born_at' => 'required|date',
             'professor_type_id' => 'required|exists:professor_types,id'
         ]);
-
+       
         Professor::whereId($id)->update([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
@@ -164,13 +164,15 @@ class ProfesseurController extends Controller
             "last_degree" => $request->last_degree,
         ]);
 
+
+
         Account::whereProfessorId($id)->update([
             "account_number" => $request->account_number,
             "rip" => $request->rip,
             "key" => $request->key,
             "bank_id" => $request->bank_id,
         ]);
-
+        
         return $this->show($id);
     }
 

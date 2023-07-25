@@ -97,7 +97,7 @@ export class ProfesseurEditComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          'Professor ajoutée avec succés.'
+          'Professor modifier avec succés.'
         );
         this.destroyModal(response);
       },

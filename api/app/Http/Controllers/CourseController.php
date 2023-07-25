@@ -172,9 +172,6 @@ class CourseController extends Controller
         ]);
 
         DB::beginTransaction();
-
-
-
         try {
             $course = Course::find($id);
 
@@ -197,7 +194,7 @@ class CourseController extends Controller
                 "message" => $th->getMessage()
             ], 500);
         }
-    }
+    }   
 
     public function courseHistory($professeur_id)
     {
@@ -220,6 +217,7 @@ class CourseController extends Controller
 
     public function search($data)
     {
+
         return Course::with('classe')
             ->with('departement')
             ->where('name', 'like', '%' . $data . '%')

@@ -13,7 +13,7 @@ export class NotificationService {
     type: string,
     title: string,
     content: string,
-    duration = 3000
+    duration = 6000
   ): void {
     this.notification.create(type, title, content, {
       nzAnimate: true,

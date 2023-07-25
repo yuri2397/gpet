@@ -90,7 +90,6 @@ export class EcCreateComponent implements OnInit {
 
   addNewUE() {
     this.addUE = true;
-    
     this.validateForm = this.fb.group({
       name: [this.ec.name, [Validators.required, Validators.min]],
       ec_id: [null, []],
