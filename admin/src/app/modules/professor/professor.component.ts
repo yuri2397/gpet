@@ -33,7 +33,7 @@ export const ROUTES: RouteInfo[] = [
     icon: 'checklist_rtl',
   },{
     path: 'profile',
-    title: 'Profile',
+    title: 'Profil',
     icon: 'person',
   },
   

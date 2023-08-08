@@ -51,6 +51,7 @@ export class ProfesseurListComponent implements OnInit {
         this.isLoad = false;
       },
     });
+    console.log(this.professeurs)
   }
 
   onChercherInputChange(data: any){

@@ -64,7 +64,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: 'professeurs',
-    title: 'Professeurs',
+    title: 'Enseignants',
     icon: 'groups',
     class: '',
     permissions: ['voir professeur'],

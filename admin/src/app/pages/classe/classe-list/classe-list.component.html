@@ -19,7 +19,7 @@
             <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true" >
                 <thead>
                     <tr>
-                        <th>Nom</th>
+                        <th>Niveau</th>
                         <th class="text-center">Nombre d'étudiants</th>
                         <th class="text-center" *ngIf="classeService.isSuperAdmin()">
                             Département

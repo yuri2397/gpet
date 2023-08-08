@@ -141,7 +141,7 @@
                     align-items-center">
                                 <div>Code de la banque</div>
                                 <div>
-                                    <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}
+                                    <nz-tag [nzColor]="'volcano'">{{ professeur.account.key}}
                                     </nz-tag>
                                 </div>
                             </div>
@@ -155,20 +155,20 @@
                             </div>
                             <div class="d-flex my-2 justify-content-between
                     align-items-center">
-                                <div>RIP</div>
+                                <div>Clé Rib</div>
                                 <div>
                                     <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}
                                     </nz-tag>
                                 </div>
                             </div>
-                            <div class="d-flex my-2 justify-content-between
+                            <!-- <div class="d-flex my-2 justify-content-between
                     align-items-center">
                                 <div>Clé</div>
                                 <div>
                                     <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key">
                                     </nz-tag>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div>
                             <button mat-fab color="basic" class="shadow" (click)="openModalbank()">
@@ -297,15 +297,15 @@
                     <nz-form-item>
                         <nz-form-label nzRequired nzFor="account_number">N° de compte</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                            <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="number" id="account_number">
+                            <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="text" id="account_number">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
                 <div class="col-md-6">
                     <nz-form-item>
-                        <nz-form-label nzRequired nzFor="rip">RIP</nz-form-label>
+                        <nz-form-label nzRequired nzFor="rip">RIB</nz-form-label>
                         <nz-form-control [nzSm]="24" [nzXs]="24">
-                            <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="number" id="rip">
+                            <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="text" id="rip">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
