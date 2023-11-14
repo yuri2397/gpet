@@ -26,6 +26,8 @@ export class EptCreateComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad: boolean = false;
   ept = new EPT();
+  professor: any;
+  selectedCourse: any;
 
   constructor(
     private notification: NotificationService,
@@ -51,6 +53,7 @@ export class EptCreateComponent implements OnInit {
   setGroupes(id: number) {
     if (id) {
       let c = this.courses.find((e) => e.id == id)?.groupe_number ?? 1;
+      this.selectedCourse = this.courses.find((e) => e.id == id);
       this.groups = [];
       for (let index = 0; index <= c; index++) {
         this.groups.push((index).toString());
@@ -141,5 +144,14 @@ export class EptCreateComponent implements OnInit {
         this.destroyModal(null);
       },
     });
+  }
+
+  onCourseSelected(data: any){
+    console.log(data)
+    this.professor = data;
+  }
+
+  get course(){
+    return this.validateForm.get('course_id');
   }
 }

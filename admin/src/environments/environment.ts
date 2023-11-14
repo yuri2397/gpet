@@ -4,8 +4,11 @@
 
 export const environment = {
   production: false,
-  host: 'http://127.0.0.1:8000/',
-  api: 'http://127.0.0.1:8000/api/'
+  host: 'http://localhost:1973/',
+  api: 'http://localhost:1973/api/'
+  // host: 'https://api-edtset.uidt.sn/',
+  // api: 'https://api-edtset.uidt.sn/api/',
+  // version: "2.1.0"
 };
 
 /*

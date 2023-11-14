@@ -23,6 +23,7 @@
     "@igniteui/material-icons-extended": "^2.11.0",
     "@juggle/resize-observer": "^3.3.0",
     "@kolkov/angular-editor": "^2.0.0",
+    "angular-calendar": "^0.31.0",
     "apexcharts": "^3.33.1",
     "bootstrap": "^5.1.1",
     "classlist.js": "^1.1.20150312",

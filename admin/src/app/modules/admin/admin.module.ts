@@ -70,6 +70,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SyllabusShowComponent } from '../../pages/syllabus/syllabus-show/syllabus-show.component';
 import { SyllabusEditComponent } from '../../pages/syllabus/syllabus-edit/syllabus-edit.component';
 import { CourseHistoryComponent } from '../../pages/course/course-history/course-history.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { DetailTimeTableComponent } from 'src/app/pages/dashboard/detail-time-table/detail-time-table.component';
 
 registerLocaleData(localeFr, fr);
 @NgModule({
@@ -80,6 +83,10 @@ registerLocaleData(localeFr, fr);
     }),
     AngularEditorModule,
     SharedModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   declarations: [
     AdminComponent,
@@ -138,6 +145,7 @@ registerLocaleData(localeFr, fr);
     SyllabusCreateComponent,
     SyllabusShowComponent,
     SyllabusEditComponent,
+   DetailTimeTableComponent
   ],
 
   providers: [{ provide: LOCALE_ID, useValue: 'fr' }],

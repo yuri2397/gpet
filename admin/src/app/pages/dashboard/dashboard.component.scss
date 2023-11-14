@@ -6,3 +6,11 @@ h3 {
 .link {
     text-decoration: none;
 }
+
+.calendar-week-view-customer *{
+    font-size: 2em !important;
+    display: flex !important;
+    color: white !important;
+    white-space: initial !important;
+    text-align: start !important;
+}

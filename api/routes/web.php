@@ -9,5 +9,5 @@ Route::get("edt/{departement}/{classe}", [EPTController::class, 'serviceWebEPT']
 Route::get("public-edt",[PublicEdtController::class, 'publicEDT']);
 
 Route::get('/', function(){
-	return phpinfo();
+	return date("Y-m-d H:i:s") . " : " . "API is running";
 });

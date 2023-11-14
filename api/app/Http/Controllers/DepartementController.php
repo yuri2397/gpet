@@ -95,43 +95,106 @@ class DepartementController extends Controller
         return response()->json($restult);
     }
 
-    public function chartsData(Request $request){
-        $currentDay = $request->day;
-        if (!$currentDay) $currentDay = date('N');
-        $salles = Salle::all();
-        $salles_libres = [];
-        $allFree = true;
-        foreach ($this->hours as $value) {
-            $data = [];
-            // traitement et test
-            foreach ($salles as $salle) {
-                if ($this->isSalleFree($salle, $value[0], $value[1], $currentDay)) {
-                    $data[] = [
-                        "x" => Str::upper($salle->name),
-                        "y" => 10,
-                    ];
-                } else {
-                    $data[] = [
-                        "x" => Str::upper($salle->name),
-                        "y" => 50,
-                        $s = $salle->times_tables()->where('day_id', $currentDay)->pluck('classe_id'),
-                        "m" => $salle->classes()->wherePivot('classe_id', $s[0])->distinct()->get()
-                    ];
-                    $allFree = false;
-                }
-            }
+    public function chartsData(Request $request)
+    {
+        // $currentDay = $request->day;
+        // if (!$currentDay) $currentDay = date('N');
+        // $salles = Salle::all();
+        // $salles_libres = [];
+        // $allFree = true;
+        // foreach ($this->hours as $value) {
+        //     $data = [];
+        //     // traitement et test
+        //     foreach ($salles as $salle) {
+        //         if ($this->isSalleFree($salle, $value[0], $value[1], $currentDay)) {
+        //             $data[] = [
+        //                 "x" => Str::upper($salle->name),
+        //                 "y" => 10,
+        //             ];
+        //         } else {
+
+        //             $data[] = [
+        //                 "x" => Str::upper($salle->name),
+        //                 "y" => 50,
+        //                 // $s = $salle->times_tables()->where('day_id', $currentDay)->pluck('classe_id'),
+        //                 // "m" => $salle->classes()->wherePivot('classe_id', $s[0])->distinct()->get()
+        //             ];
+        //             $allFree = false;
+        //         }
+        //     }
 
 
-            $salles_libres[] = [
-                "name" => $value[0],
-                "data" => $data
+        //     $salles_libres[] = [
+        //         "name" => $value[0],
+        //         "data" => $data
+        //     ];
+        // }
+        // return response()->json([
+        //     "salles_libre" => $salles_libres,
+        //     "all_free" => $allFree,
+        //     "day" => $currentDay
+        // ]);
+
+        /**
+          Je veux un tableau de ce type
+          [
+              {
+                  start: new Date(),
+                  title: 'Event 1',
+                  color: {
+                    primary: '#ad2121',
+                    secondary: '#FAE3E3',
+                  },
+              }
+          ]
+         */
+
+        $events = [];
+
+        $timesTables = TimesTable::where('salle_id', '!=', null)->get();
+
+        foreach ($timesTables as $timesTable) {
+            // get date from times table join start and end time and day
+            $start = $this->getDateStartFromTimesTable($timesTable);
+            $end = $this->getDateEndFromTimesTable($timesTable);
+
+            $item = [
+                "start" => $start,
+                "end" => $end,
+                "title" => $timesTable->salle->name ?? null,
+                "meta" => [
+                    "course" => $timesTable->course->name,
+                    "classe" => $timesTable->classe->name,
+                    "professor" => $timesTable->professor->first_name . " " . $timesTable->professor->last_name,
+                    "salle" => $timesTable->salle->name ?? null,
+                    "course_id" => $timesTable->course->id,
+                    "classe_id" => $timesTable->classe->id,
+                    "professor_id" => $timesTable->professor->id,
+                ],
+                "color" => $this->getRandomColorName()
             ];
+
+            $events[] = $item;
         }
-        return response()->json([
-            "salles_libre" => $salles_libres,
-            "all_free" => $allFree,
-            "day" => $currentDay
-        ]);
+
+        return response()->json($events);
+    }
+
+    function getRandomColorName() {
+        $colorMap = [
+            'color-geekblue' => '#023e8a',
+            'color-orange' => '#0077b6',
+            'color-volcano' => '#0096c7',
+            'color-default' => '#48cae4',
+            'color-green' => '#90e0ef',
+            'color-red' => '#caf0f8',
+        ];
+    
+        // Obtient une clé aléatoire du tableau
+        $randomKey = array_rand($colorMap);
+    
+        // Retourne le nom de la couleur correspondant à la clé aléatoire
+        return $colorMap[$randomKey];
     }
 
     public function listSalleDept($departementid)

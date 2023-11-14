@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class Classe extends Model
 {
@@ -30,5 +31,9 @@ class Classe extends Model
     public function times_table()
     {
         return $this->hasMany(TimesTable::class);
+    }
+
+    public function professor(){
+        return $this->belongsTo(Professor::class);
     }
 }

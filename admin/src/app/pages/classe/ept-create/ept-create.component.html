@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-12">
         <nz-form-item>
-          <nz-form-label nzRequired nzFor="service_id">Cour</nz-form-label>
+          <nz-form-label nzRequired nzFor="service_id">Choisir le cours</nz-form-label>
           <nz-form-control
             [nzSm]="24"
             [nzXs]="24"
@@ -26,15 +26,19 @@
                   [nzLabel]="o.service.name + ' - ' + o.name"
                 ></nz-option>
               </ng-container>
+              
             </nz-select>
           </nz-form-control>
+          <span class="form-text text-danger" id="basic-addon1">
+            Professeur: {{ selectedCourse?.professor?.first_name }} {{ selectedCourse?.professor?.last_name }}
+          </span>
         </nz-form-item>
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
         <nz-form-item>
-          <nz-form-label nzFor="group">Groupe (0 = commun)</nz-form-label>
+          <nz-form-label nzFor="group">Choisir un groupe</nz-form-label>
           <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Donner le group">
             <nz-select
               [nzDisabled]="groups?.length == 0"
@@ -44,7 +48,7 @@
               [(ngModel)]="ept.group"
             >
               <ng-container *ngFor="let g of groups">
-                <nz-option [nzValue]="g" [nzLabel]="'Groupe ' + g"></nz-option>
+                <nz-option [nzValue]="g" [nzLabel]="'Groupe ' + ((g == '0') ? 'unique' : g)"></nz-option>
               </ng-container>
             </nz-select>
           </nz-form-control>
@@ -52,7 +56,7 @@
       </div>
       <div class="col-md-6">
         <nz-form-item>
-          <nz-form-label nzFor="service_id">Salle</nz-form-label>
+          <nz-form-label nzFor="service_id">Choisir la salle</nz-form-label>
           <nz-form-control
             [nzSm]="24"
             [nzXs]="24"
