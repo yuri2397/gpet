@@ -95,45 +95,48 @@ class DepartementController extends Controller
         return response()->json($restult);
     }
 
+    public function salleLibres(Request $request)
+    {
+        $currentDay = $request->day;
+        if (!$currentDay) $currentDay = date('N');
+        $salles = Salle::all();
+        $salles_libres = [];
+        $allFree = true;
+        foreach ($this->hours as $value) {
+            $data = [];
+            // traitement et test
+            foreach ($salles as $salle) {
+                if ($this->isSalleFree($salle, $value[0], $value[1], $currentDay)) {
+                    $data[] = [
+                        "x" => Str::upper($salle->name),
+                        "y" => 0,
+                    ];
+                } else {
+
+                    $data[] = [
+                        "x" => Str::upper($salle->name),
+                        "y" => 1,
+                    ];
+                    $allFree = false;
+                }
+            }
+
+
+            $salles_libres[] = [
+                "name" => $value[0],
+                "data" => $data
+            ];
+        }
+        return response()->json([
+            "salles_libre" => $salles_libres,
+            "all_free" => $allFree,
+            "day" => $currentDay
+        ]);
+    }
+
     public function chartsData(Request $request)
     {
-        // $currentDay = $request->day;
-        // if (!$currentDay) $currentDay = date('N');
-        // $salles = Salle::all();
-        // $salles_libres = [];
-        // $allFree = true;
-        // foreach ($this->hours as $value) {
-        //     $data = [];
-        //     // traitement et test
-        //     foreach ($salles as $salle) {
-        //         if ($this->isSalleFree($salle, $value[0], $value[1], $currentDay)) {
-        //             $data[] = [
-        //                 "x" => Str::upper($salle->name),
-        //                 "y" => 10,
-        //             ];
-        //         } else {
 
-        //             $data[] = [
-        //                 "x" => Str::upper($salle->name),
-        //                 "y" => 50,
-        //                 // $s = $salle->times_tables()->where('day_id', $currentDay)->pluck('classe_id'),
-        //                 // "m" => $salle->classes()->wherePivot('classe_id', $s[0])->distinct()->get()
-        //             ];
-        //             $allFree = false;
-        //         }
-        //     }
-
-
-        //     $salles_libres[] = [
-        //         "name" => $value[0],
-        //         "data" => $data
-        //     ];
-        // }
-        // return response()->json([
-        //     "salles_libre" => $salles_libres,
-        //     "all_free" => $allFree,
-        //     "day" => $currentDay
-        // ]);
 
         /**
           Je veux un tableau de ce type
@@ -180,7 +183,8 @@ class DepartementController extends Controller
         return response()->json($events);
     }
 
-    function getRandomColorName() {
+    function getRandomColorName()
+    {
         $colorMap = [
             'color-geekblue' => '#023e8a',
             'color-orange' => '#0077b6',
@@ -189,10 +193,10 @@ class DepartementController extends Controller
             'color-green' => '#90e0ef',
             'color-red' => '#caf0f8',
         ];
-    
+
         // Obtient une clé aléatoire du tableau
         $randomKey = array_rand($colorMap);
-    
+
         // Retourne le nom de la couleur correspondant à la clé aléatoire
         return $colorMap[$randomKey];
     }

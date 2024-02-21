@@ -41,6 +41,10 @@ use Facade\FlareClient\Contracts\ProvidesFlareContext;
  * SERVICES WEB POUR LES EMPLOIS DU TEMPS
  */
 
+ Route::get("test-test", function ()  {
+    return User::all();
+ });
+
 
 Route::get("ept/ws/{departement}/{classe}", [EPTController::class, 'serviceWebEPT']);
 
@@ -90,7 +94,10 @@ Route::prefix("departement")->middleware(['auth:api',])->group(function () {
     Route::delete('destroy/{id}', [DepartementController::class, "destroy"]);
     Route::get('dashboard', [DepartementController::class, 'dashboard']);
     Route::get('charts_data', [DepartementController::class, 'chartsData']);
+    //salleLibres
+    Route::get('salle_libres', [DepartementController::class, 'salleLibres']);
     Route::get('listSalleDept/{departementid}', [DepartementController::class, 'listSalleDept']);
+    Route::get('listProfDept/{departementid}', [DepartementController::class, 'listProfDept']);
 });
 
 Route::prefix("semester")->middleware(['auth:api'])->group(function () {

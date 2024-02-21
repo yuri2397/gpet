@@ -79,8 +79,13 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
+
         <div class="row">
             <div class="col">
+                <h3 class="text-dark">Emploi du temps global</h3>
+                <br>
                 <div class="card card-body border raduis-sm shadow-sm">
                     <nz-select nzSize="large" (ngModelChange)="updateChart($event)" [nzPlaceHolder]="'Filtre par jour'"
                         [(ngModel)]="selectedDay">
@@ -88,11 +93,6 @@
                             nzLabel="{{ item.name|uppercase }}"></nz-option>
                     </nz-select>
                     <br>
-                    <!-- <div *ngIf="!isLoadChart else loadChart" id="chart">
-                        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
-                            [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!"
-                            [colors]="chartOptions.colors!"></apx-chart>
-                    </div> -->
                     <mwl-calendar-week-view
                     (eventClicked)="handleClick($event)"
                     [locale]="'fr'" [weekStartsOn]="1" [dayStartHour]="8" [dayEndHour]="19"
@@ -101,6 +101,29 @@
                 </div>
             </div>
 
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h3 class="text-dark">Disponibilité des salles de classe</h3>
+                <br>
+                <div class="card card-body border raduis-sm shadow-sm">
+                    <nz-select nzSize="large" (ngModelChange)="updateChart($event)" [nzPlaceHolder]="'Filtre par jour'"
+                        [(ngModel)]="selectedDay">
+                        <nz-option *ngFor="let item of days" nzValue="{{ item.id }}"
+                            nzLabel="{{ item.name|uppercase }}"></nz-option>
+                    </nz-select>
+                    <br>
+                    <div *ngIf="!isSalleLibreLoad else loadChart" id="chart">
+                        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
+                            [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!"
+                            [colors]="chartOptions.colors!"></apx-chart>
+                    </div>
+                    
+                    
+                </div>
+            </div>
         </div>
     </div>
     <br><br><br>

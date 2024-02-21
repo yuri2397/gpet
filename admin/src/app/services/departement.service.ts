@@ -34,6 +34,12 @@ export class DepartementService extends BaseHttp {
     });
   }
 
+  salleLibres(day: number) {
+    return this.http.get<Salle[]>(this.endPointWithSlash + `salle_libres?day=${day}` , {
+      headers: this.authorizationHeaders,
+    });
+  }
+
   find(departement: Departement) {
     return this.http.get<Departement>(
       this.endPointWithSlash + 'show/' + departement.id,
