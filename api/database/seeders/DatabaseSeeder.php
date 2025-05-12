@@ -14,7 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            CourseStatus::class
+            CourseStatus::class,
+            GenDays::class,
+            GenRoles::class,
+            GenService::class,
         ]);
     }
 }
