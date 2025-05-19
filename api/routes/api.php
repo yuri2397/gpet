@@ -277,6 +277,7 @@ Route::any('store-image', [PublicEdtController::class, 'storeImage']);
 
 Route::any('test', function (Request $request) {
     $permissions = Permission::all();
+    return $permissions;
     $roles = Role::all();
     $user = User::all()[0];
 
