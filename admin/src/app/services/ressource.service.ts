@@ -8,7 +8,7 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class RessourceService extends BaseHttp {
-  
+
   protected _baseUrl = 'ressource';
   constructor(protected hc: HttpClient) {
     super();
@@ -22,16 +22,11 @@ export class RessourceService extends BaseHttp {
     return this.http.post<any>(
       this.endPointWithSlash + `upload-for-course`,
       data,
-      {
-        headers: this.authorizationHeaders,
-      }
     );
   }
 
   uploadUrl(course: Course): Observable<string>{
-    return this.http.get<string>(this.endPointWithSlash + "upload-url/" + course.id, {
-      headers: this.authorizationHeaders
-    });
+    return this.http.get<string>(this.endPointWithSlash + "upload-url/" + course.id);
   }
 
 

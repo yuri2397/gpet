@@ -16,17 +16,11 @@ export class ECService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<EC[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<EC[]>(this.endPoint);
   }
 
   search(data: string) {
-    return this.http.get<EC[]>(this.endPointWithSlash + 'search/' + data, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<EC[]>(this.endPointWithSlash + 'search/' + data);
   }
 
   create(ec: EC) {
@@ -42,18 +36,12 @@ export class ECService extends BaseHttp {
         semester_id: ec.ue.semester_id,
         vht: ec.vht,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   delete(item: EC) {
-    return this.http.delete(this.endPointWithSlash + 'destroy/' + item.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.delete(this.endPointWithSlash + 'destroy/' + item.id);
   }
 
   edit(ec: EC) {
@@ -64,10 +52,7 @@ export class ECService extends BaseHttp {
         name: ec.name,
         vht: ec.vht,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 

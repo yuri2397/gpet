@@ -1,12 +1,8 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Classe } from 'src/app/models/classe';
 import { Course } from 'src/app/models/course';
-import { Departement } from 'src/app/models/departement';
 import { Professor } from 'src/app/models/professor';
-import { Semester } from 'src/app/models/semester';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';

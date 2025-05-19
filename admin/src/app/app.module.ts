@@ -20,7 +20,7 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 import { ErrorConnectionComponent } from './shared/ui/error-connection/error-connection.component';
 import { SharedModule } from './shared/shared.module';
 import { HttpLocalInterceptor } from './shared/http-local.interceptor';
-
+import { AuthInterceptor } from './shared/auth.interceptor';
 registerLocaleData(fr);
 
 @NgModule({
@@ -54,9 +54,14 @@ registerLocaleData(fr);
       useClass: HasRoleInterceptor,
       multi: true,
     },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HttpLocalInterceptor,
+    //   multi: true,
+    // },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HttpLocalInterceptor,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],

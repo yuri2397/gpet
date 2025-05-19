@@ -22,21 +22,14 @@ export class CourseService extends BaseHttp {
   findAll(page: number, pageSize: number, searchQuery?: string) {
     return this.http.get<CourseResponse>(
       this.endPoint +
-        `?page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery ?? ''}`,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      },
+      `?page=${page}&pageSize=${pageSize}&searchQuery=${searchQuery ?? ''}`,
     )
   }
 
   showBy(param: any) {
     return this.http.post<Course[]>(
       this.endPointWithSlash + 'create',
-
       {
-        headers: this.authorizationHeaders,
-        observe: 'body',
         param: param,
       },
     )
@@ -53,18 +46,11 @@ export class CourseService extends BaseHttp {
         ec_id: course.ec_id,
         professor_id: course.professor_id,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      },
     )
   }
 
   show(course: Course) {
-    return this.http.get<Course>(this.endPointWithSlash + 'show/' + course.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    })
+    return this.http.get<Course>(this.endPointWithSlash + 'show/' + course.id)
   }
 
   finishCourse(course: Course, status: 'finish' | 'load' | 'load' | 'cancel') {
@@ -73,14 +59,12 @@ export class CourseService extends BaseHttp {
       {
         status: status,
       },
-      { headers: this.authorizationHeaders, observe: 'body' },
     )
   }
 
   delete(course: Course) {
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + course.id,
-      { headers: this.authorizationHeaders, observe: 'body' },
     )
   }
 
@@ -99,29 +83,23 @@ export class CourseService extends BaseHttp {
         ec_id: course.ec_id,
         professor_id: course.professor_id,
       },
-      { headers: this.authorizationHeaders, observe: 'body' },
     )
   }
 
   search(value: string) {
-    return this.http.get<Course[]>(this.endPointWithSlash + 'search/' + value, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    })
+    return this.http.get<Course[]>(this.endPointWithSlash + 'search/' + value)
   }
 
   searchMyCourse(value: string) {
     let professor = this.getUser().professor?.id
     return this.http.get<Course[]>(
       this.endPointWithSlash +
-        `search-my-courses/${value}?professor=${professor}`,
-      { headers: this.authorizationHeaders, observe: 'body' },
+      `search-my-courses/${value}?professor=${professor}`,
     )
   }
   courseHistory(professor: Professor) {
     return this.http.get<CourseHistory[]>(
       this.endPointWithSlash + `course-history/${professor.id}`,
-      { headers: this.authorizationHeaders, observe: 'body' },
     )
   }
 
@@ -129,7 +107,6 @@ export class CourseService extends BaseHttp {
     return this.http.put<any>(
       this.endPointWithSlash + `restore-course-history/${history.id}`,
       { professor_id: professor.id },
-      { headers: this.authorizationHeaders, observe: 'body' },
     )
   }
 }

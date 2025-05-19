@@ -18,10 +18,10 @@ import { LocalDataGuard } from './shared/guards/local-data.guard';
 import { LoginGuard } from './shared/guards/login.guard';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent,canActivate: [LoginGuard]},
+  { path: '', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'error-connection', component: ErrorConnectionComponent},
+  { path: 'error-connection', component: ErrorConnectionComponent },
   {
     path: 'admin',
     component: AdminComponent,
@@ -32,13 +32,15 @@ const routes: Routes = [
           import('./modules/admin/admin.module').then((m) => m.AdminModule),
       },
     ],
-    canActivate: [ LocalDataGuard,AuthGuard,AdminGuard],
+    canActivate: [LocalDataGuard, AuthGuard, AdminGuard],
   },
   {
-    path: "any-permission", component: AnyPermissionComponent
+    path: 'any-permission',
+    component: AnyPermissionComponent,
   },
   {
-    path: "info", component: InfoUserComponent
+    path: 'info',
+    component: InfoUserComponent,
   },
   {
     path: 'professor',
@@ -47,15 +49,24 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./modules/professor/professor.module').then((m) => m.ProfessorModule),
+          import('./modules/professor/professor.module').then(
+            (m) => m.ProfessorModule
+          ),
       },
     ],
-    canActivate: [ LocalDataGuard,AuthGuard,ProfesseurGuard],
+    canActivate: [LocalDataGuard, AuthGuard, ProfesseurGuard],
   },
   {
-    path:"**",
-    component: NotFoundComponent
-  }
+    path: 'public-edt',
+    loadChildren: () =>
+      import('./pages/public-edt/public-edt.module').then(
+        (m) => m.PublicEdtModule
+      ),
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

@@ -24,27 +24,18 @@ export class ProfessorService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Professor[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Professor[]>(this.endPoint);
   }
 
   search(data: string) {
     return this.http.get<Professor[]>(
       this.endPointWithSlash + 'search/' + data,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   find(id: number) {
-    return this.http.get<Professor>(this.endPointWithSlash + 'show/' + id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Professor>(this.endPointWithSlash + 'show/' + id);
   }
 
   addCourseForProfessor(course: Course, professor: Professor) {
@@ -54,10 +45,7 @@ export class ProfessorService extends BaseHttp {
         course_id: course.id,
         professor_id: professor.id,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -71,10 +59,7 @@ export class ProfessorService extends BaseHttp {
         total_hours: courseDo.total_hours,
         amount_hour: courseDo.amount,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -84,10 +69,7 @@ export class ProfessorService extends BaseHttp {
       {
         course_id: course.id,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -154,20 +136,14 @@ export class ProfessorService extends BaseHttp {
         professor_type_id: professor.professor_type_id,
         last_degree: professor.last_degree,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   delete(professor: Professor) {
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + professor.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -197,7 +173,7 @@ export class ProfessorService extends BaseHttp {
         professor_type_id: professor.professor_type.id,
         last_degree: professor.last_degree,
       },
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
@@ -205,7 +181,7 @@ export class ProfessorService extends BaseHttp {
     return this.http.put<any>(
       this.endPointWithSlash + 'desable-account/' + professor.id,
       { is_active: !professor.is_active },
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
@@ -219,10 +195,7 @@ export class ProfessorService extends BaseHttp {
         course_id: course.id,
         amount: course.service.amount,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -236,38 +209,26 @@ export class ProfessorService extends BaseHttp {
         course_id: course.id,
         amount: course.service.amount,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   payments(professor: Professor) {
     return this.http.get<Professor>(
       this.endPointWithSlash + 'payments/' + professor.registration_number,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   getProfeseurEPT() {
     return this.http.get<EptRow[]>(
       this.endPointWithSlash + 'timestables/' + this.getUser().professor?.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   profile(){
-    return this.http.get<Professor>(this.endPointWithSlash + "profile", {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    })
+    return this.http.get<Professor>(this.endPointWithSlash + "profile")
   }
 
   updateAvatar(file: any) {

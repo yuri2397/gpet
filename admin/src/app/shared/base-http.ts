@@ -42,14 +42,6 @@ export class BaseHttp  extends GestionRole{
     return this.getRoles() && this.getUser() && this.getToken() ? true : false;
   }
 
-  get authorizationHeaders() {
-    return {
-      accept: 'application/json',
-      'content-type': 'application/json',
-      authorization: 'Bearer ' + this.getToken(),
-    };
-  }
-
   get canDeleteErreurs() {
     return this._canDeleteErreurs;
   }
@@ -75,10 +67,7 @@ export class BaseHttp  extends GestionRole{
   }
 
   findSelectableList(tables: string[]) {
-    return this.http.post<any>(this.api + 'selectable', tables, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.post<any>(this.api + 'selectable', tables);
   }
 
   get http() {
@@ -101,7 +90,7 @@ export class BaseHttp  extends GestionRole{
   }
   isProfesseur():boolean{
     let test=false;
-    
+
     this.getRoles().forEach(element => {
       if(element.name==this.professeur)
       test=true;

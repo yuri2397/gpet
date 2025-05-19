@@ -1,0 +1,74 @@
+* {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.text-dark {
+    text-decoration: none;
+}
+
+.card-img-top {
+    width: 100%;
+}
+
+.bg-color {
+    background-color: #41729f;
+    color: white;
+}
+
+.example-boundary {
+    width: 400px;
+    height: 400px;
+    max-width: 100%;
+    border: dotted #ccc 2px;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+:host ::ng-deep .ant-timeline-item,:host ::ng-deep .ant-timeline-item-last {
+    padding-bottom: 2px !important;
+}
+
+
+:host ::ng-deep .ant-timeline-item-last > .ant-timeline-item-content {
+    min-height: 14px !important;
+}
+
+
+.event {
+    height: 100vh;
+
+    h1 {
+        font-weight: bold;
+        font-size: 2.5rem;
+        font-family: 'Poppins', sans-serif;
+    }
+}
+
+.event-img {
+    height: 100vh;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 70%;
+    transform: translate(-60%, -50%);
+    width: 50%;
+}
+
+.logo-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    img{
+        width: 80px;
+        height: 80px;
+    }
+}

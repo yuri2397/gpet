@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://api-gpet.digita.sn",
+    "secure": true,
+    "changeOrigin": true
+  }
+}

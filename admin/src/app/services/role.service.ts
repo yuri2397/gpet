@@ -16,17 +16,11 @@ export class RoleService extends BaseHttp {
   }
 
   findWhenCreateUser() {
-    return this.http.get<Role[]>(this.endPointWithSlash + 'when-create-user', {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Role[]>(this.endPointWithSlash + 'when-create-user');
   }
 
   findNotSuperAdminRole() {
-    return this.http.get<Role[]>(this.endPointWithSlash + 'not-super', {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Role[]>(this.endPointWithSlash + 'not-super');
   }
 
   deletePermissionToRole(role: Role, permission: Permission) {
@@ -36,17 +30,11 @@ export class RoleService extends BaseHttp {
         role_id: role.id,
         permission_id: permission.id,
       },
-      {
-        headers: this.authorizationHeaders,
-      }
     );
   }
 
   findAll() {
-    return this.http.get<Role[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Role[]>(this.endPoint);
   }
 
   removePermissionForUser(permission: Permission, user: User) {
@@ -56,30 +44,21 @@ export class RoleService extends BaseHttp {
         user_id: user.id,
         permission_id: permission.id,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   searchPermission(data: string) {
     return this.http.get<Permission[]>(
       this.endPointWithSlash + 'search-permission/' + data,
-      {
-        headers: this.authorizationHeaders,
-      }
+
     );
   }
 
-  givePermissionToUser(user: User, permissions: string[]){
+  givePermissionToUser(user: User, permissions: string[]) {
     return this.http.put<User>(this.endPointWithSlash + "give-permission-to-user", {
       user_id: user.id,
       permissions: permissions,
-    },
-    {
-      headers: this.authorizationHeaders,
-      observe: 'body',
     })
   }
 }

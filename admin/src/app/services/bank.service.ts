@@ -22,10 +22,7 @@ export class BankService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Bank[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Bank[]>(this.endPoint,);
   }
 
   edit(bank: Bank){
@@ -35,14 +32,13 @@ export class BankService extends BaseHttp {
         name: bank.name,
         code: bank.code,
       },
-      { headers: this.authorizationHeaders, observe: 'body' }
     );
   }
 
   delete(bank: Bank){
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + bank.id,
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
@@ -53,17 +49,11 @@ export class BankService extends BaseHttp {
         name: bank.name,
         code: bank.code,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   search(data: string) {
-    return this.http.get<Bank[]>(this.endPointWithSlash + 'search/' + data, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Bank[]>(this.endPointWithSlash + 'search/' + data, );
   }
 }

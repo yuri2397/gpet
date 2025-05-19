@@ -110,7 +110,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
   roles!: Role[];
   user!: User;
   menuItems!: RouteInfo[];
-  title = 'UFR SET - GPET';
+  title = 'UFR SES - GPET';
   depTitle!: string;
   permissions!: Permission[];
 

@@ -78,7 +78,7 @@ class ClasseController extends Controller
      */
     public function show($id)
     {
-        return Classe::with(['departement', 'courses', 'courses.classe'])->find($id);
+        return Classe::with(['departement', 'courses', 'courses.classe', 'professor'])->find($id);
     }
 
     /**

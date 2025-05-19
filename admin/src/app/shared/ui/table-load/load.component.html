@@ -1,28 +1,12 @@
-<div class="h-100 card shadow-sm bg-transparent border">
-    <div class="center" style="flex-direction: column;">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:transparent;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-        <g transform="translate(50 50) scale(0.8)">
-          <g>
-            <animateTransform attributeName="transform" type="scale" repeatCount="indefinite" calcMode="spline"
-              dur="1.7543859649122806s" values="0.8;0.5;0.8" keyTimes="0;0.5;1" keySplines="0.5 0 0.5 1;0.5 0 0.5 1">
-            </animateTransform>
-            <rect x="-45" y="-45" width="90" height="90" fill="#ffffff" stroke="#41729f" stroke-width="8"
-              stroke-linejoin="round" rx="1" ry="1">
-              <animate attributeName="rx" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
-                keyTimes="0;0.5;1"></animate>
-              <animate attributeName="ry" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
-                keyTimes="0;0.5;1"></animate>
-              <animate attributeName="stroke-width" repeatCount="indefinite" dur="1.7543859649122806s" values="8;12.8;8"
-                keyTimes="0;0.5;1"></animate>
-              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite"
-                dur="1.7543859649122806s" values="0 0 0;270 0 0;540 0 0" keyTimes="0;0.5;1" calcMode="spline"
-                keySplines="0.5 0 0.5 1;0.5 0 0.5 1"></animateTransform>
-            </rect>
-          </g>
-        </g>
+<div class="center" >
+  <div>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+      <circle cx="50" cy="50" r="30" stroke="#0a69aa" stroke-width="10" fill="none"></circle>
+      <circle cx="50" cy="50" r="30" stroke="#e1e7e7" stroke-width="8" stroke-linecap="round" fill="none">
+        <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;180 50 50;720 50 50" keyTimes="0;0.5;1"></animateTransform>
+        <animate attributeName="stroke-dasharray" repeatCount="indefinite" dur="1s" values="18.84955592153876 169.64600329384882;94.2477796076938 94.24777960769377;18.84955592153876 169.64600329384882" keyTimes="0;0.5;1"></animate>
+      </circle>
       </svg>
-        </div>
-        <h5>Chargement en cours...</h5>
-    </div>
+  </div>
+  <h4 class="lead">Traitement en cours...</h4>
 </div>

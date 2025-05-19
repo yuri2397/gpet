@@ -17,10 +17,7 @@ export class SalleService extends BaseHttp{
     this.http = hc;
   }
   findAll() {
-    return this.http.get<Salle[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Salle[]>(this.endPoint);
   }
 
   clone(salle: Salle): any {
@@ -46,17 +43,14 @@ export class SalleService extends BaseHttp{
         departement_id: salle.departement_id,
         batiment_id: salle.batiment_id,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   delete(salle: Salle) {
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + salle.id,
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
@@ -70,24 +64,21 @@ export class SalleService extends BaseHttp{
         departement_id: salle.departement_id,
         batiment_id: salle.batiment_id,
       },
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
   search(data: string) {
     return this.http.get<Salle[]>(
       this.endPointWithSlash + 'search/' + data,
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
   listSalleDept(id:number){
     return this.http.get<Salle[]>(
       this.endPointWithSlash + 'listSalleDept/' + id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     )
   }
 }

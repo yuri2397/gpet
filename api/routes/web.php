@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EPTController;
-
+use App\Http\Controllers\PublicEdtController;
 
 Route::get("edt/{departement}/{classe}", [EPTController::class, 'serviceWebEPT']);
 
-Route::get("", function(){
-	// ini_set('max_input_vars', 4000);
+Route::get("public-edt",[PublicEdtController::class, 'publicEDT']);
 
-	return phpinfo();
+Route::get('/', function(){
+	return date("Y-m-d H:i:s") . " : " . "API is running";
 });

@@ -49,7 +49,6 @@ class ECController extends Controller
             'ue_id' => 'required',
             "ue_code" => "string",
             "ue_name" => "string",
-            "departement_id" => "required|numeric",
             "vht" => "required",
             "semester_id" => "exists:semesters,id"
         ]);

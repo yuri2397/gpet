@@ -10,12 +10,15 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@popperjs/core": "^2.11.7",
         "axios": "^0.21",
-        "laravel-mix": "^6.0.6",
+        "bootstrapt": "^1.2.0",
+        "laravel-mix": "^6.0.49",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14"
     },
     "dependencies": {
-        "@angular/cli": "^13.2.4"
+        "@angular/cli": "^13.2.4",
+        "bootstrap": "^5.2.3"
     }
 }
