@@ -18,16 +18,10 @@ export class UserService extends BaseHttp {
   }
 
   currentUser() {
-    return this.http.get<User>(this.endPointWithSlash + 'profile', {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<User>(this.endPointWithSlash + 'profile');
   }
-  getProfesseur(id:number) {
-    return this.http.get<ProfUser>(this.endPointWithSlash + 'showuserwithprof/'+id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+  getProfesseur(id: number) {
+    return this.http.get<ProfUser>(this.endPointWithSlash + 'showuserwithprof/' + id);
   }
 
   logout() {
@@ -37,10 +31,7 @@ export class UserService extends BaseHttp {
   }
 
   findByAuthDepartement() {
-    return this.http.get<User[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<User[]>(this.endPoint);
   }
 
   create(user: User) {
@@ -53,9 +44,6 @@ export class UserService extends BaseHttp {
         departement_id: user.departement_id,
         roles: user.roles,
       },
-      {
-        headers: this.authorizationHeaders,
-      }
     );
   }
 
@@ -72,9 +60,7 @@ export class UserService extends BaseHttp {
   }
 
   findSelectedUser(user: User) {
-    return this.http.get<User>(this.endPointWithSlash + 'show/' + user.id, {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.get<User>(this.endPointWithSlash + 'show/' + user.id);
   }
 
   edit(user: User, roles: string[]) {
@@ -87,15 +73,10 @@ export class UserService extends BaseHttp {
         departement_id: user.departement,
         roles: roles
       },
-      {
-        headers: this.authorizationHeaders,
-      }
     );
   }
 
   delete(user: User) {
-    return this.http.delete(this.endPointWithSlash + 'destroy/' + user.id, {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.delete(this.endPointWithSlash + 'destroy/' + user.id);
   }
 }

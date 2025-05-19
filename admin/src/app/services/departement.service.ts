@@ -16,41 +16,28 @@ export class DepartementService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Departement[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Departement[]>(this.endPoint);
   }
 
   dashboard() {
-    return this.http.get<any>(this.endPointWithSlash + 'dashboard', {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.get<any>(this.endPointWithSlash + 'dashboard',);
   }
 
   chartsData(day: number) {
-    return this.http.get<any>(this.endPointWithSlash + `charts_data?day=${day}` , {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.get<any>(this.endPointWithSlash + `charts_data?day=${day}`);
   }
 
   salleLibres(day: number) {
-    return this.http.get<Salle[]>(this.endPointWithSlash + `salle_libres?day=${day}` , {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.get<Salle[]>(this.endPointWithSlash + `salle_libres?day=${day}`);
   }
 
   find(departement: Departement) {
     return this.http.get<Departement>(
       this.endPointWithSlash + 'show/' + departement.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
     );
   }
 
- 
+
 
   clone(batiment: Departement): any {
     let b = new Departement();
@@ -65,20 +52,14 @@ export class DepartementService extends BaseHttp {
       {
         name: batiment.name,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   delete(batiment: Departement) {
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + batiment.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -88,18 +69,18 @@ export class DepartementService extends BaseHttp {
       {
         name: batiment.name,
       },
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
- /* listSalleDept(dept:Departement){
-    console.log("id dept: "+dept.id);
-    console.log(this.endPointWithSlash);
-    return this.http.get<Salle[]>(
-      this.endPointWithSlash + 'listSalleDept/' + dept.id,
-      { headers: this.authorizationHeaders,
-        observe: 'body'
-      }
-    );
+  /* listSalleDept(dept:Departement){
+     console.log("id dept: "+dept.id);
+     console.log(this.endPointWithSlash);
+     return this.http.get<Salle[]>(
+       this.endPointWithSlash + 'listSalleDept/' + dept.id,
+       { headers: this.authorizationHeaders,
+         observe: 'body'
+       }
+     );
 
-  }*/
+   }*/
 }

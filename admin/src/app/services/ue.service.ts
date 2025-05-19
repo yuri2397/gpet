@@ -15,17 +15,11 @@ export class UEService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<UE[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<UE[]>(this.endPoint);
   }
 
   search(data: string) {
-    return this.http.get<UE[]>(this.endPointWithSlash + 'search/' + data, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<UE[]>(this.endPointWithSlash + 'search/' + data);
   }
 
   edit(ue: UE) {
@@ -35,16 +29,12 @@ export class UEService extends BaseHttp {
         name: ue.name,
         code: ue.code,
       },
-      {
-        headers: this.authorizationHeaders,
-      }
+
     );
   }
 
   delete(ue: UE) {
-    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + ue.id, {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.delete<any>(this.endPointWithSlash + 'destroy/' + ue.id, );
   }
 
   clone(ue: UE): UE {

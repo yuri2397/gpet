@@ -41,18 +41,12 @@ export class EptService extends BaseHttp {
   show(classe: Classe) {
     return this.http.get<EptRow[]>(
       this.endPointWithSlash + 'show/' + classe.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   remove(item: EPT) {
-    return this.http.delete(this.endPointWithSlash + 'destroy/' + item.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.delete(this.endPointWithSlash + 'destroy/' + item.id);
   }
 
   create(item: EPT) {
@@ -67,10 +61,7 @@ export class EptService extends BaseHttp {
         day_id: item.day.id,
         group: item.group ?? 0,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -87,10 +78,7 @@ export class EptService extends BaseHttp {
         ept_id: item.id,
         group: item.group ?? 0,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 

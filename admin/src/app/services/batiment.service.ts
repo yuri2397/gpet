@@ -15,10 +15,7 @@ export class BatimentService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Batiment[]>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Batiment[]>(this.endPoint);
   }
 
   clone(batiment: Batiment): any {
@@ -34,17 +31,14 @@ export class BatimentService extends BaseHttp {
       {
         name: batiment.name,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   delete(batiment: Batiment) {
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + batiment.id,
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 
@@ -54,7 +48,7 @@ export class BatimentService extends BaseHttp {
       {
         name: batiment.name,
       },
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 }

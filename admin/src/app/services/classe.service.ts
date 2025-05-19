@@ -16,26 +16,18 @@ export class ClasseService extends BaseHttp {
   }
 
   findAll() {
-    return this.http.get<Departement>(this.endPoint, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Departement>(this.endPoint,);
   }
 
   findByDepartement(id: number) {
     return this.http.get<Classe[]>(
       this.endPointWithSlash + 'departement/' + id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   selectClasses() {
-    return this.http.get<Classe[]>(this.endPointWithSlash + 'select', {
-      headers: this.authorizationHeaders,
-    });
+    return this.http.get<Classe[]>(this.endPointWithSlash + 'select', );
   }
 
   clone(classe: Classe): Classe {
@@ -55,28 +47,19 @@ export class ClasseService extends BaseHttp {
         departement_id: classe.departement_id,
         nb_students: classe.nb_students,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   delete(classe: Classe) {
     return this.http.delete<any>(
       this.endPointWithSlash + 'destroy/' + classe.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
   show(classe: Classe) {
-    return this.http.get<Classe>(this.endPointWithSlash + 'show/' + classe.id, {
-      headers: this.authorizationHeaders,
-      observe: 'body',
-    });
+    return this.http.get<Classe>(this.endPointWithSlash + 'show/' + classe.id);
   }
 
   edit(classe: Classe) {
@@ -87,7 +70,7 @@ export class ClasseService extends BaseHttp {
         departement_id: classe.departement_id,
         nb_students: classe.nb_students,
       },
-      { headers: this.authorizationHeaders, observe: 'body' }
+
     );
   }
 }

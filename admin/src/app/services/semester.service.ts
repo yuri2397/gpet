@@ -27,10 +27,7 @@ export class SemesterService extends BaseHttp {
   findByDepartement(departement: Departement) {
     return this.http.get<Semester[]>(
       this.endPointWithSlash + 'by-departement/' + departement.id,
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -41,10 +38,7 @@ export class SemesterService extends BaseHttp {
         name: semester.name,
         departement_id: semester.departement_id,
       },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
+
     );
   }
 
@@ -54,18 +48,14 @@ export class SemesterService extends BaseHttp {
       {
         name: semester.name,
       },
-      {
-        headers: this.authorizationHeaders,
-      }
+
     );
   }
 
   delete(semester: Semester) {
     return this.http.delete<Semester>(
       this.endPointWithSlash + 'delete/' + semester.id,
-      {
-        headers: this.authorizationHeaders,
-      }
+
     );
   }
 }

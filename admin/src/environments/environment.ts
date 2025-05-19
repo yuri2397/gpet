@@ -6,8 +6,8 @@ export const environment = {
   production: false,
   // host: 'http://localhost:1973/',
   // api: 'http://localhost:1973/api/'
-  host: 'https://api-edtset.uidt.sn/',
-  api: 'https://api-edtset.uidt.sn/api/',
+  host: 'https://api-gpet.digita.sn/',
+  api: 'https://api-gpet.digita.sn/api/',
   // version: "2.1.0"
 };
 

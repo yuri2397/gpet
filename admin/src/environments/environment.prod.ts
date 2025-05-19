@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  host: 'https://api-edtset.uidt.sn/',
-  api: 'https://api-edtset.uidt.sn/api/',
+  host: 'https://api-gpet.digita.sn/',
+  api: 'https://api-gpet.digita.sn/api/',
   version: "2.1.0"
 };
 

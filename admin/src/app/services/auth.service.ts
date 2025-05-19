@@ -23,20 +23,12 @@ export class AuthService extends BaseHttp {
         email: email,
         password: password,
       },
-      {
-        headers: this.guestHeaders,
-        observe: 'body',
-      }
     );
   }
 
   logOut() {
     return this.http.get(
       this.endPointWithSlash + 'logout',
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
-      }
     );
   }
 
@@ -54,10 +46,6 @@ export class AuthService extends BaseHttp {
       {
         password: password,
         new_password: new_password,
-      },
-      {
-        headers: this.authorizationHeaders,
-        observe: 'body',
       }
     );
   }
