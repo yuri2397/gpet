@@ -1,68 +1,80 @@
-<nz-layout *ngIf="!isLoad(); else loadingTemplate" class="app-layout">
-  <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md"
-    [nzCollapsed]="isCollapsed()" [nzTrigger]="null">
-    <div class="sidebar-logo">
-      <img src="/assets/img/logo.jpg" alt="logo" />
-      <h6 *ngIf="!isCollapsed()" class="color-geekblue">{{ title }}</h6>
+@if (!isLoad()) {
+<nz-layout class="h-screen">
+  <nz-sider
+    class="!bg-[#001529] relative z-10 min-h-screen shadow-lg"
+    nzCollapsible
+    nzWidth="260px"
+    nzBreakpoint="md"
+    [nzCollapsed]="isCollapsed()"
+    [nzTrigger]="null"
+  >
+    <div class="flex items-center gap-3 px-4 py-5 border-b border-white/10">
+      <img src="/assets/img/logo.jpg" alt="logo" class="h-10 w-10 rounded-lg" />
+      @if (!isCollapsed()) {
+        <h1 class="text-white text-lg font-bold tracking-tight m-0">{{ title }}</h1>
+      }
     </div>
-    <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed()" class="px-1">
-      <ng-container *ngFor="let item of menuItems()">
-        <li (click)="routerLink(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right"
-          [nzTooltipTitle]="isCollapsed() ? item.title : ''" [nzSelected]="selected(item)">
-          <i nz-icon>
-            <mat-icon class="icon">{{ item.icon }}</mat-icon>
-          </i>
-          <span class="label">{{ item.title }}</span>
-        </li>
-      </ng-container>
-    </ul>
-  </nz-sider>
-  <nz-layout>
-    <nz-header>
-      <div class="d-flex app-header justify-content-between align-items-center">
-        <div>
-          <span class="header-trigger" (click)="isCollapsed.set(!isCollapsed())">
-            <i class="trigger" nz-icon [nzType]="isCollapsed() ? 'menu-unfold' : 'menu-fold'"></i>
-          </span>
-        </div>
-        <span class="bold">{{ depTitle() }}</span>
 
+    <nav class="mt-4 px-2">
+      <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed()">
+        @for (item of menuItems(); track item.path) {
+          <li
+            nz-menu-item
+            nz-tooltip
+            nzTooltipPlacement="right"
+            [nzTooltipTitle]="isCollapsed() ? item.title : ''"
+            [nzSelected]="selected(item)"
+            (click)="routerLink(item)"
+            class="!rounded-lg !my-1"
+          >
+            <mat-icon class="text-lg align-middle">{{ item.icon }}</mat-icon>
+            <span class="ml-3 text-sm font-medium">{{ item.title }}</span>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <!-- Logout button at bottom -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
+      <button
+        (click)="logout()"
+        class="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-red-300 hover:bg-red-500/10 hover:text-red-200 transition-colors cursor-pointer"
+      >
+        <mat-icon class="text-lg">logout</mat-icon>
+        @if (!isCollapsed()) {
+          <span class="text-sm font-medium">Deconnexion</span>
+        }
+      </button>
+    </div>
+  </nz-sider>
+
+  <nz-layout>
+    <nz-header class="!bg-white !px-0 shadow-sm z-10">
+      <div class="flex items-center justify-between h-16 px-6">
+        <button
+          (click)="isCollapsed.set(!isCollapsed())"
+          class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+        >
+          <i nz-icon [nzType]="isCollapsed() ? 'menu-unfold' : 'menu-fold'" class="text-xl text-gray-600"></i>
+        </button>
+        <span class="text-lg font-semibold text-primary">{{ depTitle() }}</span>
+        <div></div>
       </div>
     </nz-header>
-    <nz-content>
-      <div class="bg-admin inner-content">
+
+    <nz-content class="!bg-gray-50 overflow-y-auto">
+      <div class="p-6">
         <router-outlet></router-outlet>
       </div>
     </nz-content>
   </nz-layout>
 </nz-layout>
-<ng-template #loadingTemplate>
-  <div class="center" style="flex-direction: column;">
-    <div>
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-        style="margin:auto;background:transparent;display:block;" width="200px" height="200px" viewBox="0 0 100 100"
-        preserveAspectRatio="xMidYMid">
-        <g transform="translate(50 50) scale(0.8)">
-          <g>
-            <animateTransform attributeName="transform" type="scale" repeatCount="indefinite" calcMode="spline"
-              dur="1.7543859649122806s" values="0.8;0.5;0.8" keyTimes="0;0.5;1" keySplines="0.5 0 0.5 1;0.5 0 0.5 1">
-            </animateTransform>
-            <rect x="-45" y="-45" width="90" height="90" fill="#ffffff" stroke="#41729f" stroke-width="8"
-              stroke-linejoin="round" rx="1" ry="1">
-              <animate attributeName="rx" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
-                keyTimes="0;0.5;1"></animate>
-              <animate attributeName="ry" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
-                keyTimes="0;0.5;1"></animate>
-              <animate attributeName="stroke-width" repeatCount="indefinite" dur="1.7543859649122806s" values="8;12.8;8"
-                keyTimes="0;0.5;1"></animate>
-              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite"
-                dur="1.7543859649122806s" values="0 0 0;270 0 0;540 0 0" keyTimes="0;0.5;1" calcMode="spline"
-                keySplines="0.5 0 0.5 1;0.5 0 0.5 1"></animateTransform>
-            </rect>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <h4>Bienvenue sur <span class="bold">GPET</span>...</h4>
+} @else {
+<div class="h-screen flex flex-col items-center justify-center bg-gray-50">
+  <div class="relative">
+    <div class="w-16 h-16 border-4 border-primary/20 rounded-full"></div>
+    <div class="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
   </div>
-</ng-template>
+  <p class="mt-6 text-lg text-gray-500 font-medium">Bienvenue sur <span class="font-bold text-primary">GPET</span>...</p>
+</div>
+}

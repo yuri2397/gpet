@@ -1,4 +1,4 @@
-<div class="card car-body shadow">
+<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100 overflow-hidden">
 
     <nz-divider [nzText]="p_t"></nz-divider>
     <ng-template #p_t>
@@ -8,14 +8,16 @@
         </button>
     </ng-template>
 
-    <div class="row mt-3">
-        <div class="col">
-            <div class="card body m-2 border raduis-sm">
-                <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
-                <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
-                <div class="d-flex justify-content-center btn-icon">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+        <div>
+            <div class="bg-white rounded-lg m-2 border border-gray-100 relative">
+                <img [src]="user.avatar" class="w-full mx-auto rounded-t-lg" alt="" />
+                @if (avatarLoad) {
+                    <mat-progress-bar [mode]="'indeterminate'" color="primary"></mat-progress-bar>
+                }
+                <div class="flex justify-center absolute top-[5px] right-[5px]">
                     <div>
-                        <button mat-fab color="basic" class="shadow" (click)="image.click()">
+                        <button mat-fab color="basic" class="shadow-sm" (click)="image.click()">
                             <mat-icon>edit</mat-icon>
                             <form enctype="multipart/form-data">
                                 <input #image type="file" nz-input hidden (change)="onChange($event)" />
@@ -25,11 +27,11 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card card-body border m-2 raduis-sm">
+        <div>
+            <div class="bg-white rounded-lg p-6 border border-gray-100 m-2">
                 <nz-divider [nzText]="c_t">
                     <ng-template #c_t>
-                        <h5 class="my-2">Change votre mot de passe</h5>
+                        <h3 class="font-semibold text-lg my-2">Change votre mot de passe</h3>
                     </ng-template>
                 </nz-divider>
                 <form nz-form [formGroup]="validateForm" class="login-form">

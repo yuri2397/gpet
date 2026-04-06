@@ -1,21 +1,20 @@
-<div class="container mx-2" id="presentionPayement">
-    <div class="row">
-        <div class="col text-center">
-            <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="logo">
+<div class="max-w-4xl mx-2" id="presentionPayement">
+    <div class="flex flex-col items-center">
+        <div class="flex-1 text-center">
+            <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="w-[60px] mx-auto">
             <div>
                 UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
             </div> <br> <br>
-            <h6 class="bold">
+            <h6 class="font-bold">
                 ETAT DES RELEVES DE VACATION {{ classe.name.toLocaleUpperCase() }}, {{ semester.name.toLocaleUpperCase() }} </h6>
                 <h6>{{ date | date:'dd/M/y' }}</h6>
-
         </div>
     </div>
-    <div class="row align-items-start my-3">
-        <div class="col-md-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start my-3">
+        <div>
             <nz-list nzBordered>
                 <nz-list-item>
-                    <span nz-typography><b>PRÉNOM</b></span> {{ professor.first_name }}
+                    <span nz-typography><b>PRENOM</b></span> {{ professor.first_name }}
                 </nz-list-item>
                 <nz-list-item>
                     <span nz-typography><b>NOM</b></span> {{ professor.last_name }}
@@ -31,7 +30,7 @@
                 </nz-list-item>
             </nz-list>
         </div>
-        <div class="col-md-6">
+        <div>
             <nz-list nzBordered>
                 <nz-list-item>
                     <span nz-typography><b>NOM DE LA BANQUE</b></span> {{ professor.account.bank.name }}
@@ -42,9 +41,9 @@
             </nz-list>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-body border">
+    <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-12">
+            <div class="bg-white rounded-lg p-4 border border-gray-100">
                 <table>
                     <thead>
                         <tr>
@@ -57,7 +56,6 @@
                             </td>
                             <td>MONTANT EN <b>FCFA</b></td>
                         </tr>
-
                     </thead>
                     <tbody>
                         <tr>
@@ -66,10 +64,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="bold fw-md">{{ course.service.name }}</td>
-                            <td class="bold fw-md">{{ course.service.amount }} FCFA</td>
-                            <td class="bold fw-md">{{ courseDo.total_hours }} Heures</td>
-                            <td class="bold fw-md"> {{ courseDo.total_sales }} FCFA </td>
+                            <td class="font-bold font-medium">{{ course.service.name }}</td>
+                            <td class="font-bold font-medium">{{ course.service.amount }} FCFA</td>
+                            <td class="font-bold font-medium">{{ courseDo.total_hours }} Heures</td>
+                            <td class="font-bold font-medium"> {{ courseDo.total_sales }} FCFA </td>
                         </tr>
                     </tbody>
                 </table>
@@ -79,21 +77,21 @@
     <div class="text-center my-4 mb-5">
         <nz-divider nzText="Signature du Vacataire"></nz-divider>
     </div>
-    <div class="row my-3 mt-5 justify-content-between">
-        <div class="col">
-            Vu pour établir état de paie
+    <div class="flex justify-between my-3 mt-5">
+        <div class="flex-1">
+            Vu pour etablir etat de paie
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            Certifié service fait
+    <div class="flex">
+        <div class="flex-1">
+            Certifie service fait
         </div>
     </div>
-    <div class="row my-3">
-        <div class="col bold">
+    <div class="flex my-3">
+        <div class="flex-1 font-bold">
             LE CHEF DES SERVICES ADMINISTRATIFS
         </div>
-        <div class="col bold">
+        <div class="flex-1 font-bold">
             LE DIRECTEUR
         </div>
     </div>

@@ -1,27 +1,32 @@
-<div class="container-fluid">
-  <div class="card shadow-sm border">
-    <div class="card-header p-3 bg-color">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h5 class="text-white">Liste des cours</h5>
-        </div>
-        <div *ngIf="can('creer cour') && !setView">
+<div class="w-full">
+  <div class="rounded-xl shadow-sm border border-gray-100 overflow-hidden bg-white">
+    <div class="bg-gradient-to-r from-primary to-primary-dark px-6 py-4">
+      <div class="flex justify-between items-center">
+        <h5 class="text-white text-lg font-semibold m-0">Liste des cours</h5>
+        @if (can('creer cour') && !setView) {
           <button (click)="openCreateModal()" mat-mini-fab color="default">
             <mat-icon>add</mat-icon>
           </button>
-        </div>
+        }
       </div>
     </div>
-    <div class="card-body">
-      <div class="my-2">
-        <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Recherche un cours..." [(ngModel)]="searchValue" />
-    </div>
+    <div class="p-6">
+      <div class="mb-4">
+        <input
+          type="text"
+          nzSize="large"
+          (input)="search()"
+          nz-input
+          placeholder="Recherche un cours..."
+          [(ngModel)]="searchValue"
+          class="w-full"
+        />
+      </div>
       <nz-table
-        class="scroll-table"
         [nzLoading]="isLoad"
         #basicTable
         [nzData]="courses"
-        [nzBordered]="true" 
+        [nzBordered]="true"
         [nzTotal]="response ? response.total : 0"
         [nzPageSize]="10"
         [nzFrontPagination]="false"
@@ -31,90 +36,103 @@
           <tr>
             <th class="text-center">Code</th>
             <th class="text-center">Intitulé</th>
-            <th class="text-center" *ngIf="courseService.isSuperAdmin()">
-              Département
-            </th>
+            @if (courseService.isSuperAdmin()) {
+              <th class="text-center">Département</th>
+            }
             <th class="text-center">Groupe</th>
             <th class="text-center">Service</th>
             <th class="text-center">Semestre</th>
             <th class="text-center">Classe</th>
             <th class="text-center">Professeur</th>
-            <th class="text-center" *ngIf="!classe && !setView">Actions</th>
+            @if (!classe && !setView) {
+              <th class="text-center">Actions</th>
+            }
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td>
-              <a [routerLink]="['/admin/courses/show/' + data.id]">
-                {{ data.acronym }}
-              </a>
-            </td>
-            <td>{{ data.name }}</td>
-            <td *ngIf="courseService.isSuperAdmin()">
-              {{ data.departement.name }}
-            </td>
-            <td>
-              <ng-container *ngIf="data.groupe_number == 0; else elseGroupe">
-                <nz-tag [nzColor]="'blue'">Commun</nz-tag>
-              </ng-container>
-              <ng-template #elseGroupe>
-                {{ data.groupe_number }}
-              </ng-template>
-            </td>
-            <td>{{ data.service.name }}</td>
-            <td>{{ data.semester.name }}</td>
-            <td>
-              <a [routerLink]="['/admin/classes/show/' + data.classe.id]">
-                {{ data.classe.name }}
-              </a>
-            </td>
-            <td>
-              <ng-container *ngIf="data.professor != null; else hasNotProf">
+          @for (data of basicTable.data; track data) {
+            <tr>
+              <td>
                 <a
-                  [routerLink]="[
-                    '/admin/professeurs/show/' + data.professor.id
-                  ]"
+                  [routerLink]="['/admin/courses/show/' + data.id]"
+                  class="text-primary hover:text-primary-dark hover:underline"
                 >
-                  {{ data.professor.first_name }} {{ data.professor.last_name }}
+                  {{ data.acronym }}
                 </a>
-              </ng-container>
-              <ng-template #hasNotProf>
-                <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
-              </ng-template>
-            </td>
-            <td class="p-0" *ngIf="!classe && !setView">
-              <div class="d-flex justify-content-center">
-                <div class="mx-1" *ngIf="can('voir cour')">
-                  <a [routerLink]="['show/' + data.id]">
-                    <button nz-button nzShape="circle" class="color-orange">
-                      <i class="color" nz-icon nzType="eye"></i>
-                    </button>
+              </td>
+              <td>{{ data.name }}</td>
+              @if (courseService.isSuperAdmin()) {
+                <td>{{ data.departement.name }}</td>
+              }
+              <td>
+                @if (data.groupe_number == 0) {
+                  <nz-tag [nzColor]="'blue'">Commun</nz-tag>
+                } @else {
+                  {{ data.groupe_number }}
+                }
+              </td>
+              <td>{{ data.service.name }}</td>
+              <td>{{ data.semester.name }}</td>
+              <td>
+                <a
+                  [routerLink]="['/admin/classes/show/' + data.classe.id]"
+                  class="text-primary hover:text-primary-dark hover:underline"
+                >
+                  {{ data.classe.name }}
+                </a>
+              </td>
+              <td>
+                @if (data.professor != null) {
+                  <a
+                    [routerLink]="['/admin/professeurs/show/' + data.professor.id]"
+                    class="text-primary hover:text-primary-dark hover:underline"
+                  >
+                    {{ data.professor.first_name }} {{ data.professor.last_name }}
                   </a>
-                </div>
-                <div class="mx-1" *ngIf="can('modifier cour')">
-                  <button
-                    (click)="selectedCourse = data; openEditModal()"
-                    nz-button
-                    nzType="primary"
-                    nzShape="circle"
-                  >
-                    <i nz-icon nzType="edit"></i>
-                  </button>
-                </div>
-                <div class="mx-1" *ngIf="can('supprimer cour')">
-                  <button
-                    (click)="openDeleteModal(data)"
-                    nz-button
-                    nzDanger
-                    nzType="primary"
-                    nzShape="circle"
-                  >
-                    <i nz-icon nzType="delete"></i>
-                  </button>
-                </div>
-              </div>
-            </td>
-          </tr>
+                } @else {
+                  <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
+                }
+              </td>
+              @if (!classe && !setView) {
+                <td class="p-0">
+                  <div class="flex justify-center items-center gap-2">
+                    @if (can('voir cour')) {
+                      <a [routerLink]="['show/' + data.id]">
+                        <button
+                          nz-button
+                          nzShape="circle"
+                          class="bg-amber-600 border-none hover:bg-amber-700"
+                        >
+                          <i class="text-white" nz-icon nzType="eye"></i>
+                        </button>
+                      </a>
+                    }
+                    @if (can('modifier cour')) {
+                      <button
+                        (click)="selectedCourse = data; openEditModal()"
+                        nz-button
+                        nzType="primary"
+                        nzShape="circle"
+                      >
+                        <i nz-icon nzType="edit"></i>
+                      </button>
+                    }
+                    @if (can('supprimer cour')) {
+                      <button
+                        (click)="openDeleteModal(data)"
+                        nz-button
+                        nzDanger
+                        nzType="primary"
+                        nzShape="circle"
+                      >
+                        <i nz-icon nzType="delete"></i>
+                      </button>
+                    }
+                  </div>
+                </td>
+              }
+            </tr>
+          }
         </tbody>
       </nz-table>
     </div>

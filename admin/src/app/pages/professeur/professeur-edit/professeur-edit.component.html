@@ -3,16 +3,16 @@
         <nz-tabset>
             <nz-tab [nzTitle]="'Informations personnel'">
 
-                <div class="row">
-                    <div class="col-md-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="first_name">Prénom(s)</nz-form-label>
+                            <nz-form-label nzRequired nzFor="first_name">Prenom(s)</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
                                 <input [(ngModel)]="professor.first_name" formControlName="first_name" nz-input name="first_name" type="text" id="first_name">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="last_name">Nom</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
@@ -20,7 +20,7 @@
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="cni">CNI</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le cni est requi">
@@ -29,9 +29,9 @@
                         </nz-form-item>
                     </div>
                 </div>
-                <div class="row">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzFor="born_in">Lieu de naissance</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Lieu de naissance est requi">
@@ -40,29 +40,29 @@
                         </nz-form-item>
                     </div>
 
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="born_at">Date de Naissance</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <nz-date-picker class="w-100" [(ngModel)]="professor.born_at" nzFormat="dd-MM-yyyy" name="born_at" id="born_at" formControlName="born_at"></nz-date-picker>
+                                <nz-date-picker class="w-full" [(ngModel)]="professor.born_at" nzFormat="dd-MM-yyyy" name="born_at" id="born_at" formControlName="born_at"></nz-date-picker>
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="professor_type_id">Banque</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le champ est requi">
                                 <nz-select [nzLoading]="isLoadData" formControlName="professor_type_id" [(ngModel)]="professor.professor_type.id">
-                                    <ng-container *ngFor="let o of professorTypes">
+                                    @for (o of professorTypes; track o) {
                                         <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
+                                    }
                                 </nz-select>
                             </nz-form-control>
                         </nz-form-item>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="email">Adresse email</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
@@ -70,38 +70,38 @@
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="phone_number">N° téléphone</nz-form-label>
+                            <nz-form-label nzRequired nzFor="phone_number">N telephone</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
                                 <input [(ngModel)]="professor.phone_number" formControlName="phone_number" nz-input name="phone_number" type="text" id="phone_number">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
 
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
+                            <nz-form-label nzRequired nzFor="departement_id">Departement</nz-form-label>
+                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le departement">
                                 <nz-select [nzDisabled]="professorService.isEditeur()" [nzLoading]="isLoadData" formControlName="departement_id" [(ngModel)]="professor.departement_id">
-                                    <ng-container *ngFor="let o of departements">
+                                    @for (o of departements; track o) {
                                         <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
+                                    }
                                 </nz-select>
                             </nz-form-control>
                         </nz-form-item>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="job">Métier</nz-form-label>
+                            <nz-form-label nzRequired nzFor="job">Metier</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
                                 <input [(ngModel)]="professor.job" formControlName="job" nz-input name="job" type="text" id="job">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="status">Status</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
@@ -109,9 +109,9 @@
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="last_degree">Dernier Diplôme</nz-form-label>
+                            <nz-form-label nzRequired nzFor="last_degree">Dernier Diplome</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Ce champ est requi">
                                 <input [(ngModel)]="professor.last_degree" formControlName="last_degree" nz-input name="last_degree" type="text" id="last_degree">
                             </nz-form-control>
@@ -120,16 +120,16 @@
                 </div>
             </nz-tab>
             <nz-tab [nzTitle]="'Informations bancaire'">
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="account_number">N° de compte</nz-form-label>
+                            <nz-form-label nzRequired nzFor="account_number">N de compte</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
                                 <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="number" id="account_number">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-6">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="rip">RIP</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24">
@@ -138,23 +138,23 @@
                         </nz-form-item>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
                         <nz-form-item>
-                            <nz-form-label nzRequired nzFor="key">Clé</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="La clé est requi">
+                            <nz-form-label nzRequired nzFor="key">Cle</nz-form-label>
+                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="La cle est requi">
                                 <input [(ngModel)]="professor.account.key" formControlName="key" nz-input name="key" type="text" id="key">
                             </nz-form-control>
                         </nz-form-item>
                     </div>
-                    <div class="col-md-6">
+                    <div>
                         <nz-form-item>
                             <nz-form-label nzRequired nzFor="bank_id">Banque</nz-form-label>
                             <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la banque">
                                 <nz-select [nzLoading]="isLoadData" formControlName="bank_id" [(ngModel)]="professor.account.bank_id">
-                                    <ng-container *ngFor="let o of banks">
+                                    @for (o of banks; track o) {
                                         <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
+                                    }
                                 </nz-select>
                             </nz-form-control>
                         </nz-form-item>

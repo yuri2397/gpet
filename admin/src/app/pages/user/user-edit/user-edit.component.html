@@ -1,15 +1,15 @@
 <div>
     <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm">
-        <div class="row">
-            <div class="col-md-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
                 <nz-form-item>
-                    <nz-form-label nzRequired nzFor="first_name">Prénoms</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le prénom est requi">
+                    <nz-form-label nzRequired nzFor="first_name">Prenoms</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le prenom est requi">
                         <input [(ngModel)]="user.first_name" formControlName="first_name" nz-input name="first_name" type="text" id="first_name">
                     </nz-form-control>
                 </nz-form-item>
             </div>
-            <div class="col-md-6">
+            <div>
                 <nz-form-item>
                     <nz-form-label nzFor="last_name">Nom</nz-form-label>
                     <nz-form-control [nzSm]="24" [nzXs]="24">
@@ -18,35 +18,37 @@
                 </nz-form-item>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
                 <nz-form-item>
                     <nz-form-label nzRequired nzFor="email">Adresse Email</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le prénom est requi">
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le prenom est requi">
                         <input [(ngModel)]="user.email" formControlName="email" nz-input name="email" type="email" id="email">
                     </nz-form-control>
                 </nz-form-item>
             </div>
-            <div class="col-md-6">
+            <div>
                 <nz-form-item>
-                    <nz-form-label nzFor="roles">Département</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
+                    <nz-form-label nzFor="roles">Departement</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le departement">
                         <nz-select [nzDisabled]="disableDep" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="user.departement_id">
-                            <ng-container *ngFor="let o of departements">
+                            @for (o of departements; track o) {
                                 <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                            </ng-container>
+                            }
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
                 <nz-form-item>
-                    <nz-form-label nzFor="roles">Rôles</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Modifier les rôles">
-                        <nz-select [(ngModel)]="selectedRoles" formControlName="roles" name="roles" id="roles" nzPlaceHolder="Ajouter des rôles" nzMode="multiple">
-                            <nz-option *ngFor="let option of roles" [nzLabel]="option.name.toUpperCase()" [nzValue]="option.name"></nz-option>
+                    <nz-form-label nzFor="roles">Roles</nz-form-label>
+                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Modifier les roles">
+                        <nz-select [(ngModel)]="selectedRoles" formControlName="roles" name="roles" id="roles" nzPlaceHolder="Ajouter des roles" nzMode="multiple">
+                            @for (option of roles; track option) {
+                                <nz-option [nzLabel]="option.name.toUpperCase()" [nzValue]="option.name"></nz-option>
+                            }
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>

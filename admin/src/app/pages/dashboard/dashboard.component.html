@@ -1,159 +1,80 @@
-<ng-container *ngIf="!isLoad; else elseTemplate">
-    <div class="container-fluid ">
-        <h4 class="color-geekblue bold">Dashboard</h4>
-        <br>
-        <div class="row">
-            <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
-                <div class="card border card-body shadow-sm raduis-sm">
-                    <a class="link" routerLink="/admin/professeurs">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <mat-icon class="mat-30 mx-2 color-orange">groups</mat-icon>
+@if (!isLoad) {
+<div>
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
 
-                            </div>
-                            <div>
-                                <span class="h5 mx-3 color-orange">Professeurs</span>
-                            </div>
-                        </div>
-                    </a>
-                    <nz-divider class="my-1"></nz-divider>
-                    <div>
-                        <h3 class="color-geekblue bold">{{ dashboard.professors }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
-                <div class="card card-body border shadow-sm raduis-sm">
-                    <a class="link" routerLink="/admin/classes">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <mat-icon class="mat-30 mx-2 color-green">maps_home_work</mat-icon>
-
-                            </div>
-                            <div>
-                                <span class="h5 mx-3 color-green">Classes</span>
-                            </div>
-                        </div>
-                    </a>
-                    <nz-divider class="my-1"></nz-divider>
-                    <div>
-                        <h3 class="color-geekblue bold">{{ dashboard.classes }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3  col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
-                <div class="card card-body shadow-sm border raduis-sm">
-                    <a class="link" routerLink="/admin/salles">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <mat-icon class="mat-30 mx-2 color-volcano">maps_home_work</mat-icon>
-                            </div>
-                            <div>
-                                <span class="h5 mx-3 color-volcano">Salles</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <nz-divider class="my-1"></nz-divider>
-                    <div>
-                        <h3 class="color-geekblue bold">{{ dashboard.salles }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-xs-12 my-sm-3 my-xs-3">
-                <div class="card card-body border shadow-sm raduis-sm">
-                    <a class="link" routerLink="/admin/courses">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <mat-icon class="mat-30 mx-2 color-geekblue">auto_stories</mat-icon>
-                            </div>
-                            <div>
-                                <span class="h5 mx-3 color-geekblue">Cours</span>
-                            </div>
-                        </div>
-                    </a>
-                    <nz-divider class="my-1"></nz-divider>
-                    <div>
-                        <h3 class="color-geekblue bold">{{ dashboard.courses }}</h3>
-                    </div>
-                </div>
-            </div>
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <!-- Professors -->
+    <a routerLink="/admin/professeurs" class="no-underline">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
+            <mat-icon class="text-orange-500">groups</mat-icon>
+          </div>
+          <span class="text-sm font-medium text-gray-500">Professeurs</span>
         </div>
-        <div class="row">
-            <div class="col">
-                <div class="card card-body border raduis-sm shadow-sm">
-                    <nz-select nzSize="large" (ngModelChange)="updateChart($event)" [nzPlaceHolder]="'Filtre par jour'"
-                        [(ngModel)]="selectedDay">
-                        <nz-option *ngFor="let item of days" nzValue="{{ item.id }}"
-                            nzLabel="{{ item.name|uppercase }}"></nz-option>
-                    </nz-select>
-                    <br>
-                    <div *ngIf="!isLoadChart else loadChart" id="chart">
-                        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
-                            [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!"
-                            [colors]="chartOptions.colors!"></apx-chart>
-                    </div>
-                    
-                    
-                </div>
-            </div>
+        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.professors }}</p>
+      </div>
+    </a>
 
+    <!-- Classes -->
+    <a routerLink="/admin/classes" class="no-underline">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+            <mat-icon class="text-green-500">maps_home_work</mat-icon>
+          </div>
+          <span class="text-sm font-medium text-gray-500">Classes</span>
         </div>
+        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.classes }}</p>
+      </div>
+    </a>
+
+    <!-- Salles -->
+    <a routerLink="/admin/salles" class="no-underline">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+            <mat-icon class="text-red-500">meeting_room</mat-icon>
+          </div>
+          <span class="text-sm font-medium text-gray-500">Salles</span>
+        </div>
+        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.salles }}</p>
+      </div>
+    </a>
+
+    <!-- Cours -->
+    <a routerLink="/admin/courses" class="no-underline">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
+            <mat-icon class="text-blue-500">auto_stories</mat-icon>
+          </div>
+          <span class="text-sm font-medium text-gray-500">Cours</span>
+        </div>
+        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.courses }}</p>
+      </div>
+    </a>
+  </div>
+
+  <!-- Chart -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="mb-4">
+      <nz-select nzSize="large" (ngModelChange)="updateChart($event)" nzPlaceHolder="Filtrer par jour" [(ngModel)]="selectedDay" class="w-full max-w-xs">
+        @for (item of days; track item.id) {
+          <nz-option [nzValue]="item.id.toString()" [nzLabel]="item.name | uppercase"></nz-option>
+        }
+      </nz-select>
     </div>
-    <br><br><br>
-</ng-container>
-<ng-template #elseTemplate>
-    <app-load></app-load>
-</ng-template><ng-template #loadChart>
-    <div class="center">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: white; display: block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                <defs>
-                  <filter id="ldio-eets6442tn8-filter" x="-100%" y="-100%" width="300%" height="300%" color-interpolation-filters="sRGB">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2.4000000000000004"></feGaussianBlur>
-                    <feComponentTransfer result="cutoff">
-                      <feFuncA type="table" tableValues="0 0 0 0 0 0 1 1 1 1 1"></feFuncA>
-                    </feComponentTransfer>
-                  </filter>
-                </defs>
-                <g filter="url(#ldio-eets6442tn8-filter)"><g transform="translate(50 50)">
-                <g>
-                  <circle cx="17" cy="0" r="5" fill="#81909d">
-                    <animate attributeName="r" keyTimes="0;0.5;1" values="3.5999999999999996;8.399999999999999;3.5999999999999996" dur="4s" repeatCount="indefinite" begin="-0.25s"></animate>
-                  </circle>
-                  <animateTransform attributeName="transform" type="rotate" keyTimes="0;1" values="0;360" dur="4s" repeatCount="indefinite" begin="0s"></animateTransform>
-                </g>
-                </g><g transform="translate(50 50)">
-                <g>
-                  <circle cx="17" cy="0" r="5" fill="#41729f">
-                    <animate attributeName="r" keyTimes="0;0.5;1" values="3.5999999999999996;8.399999999999999;3.5999999999999996" dur="2s" repeatCount="indefinite" begin="-0.2s"></animate>
-                  </circle>
-                  <animateTransform attributeName="transform" type="rotate" keyTimes="0;1" values="0;360" dur="2s" repeatCount="indefinite" begin="-0.05s"></animateTransform>
-                </g>
-                </g><g transform="translate(50 50)">
-                <g>
-                  <circle cx="17" cy="0" r="5" fill="#41729f">
-                    <animate attributeName="r" keyTimes="0;0.5;1" values="3.5999999999999996;8.399999999999999;3.5999999999999996" dur="1.3333333333333333s" repeatCount="indefinite" begin="-0.15s"></animate>
-                  </circle>
-                  <animateTransform attributeName="transform" type="rotate" keyTimes="0;1" values="0;360" dur="1.3333333333333333s" repeatCount="indefinite" begin="-0.1s"></animateTransform>
-                </g>
-                </g><g transform="translate(50 50)">
-                <g>
-                  <circle cx="17" cy="0" r="5" fill="#81909d">
-                    <animate attributeName="r" keyTimes="0;0.5;1" values="3.5999999999999996;8.399999999999999;3.5999999999999996" dur="1s" repeatCount="indefinite" begin="-0.1s"></animate>
-                  </circle>
-                  <animateTransform attributeName="transform" type="rotate" keyTimes="0;1" values="0;360" dur="1s" repeatCount="indefinite" begin="-0.15s"></animateTransform>
-                </g>
-                </g><g transform="translate(50 50)">
-                <g>
-                  <circle cx="17" cy="0" r="5" fill="#41729f">
-                    <animate attributeName="r" keyTimes="0;0.5;1" values="3.5999999999999996;8.399999999999999;3.5999999999999996" dur="0.8s" repeatCount="indefinite" begin="-0.05s"></animate>
-                  </circle>
-                  <animateTransform attributeName="transform" type="rotate" keyTimes="0;1" values="0;360" dur="0.8s" repeatCount="indefinite" begin="-0.2s"></animateTransform>
-                </g>
-                </g></g>
-             </svg>
-             <span>Chargement en cours...</span>
-        </div>
-    </div>
-</ng-template>
+    @if (!isLoadChart) {
+      <div id="chart">
+        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!" [colors]="chartOptions.colors!"></apx-chart>
+      </div>
+    } @else {
+      <app-load></app-load>
+    }
+  </div>
+</div>
+} @else {
+  <app-load></app-load>
+}

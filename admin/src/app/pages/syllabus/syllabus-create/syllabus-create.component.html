@@ -1,9 +1,8 @@
-<div class="card shadow">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-12">
+<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+  <div class="p-6">
+    <div class="grid grid-cols-12 gap-4">
+      <div class="col-span-12">
         <nz-page-header
-          class="site-page-header center"
           class="site-page-header"
           (nzBack)="onBack()"
           [nzBackIcon]="backTemp"
@@ -17,10 +16,10 @@
         </button>
       </ng-template>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <div class="card card-body">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 gap-4">
+        <div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6">
             <textarea
               nz-input
               [nzAutosize]="{ minRows: 10, maxRows: 20 }"
