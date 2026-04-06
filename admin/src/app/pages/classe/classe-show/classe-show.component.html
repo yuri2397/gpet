@@ -8,8 +8,8 @@
             nzTitle="{{ classe.name }} - {{ departement.name }}"></nz-page-header>
         </div>
         <ng-template #backTemp>
-          <button class="m-2" mat-mini-fab color="primary">
-            <mat-icon>arrow_back</mat-icon>
+          <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+            <app-icon name="arrow_back" />
           </button>
         </ng-template>
       </div>
@@ -45,68 +45,54 @@
                         <div style="z-index: 500" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                           @for (item of panel.data; track item) {
                             <div>
-                              <mat-card class="shadow-lg">
-                                <mat-card-subtitle>{{ item.course.name | uppercase }}
-                                </mat-card-subtitle>
-                                <mat-card-content>
+                              <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                                <div class="px-4 py-2 bg-gray-50 border-b border-gray-100">
+                                  <span class="font-semibold text-sm">{{ item.course.name | uppercase }}</span>
+                                </div>
+                                <div class="p-4">
                                   <div class="flex items-center my-2">
-                                    <mat-icon class="mx-2">alarm</mat-icon>
-                                    <nz-tag [nzColor]="'cyan'">{{ item.start }} | {{ item.end }}
-                                    </nz-tag>
+                                    <app-icon name="alarm" class="mx-2" />
+                                    <nz-tag [nzColor]="'cyan'">{{ item.start }} | {{ item.end }}</nz-tag>
                                   </div>
                                   <div class="flex items-center">
-                                    <mat-icon class="mx-2">place</mat-icon>
+                                    <app-icon name="place" class="mx-2" />
                                     <nz-tag [nzColor]="'warning'">
                                       @if (item.salle && item.salle.name != null) {
                                         Salle N° {{ item.salle.number }}
                                       } @else {
-                                        {{ item.salle?.number }} -
-                                        {{ item.salle?.name }}
+                                        {{ item.salle?.number }} - {{ item.salle?.name }}
                                       }
                                     </nz-tag>
                                   </div>
-                                  <nz-alert class="mt-5" nzType="info" [nzMessage]="
-                                      item.course.professor?.first_name +
-                                      ' ' +
-                                      item.course.professor?.last_name
-                                    " nzShowIcon>
-                                  </nz-alert>
-                                </mat-card-content>
-                                <mat-card-actions>
-                                  <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzDanger
+                                  <nz-alert class="mt-3" nzType="info" [nzMessage]="item.course.professor?.first_name + ' ' + item.course.professor?.last_name" nzShowIcon></nz-alert>
+                                </div>
+                                <div class="flex gap-2 px-4 py-3 border-t border-gray-100">
+                                  <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzDanger nzSize="small"
                                     nz-popconfirm nzPopconfirmTitle="Merci de confirmer votre action."
                                     nzPopconfirmPlacement="bottom" (nzOnConfirm)="removeEPT(panel, item)">
                                     <i nz-icon nzType="delete"></i>
                                   </button>
-                                  <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle"
-                                    class="mx-2" (click)="editEPT(panel, item)">
+                                  <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzSize="small"
+                                    (click)="editEPT(panel, item)">
                                     <i nz-icon nzType="edit"></i>
                                   </button>
-                                </mat-card-actions>
-                                <mat-card-footer>
-                                  @if (item.removeLoad) {
-                                    <mat-progress-bar mode="indeterminate">
-                                    </mat-progress-bar>
-                                  }
-                                </mat-card-footer>
-                              </mat-card>
+                                </div>
+                                @if (item.removeLoad) {
+                                  <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
+                                }
+                              </div>
                             </div>
                           }
                           <div>
-                            <mat-card class="shadow-lg">
-                              <mat-card-subtitle>Ajouter un nouveau cours</mat-card-subtitle>
-                              <mat-card-content>
-                                <button mat-mini-fab color="primary" (click)="openCreateModal(panel)">
-                                  <mat-icon>add</mat-icon>
-                                </button>
-                              </mat-card-content>
-                              <mat-card-footer>
-                                @if (panel.addLoad) {
-                                  <mat-progress-bar mode="indeterminate">
-                                  </mat-progress-bar>
-                                }
-                              </mat-card-footer>
-                            </mat-card>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col items-center justify-center p-6 min-h-[120px]">
+                              <p class="text-sm text-gray-500 mb-3">Ajouter un nouveau cours</p>
+                              <button class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer" (click)="openCreateModal(panel)">
+                                <app-icon name="add" />
+                              </button>
+                              @if (panel.addLoad) {
+                                <div class="h-1 w-full bg-gray-200 overflow-hidden rounded mt-3"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
+                              }
+                            </div>
                           </div>
                         </div>
                       }
@@ -119,8 +105,8 @@
               <div class="flex items-center justify-end">
                 <div class="mx-1">Exporter en PDF</div>
                 <div>
-                  <button (click)="exportPDF()" mat-mini-fab class="shadow-lg m-2" color="primary">
-                    <mat-icon class="mat-18">file_download</mat-icon>
+                  <button (click)="exportPDF()" class="shadow-lg m-2">
+                    <app-icon name="file_download" class="mat-18" />
                   </button>
                 </div>
               </div>

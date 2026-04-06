@@ -13,8 +13,8 @@
                             ></nz-page-header>
                         </div>
                         <ng-template #backTemp>
-                            <button class="m-2" mat-mini-fab color="primary">
-                                <mat-icon>arrow_back</mat-icon>
+                            <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                                <app-icon name="arrow_back" />
                             </button>
                         </ng-template>
                     </div>
@@ -32,7 +32,7 @@
                                             [nzValueStyle]="{ color: '#3F8600' }"
                                         ></nz-statistic>
                                         <ng-template #prefixTplProf>
-                                            <mat-icon>people</mat-icon>
+                                            <app-icon name="people" />
                                         </ng-template>
                                     </div>
                                 </div>
@@ -47,7 +47,7 @@
                                             [nzValueStyle]="{ color: '#41729f' }"
                                         ></nz-statistic>
                                         <ng-template #prefixTplClasses>
-                                            <mat-icon>school</mat-icon>
+                                            <app-icon name="school" />
                                         </ng-template>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                             [nzValueStyle]="{ color: '#3F8600' }"
                                         ></nz-statistic>
                                         <ng-template #prefixTplCours>
-                                            <mat-icon>emoji_objects</mat-icon>
+                                            <app-icon name="emoji_objects" />
                                         </ng-template>
                                     </div>
                                 </div>

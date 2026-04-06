@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LoginResponse } from 'src/app/models/login-response';
 import { AuthService } from 'src/app/services/auth.service';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { NotificationService } from 'src/app/services/notification.service';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -43,11 +44,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-login',
@@ -94,11 +91,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   NzCheckboxModule,
   ],
   templateUrl: './login.component.html',
@@ -109,6 +102,7 @@ export class LoginComponent implements OnInit {
   private notification = inject(NotificationService);
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private authStore = inject(AuthStore);
 
   validateForm!: FormGroup;
   isLoad = false;
@@ -124,7 +118,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.alreadyConnect();
+    if (this.authStore.isLoggedIn()) {
+      if (this.authStore.isAdmin()) {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/professor']);
+      }
+      return;
+    }
     this.validateForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.min(6)]],
@@ -151,12 +152,8 @@ export class LoginComponent implements OnInit {
       });
   }
   afterLogin(response: LoginResponse) {
-    this.authService.setRoles(response.user.roles);
-    this.authService.setPermissions(response.user.permissions);
-    this.authService.setToken(response.token);
-    this.authService.setUser(response.user);
-    this.authService.setDepartement(response.departement);
-    if (this.authService.isAdmin()) this.router.navigate(['/admin/dashboard']);
+    this.authStore.setAuth(response.user, response.token);
+    if (this.authStore.isAdmin()) this.router.navigate(['/admin/dashboard']);
     else this.router.navigate(['/professor']);
   }
 }

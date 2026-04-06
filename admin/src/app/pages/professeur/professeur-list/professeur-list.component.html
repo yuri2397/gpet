@@ -4,8 +4,8 @@
       <div class="flex justify-between items-center">
         <h5 class="text-white text-lg font-semibold m-0">Liste des professeurs</h5>
         @if (can('creer professeur') && !setView) {
-          <button (click)="openCreateModal()" mat-mini-fab color="default">
-            <mat-icon>add</mat-icon>
+          <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+            <app-icon name="add" />
           </button>
         }
       </div>
@@ -24,11 +24,11 @@
       </div>
       <nz-table
         nzTableLayout="fixed"
-        [nzLoading]="isLoad"
+        [nzLoading]="isLoad()"
         nzShowSizeChanger
         [nzPageSizeOptions]="[5, 10, 20, 30]"
         #basicTable
-        [nzData]="listOfDisplayData"
+        [nzData]="listOfDisplayData()"
         [nzBordered]="true"
       >
         <thead>

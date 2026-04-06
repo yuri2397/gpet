@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="p-6">
-        <nz-table [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="banks" [nzBordered]="true">
+        <nz-table [nzLoading]="isLoad()" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="banks()" [nzBordered]="true">
             <thead>
                 <tr class="text-center">
                     <th class="text-center">Code</th>

@@ -23,7 +23,7 @@
                         </div>
                         <div class="mt-3">
                             @if (deleteUserLoad) {
-                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                                <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                             }
                         </div>
                     </nz-card>
@@ -50,7 +50,7 @@
                             <th nzCustomFilter>
                                 Permissions
                                 <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-                                    <mat-icon class="mat-18">search</mat-icon>
+                                    <app-icon name="search" class="mat-18" />
                                 </nz-filter-trigger>
                             </th>
                         </thead>

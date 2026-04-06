@@ -6,7 +6,7 @@
                     @if (can('creer semestre')) {
                         <div class="mx-2">
                             <button (click)="openCreateSemesterModal()" mat-fab color="default">
-                                <mat-icon>add</mat-icon>
+                                <app-icon name="add" />
                             </button>
                             <h5 class="text-white mx-2 inline-block text-lg font-semibold">AJOUTER UN SEMESTRE</h5>
                         </div>
@@ -93,7 +93,7 @@
                                                                 <span class="mx-2">SUPPRIMER L'UE</span>
                                                             </div>
                                                             @if (data.deleted) {
-                                                                <mat-progress-bar [color]="'warn'" class="mt-3" mode="indeterminate"></mat-progress-bar>
+                                                                <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                                                             }
                                                         </div>
                                                     </ng-template>
@@ -138,7 +138,7 @@
                                                                         }
                                                                     </div>
                                                                     @if (ec.deleted) {
-                                                                        <mat-progress-bar [color]="'warn'" class="mt-3" mode="indeterminate"></mat-progress-bar>
+                                                                        <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                                                                     }
                                                                 </td>
                                                             </tr>

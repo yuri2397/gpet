@@ -30,7 +30,7 @@
               (click)="routerLink(item)"
               class="!rounded-lg !my-1"
             >
-              <mat-icon class="text-lg align-middle">{{ item.icon }}</mat-icon>
+              <app-icon [name]="item.icon" class="text-lg align-middle" />
               <span class="ml-3 text-sm font-medium">{{ item.title }}</span>
             </li>
           }
@@ -53,7 +53,7 @@
         <span class="text-lg font-semibold text-primary">{{ depTitle() }}</span>
 
         <a [routerLink]="['profile']" class="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white hover:bg-primary-dark transition-colors no-underline">
-          <mat-icon class="text-xl">person</mat-icon>
+          <app-icon name="person" class="text-xl" />
         </a>
       </div>
     </nz-header>

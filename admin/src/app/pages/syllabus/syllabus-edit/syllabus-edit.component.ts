@@ -8,8 +8,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { SyllabusService } from 'src/app/services/syllabus.service';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -45,9 +44,6 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-syllabus-edit',
@@ -94,11 +90,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './syllabus-edit.component.html',
   styleUrls: ['./syllabus-edit.component.scss']

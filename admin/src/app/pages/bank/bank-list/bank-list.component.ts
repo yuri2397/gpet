@@ -1,12 +1,12 @@
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Bank } from 'src/app/models/bank';
 import { BankService } from 'src/app/services/bank.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { RoleService } from 'src/app/services/role.service';
 import { BankEditComponent } from '../bank-edit/bank-edit.component';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -45,11 +45,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-bank-list',
@@ -96,11 +92,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './bank-list.component.html',
   styleUrls: ['./bank-list.component.scss'],
@@ -110,9 +102,10 @@ export class BankListComponent implements OnInit {
   private notification = inject(NotificationService);
   private modalService = inject(NzModalService);
   public roleService = inject(RoleService);
+  private authStore = inject(AuthStore);
 
-  banks!: Bank[];
-  isLoad = true;
+  banks = signal<Bank[]>([]);
+  isLoad = signal(true);
   deleteBankRef!: NzModalRef;
   deleteLoad!: boolean;
 
@@ -121,14 +114,14 @@ export class BankListComponent implements OnInit {
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.bankService.findAll().subscribe({
       next: (response) => {
-        this.banks = response;
-        this.isLoad = false;
+        this.banks.set(response);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
@@ -193,9 +186,6 @@ export class BankListComponent implements OnInit {
   }
 
   can(permission: string) {
-    let p = new Permission();
-    p.name = permission;
-    let test = this.roleService.can(p, this.bankService.getPermissions());
-    return test;
+    return this.authStore.hasPermission(permission);
   }
 }

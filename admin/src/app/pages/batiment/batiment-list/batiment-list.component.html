@@ -5,13 +5,13 @@
         <h3 class="text-white font-semibold text-lg m-0">Liste des batiments</h3>
         @if (can('creer batiment')) {
           <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
-            <mat-icon class="text-xl">add</mat-icon>
+            <app-icon name="add" class="text-xl" />
           </button>
         }
       </div>
     </div>
     <div class="p-6">
-      <nz-table [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="batiments" [nzBordered]="false" nzSize="middle">
+      <nz-table [nzLoading]="isLoad()" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="batiments()" [nzBordered]="false" nzSize="middle">
         <thead>
           <tr>
             <th>Nom</th>

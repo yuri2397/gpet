@@ -6,16 +6,16 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <button nz-tooltip [nzTooltipTitle]="'Revenir en arriere'" class="mx-2" (click)="onBack()"
-                            mat-mini-fab color="default">
-                            <mat-icon>arrow_back</mat-icon>
+                            class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                            <app-icon name="arrow_back" />
                         </button>
                     </div>
                     <div>
                         <div class="flex justify-end items-center">
                             <div class="mx-1">
                                 <button (click)="printAll()" nz-tooltip [nzTooltipTitle]="'Imprimer tous les etats'"
-                                    mat-mini-fab color="basic">
-                                    <mat-icon>print</mat-icon>
+                                    color="basic">
+                                    <app-icon name="print" />
                                 </button>
                             </div>
                         </div>
@@ -70,9 +70,9 @@
                             <td>
                                 <div class="flex justify-center">
                                     <div>
-                                        <button [disabled]="!data.is_paid" (click)="printPayment(data)" mat-mini-fab
+                                        <button [disabled]="!data.is_paid" (click)="printPayment(data)"
                                             color="warn">
-                                            <mat-icon>print</mat-icon>
+                                            <app-icon name="print" />
                                         </button>
                                     </div>
                                 </div>

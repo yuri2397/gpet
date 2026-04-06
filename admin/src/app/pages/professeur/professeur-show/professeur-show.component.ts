@@ -1,10 +1,6 @@
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
@@ -99,11 +95,7 @@ import { CourseHistoryComponent } from 'src/app/pages/course/course-history/cour
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ErrorServerComponent,
   CourseHistoryComponent,
   ],

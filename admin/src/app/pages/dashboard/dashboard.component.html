@@ -1,60 +1,13 @@
-@if (!isLoad) {
+@if (!isLoad()) {
 <div>
   <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
 
   <!-- Stats Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-    <!-- Professors -->
-    <a routerLink="/admin/professeurs" class="no-underline">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
-            <mat-icon class="text-orange-500">groups</mat-icon>
-          </div>
-          <span class="text-sm font-medium text-gray-500">Professeurs</span>
-        </div>
-        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.professors }}</p>
-      </div>
-    </a>
-
-    <!-- Classes -->
-    <a routerLink="/admin/classes" class="no-underline">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-            <mat-icon class="text-green-500">maps_home_work</mat-icon>
-          </div>
-          <span class="text-sm font-medium text-gray-500">Classes</span>
-        </div>
-        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.classes }}</p>
-      </div>
-    </a>
-
-    <!-- Salles -->
-    <a routerLink="/admin/salles" class="no-underline">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
-            <mat-icon class="text-red-500">meeting_room</mat-icon>
-          </div>
-          <span class="text-sm font-medium text-gray-500">Salles</span>
-        </div>
-        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.salles }}</p>
-      </div>
-    </a>
-
-    <!-- Cours -->
-    <a routerLink="/admin/courses" class="no-underline">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <mat-icon class="text-blue-500">auto_stories</mat-icon>
-          </div>
-          <span class="text-sm font-medium text-gray-500">Cours</span>
-        </div>
-        <p class="text-3xl font-bold text-gray-800 m-0">{{ dashboard.courses }}</p>
-      </div>
-    </a>
+    <app-stat-card label="Professeurs" [value]="dashboard().professors" icon="groups" link="/admin/professeurs" color="orange" />
+    <app-stat-card label="Classes" [value]="dashboard().classes" icon="ballot" link="/admin/classes" color="green" />
+    <app-stat-card label="Salles" [value]="dashboard().salles" icon="meeting_room" link="/admin/salles" color="red" />
+    <app-stat-card label="Cours" [value]="dashboard().courses" icon="history_edu" link="/admin/courses" color="blue" />
   </div>
 
   <!-- Chart -->
@@ -66,7 +19,7 @@
         }
       </nz-select>
     </div>
-    @if (!isLoadChart) {
+    @if (!isLoadChart()) {
       <div id="chart">
         <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!" [colors]="chartOptions.colors!"></apx-chart>
       </div>

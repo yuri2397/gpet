@@ -13,12 +13,12 @@
             <div class="bg-white rounded-xl m-2 shadow-sm border border-gray-100 raduis-sm">
                 <img [src]="user.avatar" class="user-avatar card-img-top" alt="" />
                 @if (avatarLoad) {
-                    <mat-progress-bar [mode]="'indeterminate'" color="primary"></mat-progress-bar>
+                    <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                 }
                 <div class="flex justify-center my-3 btn-icon">
                     <div>
                         <button mat-fab color="basic" class="shadow-lg" (click)="image.click()">
-              <mat-icon>edit</mat-icon>
+              <app-icon name="edit" />
               <form enctype="multipart/form-data">
                 <input
                   #image

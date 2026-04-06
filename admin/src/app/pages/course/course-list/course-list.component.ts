@@ -2,7 +2,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CourseCreateComponent } from './../course-create/course-create.component';
 import { CanDeleteComponent } from './../../../shared/ui/can-delete/can-delete.component';
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { Classe } from 'src/app/models/classe';
@@ -14,7 +14,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { Semester } from 'src/app/models/semester';
 import { Professor } from 'src/app/models/professor';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { RouterModule } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -52,11 +52,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-course-list',
@@ -103,11 +99,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   CanDeleteComponent,
   ],
   templateUrl: './course-list.component.html',
@@ -117,6 +109,7 @@ export class CourseListComponent implements OnInit {
   private notification = inject(NotificationService);
   private modalService = inject(NzModalService);
   courseService = inject(CourseService);
+  private authStore = inject(AuthStore);
 
   @Output() coursesChange: EventEmitter<Course[]> = new EventEmitter();
   departements!: Departement[];
@@ -125,23 +118,23 @@ export class CourseListComponent implements OnInit {
   @Input() classe!: Classe;
   @Input() setView!: boolean;
   services!: Service[];
-  isLoad = false;
+  isLoad = signal(false);
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedCourse!: Course;
   semesters!: Semester[];
   professors!: Professor[];
   selectableLoad!: boolean;
-  canDeleteVisible = false;
+  canDeleteVisible = signal(false);
   canDeleteMessage!: string;
   response!: CourseResponse;
-  searchValue = '';
-  currentPage: number = 1;
-  pageSize: number = 10;
+  searchValue = signal('');
+  currentPage = signal(1);
+  pageSize = signal(10);
 
   ngOnInit(): void {
     this.canDeleteInit();
-    if (this.courses == null) this.findAll(this.currentPage, this.pageSize);
+    if (this.courses == null) this.findAll(this.currentPage(), this.pageSize());
   }
 
   canDeleteInit() {
@@ -153,24 +146,23 @@ export class CourseListComponent implements OnInit {
   }
 
   findAll(page = 1, pageSize = 5) {
-    this.isLoad = true;
-    this.pageChange
-    this.courseService.findAll(page, pageSize, this.searchValue).subscribe({
+    this.isLoad.set(true);
+    this.courseService.findAll(page, pageSize, this.searchValue()).subscribe({
       next: (response) => {
          this.response = response;
         this.courses = response.data;
         this.coursesChange.emit(response.data);
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
 
   pageChange(index: number){
-    this.currentPage = index;
-    this.pageSize = this.response.per_page;
+    this.currentPage.set(index);
+    this.pageSize.set(this.response.per_page);
     this.findAll(index, this.response.per_page)
   }
 
@@ -196,10 +188,10 @@ export class CourseListComponent implements OnInit {
   }
 
   search(){
-    if(this.searchValue.length >= 3){
-      this.findAll(this.currentPage, this.pageSize)
+    if(this.searchValue().length >= 3){
+      this.findAll(this.currentPage(), this.pageSize())
     }else{
-      this.findAll(1, this.pageSize);
+      this.findAll(1, this.pageSize());
     }
   }
 
@@ -217,15 +209,12 @@ export class CourseListComponent implements OnInit {
     });
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.courseService.can(p, this.courseService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 
   isSuperAdmin(){
-    return this.courseService.isSuperAdmin();
+    return this.authStore.isSuperAdmin();
   }
 
   deleteCourse(course: Course) {
@@ -271,10 +260,10 @@ export class CourseListComponent implements OnInit {
 
   canNotDelete() {
     this.canDeleteMessage = 'Ce cour est lie à une classe et à un professeur.';
-    this.canDeleteVisible = true;
+    this.canDeleteVisible.set(true);
   }
 
   onCanDeleteClose() {
-    this.canDeleteVisible = false;
+    this.canDeleteVisible.set(false);
   }
 }

@@ -8,8 +8,8 @@
             nzTitle="{{ course.acronym }} - {{ course.name }}"></nz-page-header>
         </div>
         <ng-template #backTemp>
-          <button class="m-2" mat-mini-fab color="primary">
-            <mat-icon>arrow_back</mat-icon>
+          <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+            <app-icon name="arrow_back" />
           </button>
         </ng-template>
       </div>
@@ -89,13 +89,13 @@
             </div>
             <div>
               @if (course.syllabus == null) {
-                <button (click)="openCreateModal()" mat-mini-fab color="default">
-                  <mat-icon>add</mat-icon>
+                <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                  <app-icon name="add" />
                 </button>
               }
               @if (course.syllabus != null) {
-                <button (click)="openEditModal()" mat-mini-fab color="default">
-                  <mat-icon>edit</mat-icon>
+                <button (click)="openEditModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                  <app-icon name="edit" />
                 </button>
               }
             </div>

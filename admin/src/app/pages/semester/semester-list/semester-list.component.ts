@@ -10,9 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { UEService } from 'src/app/services/ue.service';
 import { UeEditComponent } from '../../ue/ue-edit/ue-edit.component';
 import { SemesterCreateComponent } from '../semester-create/semester-create.component';
@@ -58,8 +56,6 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-semester-list',
@@ -106,11 +102,7 @@ import { MatTableModule } from '@angular/material/table';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   LoadComponent,
   CanDeleteComponent,
   ],

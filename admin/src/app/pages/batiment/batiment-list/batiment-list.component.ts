@@ -1,12 +1,12 @@
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { BatimentService } from 'src/app/services/batiment.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { BatimentCreateComponent } from '../batiment-create/batiment-create.component';
 import { BatimentEditComponent } from './../batiment-edit/batiment-edit.component';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -45,11 +45,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-batiment-list',
@@ -96,11 +92,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './batiment-list.component.html',
   styleUrls: ['./batiment-list.component.scss'],
@@ -109,10 +101,11 @@ export class BatimentListComponent implements OnInit {
   private notification = inject(NotificationService);
   private modalService = inject(NzModalService);
   private batimentService = inject(BatimentService);
+  private authStore = inject(AuthStore);
 
-  batiments!: Batiment[];
+  batiments = signal<Batiment[]>([]);
   selectedBatiment!: Batiment;
-  isLoad = true;
+  isLoad = signal(true);
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
 
@@ -121,14 +114,14 @@ export class BatimentListComponent implements OnInit {
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.batimentService.findAll().subscribe({
       next: (batiments: Batiment[]) => {
-        this.batiments = batiments;
-        this.isLoad = false;
+        this.batiments.set(batiments);
+        this.isLoad.set(false);
       },
       error: (errors: any) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
@@ -208,10 +201,7 @@ export class BatimentListComponent implements OnInit {
     });
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.batimentService.can(p, this.batimentService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 }

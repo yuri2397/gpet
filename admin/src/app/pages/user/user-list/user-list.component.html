@@ -6,8 +6,8 @@
             </div>
             @if (can('creer admin')) {
                 <div>
-                    <button (click)="openCreateModal()" mat-mini-fab color="default">
-                        <mat-icon>add</mat-icon>
+                    <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                        <app-icon name="add" />
                     </button>
                 </div>
             }
@@ -17,7 +17,7 @@
         <div class="my-2">
             <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prenom ou Nom ou Email ..." [(ngModel)]="searchValue" />
         </div>
-        <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
+        <nz-table class="scroll-table" [nzLoading]="isLoad()" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData()" [nzBordered]="true">
             <thead>
                 <tr>
                     <th>Avatar</th>

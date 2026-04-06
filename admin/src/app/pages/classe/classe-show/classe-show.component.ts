@@ -15,10 +15,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { Classe } from 'src/app/models/classe';
 import { ClasseService } from 'src/app/services/classe.service';
 import { Departement } from 'src/app/models/departement';
@@ -54,7 +51,6 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatTableModule } from '@angular/material/table';
 import jsPDF from 'jspdf';
 import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
@@ -106,11 +102,7 @@ import { CourseListComponent } from 'src/app/pages/course/course-list/course-lis
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   LoadComponent,
   ErrorServerComponent,
   CourseListComponent,

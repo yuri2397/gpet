@@ -6,8 +6,8 @@
             </div>
             @if (can('creer salle')) {
                 <div>
-                    <button (click)="openCreateModal()" mat-mini-fab color="default">
-                        <mat-icon>add</mat-icon>
+                    <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                        <app-icon name="add" />
                     </button>
                 </div>
             }
@@ -18,11 +18,11 @@
             <input type="text" nzSize="large" (input)="search()" nz-input placeholder="numero de salle" [(ngModel)]="searchValue"/>
         </div>
         <nz-table nzTableLayout="fixed"
-            [nzLoading]="isLoad"
+            [nzLoading]="isLoad()"
             [nzShowSizeChanger]="true"
             [nzPageSizeOptions]="[10,20,30]"
             #basicTable
-            [nzData]="listOfDisplayData"
+            [nzData]="listOfDisplayData()"
             [nzBordered]="true"
         >
             <thead>

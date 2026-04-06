@@ -6,8 +6,8 @@
                 <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp" nzTitle="Precedent"></nz-page-header>
             </div>
             <ng-template #backTemp>
-                <button class="m-2" mat-mini-fab color="primary">
-                    <mat-icon>arrow_back</mat-icon>
+                <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                    <app-icon name="arrow_back" />
                 </button>
             </ng-template>
         </div>
@@ -17,12 +17,12 @@
                     <div class="bg-white rounded-lg m-2 border border-gray-100">
                         <img [src]="userProfilePath()" class="w-full mx-auto rounded-t-lg" alt="" />
                         @if (avatarLoad) {
-                            <mat-progress-bar [mode]="'indeterminate'" color="primary"></mat-progress-bar>
+                            <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                         }
                         <div class="flex justify-center absolute top-[5px] right-[5px]">
                             <div>
                                 <button mat-fab color="basic" class="shadow-sm" (click)="image.click()">
-                                    <mat-icon>edit</mat-icon>
+                                    <app-icon name="edit" />
                                     <form enctype="multipart/form-data">
                                         <input #image type="file" nz-input hidden (change)="onChange($event)" />
                                     </form>
@@ -110,7 +110,7 @@
                             </nz-tabset>
                             <div>
                                 <button mat-fab color="basic" class="shadow-sm" (click)="openAddProfModal()">
-                              <mat-icon>edit</mat-icon>
+                              <app-icon name="edit" />
                           </button>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                             </div>
                             <div>
                                 <button mat-fab color="basic" class="shadow-sm" (click)="openModalbank()">
-                            <mat-icon>edit</mat-icon>
+                            <app-icon name="edit" />
                         </button>
                             </div>
                         </div>

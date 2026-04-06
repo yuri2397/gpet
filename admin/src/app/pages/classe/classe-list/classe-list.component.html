@@ -6,8 +6,8 @@
             </div>
             @if (can('creer classe') && !setView) {
                 <div>
-                    <button mat-mini-fab color="default" (click)="openCreateModal()">
-                        <mat-icon>add</mat-icon>
+                    <button class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer" (click)="openCreateModal()">
+                        <app-icon name="add" />
                     </button>
                 </div>
             }

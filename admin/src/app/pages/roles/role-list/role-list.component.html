@@ -8,8 +8,8 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6 m-2">
                     <div class="flex justify-start items-center">
                         <div class="m-2">
-                            <button (click)="openCreateModal(item)" mat-mini-fab color="primary">
-                            <mat-icon>add</mat-icon>
+                            <button (click)="openCreateModal(item)" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                            <app-icon name="add" />
                         </button>
                         </div>
                         <div>
@@ -37,8 +37,8 @@
                                 <td>
                                     <div class="flex justify-end items-center">
                                         <div>
-                                            <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deletePermissionForRole(data, item)" class="shadow-sm" mat-mini-fab [color]="'warn'">
-                                                <mat-icon class="mat-18">delete</mat-icon>
+                                            <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deletePermissionForRole(data, item)" class="shadow-sm" nzDanger>
+                                                <app-icon name="delete" class="mat-18" />
                                             </button>
                                         </div>
                                     </div>

@@ -1,12 +1,12 @@
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { RouterModule, Router } from '@angular/router';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { Departement } from 'src/app/models/departement';
-import { Permission } from 'src/app/models/permission';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { DepartementCreateComponent } from '../departement-create/departement-create.component';
 import { DepartementEditComponent } from '../departement-edit/departement-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -46,11 +46,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-departement-list',
@@ -97,11 +93,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './departement-list.component.html',
   styleUrls: ['./departement-list.component.scss'],
@@ -111,10 +103,11 @@ export class DepartementListComponent implements OnInit {
   private modalService = inject(NzModalService);
   private depService = inject(DepartementService);
   private router = inject(Router);
+  private authStore = inject(AuthStore);
 
-  departements!: Departement[];
+  departements = signal<Departement[]>([]);
   selectedDepartement!: Departement;
-  isLoad = true;
+  isLoad = signal(true);
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
 
@@ -123,14 +116,14 @@ export class DepartementListComponent implements OnInit {
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.depService.findAll().subscribe({
       next: (departements) => {
-        this.departements = departements;
-        this.isLoad = false;
+        this.departements.set(departements);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
@@ -211,9 +204,6 @@ export class DepartementListComponent implements OnInit {
   }
 
   can(permission: string) {
-    let p = new Permission();
-    p.name = permission;
-    let test = this.depService.can(p, this.depService.getPermissions());
-    return test;
+    return this.authStore.hasPermission(permission);
   }
 }
