@@ -11,7 +11,7 @@ import { ProfUser } from '../models/prof-user';
 })
 export class UserService extends BaseHttp {
 
-  protected _baseUrl = 'user';
+  protected override _baseUrl = 'user';
   constructor(protected hc: HttpClient, private router: Router) {
     super();
     this.http = hc;

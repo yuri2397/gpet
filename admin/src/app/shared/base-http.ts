@@ -1,13 +1,12 @@
-import { Permission } from 'src/app/models/permission';
-import { Role } from './../models/role';
+import { Permission } from '../models/permission';
+import { Role } from '../models/role';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { Day } from '../models/day';
 import { Departement } from '../models/departement';
-import { environment as env } from 'src/environments/environment';
-import { GestionRole } from './gestion-role';
+import { environment as env } from '../../environments/environment';
 
-export class BaseHttp  extends GestionRole{
+export class BaseHttp {
   private _host = env.host;
   private _api = env.api;
   protected _baseUrl!: string;
@@ -15,31 +14,28 @@ export class BaseHttp  extends GestionRole{
   private _editeur = 'chef de département';
   private _secretaire = 'editeur';
   private _admin = 'admin';
-  private _professeur='professeur';
+  private _professeur = 'professeur';
   protected httpClient!: HttpClient;
+
   public DAYS: Day[] = [
-    {id: 1, name: "Lundi"},
-    {id: 2, name: "Mardi"},
-    {id: 3, name: "Mercredi"},
-    {id: 4, name: "Jeudi"},
-    {id: 5, name: "Vendredi"},
-    {id: 6, name: "Samedi"},
+    { id: 1, name: 'Lundi' },
+    { id: 2, name: 'Mardi' },
+    { id: 3, name: 'Mercredi' },
+    { id: 4, name: 'Jeudi' },
+    { id: 5, name: 'Vendredi' },
+    { id: 6, name: 'Samedi' },
   ];
 
   _canDeleteErreurs!: string[];
   _canDeleteSubTitle!: string;
   _canDeleteTitle!: string;
 
-  constructor() {
-    super();
-  }
-
   isLogIn(): boolean {
-    return this.getToken() == null ? false : true;
+    return this.getToken() != null;
   }
 
   checkLocalData(): boolean {
-    return this.getRoles() && this.getUser() && this.getToken() ? true : false;
+    return !!(this.getRoles() && this.getUser() && this.getToken());
   }
 
   get authorizationHeaders() {
@@ -90,55 +86,27 @@ export class BaseHttp  extends GestionRole{
   }
 
   isAdmin(): boolean {
-    let test = false;
-    this.getRoles().forEach(r => {
-        if(r.name == this.admin){
-          test = true;
-        }
-    });
-
-    return test;
+    return this.getRoles()?.some(r => r.name === this._admin) ?? false;
   }
-  isProfesseur():boolean{
-    let test=false;
-    
-    this.getRoles().forEach(element => {
-      if(element.name==this.professeur)
-      test=true;
-    });
-    return test;
+
+  isProfesseur(): boolean {
+    return this.getRoles()?.some(r => r.name === this._professeur) ?? false;
   }
 
   isCD(): boolean {
-    let test = false;
-    this.getRoles().forEach(r => {
-        if(r.name == this.editeur){
-          test = true;
-        }
-    });
-
-    return test;
+    return this.getRoles()?.some(r => r.name === this._editeur) ?? false;
   }
 
   isSuperAdmin(): boolean {
-    let test = false;
-    this.getRoles().forEach(r => {
-        if(r.name == this.super_admin){
-          test = true;
-        }
-    });
-    return test;
+    return this.getRoles()?.some(r => r.name === this._super_admin) ?? false;
   }
 
   isEditeur(): boolean {
-    let test = false;
-    this.getRoles().forEach(r => {
-        if(r.name == this.editeur){
-          test = true;
-        }
-    });
+    return this.getRoles()?.some(r => r.name === this._editeur) ?? false;
+  }
 
-    return test;
+  can(required: Permission, permissions: Permission[]): boolean {
+    return permissions.some(p => p.name === required.name);
   }
 
   get super_admin() {
@@ -149,13 +117,15 @@ export class BaseHttp  extends GestionRole{
     return this._editeur;
   }
 
-  get admin(){
+  get admin() {
     return this._admin;
   }
-  get professeur(){
+
+  get professeur() {
     return this._professeur;
   }
-  get secretaire(){
+
+  get secretaire() {
     return this._secretaire;
   }
 
@@ -163,8 +133,8 @@ export class BaseHttp  extends GestionRole{
     return this.api + this.baseUrl;
   }
 
-  get endPointWithSlash(){
-    return this.api + this.baseUrl + "/";
+  get endPointWithSlash() {
+    return this.api + this.baseUrl + '/';
   }
 
   get guestHeaders() {
@@ -182,8 +152,8 @@ export class BaseHttp  extends GestionRole{
     return JSON.parse(sessionStorage.getItem('roles')!) as Role[];
   }
 
-  getPermissions(): Permission[]{
-    return JSON.parse(sessionStorage.getItem('permissions')!) as Role[];
+  getPermissions(): Permission[] {
+    return JSON.parse(sessionStorage.getItem('permissions')!) as Permission[];
   }
 
   get baseUrl(): string {
@@ -198,11 +168,11 @@ export class BaseHttp  extends GestionRole{
     return JSON.parse(sessionStorage.getItem('user')!);
   }
 
-  departementId(): number{
+  departementId(): number {
     return this.getUser().departement.id;
   }
 
-  departement(): Departement{
+  departement(): Departement {
     return this.getUser().departement;
   }
 
@@ -215,16 +185,16 @@ export class BaseHttp  extends GestionRole{
   }
 
   setRoles(roles: Role[]) {
-    sessionStorage.removeItem("roles");
+    sessionStorage.removeItem('roles');
     sessionStorage.setItem('roles', JSON.stringify(roles));
   }
 
   setPermissions(p: Permission[]) {
-    sessionStorage.removeItem("permissions");
+    sessionStorage.removeItem('permissions');
     sessionStorage.setItem('permissions', JSON.stringify(p));
   }
 
-  setDepartement(departement: Departement){
+  setDepartement(departement: Departement) {
     sessionStorage.setItem('departement', JSON.stringify(departement));
   }
 
@@ -236,12 +206,11 @@ export class BaseHttp  extends GestionRole{
     return this._host;
   }
 
-  get imagePath(): string{
-    return this.host.substring(0, this.host.length - 1 );
+  get imagePath(): string {
+    return this.host.substring(0, this.host.length - 1);
   }
 
   hasRole(role: Role): boolean {
-    return this.getRoles().some((x) => x.name === role.name);
+    return this.getRoles()?.some(x => x.name === role.name) ?? false;
   }
-
 }

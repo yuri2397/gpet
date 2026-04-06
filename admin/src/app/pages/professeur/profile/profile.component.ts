@@ -1,30 +1,128 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { UserService } from 'src/app/services/user.service';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { Component, OnInit } from '@angular/core';
 import { Professor } from 'src/app/models/professor';
-import { Location } from '@angular/common';
 import { User } from 'src/app/models/user';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { timeStamp } from 'console';
 import { Bank } from 'src/app/models/bank';
 import { ProfessorType } from 'src/app/models/professor_type';
 import { Departement } from 'src/app/models/departement';
+import { RouterModule } from '@angular/router';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  NzFormModule,
+  NzInputModule,
+  NzButtonModule,
+  NzTableModule,
+  NzModalModule,
+  NzSelectModule,
+  NzIconModule,
+  NzSpinModule,
+  NzTagModule,
+  NzDropDownModule,
+  NzDividerModule,
+  NzToolTipModule,
+  NzAlertModule,
+  NzPopconfirmModule,
+  NzDrawerModule,
+  NzCardModule,
+  NzAvatarModule,
+  NzEmptyModule,
+  NzPageHeaderModule,
+  NzResultModule,
+  NzSkeletonModule,
+  NzTabsModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzListModule,
+  NzSpaceModule,
+  NzStatisticModule,
+  NzTimelineModule,
+  NzImageModule,
+  NzAutocompleteModule,
+  NzUploadModule,
+  NzStepsModule,
+  NzMessageModule,
+  NzNotificationModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatProgressBarModule,
+  LoadComponent,
+  ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
+  private modalService = inject(NzModalService);
+  private profService = inject(ProfessorService);
+  private location = inject(Location);
+  private fb = inject(FormBuilder);
+  private notification = inject(NotificationService);
+  public professorService = inject(ProfessorService);
+
   professeur!: Professor;
   professor!: Professor;
   dataLoad = true;
   errorServer = false;
   avatarLoad = false;
-  modifierleprofe=false;
+  modifierleprofe = false;
   validateForm!: FormGroup;
   file: any;
   isLoad: boolean = false;
@@ -32,19 +130,7 @@ export class ProfileComponent implements OnInit {
   professorTypes!: ProfessorType[];
   departements!: Departement[];
   isLoadData = false;
-  modifierinfobank=false;
-
-
-
-  constructor(
-    private modalService: NzModalService,
-    private profService: ProfessorService,
-    private location: Location,
-    private fb: FormBuilder,
-     private notification: NotificationService,
-     public professorService: ProfessorService,
-
-  ) {}
+  modifierinfobank = false;
 
   ngOnInit(): void {
     this.profile();
@@ -91,9 +177,11 @@ export class ProfileComponent implements OnInit {
     }
     return this.profService.host + 'storage' + this.professeur.avatar;;
   }
+
   onBack() {
     this.location.back();
   }
+
   onChange(event: any) {
     this.file = event.target.files[0];
     if (this.file != null) {
@@ -113,7 +201,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-   submitForm(): void {
+  submitForm(): void {
     for (const i in this.validateForm.controls) {
       if (this.validateForm.controls.hasOwnProperty(i)) {
         this.validateForm.controls[i].markAsDirty();
@@ -121,16 +209,16 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
-  openAddProfModal() {
-    this.modifierleprofe=true;
-    this.professor=this.profService.clone(this.professeur);
-    console.log(this.professor);
 
+  openAddProfModal() {
+    this.modifierleprofe = true;
+    this.professor = this.profService.clone(this.professeur);
+    console.log(this.professor);
   }
 
   openModalbank() {
-    this.modifierinfobank=true;
-    this.professor=this.profService.clone(this.professeur);
+    this.modifierinfobank = true;
+    this.professor = this.profService.clone(this.professeur);
     console.log(this.professor);
   }
 
@@ -142,17 +230,15 @@ export class ProfileComponent implements OnInit {
 
     this.profService.edit(this.professor).subscribe({
       next: (response) => {
-       this.isLoad = false;
+        this.isLoad = false;
         this.notification.createNotification(
           'success',
           'Notification',
           'Information modifié avec succés.'
         );
-        this.modifierleprofe=false;
-        this.modifierinfobank=false;
-        //console.log(response);
-        this.professeur=response;
-
+        this.modifierleprofe = false;
+        this.modifierinfobank = false;
+        this.professeur = response;
       },
       error: (errors) => {
         this.isLoad = false;
@@ -163,7 +249,6 @@ export class ProfileComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
-
       },
     });
   }
@@ -187,5 +272,4 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
-
 }

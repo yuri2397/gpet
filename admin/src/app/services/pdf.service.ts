@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class PdfService extends BaseHttp {
-  protected _baseUrl = 'pdf';
+  protected override _baseUrl = 'pdf';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

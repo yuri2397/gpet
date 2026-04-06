@@ -1,18 +1,109 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { UserEditComponent } from './../user-edit/user-edit.component';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AddPermissionToUserComponent } from './../../roles/add-permission-to-user/add-permission-to-user.component';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { RoleService } from './../../../services/role.service';
 import { Permission } from 'src/app/models/permission';
 import { UserService } from 'src/app/services/user.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { Location } from '@angular/common';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 
 @Component({
   selector: 'app-user-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  NzFormModule,
+  NzInputModule,
+  NzButtonModule,
+  NzTableModule,
+  NzModalModule,
+  NzSelectModule,
+  NzIconModule,
+  NzSpinModule,
+  NzTagModule,
+  NzDropDownModule,
+  NzDividerModule,
+  NzToolTipModule,
+  NzAlertModule,
+  NzPopconfirmModule,
+  NzDrawerModule,
+  NzCardModule,
+  NzAvatarModule,
+  NzEmptyModule,
+  NzPageHeaderModule,
+  NzResultModule,
+  NzSkeletonModule,
+  NzTabsModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzListModule,
+  NzSpaceModule,
+  NzStatisticModule,
+  NzTimelineModule,
+  NzImageModule,
+  NzAutocompleteModule,
+  NzUploadModule,
+  NzStepsModule,
+  NzMessageModule,
+  NzNotificationModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatProgressBarModule,
+  LoadComponent,
+  ],
   templateUrl: './user-show.component.html',
   styleUrls: ['./user-show.component.scss'],
 })
@@ -24,15 +115,14 @@ export class UserShowComponent implements OnInit {
   visible = false;
   listOfDisplayData!: Permission[];
   deleteUserLoad: boolean = false;
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private roleService: RoleService,
-    private message: NzMessageService,
-    private modal: NzModalService,
-    private location: Location,
-    private notification: NzNotificationService
-  ) {}
+
+  private route = inject(ActivatedRoute);
+  private userService = inject(UserService);
+  private roleService = inject(RoleService);
+  private message = inject(NzMessageService);
+  private modal = inject(NzModalService);
+  private location = inject(Location);
+  private notification = inject(NzNotificationService);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -47,7 +137,7 @@ export class UserShowComponent implements OnInit {
     this.userService.findSelectedUser(user).subscribe({
       next: (response: User) => {
         this.user = response;
-        
+
         this.listOfDisplayData = this.user.permissions;
         this.userProfilePath();
         this.isLoad = false;
@@ -79,7 +169,7 @@ export class UserShowComponent implements OnInit {
     let modal = this.modal.create({
       nzTitle: 'Modifier les informations',
       nzContent: UserEditComponent,
-      nzComponentParams: {
+      nzData: {
         user: this.userService.clone(this.user),
       },
       nzWidth: '50%',
@@ -102,7 +192,7 @@ export class UserShowComponent implements OnInit {
 
   deleteUser() {
     this.deleteUserLoad = true;
-    
+
     this.userService.delete(this.user).subscribe({
       next: (response) => {
         this.notification.success(
@@ -127,7 +217,7 @@ export class UserShowComponent implements OnInit {
     let m = this.modal.create({
       nzTitle: 'AJOUTER DE NOUVELLES PERMISSIONS',
       nzContent: AddPermissionToUserComponent,
-      nzComponentParams: {
+      nzData: {
         user: this.user,
       },
       nzClosable: false,

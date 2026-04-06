@@ -1,18 +1,115 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { Role } from 'src/app/models/role';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
+import { RouterModule } from '@angular/router';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-securite',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  NzFormModule,
+  NzInputModule,
+  NzButtonModule,
+  NzTableModule,
+  NzModalModule,
+  NzSelectModule,
+  NzIconModule,
+  NzSpinModule,
+  NzTagModule,
+  NzDropDownModule,
+  NzDividerModule,
+  NzToolTipModule,
+  NzAlertModule,
+  NzPopconfirmModule,
+  NzDrawerModule,
+  NzCardModule,
+  NzAvatarModule,
+  NzEmptyModule,
+  NzPageHeaderModule,
+  NzResultModule,
+  NzSkeletonModule,
+  NzTabsModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzListModule,
+  NzSpaceModule,
+  NzStatisticModule,
+  NzTimelineModule,
+  NzImageModule,
+  NzAutocompleteModule,
+  NzUploadModule,
+  NzStepsModule,
+  NzMessageModule,
+  NzNotificationModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatProgressBarModule,
+  ],
   templateUrl: './securite.component.html',
   styleUrls: ['./securite.component.scss']
 })
 export class SecuriteComponent implements OnInit {
+  private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private notification = inject(NotificationService);
+  private modalService = inject(NzModalService);
+  private userService = inject(UserService);
 
   user!: User;
   roles!: Role[];
@@ -20,13 +117,6 @@ export class SecuriteComponent implements OnInit {
   isLoad = false;
   file: any;
   avatarLoad = true;
-  constructor(
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private userService: UserService,
-  ) {}
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
@@ -91,6 +181,7 @@ export class SecuriteComponent implements OnInit {
         },
       });
   }
+
   onChange(event: any) {
     this.file = event.target.files[0];
     if (this.file != null) {
@@ -125,41 +216,38 @@ export class SecuriteComponent implements OnInit {
   }
 
   openModal() {
-     this.modalService.confirm({
+    this.modalService.confirm({
       nzTitle: '<span>Confirmez votre deconnexion</span>',
       nzOkText: 'Valider',
       nzOkType: 'primary',
       nzOkDanger: false,
       nzOnOk: () => this.logout(),
       nzCancelText: 'Annuler',
-      //nzOkLoading: this.deleteLoad,
       nzMaskClosable: false,
       nzClosable: false,
-      nzCentered : true
+      nzCentered: true
     });
   }
 
-  logout(){
+  logout() {
     this.isLoad = true;
     this.authService.logOut().subscribe({
-      next:() => {
+      next: () => {
         this.notification.createNotification(
           'success',
           'Notification',
           'Déconnexion réussie',
         );
       },
-      error:(errors : any) => {
+      error: (errors: any) => {
         this.isLoad = false;
         if (errors.status != 403)
           this.notification.createNotification(
             'erreur',
             'Notification',
-             errors.error.message);
+            errors.error.message);
       },
     });
     this.userService.logout();
   }
-
-
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalRef, NZ_MODAL_DATA } from 'ng-zorro-antd/modal';
+import { Component, OnInit, Input, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Classe } from 'src/app/models/classe';
 import { Course } from 'src/app/models/course';
 import { Departement } from 'src/app/models/departement';
@@ -13,13 +14,113 @@ import { CourseService } from 'src/app/services/course.service';
 import { ECService } from 'src/app/services/ec.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
+import { RouterModule } from '@angular/router';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-course-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  NzFormModule,
+  NzInputModule,
+  NzButtonModule,
+  NzTableModule,
+  NzModalModule,
+  NzSelectModule,
+  NzIconModule,
+  NzSpinModule,
+  NzTagModule,
+  NzDropDownModule,
+  NzDividerModule,
+  NzToolTipModule,
+  NzAlertModule,
+  NzPopconfirmModule,
+  NzDrawerModule,
+  NzCardModule,
+  NzAvatarModule,
+  NzEmptyModule,
+  NzPageHeaderModule,
+  NzResultModule,
+  NzSkeletonModule,
+  NzTabsModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzListModule,
+  NzSpaceModule,
+  NzStatisticModule,
+  NzTimelineModule,
+  NzImageModule,
+  NzAutocompleteModule,
+  NzUploadModule,
+  NzStepsModule,
+  NzMessageModule,
+  NzNotificationModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatProgressBarModule,
+  ],
   templateUrl: './course-edit.component.html',
   styleUrls: ['./course-edit.component.scss'],
 })
 export class CourseEditComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  courseService = inject(CourseService);
+  private modal = inject(NzModalRef);
+  private profService = inject(ProfessorService);
+  private classeService = inject(ClasseService);
+  private ecService = inject(ECService);
+  readonly nzModalData = inject(NZ_MODAL_DATA, { optional: true });
+
   semesters!: Semester[];
   professors!: Professor[];
   departements!: Departement[];
@@ -34,17 +135,11 @@ export class CourseEditComponent implements OnInit {
   ecLoad = false;
   profLoad = false;
   serviceAmountFCFA = 'MONTANT HORAIRE';
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    public courseService: CourseService,
-    private modal: NzModalRef,
-    private profService: ProfessorService,
-    private classeService: ClasseService,
-    private ecService: ECService
-  ) {}
 
   ngOnInit(): void {
+    if (this.nzModalData?.course) {
+      this.course = this.nzModalData.course;
+    }
     this.findSelectableList();
     this.validateForm = this.fb.group({
       groupe_number: [null, [Validators.required]],

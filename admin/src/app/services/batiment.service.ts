@@ -8,7 +8,7 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class BatimentService extends BaseHttp {
 
-  protected _baseUrl = 'batiment';
+  protected override _baseUrl = 'batiment';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

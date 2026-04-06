@@ -1,31 +1,120 @@
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { PdfService } from './../../../services/pdf.service';
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { CommonModule, DatePipe, UpperCasePipe, Location } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Classe } from 'src/app/models/classe';
 import { ClasseService } from 'src/app/services/classe.service';
-import { Location } from '@angular/common';
 import { Departement } from 'src/app/models/departement';
 import { Course } from 'src/app/models/course';
 import { NotificationService } from 'src/app/services/notification.service';
 import { EptService } from 'src/app/services/ept.service';
 import { EPT } from 'src/app/models/ept';
 import { EptRow } from 'src/app/models/ept-row';
-import { FormBuilder } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { EptCreateComponent } from '../ept-create/ept-create.component';
 import { EptEditComponent } from '../ept-edit/ept-edit.component';
 import { Day } from 'src/app/models/day';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { MatTableModule } from '@angular/material/table';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import { Utils } from 'src/app/shared/Utils';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
+import { CourseListComponent } from 'src/app/pages/course/course-list/course-list.component';
+
 @Component({
   selector: 'app-classe-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  NzFormModule,
+  NzInputModule,
+  NzButtonModule,
+  NzTableModule,
+  NzModalModule,
+  NzSelectModule,
+  NzIconModule,
+  NzSpinModule,
+  NzTagModule,
+  NzDropDownModule,
+  NzDividerModule,
+  NzToolTipModule,
+  NzAlertModule,
+  NzPopconfirmModule,
+  NzDrawerModule,
+  NzCardModule,
+  NzAvatarModule,
+  NzEmptyModule,
+  NzPageHeaderModule,
+  NzResultModule,
+  NzSkeletonModule,
+  NzTabsModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzListModule,
+  NzSpaceModule,
+  NzStatisticModule,
+  NzTimelineModule,
+  NzImageModule,
+  NzAutocompleteModule,
+  NzUploadModule,
+  NzStepsModule,
+  NzMessageModule,
+  NzNotificationModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatProgressBarModule,
+  LoadComponent,
+  ErrorServerComponent,
+  CourseListComponent,
+  ],
   templateUrl: './classe-show.component.html',
   styleUrls: ['./classe-show.component.scss'],
 })
@@ -43,16 +132,15 @@ export class ClasseShowComponent implements OnInit {
   now = new Date();
   @ViewChild('presentionEPT') htmlData!: ElementRef;
   fileLoad: boolean = false;
-  constructor(
-    private route: ActivatedRoute,
-    private location: Location,
-    public classeService: ClasseService,
-    private notification: NotificationService,
-    public eptService: EptService,
-    private fb: FormBuilder,
-    private modalService: NzModalService,
-    private pdfService: PdfService
-  ) {}
+
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
+  classeService = inject(ClasseService);
+  private notification = inject(NotificationService);
+  eptService = inject(EptService);
+  private fb = inject(FormBuilder);
+  private modalService = inject(NzModalService);
+  private pdfService = inject(PdfService);
 
   ngOnInit(): void {
     this.days = this.classeService.DAYS;
@@ -72,26 +160,12 @@ export class ClasseShowComponent implements OnInit {
       document.body.appendChild(newIframe);
       // @ts-ignore
       newIframe.contentWindow.contents = response;
-      newIframe.src = "javascript:window['contents']"
+      newIframe.src = "javascript:window['contents']";
       newIframe.focus();
       setTimeout(() => {
         newIframe.contentWindow?.print();
       }, 1);
     });
-
-    // let DATA = document.getElementById('presentionEPT');
-
-    // html2canvas(DATA!).then((canvas) => {
-    //   let fileWidth = 208;
-    //   let fileHeight = (canvas.height * fileWidth) / canvas.width;
-
-    //   const FILEURI = canvas.toDataURL('image/png');
-    //   let PDF = new jsPDF('p', 'mm', 'a4', false);
-    //   let position = 0;
-    //   PDF.addImage(FILEURI, 'PNG', 0, positiojn, fileWidth, fileHeight);
-
-    //   PDF.save(this.classe.name + '.pdf');
-    // });
   }
 
   getEmploieDuTemps(classe: Classe) {
@@ -166,7 +240,7 @@ export class ClasseShowComponent implements OnInit {
     const modal = this.modalService.create({
       nzTitle: "Modifier le cour dans l'emploi du temps.",
       nzContent: EptEditComponent,
-      nzComponentParams: {
+      nzData: {
         day: panel,
         classe: this.classe,
         courses: this.courses,
@@ -201,7 +275,7 @@ export class ClasseShowComponent implements OnInit {
     const modal = this.modalService.create({
       nzTitle: "Ajoute un cour dans l'emploi du temps.",
       nzContent: EptCreateComponent,
-      nzComponentParams: {
+      nzData: {
         day: panel,
         classe: this.classe,
         courses: this.courses,
@@ -218,6 +292,7 @@ export class ClasseShowComponent implements OnInit {
       }
     });
   }
+
   onCreateSuccess(panel: EptRow, ept: EPT) {
     panel.data.push(ept);
   }

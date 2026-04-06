@@ -6,13 +6,6 @@ import { Model } from './model';
 import { ProfessorType } from './professor_type';
 
 export class Professor extends Model<Professor> {
-  myIndex(arrays: Professor[]): number {
-    throw new Error('Method not implemented.');
-  }
-  some(arrays: Professor[]): Professor | null {
-    throw new Error('Method not implemented.');
-  }
-  
   registration_number!: string;
   first_name!: string;
   last_name!: string;

@@ -8,7 +8,7 @@ import { BankService } from './bank.service';
   providedIn: 'root',
 })
 export class UEService extends BaseHttp {
-  protected _baseUrl = 'ue';
+  protected override _baseUrl = 'ue';
   constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
     this.http = hc;

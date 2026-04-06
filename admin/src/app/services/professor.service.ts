@@ -1,5 +1,5 @@
-import { EptRow } from 'src/app/models/ept-row';
-import { EPT } from 'src/app/models/ept';
+import { EptRow } from '../models/ept-row';
+import { EPT } from '../models/ept';
 import { CourseDoService } from './course-do.service';
 import { CourseService } from './course.service';
 import { BankService } from './bank.service';
@@ -17,7 +17,7 @@ import { CoursesDo } from '../models/coures-do';
 export class ProfessorService extends BaseHttp {
 
   professor = new Professor();
-  protected _baseUrl = 'professeur';
+  protected override _baseUrl = 'professeur';
   constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
     this.http = hc;

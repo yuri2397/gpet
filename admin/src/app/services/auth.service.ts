@@ -9,7 +9,7 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class AuthService extends BaseHttp {
-  protected _baseUrl = 'user';
+  protected override _baseUrl = 'user';
 
   constructor(protected hc: HttpClient, private router: Router) {
     super();

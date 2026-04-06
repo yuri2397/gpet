@@ -9,7 +9,7 @@ import { Salle } from '../models/salle';
   providedIn: 'root',
 })
 export class DepartementService extends BaseHttp {
-  protected _baseUrl = 'departement';
+  protected override _baseUrl = 'departement';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

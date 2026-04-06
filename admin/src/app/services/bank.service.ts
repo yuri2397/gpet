@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BankService extends BaseHttp {
-  protected _baseUrl = 'bank';
+  protected override _baseUrl = 'bank';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

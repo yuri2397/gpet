@@ -1,4 +1,4 @@
-import { Departement } from 'src/app/models/departement';
+import { Departement } from '../models/departement';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Classe } from '../models/classe';
@@ -10,7 +10,7 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class EptService extends BaseHttp {
-  protected _baseUrl = 'ept';
+  protected override _baseUrl = 'ept';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

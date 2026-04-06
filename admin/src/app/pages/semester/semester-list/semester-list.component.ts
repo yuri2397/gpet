@@ -1,24 +1,119 @@
-import { UEService } from './../../../services/ue.service';
-import { UeEditComponent } from './../../ue/ue-edit/ue-edit.component';
-import { SemesterCreateComponent } from './../semester-create/semester-create.component';
-import { EcEditComponent } from './../../ec/ec-edit/ec-edit.component';
-import { SemesterEditComponent } from './../semester-edit/semester-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzDrawerModule, NzDrawerService } from 'ng-zorro-antd/drawer';
+import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UEService } from 'src/app/services/ue.service';
+import { UeEditComponent } from '../../ue/ue-edit/ue-edit.component';
+import { SemesterCreateComponent } from '../semester-create/semester-create.component';
+import { EcEditComponent } from '../../ec/ec-edit/ec-edit.component';
+import { SemesterEditComponent } from '../semester-edit/semester-edit.component';
 import { ECService } from 'src/app/services/ec.service';
-import { EcCreateComponent } from './../../ec/ec-create/ec-create.component';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
 import { EC } from 'src/app/models/ec';
-import { SemesterResponse } from './../../../models/semester-response';
-import { Component, Input, OnInit } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { SemesterResponse } from 'src/app/models/semester-response';
 import { Departement } from 'src/app/models/departement';
 import { Semester } from 'src/app/models/semester';
 import { SemesterService } from 'src/app/services/semester.service';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Permission } from 'src/app/models/permission';
 import { UE } from 'src/app/models/ue';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { CanDeleteComponent } from 'src/app/shared/ui/can-delete/can-delete.component';
+import { RouterModule } from '@angular/router';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzResultModule } from 'ng-zorro-antd/result';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-semester-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  NzFormModule,
+  NzInputModule,
+  NzButtonModule,
+  NzTableModule,
+  NzModalModule,
+  NzSelectModule,
+  NzIconModule,
+  NzSpinModule,
+  NzTagModule,
+  NzDropDownModule,
+  NzDividerModule,
+  NzToolTipModule,
+  NzAlertModule,
+  NzPopconfirmModule,
+  NzDrawerModule,
+  NzCardModule,
+  NzAvatarModule,
+  NzEmptyModule,
+  NzPageHeaderModule,
+  NzResultModule,
+  NzSkeletonModule,
+  NzTabsModule,
+  NzCollapseModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzLayoutModule,
+  NzMenuModule,
+  NzListModule,
+  NzSpaceModule,
+  NzStatisticModule,
+  NzTimelineModule,
+  NzImageModule,
+  NzAutocompleteModule,
+  NzUploadModule,
+  NzStepsModule,
+  NzMessageModule,
+  NzNotificationModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatTableModule,
+  MatProgressBarModule,
+  LoadComponent,
+  CanDeleteComponent,
+  ],
   templateUrl: './semester-list.component.html',
   styleUrls: ['./semester-list.component.scss'],
 })
@@ -35,14 +130,12 @@ export class SemesterListComponent implements OnInit {
   deleteLoad = false;
   deleteUELoad = false;
 
-  constructor(
-    private notification: NzNotificationService,
-    private semesterService: SemesterService,
-    private modalService: NzModalService,
-    private drawerService: NzDrawerService,
-    private ecService: ECService,
-    private ueService: UEService
-  ) {}
+  private notification = inject(NzNotificationService);
+  private semesterService = inject(SemesterService);
+  private modalService = inject(NzModalService);
+  private drawerService = inject(NzDrawerService);
+  private ecService = inject(ECService);
+  private ueService = inject(UEService);
 
   ngOnInit(): void {
     if (!this.departement) {
@@ -86,7 +179,7 @@ export class SemesterListComponent implements OnInit {
     const drawerRef = this.modalService.create({
       nzTitle: 'Modifier le nom du semestre',
       nzContent: SemesterEditComponent,
-      nzComponentParams: {
+      nzData: {
         semester: this.semesterService.clone(semester),
       },
       nzWidth: '500px',
@@ -125,7 +218,7 @@ export class SemesterListComponent implements OnInit {
     let modal = this.modalService.create({
       nzTitle: "MODIFIER L'UE",
       nzContent: UeEditComponent,
-      nzComponentParams: {
+      nzData: {
         ue: this.ueService.clone(ue),
       },
     });
@@ -157,7 +250,7 @@ export class SemesterListComponent implements OnInit {
     let modal = this.modalService.create({
       nzTitle: 'Modifier les informations',
       nzContent: EcEditComponent,
-      nzComponentParams: {
+      nzData: {
         semester: semester,
         ec: this.ecService.clone(item),
       },
@@ -188,7 +281,7 @@ export class SemesterListComponent implements OnInit {
     let modal = this.modalService.create({
       nzTitle: 'AJOUTER UN NOUVEAU SEMESTRE',
       nzContent: SemesterCreateComponent,
-      nzComponentParams: {
+      nzData: {
         departement: this.departement,
       },
       nzClosable: false,

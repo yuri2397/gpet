@@ -1,4 +1,4 @@
-import { Permission } from 'src/app/models/permission';
+import { Permission } from '../models/permission';
 import { HttpClient } from '@angular/common/http';
 import { BaseHttp } from './../shared/base-http';
 import { Injectable } from '@angular/core';

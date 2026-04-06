@@ -21,12 +21,13 @@
       <div class="row">
         <div class="col">
           <div class="card card-body">
-            <angular-editor
+            <textarea
+              nz-input
+              [nzAutosize]="{ minRows: 10, maxRows: 20 }"
               class="editor"
               [placeholder]="'Enter text here...'"
               [(ngModel)]="syllabus.description"
-              [config]="config"
-            ></angular-editor>
+            ></textarea>
 
             <div class="algn-right">
               <button nz-button nzType="default"

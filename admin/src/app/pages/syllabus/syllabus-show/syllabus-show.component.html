@@ -17,8 +17,9 @@
 </div>
 
 <div class="card card-body">
-  <angular-editor
-  [placeholder]="this.syllabus.description"
-  [(ngModel)]="syllabus.description"
-  [config]="config"
-></angular-editor>
+  <textarea
+    nz-input
+    [nzAutosize]="{ minRows: 10, maxRows: 20 }"
+    [placeholder]="this.syllabus.description"
+    [(ngModel)]="syllabus.description"
+  ></textarea>
