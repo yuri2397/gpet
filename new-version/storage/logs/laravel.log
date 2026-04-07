@@ -1,0 +1,1031 @@
+[2025-01-12 12:18:41] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (Connection: mysql, SQL: create table `users` (`id` bigint unsigned not null auto_increment primary key, `first_name` varchar(255) not null, `last_name` varchar(255) not null, `email` varchar(255) not null, `email_verified_at` timestamp null, `password` varchar(255) not null, `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists (Connection: mysql, SQL: create table `users` (`id` bigint unsigned not null auto_increment primary key, `first_name` varchar(255) not null, `last_name` varchar(255) not null, `email` varchar(255) not null, `email_verified_at` timestamp null, `password` varchar(255) not null, `remember_token` varchar(100) null, `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `u...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `u...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `u...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('users', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000000_create_users_table.php(14): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 2, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/ApiInstallCommand.php(80): Illuminate\\Console\\Command->call('migrate')
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Console\\ApiInstallCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\ApiInstallCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'users' already exists at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('create table `u...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `u...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `u...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `u...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('users', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000000_create_users_table.php(14): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 2, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/ApiInstallCommand.php(80): Illuminate\\Console\\Command->call('migrate')
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Console\\ApiInstallCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\ApiInstallCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:44:59] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists (Connection: mysql, SQL: create table `failed_jobs` (`id` bigint unsigned not null auto_increment primary key, `uuid` varchar(255) not null, `connection` text not null, `queue` text not null, `payload` longtext not null, `exception` longtext not null, `failed_at` timestamp not null default CURRENT_TIMESTAMP) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists (Connection: mysql, SQL: create table `failed_jobs` (`id` bigint unsigned not null auto_increment primary key, `uuid` varchar(255) not null, `connection` text not null, `queue` text not null, `payload` longtext not null, `exception` longtext not null, `failed_at` timestamp not null default CURRENT_TIMESTAMP) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `f...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `f...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `f...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('failed_jobs', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(37): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('create table `f...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `f...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `f...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `f...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('failed_jobs', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(37): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:45:05] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'jobs' already exists (Connection: mysql, SQL: create table `jobs` (`id` bigint unsigned not null auto_increment primary key, `queue` varchar(255) not null, `payload` longtext not null, `attempts` tinyint unsigned not null, `reserved_at` int unsigned null, `available_at` int unsigned not null, `created_at` int unsigned not null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'jobs' already exists (Connection: mysql, SQL: create table `jobs` (`id` bigint unsigned not null auto_increment primary key, `queue` varchar(255) not null, `payload` longtext not null, `attempts` tinyint unsigned not null, `reserved_at` int unsigned null, `available_at` int unsigned not null, `created_at` int unsigned not null) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `j...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `j...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `j...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('jobs', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(14): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/RefreshCommand.php(65): Illuminate\\Console\\Command->call('migrate', Array)
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\RefreshCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\RefreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'jobs' already exists at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('create table `j...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `j...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `j...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `j...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('jobs', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(14): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/RefreshCommand.php(65): Illuminate\\Console\\Command->call('migrate', Array)
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\RefreshCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\RefreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:45:11] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists (Connection: mysql, SQL: create table `failed_jobs` (`id` bigint unsigned not null auto_increment primary key, `uuid` varchar(255) not null, `connection` text not null, `queue` text not null, `payload` longtext not null, `exception` longtext not null, `failed_at` timestamp not null default CURRENT_TIMESTAMP) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists (Connection: mysql, SQL: create table `failed_jobs` (`id` bigint unsigned not null auto_increment primary key, `uuid` varchar(255) not null, `connection` text not null, `queue` text not null, `payload` longtext not null, `exception` longtext not null, `failed_at` timestamp not null default CURRENT_TIMESTAMP) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `f...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `f...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `f...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('failed_jobs', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(37): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('create table `f...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `f...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `f...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `f...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('failed_jobs', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(37): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:45:26] local.ERROR: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists (Connection: mysql, SQL: create table `failed_jobs` (`id` bigint unsigned not null auto_increment primary key, `uuid` varchar(255) not null, `connection` text not null, `queue` text not null, `payload` longtext not null, `exception` longtext not null, `failed_at` timestamp not null default CURRENT_TIMESTAMP) default character set utf8mb4 collate 'utf8mb4_unicode_ci') {"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists (Connection: mysql, SQL: create table `failed_jobs` (`id` bigint unsigned not null auto_increment primary key, `uuid` varchar(255) not null, `connection` text not null, `queue` text not null, `payload` longtext not null, `exception` longtext not null, `failed_at` timestamp not null default CURRENT_TIMESTAMP) default character set utf8mb4 collate 'utf8mb4_unicode_ci') at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `f...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `f...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `f...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('failed_jobs', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(37): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: 42S01): SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'failed_jobs' already exists at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('create table `f...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('create table `f...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('create table `f...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('create table `f...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('failed_jobs', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/0001_01_01_000002_create_jobs_table.php(37): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('0001_01_01_0000...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '0001_01_01_0000...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:46:00] local.ERROR: SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'professor_types' (Connection: mysql, SQL: alter table `professors` add constraint `professors_professor_type_id_foreign` foreign key (`professor_type_id`) references `professor_types` (`id`)) {"exception":"[object] (Illuminate\\Database\\QueryException(code: HY000): SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'professor_types' (Connection: mysql, SQL: alter table `professors` add constraint `professors_professor_type_id_foreign` foreign key (`professor_type_id`) references `professor_types` (`id`)) at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('alter table `pr...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('alter table `pr...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('alter table `pr...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('professors', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/2025_01_12_121835_data_migrations.php(104): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('2025_01_12_1218...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '2025_01_12_1218...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: HY000): SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'professor_types' at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('alter table `pr...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('alter table `pr...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('alter table `pr...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('alter table `pr...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('professors', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/2025_01_12_121835_data_migrations.php(104): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('2025_01_12_1218...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '2025_01_12_1218...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:47:20] local.ERROR: SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'course_status' (Connection: mysql, SQL: alter table `courses` add constraint `courses_course_status_id_foreign` foreign key (`course_status_id`) references `course_status` (`id`)) {"exception":"[object] (Illuminate\\Database\\QueryException(code: HY000): SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'course_status' (Connection: mysql, SQL: alter table `courses` add constraint `courses_course_status_id_foreign` foreign key (`course_status_id`) references `course_status` (`id`)) at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:825)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('alter table `co...', Array, Object(Closure))
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('alter table `co...', Array, Object(Closure))
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('alter table `co...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('courses', Object(Closure))
+#6 /Users/mordiaw/Universite/gpet/new-version/database/migrations/2025_01_12_121835_data_migrations.php(146): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('2025_01_12_1218...', Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '2025_01_12_1218...', Object(Closure))
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#45 {main}
+
+[previous exception] [object] (PDOException(code: HY000): SQLSTATE[HY000]: General error: 1824 Failed to open the referenced table 'course_status' at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php:571)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(571): PDOStatement->execute()
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::statement():560}('alter table `co...', Array)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('alter table `co...', Array, Object(Closure))
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Connection.php(560): Illuminate\\Database\\Connection->run('alter table `co...', Array, Object(Closure))
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Blueprint.php(118): Illuminate\\Database\\Connection->statement('alter table `co...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(564): Illuminate\\Database\\Schema\\Blueprint->build(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Schema\\Grammars\\MySqlGrammar))
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(418): Illuminate\\Database\\Schema\\Builder->build(Object(Illuminate\\Database\\Schema\\Blueprint))
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate\\Database\\Schema\\Builder->create('courses', Object(Closure))
+#8 /Users/mordiaw/Universite/gpet/new-version/database/migrations/2025_01_12_121835_data_migrations.php(146): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(476): Illuminate\\Database\\Migrations\\Migration@anonymous->up()
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(401): Illuminate\\Database\\Migrations\\Migrator->runMethod(Object(Illuminate\\Database\\MySqlConnection), Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(410): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runMigration():397}()
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(Illuminate\\Database\\Migrations\\Migration@anonymous), 'up')
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/View/Components/Task.php(40): Illuminate\\Database\\Migrations\\Migrator->{closure:Illuminate\\Database\\Migrations\\Migrator::runUp():213}()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(737): Illuminate\\Console\\View\\Components\\Task->render('2025_01_12_1218...', Object(Closure))
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(213): Illuminate\\Database\\Migrations\\Migrator->write('Illuminate\\\\Cons...', '2025_01_12_1218...', Object(Closure))
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(180): Illuminate\\Database\\Migrations\\Migrator->runUp('/Users/mordiaw/...', 1, false)
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(123): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(116): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(616): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->{closure:Illuminate\\Database\\Console\\Migrations\\MigrateCommand::runMigrations():109}()
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(109): Illuminate\\Database\\Migrations\\Migrator->usingConnection(NULL, Object(Closure))
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(88): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->runMigrations()
+#22 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#28 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#29 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#30 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(68): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArrayInput), Object(Illuminate\\Console\\OutputStyle))
+#31 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Concerns/CallsCommands.php(29): Illuminate\\Console\\Command->runCommand('migrate', Array, Object(Illuminate\\Console\\OutputStyle))
+#32 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/FreshCommand.php(82): Illuminate\\Console\\Command->call('migrate', Array)
+#33 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Database\\Console\\Migrations\\FreshCommand->handle()
+#34 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#35 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#36 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#37 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#38 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate\\Container\\Container->call(Array)
+#39 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#40 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#41 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(1094): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#42 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(342): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\FreshCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#43 /Users/mordiaw/Universite/gpet/new-version/vendor/symfony/console/Application.php(193): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#44 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#45 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1205): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#46 /Users/mordiaw/Universite/gpet/new-version/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#47 {main}
+"} 
+[2025-01-12 12:49:32] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:49:42] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:49:48] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:50:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:51:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:52:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:53:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:54:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:55:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 12:56:25] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:13:40] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:14:39] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:15:39] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:16:39] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:18:21] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:19:49] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:20:51] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:23:06] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:29:45] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:30:45] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:34:41] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:36:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:36:41] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:36:58] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:37:03] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:37:39] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:38:03] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:38:22] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:38:33] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:38:49] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:39:03] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:39:08] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:39:27] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:40:03] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:41:02] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:41:03] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:42:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:43:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:44:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:45:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:45:12] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:45:17] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:46:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:47:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:48:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:49:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:50:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:51:04] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:53:03] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 13:58:39] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:00:26] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:01:54] local.ERROR: Trait "Spatie\MediaLibrary\InteractsWithMedia" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\MediaLibrary\\InteractsWithMedia\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/Course.php:10)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:02:47] local.ERROR: Trait "Spatie\Permission\Traits\HasRoles" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\Permission\\Traits\\HasRoles\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:02:53] local.ERROR: Trait "Spatie\Permission\Traits\HasRoles" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\Permission\\Traits\\HasRoles\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:03:11] local.ERROR: Trait "Spatie\Permission\Traits\HasRoles" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\Permission\\Traits\\HasRoles\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:03:54] local.ERROR: Trait "Spatie\Permission\Traits\HasRoles" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\Permission\\Traits\\HasRoles\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:04:54] local.ERROR: Trait "Spatie\Permission\Traits\HasRoles" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\Permission\\Traits\\HasRoles\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/User.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:05:49] local.ERROR: Trait "Spatie\Permission\Traits\HasRoles" not found {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Trait \"Spatie\\Permission\\Traits\\HasRoles\" not found at /Users/mordiaw/Universite/gpet/new-version/app/Models/User copy.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2025-01-12 14:15:49] local.ERROR: require(/Users/mordiaw/Universite/gpet/new-version/bootstrap/../routes/api.php): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): require(/Users/mordiaw/Universite/gpet/new-version/bootstrap/../routes/api.php): Failed to open stream: No such file or directory at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php:35)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(290): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'require(/Users/...', '/Users/mordiaw/...', 35)
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php(35): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->{closure:Illuminate\\Foundation\\Bootstrap\\HandleExceptions::forwardsTo():289}(2, 'require(/Users/...', '/Users/mordiaw/...', 35)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php(35): require('/Users/mordiaw/...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/Router.php(513): Illuminate\\Routing\\RouteFileRegistrar->register('/Users/mordiaw/...')
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/Router.php(467): Illuminate\\Routing\\Router->loadRoutes('/Users/mordiaw/...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteRegistrar.php(199): Illuminate\\Routing\\Router->group(Array, '/Users/mordiaw/...')
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Configuration/ApplicationBuilder.php(214): Illuminate\\Routing\\RouteRegistrar->group('/Users/mordiaw/...')
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Configuration\\ApplicationBuilder->{closure:Illuminate\\Foundation\\Configuration\\ApplicationBuilder::buildRoutingCallback():205}()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(83): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php(162): Illuminate\\Container\\Container->call(Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php(59): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->loadRoutes()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->{closure:Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider::register():53}()
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(83): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/ServiceProvider.php(144): Illuminate\\Container\\Container->call(Object(Closure))
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1124): Illuminate\\Support\\ServiceProvider->callBootedCallbacks()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1102): Illuminate\\Foundation\\Application->bootProvider(Object(Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider))
+#22 [internal function]: Illuminate\\Foundation\\Application->{closure:Illuminate\\Foundation\\Application::boot():1101}(Object(Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider), 'Illuminate\\\\Foun...')
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1101): array_walk(Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(316): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(474): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#28 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 {main}
+"} 
+[2025-01-12 14:15:53] local.ERROR: require(/Users/mordiaw/Universite/gpet/new-version/bootstrap/../routes/api.php): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): require(/Users/mordiaw/Universite/gpet/new-version/bootstrap/../routes/api.php): Failed to open stream: No such file or directory at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php:35)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(290): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'require(/Users/...', '/Users/mordiaw/...', 35)
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php(35): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->{closure:Illuminate\\Foundation\\Bootstrap\\HandleExceptions::forwardsTo():289}(2, 'require(/Users/...', '/Users/mordiaw/...', 35)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php(35): require('/Users/mordiaw/...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/Router.php(513): Illuminate\\Routing\\RouteFileRegistrar->register('/Users/mordiaw/...')
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/Router.php(467): Illuminate\\Routing\\Router->loadRoutes('/Users/mordiaw/...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteRegistrar.php(199): Illuminate\\Routing\\Router->group(Array, '/Users/mordiaw/...')
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Configuration/ApplicationBuilder.php(214): Illuminate\\Routing\\RouteRegistrar->group('/Users/mordiaw/...')
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Configuration\\ApplicationBuilder->{closure:Illuminate\\Foundation\\Configuration\\ApplicationBuilder::buildRoutingCallback():205}()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(83): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php(162): Illuminate\\Container\\Container->call(Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php(59): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->loadRoutes()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->{closure:Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider::register():53}()
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(83): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/ServiceProvider.php(144): Illuminate\\Container\\Container->call(Object(Closure))
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1124): Illuminate\\Support\\ServiceProvider->callBootedCallbacks()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1102): Illuminate\\Foundation\\Application->bootProvider(Object(Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider))
+#22 [internal function]: Illuminate\\Foundation\\Application->{closure:Illuminate\\Foundation\\Application::boot():1101}(Object(Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider), 'Illuminate\\\\Foun...')
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1101): array_walk(Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(316): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(474): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#28 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 {main}
+"} 
+[2025-01-12 14:15:53] local.ERROR: require(/Users/mordiaw/Universite/gpet/new-version/bootstrap/../routes/api.php): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): require(/Users/mordiaw/Universite/gpet/new-version/bootstrap/../routes/api.php): Failed to open stream: No such file or directory at /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php:35)
+[stacktrace]
+#0 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(290): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'require(/Users/...', '/Users/mordiaw/...', 35)
+#1 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php(35): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->{closure:Illuminate\\Foundation\\Bootstrap\\HandleExceptions::forwardsTo():289}(2, 'require(/Users/...', '/Users/mordiaw/...', 35)
+#2 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteFileRegistrar.php(35): require('/Users/mordiaw/...')
+#3 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/Router.php(513): Illuminate\\Routing\\RouteFileRegistrar->register('/Users/mordiaw/...')
+#4 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/Router.php(467): Illuminate\\Routing\\Router->loadRoutes('/Users/mordiaw/...')
+#5 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Routing/RouteRegistrar.php(199): Illuminate\\Routing\\Router->group(Array, '/Users/mordiaw/...')
+#6 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Configuration/ApplicationBuilder.php(214): Illuminate\\Routing\\RouteRegistrar->group('/Users/mordiaw/...')
+#7 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Configuration\\ApplicationBuilder->{closure:Illuminate\\Foundation\\Configuration\\ApplicationBuilder::buildRoutingCallback():205}()
+#8 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#9 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(83): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#10 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
+#11 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
+#12 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php(162): Illuminate\\Container\\Container->call(Object(Closure))
+#13 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php(59): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->loadRoutes()
+#14 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider->{closure:Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider::register():53}()
+#15 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#16 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(83): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#17 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Object(Closure), Object(Closure))
+#18 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Container/Container.php(694): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Object(Closure), Array, NULL)
+#19 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Support/ServiceProvider.php(144): Illuminate\\Container\\Container->call(Object(Closure))
+#20 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1124): Illuminate\\Support\\ServiceProvider->callBootedCallbacks()
+#21 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1102): Illuminate\\Foundation\\Application->bootProvider(Object(Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider))
+#22 [internal function]: Illuminate\\Foundation\\Application->{closure:Illuminate\\Foundation\\Application::boot():1101}(Object(Illuminate\\Foundation\\Support\\Providers\\RouteServiceProvider), 'Illuminate\\\\Foun...')
+#23 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1101): array_walk(Array, Object(Closure))
+#24 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#25 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(316): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#26 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(474): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#27 /Users/mordiaw/Universite/gpet/new-version/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#28 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 {main}
+"} 
