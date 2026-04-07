@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #1890ff;
+  --color-primary-dark: #096dd9;
+  --color-primary-light: #40a9ff;
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-danger: #ff4d4f;
+  --color-sidebar: #001529;
+  --color-sidebar-light: #002140;
+}
+
+html, body {
+  @apply h-full m-0 p-0 bg-gray-50 font-sans text-gray-800 antialiased;
+}
+
+/* NG-ZORRO overrides for Tailwind compatibility */
+.ant-layout {
+  background: transparent;
+}
+
+.ant-menu-dark {
+  background: var(--color-sidebar);
+}
+
+.ant-table-wrapper {
+  @apply rounded-lg overflow-hidden;
+}
+
+.ant-modal-content {
+  @apply rounded-xl;
+}
+
+.ant-btn-primary {
+  @apply bg-primary border-primary;
+}
+
+.ant-btn-primary:hover {
+  @apply bg-primary-dark border-primary-dark;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  @apply w-1.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
