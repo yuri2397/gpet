@@ -16,7 +16,6 @@ html, body {
   @apply h-full m-0 p-0 bg-gray-50 font-sans text-gray-800 antialiased;
 }
 
-/* NG-ZORRO overrides for Tailwind compatibility */
 .ant-layout {
   background: transparent;
 }
@@ -41,7 +40,6 @@ html, body {
   @apply bg-primary-dark border-primary-dark;
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   @apply w-1.5;
 }

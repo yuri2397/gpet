@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "tw:build": "tailwindcss -i tailwind.css -o src/styles.css",
+    "tw:watch": "tailwindcss -i tailwind.css -o src/styles.css --watch",
+    "start": "npm run tw:build && ng serve",
+    "start:watch": "npm run tw:watch & ng serve",
+    "prebuild": "npm run tw:build",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -33,6 +37,7 @@
     "@angular-devkit/build-angular": "^19.2.0",
     "@angular/cli": "^19.2.0",
     "@angular/compiler-cli": "^19.2.0",
+    "@tailwindcss/cli": "^4.2.2",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^22.0.0",
