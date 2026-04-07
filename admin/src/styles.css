@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@source "../src/**/*.html";
+@source "../src/**/*.ts";
 
 @theme {
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
