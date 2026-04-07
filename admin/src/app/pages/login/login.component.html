@@ -7,46 +7,44 @@
         <p class="mt-2 text-gray-500">Connectez-vous à votre compte</p>
       </div>
 
-      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" class="space-y-6">
+      <form [formGroup]="validateForm" (ngSubmit)="submitForm()" class="space-y-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">Adresse email</label>
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Veuillez entrer votre email">
-              <input
-                nz-input nzSize="large"
-                type="email"
-                formControlName="email"
-                placeholder="nom@exemple.com"
-                class="!rounded-lg"
-              />
-            </nz-form-control>
-          </nz-form-item>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="nom@exemple.com"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          />
+          @if (validateForm.get('email')?.invalid && validateForm.get('email')?.dirty) {
+            <p class="mt-1 text-xs text-danger">Veuillez entrer votre email</p>
+          }
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1.5">Mot de passe</label>
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Veuillez entrer votre mot de passe">
-              <input
-                nz-input nzSize="large"
-                type="password"
-                formControlName="password"
-                placeholder="Votre mot de passe"
-                autocomplete="off"
-                class="!rounded-lg"
-              />
-            </nz-form-control>
-          </nz-form-item>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Votre mot de passe"
+            autocomplete="off"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          />
+          @if (validateForm.get('password')?.invalid && validateForm.get('password')?.dirty) {
+            <p class="mt-1 text-xs text-danger">Veuillez entrer votre mot de passe</p>
+          }
         </div>
 
         <div class="flex items-center justify-between pt-2">
           <button
-            nz-button nzType="primary" nzSize="large"
+            type="button"
             (click)="login()"
-            [nzLoading]="isLoad"
-            [disabled]="!validateForm.valid"
-            class="!rounded-lg !px-8 !h-11 !font-semibold"
+            [disabled]="!validateForm.valid || isLoad"
+            class="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
+            @if (isLoad) {
+              <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+            }
             Se connecter
           </button>
           <a routerLink="/forgot-password" class="text-sm text-primary hover:text-primary-dark transition-colors">

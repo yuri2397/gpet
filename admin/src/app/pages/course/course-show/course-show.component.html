@@ -4,57 +4,58 @@
     <div class="p-6">
       <div class="grid grid-cols-12 gap-4">
         <div class="col-span-12">
-          <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
-            nzTitle="{{ course.acronym }} - {{ course.name }}"></nz-page-header>
+          <!-- Page Header -->
+          <div class="flex items-center gap-3 mb-6">
+            <button (click)="onBack()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+              <app-icon name="arrow_back" />
+            </button>
+            <h2 class="text-xl font-semibold text-gray-800 m-0">{{ course.acronym }} - {{ course.name }}</h2>
+          </div>
         </div>
-        <ng-template #backTemp>
-          <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
-            <app-icon name="arrow_back" />
-          </button>
-        </ng-template>
       </div>
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6">
-              <nz-list nzBordered>
-                <nz-list-item>
-                  <span nz-typography><b>ID</b></span> {{ course.acronym }}
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>COURS</b></span> {{ course.name }}
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>VHT</b></span>
-                  {{ course.ec.vht }} heures
-                </nz-list-item>
-              </nz-list>
+              <ul class="divide-y divide-gray-200">
+                <li class="flex justify-between items-center py-3">
+                  <span class="font-semibold text-gray-700">ID</span>
+                  <span class="text-gray-600">{{ course.acronym }}</span>
+                </li>
+                <li class="flex justify-between items-center py-3">
+                  <span class="font-semibold text-gray-700">COURS</span>
+                  <span class="text-gray-600">{{ course.name }}</span>
+                </li>
+                <li class="flex justify-between items-center py-3">
+                  <span class="font-semibold text-gray-700">VHT</span>
+                  <span class="text-gray-600">{{ course.ec.vht }} heures</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div>
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6">
-              <nz-list nzBordered>
-                <nz-list-item>
-                  <span nz-typography><b>PROF</b></span>
+              <ul class="divide-y divide-gray-200">
+                <li class="flex justify-between items-center py-3">
+                  <span class="font-semibold text-gray-700">PROF</span>
                   @if (course.professor) {
-                    {{ course.professor.first_name }}
-                    {{ course.professor.last_name.toUpperCase() }}
+                    <span class="text-gray-600">{{ course.professor.first_name }} {{ course.professor.last_name.toUpperCase() }}</span>
                   } @else {
-                    <nz-tag nzColor="error">
-                      <i nz-icon nzType="close-circle"></i>
-                      <span>Non définie</span>
-                    </nz-tag>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">
+                      <i class="fa-solid fa-circle-xmark mr-1"></i>
+                      Non définie
+                    </span>
                   }
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>CLASSE</b></span>
-                  {{ course.classe.name.toUpperCase() }}
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>SEMESTRE</b></span>
-                  {{ course.semester.name.toUpperCase() }}
-                </nz-list-item>
-              </nz-list>
+                </li>
+                <li class="flex justify-between items-center py-3">
+                  <span class="font-semibold text-gray-700">CLASSE</span>
+                  <span class="text-gray-600">{{ course.classe.name.toUpperCase() }}</span>
+                </li>
+                <li class="flex justify-between items-center py-3">
+                  <span class="font-semibold text-gray-700">SEMESTRE</span>
+                  <span class="text-gray-600">{{ course.semester.name.toUpperCase() }}</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -62,10 +63,8 @@
       <br>
       <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6">
-          <nz-divider [nzText]="rs_title"></nz-divider>
-          <ng-template #rs_title>
-            <h3 class="font-semibold text-lg mt-0">Ressources assicies au cours.</h3>
-          </ng-template>
+          <hr class="border-gray-200 my-4" />
+          <h3 class="font-semibold text-lg mt-0">Ressources associées au cours.</h3>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             @for (item of course.media; track item) {
@@ -75,26 +74,26 @@
                   {{item.name}} ({{ item.mime_type }})
                 </div>
                 <div class="px-6 py-3 bg-gray-50 border-t border-gray-100">
-                  <i nz-icon nzType="download" class="mr-2" nzTheme="outline"></i>
+                  <i class="fa-solid fa-download mr-2"></i>
                   <a href="{{item.original_url}}" target="_blank" rel="noopener noreferrer" download="{{ item.name }}">{{ item.name }}</a>
                 </div>
               </div>
             </div>
             }
           </div>
-          <hr>
+          <hr class="border-gray-200 my-4" />
           <div class="flex justify-between items-center">
             <div>
               <h3 class="font-semibold text-lg mt-0">Syllabus du cours</h3>
             </div>
             <div>
               @if (course.syllabus == null) {
-                <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary hover:bg-primary-dark text-white transition-colors cursor-pointer">
                   <app-icon name="add" />
                 </button>
               }
               @if (course.syllabus != null) {
-                <button (click)="openEditModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                <button (click)="openEditModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary hover:bg-primary-dark text-white transition-colors cursor-pointer">
                   <app-icon name="edit" />
                 </button>
               }
@@ -111,10 +110,6 @@
   </div>
 </div>
 }
-
-<ng-template #title2>
-  <h3 class="font-semibold text-lg mt-5">Évolution des scéances</h3>
-</ng-template>
 
 @if (dataLoad && !errorNetWork) {
   <app-load></app-load>

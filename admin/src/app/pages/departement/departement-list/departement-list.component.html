@@ -14,14 +14,7 @@
         </div>
     </div>
     <div class="p-6">
-        <nz-table
-            [nzLoading]="isLoad()"
-            nzShowSizeChanger
-            [nzPageSizeOptions]="[5, 10, 20, 30]"
-            #basicTable
-            [nzData]="departements()"
-            [nzBordered]="true"
-        >
+        <app-data-table [data]="departements()" [loading]="isLoad()" #dataTable>
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -30,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (data of basicTable.data; track data) {
+                @for (data of dataTable.pageData(); track data.id) {
                     <tr>
                         <td>{{ data.name }}</td>
                         <td class="text-center">{{ data.classes_count }}</td>
@@ -38,8 +31,8 @@
                             <div class="flex justify-center">
                                 <div class="mx-3">
                                     <a [routerLink]="['show/' + data.id]">
-                                        <button nz-button nzShape="circle" class="color-orange">
-                                            <i class="color" nz-icon nzType="eye"></i>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs">
+                                            <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </a>
                                 </div>
@@ -47,11 +40,9 @@
                                     <div class="mx-3">
                                         <button
                                             (click)="openEditModal(data)"
-                                            nz-button
-                                            nzType="primary"
-                                            nzShape="circle"
+                                            class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs"
                                         >
-                                            <i nz-icon nzType="edit"></i>
+                                            <i class="fa-solid fa-pen"></i>
                                         </button>
                                     </div>
                                 }
@@ -59,12 +50,9 @@
                                     <div class="mx-3">
                                         <button
                                             (click)="openDeleteModal(data)"
-                                            nzDanger
-                                            nz-button
-                                            nzType="primary"
-                                            nzShape="circle"
+                                            class="w-8 h-8 flex items-center justify-center rounded-full bg-danger text-white hover:bg-red-600 transition-colors cursor-pointer text-xs"
                                         >
-                                            <i nz-icon nzType="delete"></i>
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 }
@@ -73,6 +61,6 @@
                     </tr>
                 }
             </tbody>
-        </nz-table>
+        </app-data-table>
     </div>
 </div>

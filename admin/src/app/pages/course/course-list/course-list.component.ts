@@ -1,5 +1,4 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { CourseCreateComponent } from './../course-create/course-create.component';
 import { CanDeleteComponent } from './../../../shared/ui/can-delete/can-delete.component';
 import { Component, EventEmitter, Input, OnInit, Output, inject, signal } from '@angular/core';
@@ -16,43 +15,9 @@ import { Professor } from 'src/app/models/professor';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
 import { AuthStore } from 'src/app/shared/auth-store';
 import { RouterModule } from '@angular/router';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-course-list',
@@ -62,52 +27,16 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
   CanDeleteComponent,
+  DataTableComponent,
   ],
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss'],
 })
 export class CourseListComponent implements OnInit {
   private notification = inject(NotificationService);
-  private modalService = inject(NzModalService);
+  private modalService = inject(ModalService);
   courseService = inject(CourseService);
   private authStore = inject(AuthStore);
 
@@ -119,7 +48,7 @@ export class CourseListComponent implements OnInit {
   @Input() setView!: boolean;
   services!: Service[];
   isLoad = signal(false);
-  deleteRestoRef!: NzModalRef;
+  deleteRestoRef!: ModalRef;
   deleteLoad!: boolean;
   selectedCourse!: Course;
   semesters!: Semester[];
@@ -168,16 +97,12 @@ export class CourseListComponent implements OnInit {
 
   openEditModal() {
     let c: Course = this.selectedCourse;
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier le cours',
-      nzContent: CourseEditComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: 'Modifier le cours',
+      component: CourseEditComponent,
+      data: {
         course: this.courseService.clone(c),
       },
-      nzCentered: true,
-      nzWidth: '50em',
-      nzMaskClosable: false,
-      nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -196,16 +121,11 @@ export class CourseListComponent implements OnInit {
   }
 
   openDeleteModal(course: Course) {
-    this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce cours?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteCourse(course),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+    this.modalService.confirm({
+      title: 'Voulez-vous supprimer ce cours?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteCourse(course),
     });
   }
 
@@ -228,27 +148,22 @@ export class CourseListComponent implements OnInit {
           'Cours supprimé avec succès.'
         );
         this.findAll();
-        this.deleteRestoRef.destroy();
       },
       error: (errors) => {
         this.deleteLoad = false;
-        this.deleteRestoRef.destroy();
         this.canNotDelete();
       },
     });
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Ajouter un cours',
-      nzContent: CourseCreateComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: 'Ajouter un cours',
+      component: CourseCreateComponent,
+      data: {
         classe: this.classe,
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '55em',
+      size: 'lg',
     });
 
     modal.afterClose.subscribe((data: Course | null) => {

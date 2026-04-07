@@ -14,23 +14,13 @@
       <div class="mb-4">
         <input
           type="text"
-          nzSize="large"
           (input)="search()"
-          nz-input
           placeholder="Prénom ou Nom ou Email ..."
           [(ngModel)]="searchValue"
-          class="w-full"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
         />
       </div>
-      <nz-table
-        nzTableLayout="fixed"
-        [nzLoading]="isLoad()"
-        nzShowSizeChanger
-        [nzPageSizeOptions]="[5, 10, 20, 30]"
-        #basicTable
-        [nzData]="listOfDisplayData()"
-        [nzBordered]="true"
-      >
+      <app-data-table [data]="listOfDisplayData()" [loading]="isLoad()" #dataTable>
         <thead>
           <tr>
             <th>Matricule</th>
@@ -44,7 +34,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (data of basicTable.data; track data) {
+          @for (data of dataTable.pageData(); track data) {
             <tr>
               <td>{{ data.registration_number }}</td>
               <td>{{ data.first_name }}</td>
@@ -56,12 +46,10 @@
                   <div class="flex justify-center items-center gap-2">
                     @if (can('voir cour')) {
                       <button
-                        nz-button
-                        nzShape="circle"
-                        class="bg-amber-600 border-none hover:bg-amber-700"
+                        class="w-8 h-8 flex items-center justify-center rounded-full bg-amber-600 text-white hover:bg-amber-700 transition-colors cursor-pointer"
                         (click)="showProfessor(data)"
                       >
-                        <i class="text-white" nz-icon nzType="eye"></i>
+                        <app-icon name="visibility" />
                       </button>
                     }
                   </div>
@@ -70,7 +58,7 @@
             </tr>
           }
         </tbody>
-      </nz-table>
+      </app-data-table>
     </div>
   </div>
 </div>

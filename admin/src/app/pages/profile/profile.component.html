@@ -1,86 +1,102 @@
 <div class="bg-white rounded-xl shadow-sm overflow-hidden p-6">
 
-    <nz-divider [nzText]="p_t"></nz-divider>
-    <ng-template #p_t>
-        <h4 class="m-3">{{ user.first_name }} {{ user.last_name }}</h4>
-        <button Center nz-button nzType="primary" class="bg" (click)="openModal()">
+    <div class="flex items-center justify-center gap-4 py-4 border-b border-gray-200 mb-4">
+        <h4 class="text-lg font-semibold">{{ user.first_name }} {{ user.last_name }}</h4>
+        <button (click)="openModal()" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">
           Se Deconnecter
         </button>
-    </ng-template>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
         <div>
-            <div class="bg-white rounded-xl m-2 shadow-sm border border-gray-100 raduis-sm">
-                <img [src]="user.avatar" class="user-avatar card-img-top" alt="" />
+            <div class="bg-white rounded-xl m-2 shadow-sm border border-gray-100">
+                <img [src]="user.avatar" class="user-avatar card-img-top w-full object-cover" alt="" />
                 @if (avatarLoad) {
                     <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                 }
-                <div class="flex justify-center my-3 btn-icon">
+                <div class="flex justify-center my-3">
                     <div>
-                        <button mat-fab color="basic" class="shadow-lg" (click)="image.click()">
-              <app-icon name="edit" />
-              <form enctype="multipart/form-data">
-                <input
-                  #image
-                  type="file"
-                  nz-input
-                  hidden
-                  (change)="onChange($event)"
-                />
-              </form>
-            </button>
+                        <button class="shadow-lg w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer" (click)="image.click()">
+                            <app-icon name="edit" />
+                            <form enctype="multipart/form-data">
+                                <input
+                                  #image
+                                  type="file"
+                                  hidden
+                                  (change)="onChange($event)"
+                                />
+                            </form>
+                        </button>
                     </div>
                 </div>
                 <div class="p-6">
-                    <h5 class="card-title text-lg font-semibold">
+                    <h5 class="text-lg font-semibold">
                         <br />
                         @if (user.departement != null) {
                             {{ user.departement.name }}
                         }
                     </h5>
-                    <nz-divider nzText="Roles"></nz-divider>
-                    <p class="card-text">
+                    <hr class="border-gray-200 my-4" />
+                    <h6 class="text-sm font-medium text-gray-600 mb-2">Roles</h6>
+                    <div class="flex flex-wrap gap-2">
                         @for (item of roles; track item) {
-                            <nz-tag nzType="default" nzColor="blue" nzMode="checkable">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
                                 {{ item.name }}
-                            </nz-tag>
+                            </span>
                         }
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
         <div>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6 m-2 raduis-sm">
-                <nz-divider [nzText]="c_t">
-                    <ng-template #c_t>
-                        <h5 class="my-2 text-lg font-semibold">Change votre mot de passe</h5>
-                    </ng-template>
-                </nz-divider>
-                <form nz-form [formGroup]="validateForm" class="login-form">
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe actuel requi!">
-                            <nz-input-group nzPrefixIcon="unlock">
-                                <input type="password" nz-input formControlName="password" placeholder="Mot de passe courrant" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe requi!">
-                            <nz-input-group nzPrefixIcon="lock">
-                                <input type="password" nz-input formControlName="new_password" placeholder="Nouveau mot de passe" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe requi!">
-                            <nz-input-group nzPrefixIcon="lock">
-                                <input type="password" nz-input formControlName="new_password_conf" placeholder="Confirmer le mot de passe" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <button nz-button [disabled]="!validateForm.valid" class="login-form-button login-form-margin shadow-sm" [nzType]="'primary'" (click)="updatepassword()" [nzLoading]="isLoad">
-            Valider
-          </button>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6 m-2">
+                <div class="border-b border-gray-200 pb-3 mb-4">
+                    <h5 class="text-lg font-semibold">Changer votre mot de passe</h5>
+                </div>
+                <form [formGroup]="validateForm">
+                    <div class="mb-4">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-unlock"></i>
+                            </span>
+                            <input type="password" formControlName="password" placeholder="Mot de passe courrant"
+                                class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                        </div>
+                        @if (validateForm.get('password')?.invalid && validateForm.get('password')?.touched) {
+                            <p class="text-red-500 text-xs mt-1">Mot de passe actuel requi!</p>
+                        }
+                    </div>
+                    <div class="mb-4">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" formControlName="new_password" placeholder="Nouveau mot de passe"
+                                class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                        </div>
+                        @if (validateForm.get('new_password')?.invalid && validateForm.get('new_password')?.touched) {
+                            <p class="text-red-500 text-xs mt-1">Mot de passe requi!</p>
+                        }
+                    </div>
+                    <div class="mb-4">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" formControlName="new_password_conf" placeholder="Confirmer le mot de passe"
+                                class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                        </div>
+                        @if (validateForm.get('new_password_conf')?.invalid && validateForm.get('new_password_conf')?.touched) {
+                            <p class="text-red-500 text-xs mt-1">Mot de passe requi!</p>
+                        }
+                    </div>
+                    <button [disabled]="!validateForm.valid" (click)="updatepassword()"
+                        class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+                        @if (isLoad) {
+                            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                        }
+                        Valider
+                    </button>
                 </form>
             </div>
         </div>

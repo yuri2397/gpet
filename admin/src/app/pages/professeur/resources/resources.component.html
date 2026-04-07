@@ -4,50 +4,46 @@
     </div>
     <div class="p-6 mx-5">
         <div class="flex justify-between items-start">
-            <nz-input-group nzSize="large" [nzPrefix]="preffixIcon" [nzSuffix]="searchLoad ? suffixIcon :  ''">
-                <input [nzSize]="'large'" placeholder="Rechercher vos cours" nz-input [(ngModel)]="inputValue"
-                    (ngModelChange)="itemSelected($event)" (input)="onSearch($event)" [nzAutocomplete]="auto" />
-            </nz-input-group>
-            <ng-template #suffixIcon>
-                <i nz-icon nzType="loading" nzTheme="outline"></i>
-            </ng-template>
-            <ng-template #preffixIcon>
-                <i nz-icon nzType="search"></i>
-            </ng-template>
-            <nz-autocomplete #auto>
-                @for (option of options; track option) {
-                    <nz-auto-option [nzValue]="option.id" [nzLabel]="option.name">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span>{{ option.name }}</span>
-                            </div>
-                            <div>
-                                <span>{{ option.classe.name }}</span>
-                            </div>
-                        </div>
-                    </nz-auto-option>
+            <div class="relative flex-1">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <app-icon name="search" />
+                </div>
+                <input type="text" placeholder="Rechercher vos cours" [(ngModel)]="inputValue"
+                    (input)="onSearch($event)"
+                    class="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                @if (searchLoad) {
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                        <span class="inline-block w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+                    </div>
                 }
-            </nz-autocomplete>
+            </div>
         </div>
+        @if (options && options.length > 0) {
+            <div class="mt-2 border border-gray-200 rounded-lg shadow-sm max-h-60 overflow-y-auto">
+                @for (option of options; track option) {
+                    <button (click)="itemSelected(option.id)" class="w-full px-4 py-3 flex justify-between items-center hover:bg-gray-50 transition-colors text-left border-b border-gray-100 last:border-b-0">
+                        <span>{{ option.name }}</span>
+                        <span class="text-sm text-gray-500">{{ option.classe.name }}</span>
+                    </button>
+                }
+            </div>
+        }
         <br>
         <div>
             @if (selectedCourse) {
                 <div class="flex flex-col items-center">
                     <h3 class="font-semibold text-lg m-0">{{ selectedCourse.classe.name }} <br><br> {{ selectedCourse.name }}</h3>
-                    <nz-upload nzType="drag" [nzMultiple]="true"
-                        [nzAction]="upload"
-                        [nzFileList]="fileList"
-                        (nzChange)="handleChange($event)">
-                        <p class="ant-upload-drag-icon">
-                            <i nz-icon nzType="inbox"></i>
-                        </p>
-                        <p class="ant-upload-text">Cliquez ou faites glisser le fichier dans cette zone pour le
-                            telecharger</p>
-                        <p class="ant-upload-hint">
-                            Prise en charge d'un telechargement unique ou en masse. Interdiction stricte de
-                            telecharger des donnees d'entreprise ou d'autres fichiers de bande.
-                        </p>
-                    </nz-upload>
+                    <div class="w-full mt-4 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors">
+                        <input type="file" multiple (change)="onFileSelected($event)" class="hidden" #fileInput />
+                        <button (click)="fileInput.click()" class="flex flex-col items-center mx-auto">
+                            <app-icon name="cloud_upload" />
+                            <p class="mt-2 text-sm text-gray-600">Cliquez ou faites glisser le fichier dans cette zone pour le telecharger</p>
+                            <p class="mt-1 text-xs text-gray-400">
+                                Prise en charge d'un telechargement unique ou en masse. Interdiction stricte de
+                                telecharger des donnees d'entreprise ou d'autres fichiers de bande.
+                            </p>
+                        </button>
+                    </div>
                 </div>
             } @else {
                 <div class="flex flex-col items-center">

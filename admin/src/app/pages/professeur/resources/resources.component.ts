@@ -1,49 +1,12 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzUploadChangeParam, NzUploadFile, NzUploadModule } from 'ng-zorro-antd/upload';
-import { Observable } from 'rxjs';
 import { Course } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { RessourceService } from 'src/app/services/ressource.service';
 import { RouterModule } from '@angular/router';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-resources',
@@ -53,43 +16,6 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
   ],
   templateUrl: './resources.component.html',
@@ -98,7 +24,7 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 export class ResourcesComponent implements OnInit {
   private courseService = inject(CourseService);
   private resService = inject(RessourceService);
-  private msg = inject(NzMessageService);
+  private notification = inject(NotificationService);
 
   inputValue!: any;
   options!: Course[];
@@ -135,19 +61,13 @@ export class ResourcesComponent implements OnInit {
     }
   }
 
-  upload = (file: NzUploadFile): string | Observable<string> => {
-    return this.resService.uploadUrl(this.selectedCourse)
-  }
-
-  handleChange({ file, fileList }: NzUploadChangeParam): void {
-    const status = file.status;
-    if (status !== 'uploading') {
-      this.fileList = fileList;
-    }
-    if (status === 'done') {
-      this.msg.success(`${file.name} fichier téléchargé avec succès.`);
-    } else if (status === 'error') {
-      this.msg.error(`${file.name} le téléchargement du fichier a échoué.`);
+  onFileSelected(event: any) {
+    const files: FileList = event.target.files;
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        this.file = files[i];
+        // Upload logic would go here using resService
+      }
     }
   }
 }

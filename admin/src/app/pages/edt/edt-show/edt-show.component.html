@@ -14,44 +14,49 @@
                 </span>
                 <h3>{{ classe.name }}</h3> {{ now | date:'EEEE d MMMM y'}}
             </div>
-            <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="p-0 border border-gray-100 mb-3 mx-3" nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="epts">
-                <thead class="bg-primary">
-                    <tr>
-                        @for (item of days; track item) {
-                            <th [nzAlign]="'center'" class="text-center">{{ item.name.toUpperCase() }}</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody class="table-body">
-                    @for (item of presentionEPT.data; track item) {
-                        <div>
-                            @if (item.data.length != 0) {
-                                @for (row of item.data; track row; let isLast = $last) {
-                                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6 text-center m-3">
-                                        {{ row.course.name.toLocaleUpperCase() }} <br>
-                                        <nz-divider nzText="{{ pipeHours(row.start )}} A {{ pipeHours(row.end) }}"></nz-divider>
-                                        <div class="flex items-center justify-between">
-                                            <div>Prof</div>
-                                            <div>M. {{ row.course.professor.last_name }}</div>
-                                        </div>
-                                        <div class="flex items-center justify-between">
-                                            <div>Salle</div>
-                                            <div>{{ row?.salle?.name }}</div>
-                                        </div>
-                                        @if (!isLast) {
-                                            <nz-divider></nz-divider>
-                                        }
-                                    </div>
-                                }
-                            } @else {
-                                <div class="bg-white rounded-xl shadow-sm m-3 text-center">
-                                    <span>LIBRE</span>
-                                </div>
+            <div class="overflow-x-auto">
+                <table class="w-full border border-gray-200">
+                    <thead class="bg-primary">
+                        <tr>
+                            @for (item of days; track item) {
+                                <th class="text-center px-3 py-2 border border-gray-200 text-white text-sm font-medium">{{ item.name.toUpperCase() }}</th>
                             }
-                        </div>
-                    }
-                </tbody>
-            </nz-table>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @for (item of epts; track item) {
+                                <td class="border border-gray-200 align-top p-0">
+                                    @if (item.data.length != 0) {
+                                        @for (row of item.data; track row; let isLast = $last) {
+                                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-4 text-center m-2">
+                                                <span class="font-semibold text-sm">{{ row.course.name.toLocaleUpperCase() }}</span>
+                                                <hr class="border-gray-200 my-2" />
+                                                <div class="text-sm text-center mb-2">{{ pipeHours(row.start) }} A {{ pipeHours(row.end) }}</div>
+                                                <div class="flex items-center justify-between text-sm">
+                                                    <div class="text-gray-500">Prof</div>
+                                                    <div>M. {{ row.course.professor.last_name }}</div>
+                                                </div>
+                                                <div class="flex items-center justify-between text-sm">
+                                                    <div class="text-gray-500">Salle</div>
+                                                    <div>{{ row?.salle?.name }}</div>
+                                                </div>
+                                                @if (!isLast) {
+                                                    <hr class="border-gray-200 my-2" />
+                                                }
+                                            </div>
+                                        }
+                                    } @else {
+                                        <div class="m-2 text-center py-4">
+                                            <span class="text-gray-400 text-sm">LIBRE</span>
+                                        </div>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 }
@@ -60,9 +65,9 @@
 }
 @if (hasError && !isLoad) {
     <div class="center">
-        <div class="alert alert-danger" role="alert">
-            <h4 class="alert-heading">Erreur</h4>
-            Impossible de recuper le contenu de la page!
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4" role="alert">
+            <h4 class="text-red-800 font-semibold mb-1">Erreur</h4>
+            <p class="text-red-700 text-sm">Impossible de recuper le contenu de la page!</p>
         </div>
     </div>
 }

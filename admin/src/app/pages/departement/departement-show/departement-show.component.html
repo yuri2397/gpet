@@ -3,130 +3,133 @@
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <div class="p-6">
                 @if (showHeader()) {
-                    <div class="flex">
-                        <div class="w-full">
-                            <nz-page-header
-                                class="site-page-header"
-                                (nzBack)="onBack()"
-                                [nzBackIcon]="backTemp"
-                                nzTitle="{{ departement.name }}"
-                            ></nz-page-header>
-                        </div>
-                        <ng-template #backTemp>
-                            <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
-                                <app-icon name="arrow_back" />
-                            </button>
-                        </ng-template>
+                    <div class="flex items-center mb-4">
+                        <button (click)="onBack()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer mr-3">
+                            <app-icon name="arrow_back" />
+                        </button>
+                        <h2 class="text-xl font-semibold text-gray-800">{{ departement.name }}</h2>
                     </div>
                 }
-                <nz-tabset [nzType]="'card'" [nzTabPosition]="'top'" class="p-3">
-                    <nz-tab [nzTitle]="'Vue global'">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="my-2">
-                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                    <div class="p-6">
-                                        <nz-statistic
-                                            [nzValue]="(departement.professors.length | number)!"
-                                            [nzTitle]="'Professeurs'"
-                                            [nzPrefix]="prefixTplProf"
-                                            [nzValueStyle]="{ color: '#3F8600' }"
-                                        ></nz-statistic>
-                                        <ng-template #prefixTplProf>
-                                            <app-icon name="people" />
-                                        </ng-template>
+
+                <!-- Tabs navigation -->
+                <div class="border-b border-gray-200 mb-4">
+                    <nav class="flex gap-4 -mb-px">
+                        <button (click)="activeTab = 0" [class]="activeTab === 0 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
+                            Vue global
+                        </button>
+                        <button (click)="activeTab = 1" [class]="activeTab === 1 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
+                            Classes
+                        </button>
+                        <button (click)="activeTab = 2" [class]="activeTab === 2 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
+                            Professeurs
+                        </button>
+                        <button (click)="activeTab = 3" [class]="activeTab === 3 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
+                            Cours
+                        </button>
+                        <button (click)="activeTab = 4" [class]="activeTab === 4 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
+                            Semestres
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Tab: Vue global -->
+                @if (activeTab === 0) {
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="my-2">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                                <div class="p-6">
+                                    <div class="flex items-center gap-2 text-gray-500 text-sm mb-1">
+                                        <app-icon name="people" />
+                                        <span>Professeurs</span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="my-2">
-                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                    <div class="p-6">
-                                        <nz-statistic
-                                            [nzValue]="(departement.classes.length | number)!"
-                                            [nzTitle]="'Classes'"
-                                            [nzPrefix]="prefixTplClasses"
-                                            [nzValueStyle]="{ color: '#41729f' }"
-                                        ></nz-statistic>
-                                        <ng-template #prefixTplClasses>
-                                            <app-icon name="school" />
-                                        </ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="my-2">
-                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                    <div class="p-6">
-                                        <nz-statistic
-                                            [nzValue]="(departement.courses.length | number)!"
-                                            [nzTitle]="'Cours'"
-                                            [nzPrefix]="prefixTplCours"
-                                            [nzValueStyle]="{ color: '#3F8600' }"
-                                        ></nz-statistic>
-                                        <ng-template #prefixTplCours>
-                                            <app-icon name="emoji_objects" />
-                                        </ng-template>
-                                    </div>
+                                    <div class="text-2xl font-bold" style="color: #3F8600">{{ departement.professors.length }}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex mx-1 my-2 bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4 rounded-xl shadow-sm border border-gray-100">
-                            <h6>LISTE DES SALLES POUR LE DEPARTEMENT</h6>
+                        <div class="my-2">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                                <div class="p-6">
+                                    <div class="flex items-center gap-2 text-gray-500 text-sm mb-1">
+                                        <app-icon name="school" />
+                                        <span>Classes</span>
+                                    </div>
+                                    <div class="text-2xl font-bold" style="color: #41729f">{{ departement.classes.length }}</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="p-6">
-                            <nz-table
-                                [nzLoading]="dataLoad"
-                                nzShowSizeChanger
-                                [nzPageSizeOptions]="[5, 10, 20, 30]"
-                                #basicTable
-                                [nzData]="listes"
-                                [nzBordered]="false"
-                            >
-                                <thead>
+                        <div class="my-2">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                                <div class="p-6">
+                                    <div class="flex items-center gap-2 text-gray-500 text-sm mb-1">
+                                        <app-icon name="emoji_objects" />
+                                        <span>Cours</span>
+                                    </div>
+                                    <div class="text-2xl font-bold" style="color: #3F8600">{{ departement.courses.length }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex mx-1 my-2 bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4 rounded-xl shadow-sm border border-gray-100">
+                        <h6 class="text-white font-semibold">LISTE DES SALLES POUR LE DEPARTEMENT</h6>
+                    </div>
+                    <div class="p-6">
+                        <app-data-table [data]="listes" [loading]="dataLoad" #salleTable>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th class="text-center">Numero</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (data of salleTable.pageData(); track data.id) {
                                     <tr>
-                                        <th>Nom</th>
-                                        <th class="text-center">Numero</th>
+                                        <td>{{ data.name }}</td>
+                                        <td class="text-center">{{ data.number }}</td>
+                                        <td class="p-0">
+                                            <div class="flex justify-center"></div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @for (data of basicTable.data; track data) {
-                                        <tr>
-                                            <td>{{ data.name }}</td>
-                                            <td class="text-center">{{ data.number }}</td>
-                                            <td class="p-0">
-                                                <div class="flex justify-center"></div>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </nz-table>
-                        </div>
-                    </nz-tab>
-                    <nz-tab [nzTitle]="'Classes'">
-                        <app-classe-list
-                            [departement]="departement"
-                            [classes]="departement.classes"
-                            [setView]="true"
-                        ></app-classe-list>
-                    </nz-tab>
-                    <nz-tab [nzTitle]="'Professeurs'">
-                        <app-professeur-list
-                            [professeurs]="departement.professors"
-                            [setView]="true"
-                        ></app-professeur-list>
-                    </nz-tab>
-                    <nz-tab [nzTitle]="'Cours'">
-                        <app-course-list
-                            [(courses)]="departement.courses"
-                            [setView]="true"
-                        ></app-course-list>
-                    </nz-tab>
-                    <nz-tab [nzTitle]="'Semestres'">
-                        <app-semester-list [departement]="departement"></app-semester-list>
-                    </nz-tab>
-                </nz-tabset>
+                                }
+                            </tbody>
+                        </app-data-table>
+                    </div>
+                }
+
+                <!-- Tab: Classes -->
+                @if (activeTab === 1) {
+                    <app-classe-list
+                        [departement]="departement"
+                        [classes]="departement.classes"
+                        [setView]="true"
+                    ></app-classe-list>
+                }
+
+                <!-- Tab: Professeurs -->
+                @if (activeTab === 2) {
+                    <app-professeur-list
+                        [professeurs]="departement.professors"
+                        [setView]="true"
+                    ></app-professeur-list>
+                }
+
+                <!-- Tab: Cours -->
+                @if (activeTab === 3) {
+                    <app-course-list
+                        [(courses)]="departement.courses"
+                        [setView]="true"
+                    ></app-course-list>
+                }
+
+                <!-- Tab: Semestres -->
+                @if (activeTab === 4) {
+                    <app-semester-list [departement]="departement"></app-semester-list>
+                }
             </div>
         </div>
     </div>
 } @else {
     <app-load></app-load>
 }
-<app-error-server *ngIf="errorNetWork"></app-error-server>
+@if (errorNetWork) {
+    <app-error-server></app-error-server>
+}

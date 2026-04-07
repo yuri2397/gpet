@@ -1,92 +1,90 @@
 <div>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-form-item>
-            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="code">Code EC</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est requi">
-                <input [(ngModel)]="ec.code" formControlName="code" nz-input name="code" type="text" id="code" />
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="name">Nom EC</nz-form-label>
-            <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
-                <input [(ngModel)]="ec.name" formControlName="name" nz-input name="name" type="text" id="name" />
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired nzFor="name">VHT EC</nz-form-label>
-            <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Volume horaire requi">
-                <input [(ngModel)]="ec.vht" formControlName="vht" nz-input name="vht" type="number" min="0" max="200" id="vht" />
-            </nz-form-control>
-        </nz-form-item>
+    <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5" for="code">Code EC <span class="text-danger">*</span></label>
+            <input [(ngModel)]="ec.code" formControlName="code" name="code" type="text" id="code"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5" for="name">Nom EC <span class="text-danger">*</span></label>
+            <input [(ngModel)]="ec.name" formControlName="name" name="name" type="text" id="name"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5" for="vht">VHT EC <span class="text-danger">*</span></label>
+            <input [(ngModel)]="ec.vht" formControlName="vht" name="vht" type="number" min="0" max="200" id="vht"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+        </div>
 
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ec_id">UE</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                <nz-select (ngModelChange)="currentUESelected($event)" [nzDisabled]="addUE" nzPlaceHolder="Rechercher un UE" nzAllowClear (nzOnSearch)="onUESearch($event)" nzShowSearch nzServerSearch [nzNotFoundContent]="ueNotFound" [nzLoading]="isLoadData" formControlName="ec_id"
-                    [(ngModel)]="ec.ue_id">
-                    <ng-container *ngFor="let o of ues">
-                        <nz-option *ngIf="!ueLoad" [nzValue]="o.id" [nzLabel]=" '#' + o.code + ' - ' + o.name"></nz-option>
-                    </ng-container>
-                    <nz-option *ngIf="ueLoad" nzDisabled nzCustomContent>
-                        <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-                    </nz-option>
-                    <ng-template #ueNotFound>
-                        <button nz-button nzType="primary" (click)="addNewUE()">Nouveau UE</button>
-                    </ng-template>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1.5" for="ec_id">UE <span class="text-danger">*</span></label>
+            <div class="relative">
+                <input type="text" placeholder="Rechercher un UE..." (input)="onUESearch($any($event.target).value)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors mb-2"
+                    [disabled]="addUE" />
+                @if (ues && ues.length > 0 && !addUE) {
+                    <select formControlName="ec_id" [(ngModel)]="ec.ue_id" (ngModelChange)="currentUESelected($event)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        <option [ngValue]="null" disabled>Selectionner un UE</option>
+                        @for (o of ues; track o) {
+                            <option [ngValue]="o.id">{{'#' + o.code + ' - ' + o.name}}</option>
+                        }
+                    </select>
+                }
+                @if (!addUE) {
+                    <button type="button" (click)="addNewUE()" class="mt-2 px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">Nouveau UE</button>
+                }
+            </div>
+        </div>
 
         <!-- AJOUTE AUSSI L'UE -->
-        <nz-divider [hidden]="!addUE" nzDashed [nzText]="text">
-            <ng-template #text>
-                <i nz-icon nzType="plus"></i> Ajouter l'UE
-            </ng-template>
-        </nz-divider>
+        @if (addUE) {
+            <hr class="border-gray-200 my-4 border-dashed" />
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-plus text-primary"></i>
+                <span class="text-sm font-medium">Ajouter l'UE</span>
+            </div>
 
-        <nz-form-item [hidden]="!addUE">
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_code">Code UE</nz-form-label>
-            <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
-                <input [(ngModel)]="ec.ue.code" formControlName="ue_code" nz-input name="ue_code" type="text" id="ue_code" />
-            </nz-form-control>
-        </nz-form-item>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5" for="ue_code">Code UE <span class="text-danger">*</span></label>
+                <input [(ngModel)]="ec.ue.code" formControlName="ue_code" name="ue_code" type="text" id="ue_code"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+            </div>
 
-        <nz-form-item [hidden]="!addUE">
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_name">Nom UE</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                <input [(ngModel)]="ec.ue.name" formControlName="ue_name" nz-input name="ue_name" type="text" id="ue_name" />
-            </nz-form-control>
-        </nz-form-item>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5" for="ue_name">Nom UE <span class="text-danger">*</span></label>
+                <input [(ngModel)]="ec.ue.name" formControlName="ue_name" name="ue_name" type="text" id="ue_name"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+            </div>
 
-        <nz-form-item [hidden]="!addUE">
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_name">Semestre</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le semestre est requi">
-                <nz-select [nzDisabled]="!addUE" nzPlaceHolder="Selectionner un semestre" formControlName="ue_semester" [(ngModel)]="ec.ue.semester_id">
-                    <ng-container *ngFor="let o of semesters">
-                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                    </ng-container>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5" for="ue_semester">Semestre <span class="text-danger">*</span></label>
+                <select formControlName="ue_semester" [(ngModel)]="ec.ue.semester_id"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                    <option [ngValue]="null" disabled>Selectionner un semestre</option>
+                    @for (o of semesters; track o) {
+                        <option [ngValue]="o.id">{{ o.name }}</option>
+                    }
+                </select>
+            </div>
 
-        <nz-form-item [hidden]="!addUE || ueService.isEditeur()">
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="ue_departement">Département</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                <nz-select (ngModelChange)="currentDepSelected($event)" [nzDisabled]="!addUE" nzPlaceHolder="Rechercher un département" formControlName="ue_departement" [(ngModel)]="ec.ue.departement_id">
-                    <ng-container *ngFor="let o of departements">
-                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                    </ng-container>
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
+            @if (!ueService.isEditeur()) {
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5" for="ue_departement">Département <span class="text-danger">*</span></label>
+                    <select formControlName="ue_departement" [(ngModel)]="ec.ue.departement_id" (ngModelChange)="currentDepSelected($event)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        <option [ngValue]="null" disabled>Rechercher un département</option>
+                        @for (o of departements; track o) {
+                            <option [ngValue]="o.id">{{ o.name }}</option>
+                        }
+                    </select>
+                </div>
+            }
+        }
 
-        <nz-form-item><button nz-button nzType="primary" class="shadow-sm my-2" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">
-        Ajouter
-      </button>
-            <button nz-button class="shadow-sm" (click)="close()">
-        Annuler
-      </button>
-
-        </nz-form-item>
-    </nz-form>
+        <div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+            <button type="button" (click)="close()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Annuler</button>
+            <button type="button" (click)="save()" [disabled]="!validateForm.valid || isLoad" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">@if (isLoad) {<i class="fa-solid fa-spinner fa-spin mr-2"></i>}Ajouter</button>
+        </div>
+    </form>
 </div>

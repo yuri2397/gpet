@@ -13,11 +13,12 @@
   <!-- Chart -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
     <div class="mb-4">
-      <nz-select nzSize="large" (ngModelChange)="updateChart($event)" nzPlaceHolder="Filtrer par jour" [(ngModel)]="selectedDay" class="w-full max-w-xs">
+      <select (ngModelChange)="updateChart($event)" [(ngModel)]="selectedDay"
+        class="w-full max-w-xs px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
         @for (item of days; track item.id) {
-          <nz-option [nzValue]="item.id.toString()" [nzLabel]="item.name | uppercase"></nz-option>
+          <option [value]="item.id.toString()">{{ item.name | uppercase }}</option>
         }
-      </nz-select>
+      </select>
     </div>
     @if (!isLoadChart()) {
       <div id="chart">

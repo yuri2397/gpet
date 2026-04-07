@@ -1,14 +1,14 @@
 <div class="p-0">
   <div class="flex justify-end p-3">
     <button (click)="close(null)" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer">
-      <i nz-icon nzType="close" class="text-gray-500"></i>
+      <i class="fa-solid fa-xmark text-gray-500"></i>
     </button>
   </div>
   <div class="text-center px-6 pb-6">
     <div class="text-xl font-bold text-gray-800 mb-2">{{ notification.title }}</div>
     <div class="text-gray-500 text-sm leading-relaxed" [innerHtml]="notification.content"></div>
     <div class="mt-6">
-      <button nz-button nzType="primary" (click)="close('ok')" class="!rounded-lg !px-8">Fermer</button>
+      <button (click)="close('ok')" class="px-8 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">Fermer</button>
     </div>
   </div>
 </div>

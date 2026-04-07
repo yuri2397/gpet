@@ -10,57 +10,59 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start my-3">
         <div>
-            <nz-list nzBordered>
-                <nz-list-item>
-                    <span nz-typography><b>PRENOM</b></span> {{ professor.first_name }}
-                </nz-list-item>
-                <nz-list-item>
-                    <span nz-typography><b>NOM</b></span> {{ professor.last_name }}
-                </nz-list-item>
-            </nz-list>
+            <ul class="border border-gray-200 rounded-lg divide-y divide-gray-200">
+                <li class="px-4 py-3 flex justify-between items-center text-sm">
+                    <span class="font-bold">PRENOM</span> <span>{{ professor.first_name }}</span>
+                </li>
+                <li class="px-4 py-3 flex justify-between items-center text-sm">
+                    <span class="font-bold">NOM</span> <span>{{ professor.last_name }}</span>
+                </li>
+            </ul>
         </div>
         <div>
-            <nz-list nzBordered>
-                <nz-list-item>
-                    <span nz-typography><b>NOM DE LA BANQUE</b></span> {{ professor.account.bank.name }}
-                </nz-list-item>
-                <nz-list-item>
-                    <span nz-typography><b>RIB</b></span> {{ professor.account.rip }}
-                </nz-list-item>
-            </nz-list>
+            <ul class="border border-gray-200 rounded-lg divide-y divide-gray-200">
+                <li class="px-4 py-3 flex justify-between items-center text-sm">
+                    <span class="font-bold">NOM DE LA BANQUE</span> <span>{{ professor.account.bank.name }}</span>
+                </li>
+                <li class="px-4 py-3 flex justify-between items-center text-sm">
+                    <span class="font-bold">RIB</span> <span>{{ professor.account.rip }}</span>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="my-5">
-        <table class="table">
-            <thead>
+        <table class="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+            <thead class="bg-gray-50">
                 <tr>
-                    <th class="text-center font-bold">SERVICES</th>
-                    <th class="text-center font-bold">TAUX HORAIRE</th>
-                    <th class="text-center font-bold">NB HEURES</th>
-                    <th class="text-center font-bold">MONTANT (FCFA)</th>
-                    <th class="text-center font-bold">UE</th>
-                    <th class="text-center font-bold">EC</th>
-                    <th class="text-center font-bold">CLASSE</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">SERVICES</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">TAUX HORAIRE</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">NB HEURES</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">MONTANT (FCFA)</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">UE</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">EC</th>
+                    <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">CLASSE</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white divide-y divide-gray-200">
                 @for (data of professor.coursesDo; track data) {
                     @if (data.is_paid == true) {
                         <tr>
-                            <td class="text-center"> {{ data.course.service.name }} </td>
-                            <td class="text-center"> {{ data.course.service.amount}} fcfa</td>
-                            <td class="text-center"> {{ data.total_hours }}heures </td>
-                            <td class="text-center"> {{ data.total_sales}} fcfa</td>
-                            <td class="text-center"> {{ data.course.ec.ue.name }} </td>
-                            <td class="text-center"> {{ data.course.ec.name }} </td>
-                            <td class="text-center"> {{ data.course.classe.name}} </td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.course.service.name }} </td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.course.service.amount}} fcfa</td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.total_hours }}heures </td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.total_sales}} fcfa</td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.course.ec.ue.name }} </td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.course.ec.name }} </td>
+                            <td class="px-4 py-3 text-center text-sm"> {{ data.course.classe.name}} </td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
         <div class="text-center my-4 mb-5">
-            <nz-divider nzText="Signature du Vacataire"></nz-divider>
+            <hr class="border-gray-200" />
+            <span class="text-sm text-gray-500">Signature du Vacataire</span>
+            <hr class="border-gray-200" />
         </div>
         <div class="flex justify-between my-3 mt-5">
             <div class="flex-1">
@@ -82,7 +84,12 @@
         </div>
     </div>
 </div>
-<div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal()">FERMER</button>
-    <button nz-button nzType="primary" [nzLoading]="isLoad" (click)="print()">IMPRIMER LE DOCUMENT</button>
+<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+    <button type="button" (click)="destroyModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">FERMER</button>
+    <button type="button" (click)="print()" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors">
+        @if (isLoad) {
+            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+        }
+        IMPRIMER LE DOCUMENT
+    </button>
 </div>

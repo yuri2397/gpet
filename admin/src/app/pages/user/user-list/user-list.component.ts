@@ -1,49 +1,14 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { RouterModule, Router } from '@angular/router';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { UserCreateComponent } from './../user-create/user-create.component';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
 import { AuthStore } from 'src/app/shared/auth-store';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzMessageModule } from 'ng-zorro-antd/message';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
+import { ModalService } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-user-list',
@@ -53,44 +18,8 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
+  DataTableComponent,
   ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
@@ -103,9 +32,8 @@ export class UserListComponent implements OnInit {
   listOfDisplayData = signal<User[]>([]);
 
   private userService = inject(UserService);
-  private modal = inject(NzModalService);
+  private modalService = inject(ModalService);
   private router = inject(Router);
-  private notification = inject(NzNotificationService);
   private authStore = inject(AuthStore);
 
   ngOnInit(): void {
@@ -125,10 +53,9 @@ export class UserListComponent implements OnInit {
   }
 
   openCreateModal() {
-    let modal = this.modal.create({
-      nzTitle: 'Ajouter un utilisateur',
-      nzContent: UserCreateComponent,
-      nzClosable: false,nzWidth: "50%"
+    let modal = this.modalService.open({
+      title: 'Ajouter un utilisateur',
+      component: UserCreateComponent,
     });
 
     modal.afterClose.subscribe((data: any) => {
@@ -137,27 +64,21 @@ export class UserListComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    this.deleteUserLoad.set(true);
-    this.userService.delete(user).subscribe({
-      next: (response) => {
-        this.notification.success(
-          'Notification',
-          'Utilisateur supprimer avec succès',
-          {
-            nzDuration: 5000,
-          }
-        );
-        this.findUsers();
-      },
-      error: (errors) => {
-        this.notification.error(
-          'Notification',
-          errors.error.message,
-          {
-            nzDuration: 5000,
-          }
-        );
-        this.deleteUserLoad.set(false);
+    this.modalService.confirm({
+      title: 'Confirmation',
+      content: 'Confirmer votre action.',
+      okText: 'Confirmer',
+      okDanger: true,
+      onOk: () => {
+        this.deleteUserLoad.set(true);
+        this.userService.delete(user).subscribe({
+          next: (response) => {
+            this.findUsers();
+          },
+          error: (errors) => {
+            this.deleteUserLoad.set(false);
+          },
+        });
       },
     });
   }

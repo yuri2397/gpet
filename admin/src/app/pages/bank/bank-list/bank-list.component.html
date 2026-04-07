@@ -9,32 +9,32 @@
         </div>
     </div>
     <div class="p-6">
-        <nz-table [nzLoading]="isLoad()" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="banks()" [nzBordered]="true">
+        <app-data-table [data]="banks()" [loading]="isLoad()" #dataTable>
             <thead>
                 <tr class="text-center">
-                    <th class="text-center">Code</th>
-                    <th class="text-center">Nom</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 text-center">Code</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 text-center">Nom</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @for (data of basicTable.data; track data) {
-                    <tr>
-                        <td class="text-center">{{ data.code }}</td>
-                        <td class="text-center">{{ data.name }}</td>
-                        <td class="p-0">
+                @for (data of dataTable.pageData(); track data.id) {
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 text-sm text-gray-700 text-center">{{ data.code }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700 text-center">{{ data.name }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700 p-0">
                             <div class="flex justify-center">
                                 @if (can('modifier salle')) {
                                     <div class="mx-3">
-                                        <button nz-button nzType="primary" nzShape="circle" (click)="openEditModal(data)">
-                                            <i nz-icon nzType="edit"></i>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs" (click)="openEditModal(data)">
+                                            <i class="fa-solid fa-pen"></i>
                                         </button>
                                     </div>
                                 }
                                 @if (can('supprimer banque')) {
                                     <div class="mx-3">
-                                        <button nzDanger nz-button nzType="primary" nzShape="circle" (click)="openDeleteModal(data)">
-                                            <i nz-icon nzType="delete"></i>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-full bg-danger text-white hover:bg-red-600 transition-colors cursor-pointer text-xs" (click)="openDeleteModal(data)">
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 }
@@ -43,6 +43,6 @@
                     </tr>
                 }
             </tbody>
-        </nz-table>
+        </app-data-table>
     </div>
 </div>

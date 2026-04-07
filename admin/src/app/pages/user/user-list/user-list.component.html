@@ -15,46 +15,43 @@
     </div>
     <div class="p-6">
         <div class="my-2">
-            <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prenom ou Nom ou Email ..." [(ngModel)]="searchValue" />
+            <input type="text" (input)="search()" placeholder="Prenom ou Nom ou Email ..." [(ngModel)]="searchValue"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
         </div>
-        <nz-table class="scroll-table" [nzLoading]="isLoad()" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData()" [nzBordered]="true">
+        <app-data-table [data]="listOfDisplayData()" [loading]="isLoad()" #dataTable>
             <thead>
                 <tr>
-                    <th>Avatar</th>
-                    <th>Prenoms</th>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th class="text-center">Actions</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avatar</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prenoms</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @for (data of basicTable.data; track data) {
-                    <tr>
-                        <td>AVATAR</td>
-                        <td>{{ data.first_name }}</td>
-                        <td>{{ data.last_name }}</td>
-                        <td>{{ data.email }}</td>
-                        <td>
-                            <div class="flex justify-center">
+                @for (data of dataTable.pageData(); track data) {
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 text-sm text-gray-700">AVATAR</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">{{ data.first_name }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">{{ data.last_name }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">{{ data.email }}</td>
+                        <td class="px-4 py-3">
+                            <div class="flex justify-center gap-2">
                                 @if (can('voir admin')) {
-                                    <div>
-                                        <button (click)="showUser(data)" nz-button nzShape="circle" class="color-orange">
-                                            <i class="color" nz-icon nzType="eye"></i>
-                                        </button>
-                                    </div>
+                                    <button (click)="showUser(data)" class="w-8 h-8 flex items-center justify-center rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors cursor-pointer" title="Voir">
+                                        <i class="fa-solid fa-eye text-sm"></i>
+                                    </button>
                                 }
                                 @if (can('supprimer admin')) {
-                                    <div class="mx-3">
-                                        <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser(data)" nz-button nzType="primary" nzShape="circle" nzDanger>
-                                            <i nz-icon nzType="delete"></i>
-                                        </button>
-                                    </div>
+                                    <button (click)="deleteUser(data)" class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition-colors cursor-pointer" title="Supprimer">
+                                        <i class="fa-solid fa-trash text-sm"></i>
+                                    </button>
                                 }
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
-        </nz-table>
+        </app-data-table>
     </div>
 </div>

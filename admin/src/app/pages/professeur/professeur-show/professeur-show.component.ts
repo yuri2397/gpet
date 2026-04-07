@@ -1,44 +1,7 @@
-import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzFormModule } from 'ng-zorro-antd/form';
 import { ProfessorService } from './../../../services/professor.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Professor } from 'src/app/models/professor';
@@ -49,6 +12,7 @@ import { Permission } from 'src/app/models/permission';
 import { Course } from 'src/app/models/course';
 import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
 import { CourseHistoryComponent } from 'src/app/pages/course/course-history/course-history.component';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-professeur-show',
@@ -58,43 +22,6 @@ import { CourseHistoryComponent } from 'src/app/pages/course/course-history/cour
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
   ErrorServerComponent,
   CourseHistoryComponent,
@@ -108,7 +35,7 @@ export class ProfesseurShowComponent implements OnInit {
   private fb = inject(FormBuilder)
   private courseService = inject(CourseService)
   private notification = inject(NotificationService)
-  private modalService = inject(NzModalService)
+  private modalService = inject(ModalService)
   private profService = inject(ProfessorService)
   private router = inject(Router)
 
@@ -131,8 +58,9 @@ export class ProfesseurShowComponent implements OnInit {
   addCourse!: Course
   addCourseModalVisible: boolean = false
   deleteCourseLoad!: boolean
-  deleteCourseRef!: NzModalRef
+  deleteCourseRef!: ModalRef
   updateStatusLoad = false
+  activeTab = signal(0)
 
   ngOnInit(): void {
     this.addHourForm = this.fb.group({
@@ -207,13 +135,9 @@ export class ProfesseurShowComponent implements OnInit {
 
   finishCourse(course: Course) {
     this.modalService.confirm({
-      nzTitle: 'Finir un cours',
-      nzContent:
-        '<b class="bold lead">Attention!!!</b> <br> Si vous marquez ce cours comme terminé, il ne sera plus lié à ce professeur.',
-      nzOkText: 'Je confirme',
-      nzCancelText: 'Annuler',
-      nzCentered: true,
-      nzOnOk: () => {
+      title: 'Finir un cours',
+      okText: 'Je confirme',
+      onOk: () => {
         course.updated = true
         this.courseService.finishCourse(course, 'finish').subscribe({
           next: (response) => {
@@ -283,19 +207,15 @@ export class ProfesseurShowComponent implements OnInit {
   }
 
   openEditModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier les information',
-      nzContent: ProfesseurEditComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: 'Modifier les information',
+      component: ProfesseurEditComponent,
+      data: {
         professor: this.profService.clone(this.professeur),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '60em',
     })
 
-    modal.afterClose.subscribe((data: Professor | null) => {
+    modal.afterClosed$.subscribe((data: Professor | null) => {
       if (data != null) {
         this.professeur = data
       }
@@ -363,19 +283,10 @@ export class ProfesseurShowComponent implements OnInit {
   openDeleteConf(course: Course) {
     this.selectedCourse = course
     this.deleteCourseRef = this.modalService.confirm({
-      nzTitle: 'Attention',
-      nzContent:
-        '<div class="h6">Supprimer le cour de <i>' +
-        course.name +
-        '</i>?</div>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteCourse(course),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteCourseLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Attention',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteCourse(course),
     })
   }
   fullName() {
@@ -398,7 +309,7 @@ export class ProfesseurShowComponent implements OnInit {
           type: 'success',
         })
         this.deleteCourseLoad = false
-        this.deleteCourseRef.destroy()
+        this.deleteCourseRef.close()
       },
       error: (errors) => {
         this.notification.createNotification(
@@ -408,7 +319,7 @@ export class ProfesseurShowComponent implements OnInit {
           5000,
         )
         this.deleteCourseLoad = false
-        this.deleteCourseRef.destroy()
+        this.deleteCourseRef.close()
       },
     })
   }

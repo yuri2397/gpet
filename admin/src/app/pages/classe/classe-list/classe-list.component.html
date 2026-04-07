@@ -15,9 +15,9 @@
     </div>
     <div class="p-6">
         <div class="my-2">
-            <input type="text" nzSize="large" (input)="search()" nz-input placeholder="nom de classe" [(ngModel)]="searchValue"/>
+            <input type="text" (input)="search()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" placeholder="nom de classe" [(ngModel)]="searchValue"/>
         </div>
-        <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
+        <app-data-table [data]="listOfDisplayData" [loading]="isLoad" #dataTable>
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (data of basicTable.data; track data) {
+                @for (data of dataTable.pageData(); track data) {
                     <tr>
                         <td>{{ data.name }}</td>
                         <td class="text-center">{{ data.nb_students }}</td>
@@ -44,23 +44,23 @@
                                     @if (can('voir salle')) {
                                         <div>
                                             <a [routerLink]="['show/' + data.id]">
-                                                <button nz-button nzShape="circle" class="color-orange">
-                                                    <i class="color" nz-icon nzType="eye"></i>
+                                                <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs">
+                                                    <i class="fa-solid fa-eye"></i>
                                                 </button>
                                             </a>
                                         </div>
                                     }
                                     @if (can('modifier classe')) {
                                         <div class="mx-3">
-                                            <button nz-button nzType="primary" nzShape="circle" (click)="openEditModal(data)">
-                                                <i nz-icon nzType="edit"></i>
+                                            <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs" (click)="openEditModal(data)">
+                                                <i class="fa-solid fa-pen"></i>
                                             </button>
                                         </div>
                                     }
                                     @if (can('supprimer classe')) {
                                         <div>
-                                            <button nzDanger nz-button nzType="primary" nzShape="circle" (click)="openDeleteModal(data)">
-                                                <i nz-icon nzType="delete"></i>
+                                            <button class="w-8 h-8 flex items-center justify-center rounded-full bg-danger text-white hover:bg-red-600 transition-colors cursor-pointer text-xs" (click)="openDeleteModal(data)">
+                                                <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </div>
                                     }
@@ -70,6 +70,6 @@
                     </tr>
                 }
             </tbody>
-        </nz-table>
+        </app-data-table>
     </div>
 </div>

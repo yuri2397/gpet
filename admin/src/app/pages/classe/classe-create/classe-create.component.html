@@ -1,21 +1,30 @@
 <div>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-form-item>
-            <nz-form-label nzRequired nzFor="name">Nom de la classe</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                <input [(ngModel)]="classe.name" formControlName="name" nz-input name="name" type="text" id="name">
-            </nz-form-control>
-        </nz-form-item>
-        <nz-form-item>
-            <nz-form-label nzRequired nzFor="nb_etudiants">Nombre d'etudiant</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Nombre étudiants requi">
-                <input [(ngModel)]="classe.nb_students" min="0" formControlName="nb_etudiants" nz-input name="nb_etudiants" type="number" id="nb_etudiants">
-            </nz-form-control>
-        </nz-form-item>
-    </nz-form>
+    <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nom de la classe <span class="text-red-500">*</span></label>
+            <input [(ngModel)]="classe.name" formControlName="name" name="name" type="text" id="name"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+            @if (validateForm.get('name')?.invalid && validateForm.get('name')?.touched) {
+                <p class="text-red-500 text-xs mt-1">Le nom est requi</p>
+            }
+        </div>
+        <div class="mb-4">
+            <label for="nb_etudiants" class="block text-sm font-medium text-gray-700 mb-1">Nombre d'etudiant <span class="text-red-500">*</span></label>
+            <input [(ngModel)]="classe.nb_students" min="0" formControlName="nb_etudiants" name="nb_etudiants" type="number" id="nb_etudiants"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+            @if (validateForm.get('nb_etudiants')?.invalid && validateForm.get('nb_etudiants')?.touched) {
+                <p class="text-red-500 text-xs mt-1">Nombre étudiants requi</p>
+            }
+        </div>
+    </form>
 </div>
 
-<div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Ajouter</button>
+<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+    <button (click)="destroyModal(null)" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Annuler</button>
+    <button (click)="save()" [disabled]="!validateForm.valid" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+        @if (isLoad) {
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+        }
+        Ajouter
+    </button>
 </div>

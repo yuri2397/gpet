@@ -1,13 +1,6 @@
-import { NzDrawerModule, NzDrawerRef } from 'ng-zorro-antd/drawer';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { Semester } from 'src/app/models/semester';
 import { Departement } from 'src/app/models/departement';
 import { EC } from 'src/app/models/ec';
@@ -17,37 +10,8 @@ import { ECService } from 'src/app/services/ec.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UEService } from 'src/app/services/ue.service';
 import { RouterModule } from '@angular/router';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-ec-create',
@@ -57,43 +21,6 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
   ],
   templateUrl: './ec-create.component.html',
@@ -113,11 +40,16 @@ export class EcCreateComponent implements OnInit {
   private notification = inject(NotificationService);
   private fb = inject(FormBuilder);
   private deptService = inject(DepartementService);
-  private modal = inject(NzDrawerRef);
+  private modal = inject(ModalRef);
   ueService = inject(UEService);
   private ecService = inject(ECService);
+  private modalData = inject(MODAL_DATA, { optional: true });
 
   ngOnInit() {
+    if (this.modalData) {
+      this.semesters = this.modalData.semesters;
+      this.departements = this.modalData.departements;
+    }
     this.validateForm = this.fb.group({
       name: [null, [Validators.required, Validators.min]],
       ec_id: [null, [Validators.required]],
@@ -140,14 +72,14 @@ export class EcCreateComponent implements OnInit {
   }
 
   destroyModal(data: EC | null): void {
-    this.modal.close(data);
+    this.modal.destroy(data);
   }
 
   save() {
     this.isLoad = true;
     this.ecService.create(this.ec).subscribe({
       next: (response) => {
-        this.modal.close(response);
+        this.modal.destroy(response);
         this.isLoad = false;
         this.notification.createNotification(
           'success',
@@ -157,7 +89,7 @@ export class EcCreateComponent implements OnInit {
       },
       error: (errors) => {
         this.isLoad = false;
-        this.modal.close(null);
+        this.modal.destroy(null);
         this.notification.createNotification(
           'error',
           'Notification',
@@ -168,7 +100,7 @@ export class EcCreateComponent implements OnInit {
   }
 
   close() {
-    this.modal.close(null);
+    this.modal.destroy(null);
   }
 
   addNewUE() {

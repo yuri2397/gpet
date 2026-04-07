@@ -1,20 +1,31 @@
-<nz-table #nzTable [nzData]="histories" [nzPageSize]="10" [nzLoading]="load">
+<app-data-table [data]="histories || []" [loading]="load" #dataTable>
   <thead>
     <tr>
-      <th>Acronym</th>
-      <th>Cours</th>
-      <th>Classe</th>
-      <th>Finaliser</th>
-      <th></th>
+      <th class="text-left px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Acronym</th>
+      <th class="text-left px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Cours</th>
+      <th class="text-left px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Classe</th>
+      <th class="text-left px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Finaliser</th>
+      <th class="px-4 py-3 bg-gray-50 border-b border-gray-200"></th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let i of nzTable.data">
-      <td>{{ i.course.acronym }}</td>
-      <td>{{ i.course.name }}</td>
-      <td>{{ i.classe.name }}</td>
-      <td>{{ i.created_at | date: "d/MM/yyyy" }}</td>
-      <td><button [nzLoading]="i.loading" nz-button (click)="restore(i)">Restaurer le cour</button></td>
-    </tr>
+    @for (i of dataTable.pageData(); track i) {
+      <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+        <td class="px-4 py-3 text-sm">{{ i.course.acronym }}</td>
+        <td class="px-4 py-3 text-sm">{{ i.course.name }}</td>
+        <td class="px-4 py-3 text-sm">{{ i.classe.name }}</td>
+        <td class="px-4 py-3 text-sm">{{ i.created_at | date: "d/MM/yyyy" }}</td>
+        <td class="px-4 py-3 text-sm">
+          <button (click)="restore(i)"
+            class="px-3 py-1.5 rounded-lg text-sm font-medium text-white bg-primary hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50"
+            [disabled]="i.loading">
+            @if (i.loading) {
+              <i class="fa-solid fa-spinner fa-spin mr-1"></i>
+            }
+            Restaurer le cour
+          </button>
+        </td>
+      </tr>
+    }
   </tbody>
-</nz-table>
+</app-data-table>

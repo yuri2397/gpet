@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn } from '@angular/router';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { ToastService } from '../services/toast.service';
 import { AuthStore } from '../auth-store';
 
 export const adminGuard: CanActivateFn = () => {
   const auth = inject(AuthStore);
-  const notification = inject(NzNotificationService);
+  const toast = inject(ToastService);
   if (auth.isAdmin()) return true;
-  notification.error('Notification', 'Vous ne pouvez pas acceder a cette section.');
+  toast.error('Notification', 'Vous ne pouvez pas acceder a cette section.');
   return false;
 };

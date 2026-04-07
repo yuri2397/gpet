@@ -3,79 +3,72 @@
         <div class="bg-white rounded-xl p-3">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <nz-card class="shadow-sm border border-gray-100 raduis-sm text-center" [nzBodyStyle]="{
-                     padding: 0
-                    }" [nzCover]="coverTemplate">
-                        <h6 class="font-bold mt-3">{{ user.first_name }} {{ user.last_name }}</h6>
-                        <span>{{ user.email }}</span>
-                        <nz-divider nzText="ACTIONS"></nz-divider>
-                        <div class="flex justify-center items-center">
-                            <div class="mx-2">
-                                <button (click)="openEditUserModal()" nz-button nzType="primary" nzShape="circle">
-                                  <i nz-icon nzType="edit"></i>
-                                </button>
-                            </div>
-                            <div class="mx-2">
-                                <button nz-button nzType="primary" nzShape="circle" nzDanger nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser()">
-                                  <i nz-icon nzType="delete"></i>
-                                </button>
-                            </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 text-center overflow-hidden">
+                        <div>
+                            <img class="w-full h-48 object-cover" [src]="user.avatar" alt="User avatar" />
                         </div>
-                        <div class="mt-3">
-                            @if (deleteUserLoad) {
-                                <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
-                            }
-                        </div>
-                    </nz-card>
-                    <ng-template #coverTemplate>
-                        <img class="user-avatar" [src]="user.avatar" />
-                    </ng-template>
-                </div>
-                <div class="shadow-sm border border-gray-100 raduis-sm py-2">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-1 my-3">
-                        <div class="flex justify-end items-center">
-                            <div>
-                                Ajouter une permission
-                            </div>
-                            <div class="mx-2">
-                                <button (click)="openAddPermissionModal()" nz-button nzType="primary" nzShape="circle">
-                                <i nz-icon nzType="plus"></i>
+                        <div class="p-4">
+                            <h6 class="font-bold mt-3">{{ user.first_name }} {{ user.last_name }}</h6>
+                            <span class="text-sm text-gray-500">{{ user.email }}</span>
+                            <hr class="border-gray-200 my-4">
+                            <div class="flex justify-center items-center gap-3">
+                                <button (click)="openEditUserModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer" title="Modifier">
+                                    <i class="fa-solid fa-pen text-sm"></i>
                                 </button>
+                                <button (click)="deleteUser()" class="w-9 h-9 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors cursor-pointer" title="Supprimer">
+                                    <i class="fa-solid fa-trash text-sm"></i>
+                                </button>
+                            </div>
+                            <div class="mt-3">
+                                @if (deleteUserLoad) {
+                                    <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
+                                }
                             </div>
                         </div>
                     </div>
-                    <nz-divider nzText="Liste des permissions"></nz-divider>
-                    <nz-table [nzPageSize]="5" #basicTable [nzData]="listOfDisplayData">
-                        <thead>
-                            <th nzCustomFilter>
-                                Permissions
-                                <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-                                    <app-icon name="search" class="mat-18" />
-                                </nz-filter-trigger>
-                            </th>
-                        </thead>
-                        <tbody>
-                            @for (data of basicTable.data; track data) {
-                                <tr>
-                                    <td>{{data.name.toUpperCase()}}</td>
-                                    <td>
-                                        <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="removePermission(data)" nz-button nzType="primary" nzShape="circle" nzDanger>
-                                          <i nz-icon nzType="delete"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </nz-table>
                 </div>
-                <nz-dropdown-menu #menu="nzDropdownMenu">
-                    <div class="ant-table-filter-dropdown">
-                        <div class="search-box">
-                            <input type="text" (change)="search()" nz-input placeholder="Rechercher" [(ngModel)]="searchValue" />
-                            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 py-2">
+                    <div class="flex justify-between items-center px-4 py-2">
+                        <span class="text-sm font-medium text-gray-700">Ajouter une permission</span>
+                        <button (click)="openAddPermissionModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                            <i class="fa-solid fa-plus text-sm"></i>
+                        </button>
+                    </div>
+                    <hr class="border-gray-200 my-2">
+                    <div class="px-4">
+                        <div class="mb-3">
+                            <input type="text" (input)="search()" placeholder="Rechercher une permission..." [(ngModel)]="searchValue"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        </div>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="bg-gray-50">
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Permissions</th>
+                                        <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (data of listOfDisplayData; track data) {
+                                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                            <td class="px-4 py-3 text-sm text-gray-700">{{ data.name.toUpperCase() }}</td>
+                                            <td class="px-4 py-3 text-right">
+                                                <button (click)="removePermission(data)" class="w-8 h-8 flex items-center justify-center rounded-full bg-red-50 text-red-500 hover:bg-red-100 transition-colors cursor-pointer ml-auto" title="Supprimer">
+                                                    <i class="fa-solid fa-trash text-sm"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (listOfDisplayData.length === 0) {
+                                        <tr>
+                                            <td colspan="2" class="px-4 py-6 text-center text-sm text-gray-400">Aucune permission</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </nz-dropdown-menu>
+                </div>
             </div>
         </div>
     </div>

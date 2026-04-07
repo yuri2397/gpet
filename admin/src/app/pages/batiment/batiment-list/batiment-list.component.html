@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="p-6">
-      <nz-table [nzLoading]="isLoad()" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="batiments()" [nzBordered]="false" nzSize="middle">
+      <app-data-table [data]="batiments()" [loading]="isLoad()" #dataTable>
         <thead>
           <tr>
             <th>Nom</th>
@@ -19,19 +19,19 @@
           </tr>
         </thead>
         <tbody>
-          @for (data of basicTable.data; track data.id) {
+          @for (data of dataTable.pageData(); track data.id) {
             <tr>
               <td>{{ data.name }}</td>
               <td>
                 <div class="flex items-center justify-center gap-2">
                   @if (can('modifier salle')) {
-                    <button nz-button nzType="primary" nzShape="circle" nzSize="small" (click)="openEditModal(data)">
-                      <i nz-icon nzType="edit"></i>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs" (click)="openEditModal(data)">
+                      <i class="fa-solid fa-pen"></i>
                     </button>
                   }
                   @if (can('supprimer salle')) {
-                    <button nz-button nzDanger nzType="primary" nzShape="circle" nzSize="small" (click)="openDeleteModal(data)">
-                      <i nz-icon nzType="delete"></i>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-danger text-white hover:bg-red-600 transition-colors cursor-pointer text-xs" (click)="openDeleteModal(data)">
+                      <i class="fa-solid fa-trash"></i>
                     </button>
                   }
                 </div>
@@ -39,7 +39,7 @@
             </tr>
           }
         </tbody>
-      </nz-table>
+      </app-data-table>
     </div>
   </div>
 </div>

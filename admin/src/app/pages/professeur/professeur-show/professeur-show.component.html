@@ -6,17 +6,16 @@
         <div class="bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4">
           <div class="flex justify-between items-center">
             <div>
-              <button nz-tooltip [nzTooltipTitle]="'Revenir en arriere'" class="mx-2" (click)="onBack()"
-                color="default">
+              <button title="Revenir en arriere" class="mx-2 w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer" (click)="onBack()">
                 <app-icon name="arrow_back" />
               </button>
             </div>
             <div>
               <div class="flex justify-end items-center">
                 <div class="mx-1">
-                  <button nz-button nzShape="circle" nz-tooltip [nzTooltipTitle]="'Modifier les infos'"
+                  <button title="Modifier les infos" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
                     (click)="openEditModal()">
-                    <i nz-icon nzType="edit"></i>
+                    <app-icon name="edit" />
                   </button>
                 </div>
               </div>
@@ -30,259 +29,208 @@
           <div class="mt-2">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
               <div class="my-1">
-                <nz-card class="border rounded-lg" [nzCover]="coverTemplate">
-                  <nz-tabset>
-                    <nz-tab nzTitle="Personnel">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <img class="w-full mx-auto" [src]="userProfilePath()" />
+                  <!-- Tabs: Personnel / Professionel -->
+                  <div class="p-4">
+                    <div class="border-b border-gray-200 mb-4">
+                      <nav class="flex gap-4">
+                        <button type="button" (click)="activeTab.set(0)" [class]="activeTab() === 0 ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Personnel</button>
+                        <button type="button" (click)="activeTab.set(1)" [class]="activeTab() === 1 ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Professionel</button>
+                      </nav>
+                    </div>
+                    @if (activeTab() === 0) {
                       <div class="mb-3">
-                        <nz-tag [nzColor]="'geekblue'">
-                          <i nz-icon nzType="audit" nzTheme="outline" class="mx-1"></i>{{
-                                          professeur.registration_number }}
-                        </nz-tag>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                          {{ professeur.registration_number }}
+                        </span>
                         {{ professeur.first_name }} {{ professeur.last_name }}
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Email</div>
                         <div>
-                          <nz-tag [nzColor]="'geekblue'">{{ professeur.email }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ professeur.email }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Date de naissance</div>
                         <div>
-                          <nz-tag [nzColor]="'lime'">
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lime-50 text-lime-700">
                             {{ professeur.born_at | date: "d MMMM y" }}
-                          </nz-tag>
+                          </span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Lieu de naissance</div>
                         <div>
-                          <nz-tag [nzColor]="'orange'">{{ professeur.born_in }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700">{{ professeur.born_in }}</span>
                         </div>
                       </div>
-                    </nz-tab>
-                    <nz-tab nzTitle="Professionel">
+                    }
+                    @if (activeTab() === 1) {
                       <div class="flex justify-between items-center">
                         <div>Departement</div>
                         <div>
-                          <nz-tag [nzColor]="'geekblue'">{{ professeur.departement.name }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ professeur.departement.name }}</span>
                         </div>
                       </div>
-
                       <div class="flex my-1 justify-between items-center">
                         <div>Status</div>
                         <div>
-                          <nz-tag [nzColor]="'volcano'">{{ professeur.status }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">{{ professeur.status }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Metier</div>
                         <div>
-                          <nz-tag [nzColor]="professeur.job == null ? 'red' :
-                            'orange'" [innerText]="professeur.job ?? 'Non
-                            definie'"></nz-tag>
+                          <span [class]="professeur.job == null ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700' : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700'">{{ professeur.job ?? 'Non definie' }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Dernier Diplome</div>
                         <div>
-                          <nz-tag [nzColor]="professeur.last_degree == null ?
-                            'red' :
-                            'magenta'" [innerText]="professeur.last_degree ?? 'Non
-                            definie'"></nz-tag>
+                          <span [class]="professeur.last_degree == null ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700' : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-50 text-pink-700'">{{ professeur.last_degree ?? 'Non definie' }}</span>
                         </div>
                       </div>
                       <div class="flex my-1 justify-between items-center">
                         <div>En fonction</div>
                         <div>
-                          <nz-tag [nzMode]="'checkable'" (click)="setAccountStatus()"
-                            [nzColor]="professeur.is_active ? 'green' : 'red'"
-                            [innerText]="professeur.is_active ? 'OUI' : 'NON'"></nz-tag>
+                          <button (click)="setAccountStatus()" [class]="professeur.is_active ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 cursor-pointer' : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 cursor-pointer'">{{ professeur.is_active ? 'OUI' : 'NON' }}</button>
                         </div>
                       </div>
-                    </nz-tab>
-                  </nz-tabset>
-                </nz-card>
-                <ng-template #coverTemplate>
-                  <img class="w-full mx-auto" [src]="userProfilePath()" />
-                </ng-template>
+                    }
+                  </div>
+                </div>
                 @if (updateStatusLoad) {
-<div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
+                  <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
                 }
               </div>
               <div class="my-1">
-                <nz-card class="border rounded-lg">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                   <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-12">
-                      <nz-alert nzType="info" nzMessage="Information du compte" nzShowIcon></nz-alert>
-                      <br />
+                      <div role="alert" class="rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 flex items-center gap-2 mb-4">
+                        <app-icon name="info" />
+                        Information du compte
+                      </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Banque</div>
                         <div>
-                          <nz-tag [nzColor]="'lime'">{{ professeur.account.bank.name }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lime-50 text-lime-700">{{ professeur.account.bank.name }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Code de la banque</div>
                         <div>
-                          <nz-tag [nzColor]="'volcano'">{{ professeur.account.bank.code }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">{{ professeur.account.bank.code }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>N de compte</div>
                         <div>
-                          <nz-tag [nzColor]="'purple'">{{ professeur.account.account_number }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700">{{ professeur.account.account_number }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>RIP</div>
                         <div>
-                          <nz-tag [nzColor]="'gold'">{{ professeur.account.rip }}
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">{{ professeur.account.rip }}</span>
                         </div>
                       </div>
                       <div class="flex my-2 justify-between items-center">
                         <div>Cle</div>
                         <div>
-                          <nz-tag [nzColor]="'blue'" [innerText]="professeur.account.key">
-                          </nz-tag>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ professeur.account.key }}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                </nz-card>
+                </div>
               </div>
             </div>
           </div>
           <div class="bg-white rounded-lg border border-gray-100 p-6 mt-3">
-            <nz-tabset>
-              <nz-tab (nzSelect)="getCourses()" nzTitle="Informations sur les cours">
-                <div>
-                  <div class="mb-2 flex justify-between">
-
-                    <div>
-                      <button nz-tooltip [nzTooltipTitle]="'Ajoute un cour'" (click)="openAddCourseModal()"
-                       >
-                        <app-icon name="add" />
-                      </button>
-                      Ajouter un cours
-                    </div>
-                    @if (can('voir payement') && isPayable()) {
-                      <div>
-                        <button class="mx-2" nz-tooltip [nzTooltipTitle]="'Historique des paiements'"
-                          (click)="openPayementPage()" class="w-9 h-9 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors cursor-pointer">
-                          <app-icon name="paid" />
-                        </button>
-                        Ajouter un paiement
-                      </div>
-                    }
+            <!-- Tabs: Cours / Historique -->
+            <div class="border-b border-gray-200 mb-4">
+              <nav class="flex gap-4">
+                <button type="button" (click)="activeTab.set(10); getCourses()" [class]="activeTab() === 10 || (activeTab() !== 11) ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Informations sur les cours</button>
+                <button type="button" (click)="activeTab.set(11)" [class]="activeTab() === 11 ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Historique des cours</button>
+              </nav>
+            </div>
+            @if (activeTab() !== 11) {
+              <div>
+                <div class="mb-2 flex justify-between">
+                  <div>
+                    <button title="Ajoute un cour" (click)="openAddCourseModal()" class="w-9 h-9 inline-flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                      <app-icon name="add" />
+                    </button>
+                    Ajouter un cours
                   </div>
+                  @if (can('voir payement') && isPayable()) {
+                    <div>
+                      <button title="Historique des paiements" (click)="openPayementPage()" class="w-9 h-9 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors cursor-pointer">
+                        <app-icon name="paid" />
+                      </button>
+                      Ajouter un paiement
+                    </div>
+                  }
+                </div>
 
-                  <nz-table class="scroll-table" [nzLoading]="reloadCourse" nzShowPagination [nzPageSize]="3" #basicTable
-                    [nzData]="professeur.courses">
-                    <thead>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
                       <tr>
-                        <th>Code</th>
-                        <th class="text-center"><b>Intitule</b></th>
-                        <th class="text-center"><b>Groupe</b></th>
-                        <th class="text-center"><b>Service</b></th>
-                        <th class="text-center"><b>Semestre</b></th>
-                        <th class="text-center"><b>Classe</b></th>
-                        <th class="text-center"><b>UE</b></th>
-                        <th class="text-center"><b>Actions</b></th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Intitule</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Groupe</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Service</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Semestre</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Classe</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">UE</th>
+                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      @for (data of basicTable.data; track data) {
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      @for (data of professeur.courses; track data) {
                         <tr>
-                          <td class="text-center">{{ data.acronym }}</td>
-                          <td class="text-center">{{ data.name }}</td>
-                          <td class="text-center">
+                          <td class="px-4 py-3 text-sm text-center">{{ data.acronym }}</td>
+                          <td class="px-4 py-3 text-sm text-center">{{ data.name }}</td>
+                          <td class="px-4 py-3 text-sm text-center">
                             @if (data.groupe_number == 0) {
-                              <nz-tag [nzColor]="'geekblue'"> COMMUN </nz-tag>
+                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">COMMUN</span>
                             } @else {
-                              <nz-tag [nzColor]="'geekblue'">
-                                {{ data.groupe_number }}
-                              </nz-tag>
+                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ data.groupe_number }}</span>
                             }
                           </td>
-                          <td class="text-center">{{ data.service.name }}</td>
-                          <td class="text-center">{{ data.semester.name }}</td>
-                          <td class="text-center">{{ data.classe.name }}</td>
-                          <td class="text-center">{{ data.ec.name }}</td>
-                          <td class="text-center">
-                            <div class="flex justify-center">
-                              <div>
-                                <button nz-button nzType="primary" nzShape="circle" (click)="openAddHourModal(data)">
-                                  <app-icon name="pending_actions" />
-                                </button>
-                              </div>
-                              <div>
-                                <button nz-button nzType="dashed" nz-tooltip
-                                  [nzTooltipTitle]="'Vous pouvez marquer le cours comme termine. Il se retrouvera dans l\'onglet historique des cours.'"
-                                  class="mx-1" [nzLoading]="data.updated" nzShape="circle" (click)="finishCourse(data)">
-                                  <app-icon name="check_circle_outline" />
-                                </button>
-                              </div>
-                              <div class="mx-2">
-                                <button (click)="openDeleteConf(data)" nz-button nzDanger nzType="primary" nzShape="circle">
-                                  <i nz-icon nzType="delete"></i>
-                                </button>
-                              </div>
+                          <td class="px-4 py-3 text-sm text-center">{{ data.service.name }}</td>
+                          <td class="px-4 py-3 text-sm text-center">{{ data.semester.name }}</td>
+                          <td class="px-4 py-3 text-sm text-center">{{ data.classe.name }}</td>
+                          <td class="px-4 py-3 text-sm text-center">{{ data.ec.name }}</td>
+                          <td class="px-4 py-3 text-sm text-center">
+                            <div class="flex justify-center gap-1">
+                              <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer" (click)="openAddHourModal(data)">
+                                <app-icon name="pending_actions" />
+                              </button>
+                              <button title="Vous pouvez marquer le cours comme termine. Il se retrouvera dans l'onglet historique des cours." class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer" (click)="finishCourse(data)">
+                                <app-icon name="check_circle_outline" />
+                              </button>
+                              <button (click)="openDeleteConf(data)" class="w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors cursor-pointer">
+                                <app-icon name="delete" />
+                              </button>
                             </div>
                           </td>
                         </tr>
                       }
                     </tbody>
-                  </nz-table>
+                  </table>
                 </div>
-              </nz-tab>
-              <nz-tab (nzSelect)="courseHistoryComponent.ngOnInit()" nzTitle="Historique des cours">
-                <app-course-history #courseHistoryComponent [professor]="professeur"></app-course-history>
-              </nz-tab>
-            </nz-tabset>
+              </div>
+            }
+            @if (activeTab() === 11) {
+              <app-course-history #courseHistoryComponent [professor]="professeur"></app-course-history>
+            }
           </div>
         }
-        <!-- SKELTON -->
-        <ng-template>
-          @if (!errorServer && dataLoad) {
-            <div class="grid grid-cols-12 gap-4">
-              <nz-skeleton [nzParagraph]="{ rows: 1 }" [nzActive]="true"></nz-skeleton>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-              <div class="my-1">
-                <nz-card>
-                  <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad" [nzAvatar]="true">
-                  </nz-skeleton>
-                </nz-card>
-              </div>
-              <div class="my-1">
-                <nz-card>
-                  <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad">
-                  </nz-skeleton>
-                </nz-card>
-              </div>
-              <div class="my-1">
-                <nz-card>
-                  <nz-skeleton [nzActive]="true" [nzLoading]="!dataLoad">
-                  </nz-skeleton>
-                </nz-card>
-              </div>
-            </div>
-            <div class="mt-2">
-              <div class="col-span-12">
-                <nz-skeleton [nzActive]="true"></nz-skeleton>
-              </div>
-            </div>
-          }
-        </ng-template>
         @if (errorServer) {
           <app-error-server></app-error-server>
         }
@@ -292,160 +240,124 @@
 } @else {
   <div>
     <div class="bg-white rounded-lg p-6 shadow-sm">
-      <nz-skeleton [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
-      <br />
-      <nz-skeleton [nzActive]="true"></nz-skeleton>
+      <div class="animate-pulse space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </div>
+        <div class="h-4 bg-gray-200 rounded"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+        <div class="h-4 bg-gray-200 rounded w-4/6"></div>
+        <div class="h-4 bg-gray-200 rounded"></div>
+      </div>
     </div>
   </div>
 }
 
 <!-- ADD HOURS MODAL -->
-<nz-modal nzCentered="true" [(nzVisible)]="addHourModalVisible" nzTitle="Pointage des
-  heurs de cours">
-  <div *nzModalContent>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <nz-form-item>
-            <nz-form-label nzRequired nzFor="hours">Nombre d'heures</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
-              nombre d'heures est requi">
-              <input nzSize="large" [(ngModel)]="hours" formControlName="hours" nz-input min="1" max="100" name="hours"
-                type="number" id="hours" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div>
-          <nz-form-item>
-            <nz-form-label nzRequired nzFor="cdDate">Date</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" [(ngModel)]="cdDate" formControlName="cdDate" nz-input name="cdDate" type="date"
-                id="cdDate" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+@if (addHourModalVisible) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center">
+    <div class="fixed inset-0 bg-black/50" (click)="addHourModalClose()"></div>
+    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4">
+      <div class="px-6 py-4 border-b border-gray-100">
+        <h3 class="text-lg font-semibold">Pointage des heurs de cours</h3>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <nz-form-item>
-            <nz-form-label>Professeur</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" [disabled]="true" nz-input value="{{ professeur.first_name
-                + '' + professeur.last_name }}" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div>
-          <nz-form-item>
-            <nz-form-label>Cours</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" [disabled]="true" nz-input value="{{ selectedCourse.name
-                }}" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+      <div class="p-6">
+        <form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="hours">Nombre d'heures <span class="text-red-500">*</span></label>
+              <input [(ngModel)]="hours" formControlName="hours" min="1" max="100" name="hours" type="number" id="hours" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="cdDate">Date <span class="text-red-500">*</span></label>
+              <input [(ngModel)]="cdDate" formControlName="cdDate" name="cdDate" type="date" id="cdDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Professeur</label>
+              <input [disabled]="true" value="{{ professeur.first_name + ' ' + professeur.last_name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Cours</label>
+              <input [disabled]="true" value="{{ selectedCourse.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+          </div>
+        </form>
       </div>
-    </nz-form>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+        <button type="button" (click)="addHourModalClose()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">Annuler</button>
+        <button type="button" (click)="addHour()" [disabled]="!addHourForm.valid" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          @if (addHourLaod) {
+            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+          }
+          Valider
+        </button>
+      </div>
+    </div>
   </div>
-  <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="addHourModalClose()">
-      Annuler
-    </button>
-    <button nz-button nzType="primary" (click)="addHour()" [disabled]="!addHourForm.valid" [nzLoading]="addHourLaod">
-      Valider
-    </button>
-  </div>
-</nz-modal>
+}
 
 <!-- ADD COURSE MODAL -->
-<nz-modal [(nzVisible)]="addCourseModalVisible" nzCentered nzTitle="Affectation
-  des cours" [nzFooter]="addCourFootModal" [nzWidth]="'50%'">
-  <div *nzModalContent>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="addCourForm" (ngSubmit)="submitAddCourseForm()">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <nz-form-item>
-            <nz-form-label nzRequired nzFor="hours">Cours</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le
-              cour requi">
-              <nz-select nzSize="large" (ngModelChange)="currentModel($event)"
-                [nzPlaceHolder]="'Rechercher un professeur'" nzAllowClear nzShowSearch nzServerSearch
-                formControlName="course_id" (nzOnSearch)="onCourseSearch($event)">
+@if (addCourseModalVisible) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center">
+    <div class="fixed inset-0 bg-black/50" (click)="addCourseModalVisible = false"></div>
+    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-3xl mx-4">
+      <div class="px-6 py-4 border-b border-gray-100">
+        <h3 class="text-lg font-semibold">Affectation des cours</h3>
+      </div>
+      <div class="p-6">
+        <form [formGroup]="addCourForm" (ngSubmit)="submitAddCourseForm()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Cours <span class="text-red-500">*</span></label>
+              <input type="text" placeholder="Rechercher un cours..." (input)="onCourseSearch($any($event.target).value)" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors mb-2" />
+              <select formControlName="course_id" (ngModelChange)="currentModel($event)" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
                 @for (o of courses; track o) {
-                  @if (!coursesLoad) {
-                    <nz-option [nzValue]="o.id" [nzLabel]="'#
-                      ' + o.name + ' | ' + o.service.name">
-                    </nz-option>
-                  }
+                  <option [ngValue]="o.id"># {{ o.name }} | {{ o.service.name }}</option>
                 }
-                @if (coursesLoad) {
-                  <nz-option nzDisabled nzCustomContent>
-                    <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-                  </nz-option>
-                }
-              </nz-select>
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div>
-          <nz-form-item>
-            <nz-form-label nzRequired nzFor="cdDate">Code</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" placeholder="Code" [disabled]="true" nz-input value="{{ selectedCourse.acronym
-                }}" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Code</label>
+              <input placeholder="Code" [disabled]="true" value="{{ selectedCourse.acronym }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Service</label>
+              <input [disabled]="true" value="{{ selectedCourse.service.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Montant horaire</label>
+              <input placeholder="Montant horaire" [disabled]="true" value="{{ selectedCourse.service.amount }} (FCFA)" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Semestre</label>
+              <input placeholder="Semestre" [disabled]="true" value="{{ selectedCourse.semester.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">UE</label>
+              <input placeholder="UE" [disabled]="true" value="{{ selectedCourse.ec.ue.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <nz-form-item>
-            <nz-form-label>Service</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" [disabled]="true" nz-input value="{{
-                selectedCourse.service.name }}" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div>
-          <nz-form-item>
-            <nz-form-label>Montant horaire</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input placeholder="Motant horaire" nzSize="large" [disabled]="true" nz-input value="{{
-                selectedCourse.service.amount }} (FCFA)" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
+      <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
+        <button type="button" (click)="addCourseModalVisible = false" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">Annuler</button>
+        <button type="button" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          @if (addHourLaod) {
+            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+          }
+          Valider
+        </button>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <nz-form-item>
-            <nz-form-label>Semestre</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" placeholder="Semestre" [disabled]="true" nz-input value="{{
-                selectedCourse.semester.name }}" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-        <div>
-          <nz-form-item>
-            <nz-form-label>UE</nz-form-label>
-            <nz-form-control [nzSm]="24" [nzXs]="24">
-              <input nzSize="large" placeholder="UE" [disabled]="true" nz-input value="{{
-                selectedCourse.ec.ue.name }}" />
-            </nz-form-control>
-          </nz-form-item>
-        </div>
-      </div>
-    </nz-form>
+    </div>
   </div>
-  <ng-template #addCourFootModal>
-    <button nz-button nzType="default" (click)="addCourseModalVisible= false">
-      Annuler
-    </button>
-    <button nz-button nzType="primary" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid"
-      [nzLoading]="addHourLaod">
-      Valider
-    </button>
-  </ng-template>
-</nz-modal>
+}

@@ -1,20 +1,8 @@
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { ModalService } from 'src/app/shared/services/modal.service';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { PdfService } from './../../../services/pdf.service';
 import { CommonModule, DatePipe, UpperCasePipe, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { Classe } from 'src/app/models/classe';
 import { ClasseService } from 'src/app/services/classe.service';
@@ -27,32 +15,8 @@ import { EptRow } from 'src/app/models/ept-row';
 import { EptCreateComponent } from '../ept-create/ept-create.component';
 import { EptEditComponent } from '../ept-edit/ept-edit.component';
 import { Day } from 'src/app/models/day';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import jsPDF from 'jspdf';
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
 import { CourseListComponent } from 'src/app/pages/course/course-list/course-list.component';
@@ -65,43 +29,6 @@ import { CourseListComponent } from 'src/app/pages/course/course-list/course-lis
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
   LoadComponent,
   ErrorServerComponent,
@@ -124,6 +51,9 @@ export class ClasseShowComponent implements OnInit {
   now = new Date();
   @ViewChild('presentionEPT') htmlData!: ElementRef;
   fileLoad: boolean = false;
+  activeTab = signal(0);
+  activeSubTab = signal(0);
+  accordionOpen = signal<Record<number, boolean>>({});
 
   private route = inject(ActivatedRoute);
   private location = inject(Location);
@@ -131,7 +61,7 @@ export class ClasseShowComponent implements OnInit {
   private notification = inject(NotificationService);
   eptService = inject(EptService);
   private fb = inject(FormBuilder);
-  private modalService = inject(NzModalService);
+  private modalService = inject(ModalService);
   private pdfService = inject(PdfService);
 
   ngOnInit(): void {
@@ -141,6 +71,17 @@ export class ClasseShowComponent implements OnInit {
     });
 
     this.getClasse();
+  }
+
+  toggleAccordion(index: number) {
+    const current = this.accordionOpen();
+    const updated = { ...current };
+    // Close all others (accordion behavior)
+    for (const key in updated) {
+      updated[key] = false;
+    }
+    updated[index] = !current[index];
+    this.accordionOpen.set(updated);
   }
 
   exportPDF() {
@@ -212,36 +153,39 @@ export class ClasseShowComponent implements OnInit {
   }
 
   removeEPT(panel: EptRow, item: EPT) {
-    item.removeLoad = true;
-    this.eptService.remove(item).subscribe({
-      next: (response) => {
-        panel.data.splice(panel.data.indexOf(item), 1);
-        this.notification.createNotification(
-          'success',
-          'Notificatoin',
-          'Donnée supprimée avec succès.'
-        );
-      },
-      error: (errors) => {
-        this.notification.createNotification('error', 'Erreur', errors.error);
+    this.modalService.confirm({
+      title: 'Merci de confirmer votre action.',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => {
+        item.removeLoad = true;
+        this.eptService.remove(item).subscribe({
+          next: (response) => {
+            panel.data.splice(panel.data.indexOf(item), 1);
+            this.notification.createNotification(
+              'success',
+              'Notificatoin',
+              'Donnée supprimée avec succès.'
+            );
+          },
+          error: (errors) => {
+            this.notification.createNotification('error', 'Erreur', errors.error);
+          },
+        });
       },
     });
   }
 
   editEPT(panel: EptRow, item: EPT) {
-    const modal = this.modalService.create({
-      nzTitle: "Modifier le cour dans l'emploi du temps.",
-      nzContent: EptEditComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: "Modifier le cour dans l'emploi du temps.",
+      component: EptEditComponent,
+      data: {
         day: panel,
         classe: this.classe,
         courses: this.courses,
         ept: this.eptService.clone(item),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '500px',
     });
 
     modal.afterClose.subscribe((data: EPT | null) => {
@@ -264,18 +208,14 @@ export class ClasseShowComponent implements OnInit {
   }
 
   openCreateModal(panel: EptRow) {
-    const modal = this.modalService.create({
-      nzTitle: "Ajoute un cour dans l'emploi du temps.",
-      nzContent: EptCreateComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: "Ajoute un cour dans l'emploi du temps.",
+      component: EptCreateComponent,
+      data: {
         day: panel,
         classe: this.classe,
         courses: this.courses,
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '600px',
     });
 
     modal.afterClose.subscribe((data: EPT | null) => {

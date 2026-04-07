@@ -15,67 +15,50 @@
     </div>
     <div class="p-6">
         <div class="my-2">
-            <input type="text" nzSize="large" (input)="search()" nz-input placeholder="numero de salle" [(ngModel)]="searchValue"/>
+            <input type="text" (input)="search()" placeholder="numero de salle" [(ngModel)]="searchValue" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"/>
         </div>
-        <nz-table nzTableLayout="fixed"
-            [nzLoading]="isLoad()"
-            [nzShowSizeChanger]="true"
-            [nzPageSizeOptions]="[10,20,30]"
-            #basicTable
-            [nzData]="listOfDisplayData()"
-            [nzBordered]="true"
-        >
+        <app-data-table [data]="listOfDisplayData()" [loading]="isLoad()" #dataTable>
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Numero</th>
-                    <th>capacite</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">Nom</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">Numero</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">capacite</th>
                     @if (isSuperAdmin()) {
-                        <th>Departement</th>
+                        <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">Departement</th>
                     }
-                    <th>Batiment</th>
-                    <th class="text-center">Actions</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">Batiment</th>
+                    <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @for (data of basicTable.data; track data) {
-                    <tr>
-                        <td>
+                @for (data of dataTable.pageData(); track data.id) {
+                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 text-sm text-gray-700">
                             @if (data.name != null) {
                                 {{ data.name }}
                             } @else {
-                                <nz-tag [nzColor]="'red'">Non defini</nz-tag>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Non defini</span>
                             }
                         </td>
-                        <td>{{ data.number }}</td>
-                        <td>{{ data.capacity }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">{{ data.number }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">{{ data.capacity }}</td>
                         @if (isSuperAdmin()) {
-                            <td>{{ data.departement.name }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-700">{{ data.departement.name }}</td>
                         }
-                        <td>{{ data.batiment.name }}</td>
-                        <td>
+                        <td class="px-4 py-3 text-sm text-gray-700">{{ data.batiment.name }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-700">
                             <div class="flex justify-center">
                                 @if (can('modifier salle')) {
                                     <div>
-                                        <button
-                                            nz-button
-                                            nzType="primary"
-                                            nzShape="circle"
-                                            (click)="openEditModal(data)"
-                                        >
-                                            <i nz-icon nzType="edit"></i>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs" (click)="openEditModal(data)">
+                                            <i class="fa-solid fa-pen"></i>
                                         </button>
                                     </div>
                                 }
                                 @if (can('supprimer salle')) {
                                     <div class="mx-3">
-                                        <button
-                                            nzDanger
-                                            nz-button
-                                            nzType="primary"
-                                            nzShape="circle"
-                                            (click)="openDeleteModal(data)">
-                                            <i nz-icon nzType="delete"></i>
+                                        <button class="w-8 h-8 flex items-center justify-center rounded-full bg-danger text-white hover:bg-red-600 transition-colors cursor-pointer text-xs" (click)="openDeleteModal(data)">
+                                            <i class="fa-solid fa-trash"></i>
                                         </button>
                                     </div>
                                 }
@@ -84,6 +67,6 @@
                     </tr>
                 }
             </tbody>
-        </nz-table>
+        </app-data-table>
     </div>
 </div>

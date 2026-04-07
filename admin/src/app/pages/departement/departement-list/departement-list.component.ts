@@ -1,4 +1,4 @@
-import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
 import { RouterModule, Router } from '@angular/router';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,43 +10,8 @@ import { AuthStore } from 'src/app/shared/auth-store';
 import { DepartementCreateComponent } from '../departement-create/departement-create.component';
 import { DepartementEditComponent } from '../departement-edit/departement-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-departement-list',
@@ -56,51 +21,15 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
+  DataTableComponent,
   ],
   templateUrl: './departement-list.component.html',
   styleUrls: ['./departement-list.component.scss'],
 })
 export class DepartementListComponent implements OnInit {
   private notification = inject(NotificationService);
-  private modalService = inject(NzModalService);
+  private modalService = inject(ModalService);
   private depService = inject(DepartementService);
   private router = inject(Router);
   private authStore = inject(AuthStore);
@@ -108,7 +37,6 @@ export class DepartementListComponent implements OnInit {
   departements = signal<Departement[]>([]);
   selectedDepartement!: Departement;
   isLoad = signal(true);
-  deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
 
   ngOnInit(): void {
@@ -130,15 +58,12 @@ export class DepartementListComponent implements OnInit {
 
   openEditModal(batiment: Departement) {
     this.selectedDepartement = batiment;
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier le batiment',
-      nzContent: DepartementEditComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: 'Modifier le batiment',
+      component: DepartementEditComponent,
+      data: {
         departement: this.depService.clone(batiment),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -149,16 +74,12 @@ export class DepartementListComponent implements OnInit {
   }
 
   openDeleteModal(departement: Departement) {
-    this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteDepartement(departement),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+    this.modalService.confirm({
+      title: 'Voulez-vous supprimé ce département?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteDepartement(departement),
+      cancelText: 'Annuler',
     });
   }
 
@@ -173,7 +94,6 @@ export class DepartementListComponent implements OnInit {
           'Dépatement supprimé avec succès.'
         );
         this.findAll();
-        this.deleteRestoRef.destroy();
       },
       error: (errors) => {
         this.deleteLoad = false;
@@ -182,18 +102,14 @@ export class DepartementListComponent implements OnInit {
           'Notification',
           errors.error.message
         );
-        this.deleteRestoRef.destroy();
       },
     });
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Ajouter un département',
-      nzContent: DepartementCreateComponent,
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
+    const modal = this.modalService.open({
+      title: 'Ajouter un département',
+      component: DepartementCreateComponent,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {

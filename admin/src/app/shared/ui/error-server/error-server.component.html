@@ -1,7 +1,5 @@
 <div class="flex items-center justify-center py-20">
-  <nz-result nzStatus="500" nzTitle="Erreur serveur" nzSubTitle="Merci de verifier votre connexion, ou contacter le service informatique.">
-    <div nz-result-extra>
-      <button nz-button (click)="goHome()" nzType="primary" class="!rounded-lg">Accueil</button>
-    </div>
-  </nz-result>
+  <app-result status="500" title="Erreur serveur" subtitle="Merci de verifier votre connexion, ou contacter le service informatique.">
+    <button (click)="goHome()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">Accueil</button>
+  </app-result>
 </div>

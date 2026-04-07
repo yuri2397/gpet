@@ -1,53 +1,60 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
     <h4 class="text-[#1d39c4] font-bold m-3">Emplois du temps</h4>
     <div>
-        <nz-table [nzOuterBordered]="true" [nzSize]="'middle'" class="scroll-table p-0 border mb-3 mx-3"
-            nzShowPagination="false" nzBordered="true" #presentionEPT [nzData]="data" [nzLoading]="dataLoad">
-            <thead>
-                <tr>
-                    @for (item of days; track item) {
-                        <th [nzAlign]="'center'" class="text-center">
-                            {{ item.name.toUpperCase() }}
-                        </th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @for (ept of presentionEPT.data; track ept) {
-                    <td>
-                        @if (ept.data.length != 0) {
-                            @for (row of ept.data; track row; let index = $index; let isFirst = $first; let isLast = $last) {
-                                <div class="border rounded-lg p-4 text-center m-3">
-                                    {{ row.course.name.toLocaleUpperCase() }} <br />
-                                    <nz-divider nzText="{{ pipeHours(row.start) }} À {{
-                                      pipeHours(row.end)
-                                    }}"></nz-divider>
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1 text-start">
-                                            Classe:
-                                        </div>
-                                        <div class="flex-1 text-end">
-                                            {{ row.classe.name }}
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex-1 text-start">
-                                            Salle:
-                                        </div>
-                                        <div class="flex-1 text-end">
-                                            {{ row.salle ? row.salle.name : 'Indefinie' }}
-                                        </div>
-                                    </div>
-                                </div>
+        <div class="overflow-x-auto p-3">
+            @if (dataLoad) {
+                <div class="flex justify-center items-center py-8">
+                    <span class="inline-block w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+                </div>
+            }
+            @if (!dataLoad) {
+                <table class="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            @for (item of days; track item) {
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">
+                                    {{ item.name.toUpperCase() }}
+                                </th>
                             }
-                        } @else {
-                            <div class="border rounded-lg p-4 text-center m-3 min-h-[30px]">
-                                <span class="font-bold">Temps libre</span>
-                            </div>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @for (ept of data; track ept) {
+                            <td class="px-2 py-2 align-top">
+                                @if (ept.data.length != 0) {
+                                    @for (row of ept.data; track row; let index = $index; let isFirst = $first; let isLast = $last) {
+                                        <div class="border rounded-lg p-4 text-center m-3">
+                                            {{ row.course.name.toLocaleUpperCase() }} <br />
+                                            <hr class="my-2 border-gray-200" />
+                                            <span class="text-sm text-gray-500">{{ pipeHours(row.start) }} A {{ pipeHours(row.end) }}</span>
+                                            <div class="flex items-center justify-between mt-2">
+                                                <div class="flex-1 text-start text-sm">
+                                                    Classe:
+                                                </div>
+                                                <div class="flex-1 text-end text-sm">
+                                                    {{ row.classe.name }}
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex-1 text-start text-sm">
+                                                    Salle:
+                                                </div>
+                                                <div class="flex-1 text-end text-sm">
+                                                    {{ row.salle ? row.salle.name : 'Indefinie' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                } @else {
+                                    <div class="border rounded-lg p-4 text-center m-3 min-h-[30px]">
+                                        <span class="font-bold">Temps libre</span>
+                                    </div>
+                                }
+                            </td>
                         }
-                    </td>
-                }
-            </tbody>
-        </nz-table>
+                    </tbody>
+                </table>
+            }
+        </div>
     </div>
 </div>

@@ -4,43 +4,69 @@
     <div class="p-6">
       <div class="flex flex-wrap">
         <div class="w-full">
-          <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
-            nzTitle="{{ classe.name }} - {{ departement.name }}"></nz-page-header>
+          <div class="flex items-center gap-3 mb-4">
+            <button (click)="onBack()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+              <app-icon name="arrow_back" />
+            </button>
+            <h2 class="text-xl font-semibold text-gray-800">{{ classe.name }} - {{ departement.name }}</h2>
+          </div>
         </div>
-        <ng-template #backTemp>
-          <button class="m-2" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
-            <app-icon name="arrow_back" />
-          </button>
-        </ng-template>
       </div>
-      <nz-tabset>
-        <nz-tab class="p-5" [nzTitle]="'Liste des cours'">
+
+      <!-- Main Tabs -->
+      <div class="border-b border-gray-200 mb-4">
+        <nav class="flex gap-4">
+          <button (click)="activeTab.set(0)" class="px-4 py-2 text-sm font-medium border-b-2 transition-colors cursor-pointer"
+            [class]="activeTab() === 0 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'">
+            Liste des cours
+          </button>
+          <button (click)="activeTab.set(1)" class="px-4 py-2 text-sm font-medium border-b-2 transition-colors cursor-pointer"
+            [class]="activeTab() === 1 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'">
+            Emploie du temps
+          </button>
+        </nav>
+      </div>
+
+      <!-- Tab: Liste des cours -->
+      @if (activeTab() === 0) {
+        <div class="p-5">
           <app-course-list [courses]="courses" [classe]="classe"></app-course-list>
-        </nz-tab>
-        <nz-tab [nzTitle]="'Emploie du temps'">
-          <nz-tabset nzType="card">
-            <nz-tab nzTitle="Edition">
-              @if (!eptLoad) {
-                <nz-collapse nzAccordion>
-                  @for (panel of epts; track panel) {
-                    <nz-collapse-panel nzHeader="{{ panel.day.name | uppercase }} - {{
-                        panel.data.length
-                      }} cours" [nzActive]="panel.active" [nzDisabled]="false">
+        </div>
+      }
+
+      <!-- Tab: Emploie du temps -->
+      @if (activeTab() === 1) {
+        <!-- Sub Tabs (card style) -->
+        <div class="flex gap-2 mb-4">
+          <button (click)="activeSubTab.set(0)" class="px-4 py-2 text-sm font-medium rounded-t-lg border transition-colors cursor-pointer"
+            [class]="activeSubTab() === 0 ? 'bg-white border-b-white text-primary border-gray-200' : 'bg-gray-50 text-gray-500 border-gray-200'">
+            Edition
+          </button>
+          <button (click)="activeSubTab.set(1)" class="px-4 py-2 text-sm font-medium rounded-t-lg border transition-colors cursor-pointer"
+            [class]="activeSubTab() === 1 ? 'bg-white border-b-white text-primary border-gray-200' : 'bg-gray-50 text-gray-500 border-gray-200'">
+            Presentation
+          </button>
+        </div>
+
+        <!-- Sub Tab: Edition -->
+        @if (activeSubTab() === 0) {
+          @if (!eptLoad) {
+            <div class="space-y-2">
+              @for (panel of epts; track panel; let i = $index) {
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                  <button (click)="toggleAccordion(i)" class="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer text-left">
+                    <span class="font-medium text-sm">{{ panel.day.name | uppercase }} - {{ panel.data.length }} cours</span>
+                    <i class="fa-solid fa-chevron-down text-xs transition-transform" [class.rotate-180]="accordionOpen()[i]"></i>
+                  </button>
+                  @if (accordionOpen()[i]) {
+                    <div class="p-4">
                       @if (panel.data.length == 0) {
-                        <nz-empty [nzNotFoundContent]="contentTpl" [nzNotFoundFooter]="footerTpl">
-                          <ng-template #contentTpl>
-                            <span>PAS DE COURS LE
-                              <span class="text-danger">{{
-                                panel.day.name | uppercase
-                              }}</span>
-                            </span>
-                          </ng-template>
-                          <ng-template #footerTpl>
-                            <button (click)="openCreateModal(panel)" nz-button nzType="primary">
-                              Ajouter un cour
-                            </button>
-                          </ng-template>
-                        </nz-empty>
+                        <div class="flex flex-col items-center justify-center py-8 text-gray-500">
+                          <span class="mb-3">PAS DE COURS LE <span class="text-danger font-semibold">{{ panel.day.name | uppercase }}</span></span>
+                          <button (click)="openCreateModal(panel)" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">
+                            Ajouter un cour
+                          </button>
+                        </div>
                       } @else {
                         <div style="z-index: 500" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                           @for (item of panel.data; track item) {
@@ -52,29 +78,31 @@
                                 <div class="p-4">
                                   <div class="flex items-center my-2">
                                     <app-icon name="alarm" class="mx-2" />
-                                    <nz-tag [nzColor]="'cyan'">{{ item.start }} | {{ item.end }}</nz-tag>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-50 text-cyan-700">{{ item.start }} | {{ item.end }}</span>
                                   </div>
                                   <div class="flex items-center">
                                     <app-icon name="place" class="mx-2" />
-                                    <nz-tag [nzColor]="'warning'">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700">
                                       @if (item.salle && item.salle.name != null) {
                                         Salle N° {{ item.salle.number }}
                                       } @else {
                                         {{ item.salle?.number }} - {{ item.salle?.name }}
                                       }
-                                    </nz-tag>
+                                    </span>
                                   </div>
-                                  <nz-alert class="mt-3" nzType="info" [nzMessage]="item.course.professor?.first_name + ' ' + item.course.professor?.last_name" nzShowIcon></nz-alert>
+                                  <div class="mt-3 flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700" role="alert">
+                                    <i class="fa-solid fa-info-circle"></i>
+                                    <span>{{ item.course.professor?.first_name }} {{ item.course.professor?.last_name }}</span>
+                                  </div>
                                 </div>
                                 <div class="flex gap-2 px-4 py-3 border-t border-gray-100">
-                                  <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzDanger nzSize="small"
-                                    nz-popconfirm nzPopconfirmTitle="Merci de confirmer votre action."
-                                    nzPopconfirmPlacement="bottom" (nzOnConfirm)="removeEPT(panel, item)">
-                                    <i nz-icon nzType="delete"></i>
+                                  <button [disabled]="item.removeLoad" (click)="removeEPT(panel, item)"
+                                    class="w-7 h-7 flex items-center justify-center rounded-full bg-danger text-white hover:bg-red-600 transition-colors cursor-pointer text-xs disabled:opacity-50">
+                                    <i class="fa-solid fa-trash"></i>
                                   </button>
-                                  <button [disabled]="item.removeLoad" nz-button nzType="primary" nzShape="circle" nzSize="small"
-                                    (click)="editEPT(panel, item)">
-                                    <i nz-icon nzType="edit"></i>
+                                  <button [disabled]="item.removeLoad" (click)="editEPT(panel, item)"
+                                    class="w-7 h-7 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer text-xs disabled:opacity-50">
+                                    <i class="fa-solid fa-pen"></i>
                                   </button>
                                 </div>
                                 @if (item.removeLoad) {
@@ -96,96 +124,95 @@
                           </div>
                         </div>
                       }
-                    </nz-collapse-panel>
+                    </div>
                   }
-                </nz-collapse>
+                </div>
               }
-            </nz-tab>
-            <nz-tab nzTitle="Presentation">
-              <div class="flex items-center justify-end">
-                <div class="mx-1">Exporter en PDF</div>
-                <div>
-                  <button (click)="exportPDF()" class="shadow-lg m-2">
-                    <app-icon name="file_download" class="mat-18" />
-                  </button>
-                </div>
+            </div>
+          }
+        }
+
+        <!-- Sub Tab: Presentation -->
+        @if (activeSubTab() === 1) {
+          <div class="flex items-center justify-end mb-4">
+            <div class="mx-1">Exporter en PDF</div>
+            <div>
+              <button (click)="exportPDF()" class="shadow-lg m-2 w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                <app-icon name="file_download" class="mat-18" />
+              </button>
+            </div>
+          </div>
+          <div id="presentionEPT">
+            <div class="bg-white rounded-xl p-6 text-center">
+              <div>
+                <span>REPUBLIQUE DU SENEGAL <br />
+                  Un Peuple Un But Une Foi</span>
               </div>
-              <div id="presentionEPT">
-                <div class="bg-white rounded-xl p-6 text-center">
-                  <div>
-                    <span>REPUBLIQUE DU SENEGAL <br />
-                      Un Peuple Un But Une Foi</span>
-                  </div>
-                  <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
-                  <span class="text-center">
-                    UNITE DE FORMATION ET DE RECHERCHE <br />
-                    EN SCIENCES ET TECHNOLOGIES <br />
-                    {{ depName }}
-                  </span>
-                  <h3>{{ classe.name }}</h3>
-                  {{ now | date: "EEEE d MMMM y" }}
-                </div>
-                <nz-table [nzSize]="'middle'" class="scroll-table p-0 border border-gray-100 mb-3 mx-3" nzShowPagination="false"
-                  [nzBordered]="true" #presentionEPT [nzData]="epts">
-                  <thead>
-                    <tr>
-                      @for (item of days; track item) {
-                        <th [nzAlign]="'center'" class="text-center">
-                          {{ item.name.toUpperCase() }}
-                        </th>
-                      }
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (ept of presentionEPT.data; track ept) {
-                      <td class="column">
+              <img src="assets/img/logo.jpg" class="logo" alt="UIDT" />
+              <span class="text-center">
+                UNITE DE FORMATION ET DE RECHERCHE <br />
+                EN SCIENCES ET TECHNOLOGIES <br />
+                {{ depName }}
+              </span>
+              <h3>{{ classe.name }}</h3>
+              {{ now | date: "EEEE d MMMM y" }}
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full border border-gray-200">
+                <thead>
+                  <tr>
+                    @for (item of days; track item) {
+                      <th class="text-center px-3 py-2 border border-gray-200 bg-gray-50 text-sm font-medium">
+                        {{ item.name.toUpperCase() }}
+                      </th>
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    @for (ept of epts; track ept) {
+                      <td class="border border-gray-200 align-top p-0">
                         @if (ept.data.length != 0) {
                           <div>
                             @for (row of ept.data; track row; let isLast = $last) {
-                              <div class="bg-white rounded-xl border border-gray-100 m-3 text-center m-1">
-                                <div class="bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4">
-                                  <span>{{ row.course.name.toLocaleUpperCase() }}</span> <br />
+                              <div class="bg-white rounded-xl border border-gray-100 m-2 text-center">
+                                <div class="bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-3 py-2 rounded-t-xl">
+                                  <span class="text-white text-xs font-semibold">{{ row.course.name.toLocaleUpperCase() }}</span>
                                 </div>
-                                <div class="p-6 px-1 pb-0">
-                                  <nz-divider class="my-1 py-1" [nzText]="text">
-                                    <ng-template #text>
-                                      <div style="font-size: 15px" class="flex items-center">
-                                        <span>{{ pipeHours(row.start) }}
-                                          <i nz-icon nzType="clock-circle" class="mx-1" nzTheme="outline"></i>
-                                          {{
-                                      pipeHours(row.end)
-                                    }}</span>
-                                      </div>
-                                    </ng-template>
-                                  </nz-divider>
-                                  <nz-timeline class="text-start">
-                                    <nz-timeline-item>M. {{ row.course.professor?.last_name }}</nz-timeline-item>
+                                <div class="p-3 pb-0">
+                                  <hr class="border-gray-200 my-2" />
+                                  <div class="flex items-center justify-center text-sm gap-1 mb-2">
+                                    <span>{{ pipeHours(row.start) }}</span>
+                                    <i class="fa-regular fa-clock mx-1 text-xs"></i>
+                                    <span>{{ pipeHours(row.end) }}</span>
+                                  </div>
+                                  <hr class="border-gray-200 my-2" />
+                                  <ul class="text-left text-xs space-y-1 pl-3 mb-2">
+                                    <li class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> M. {{ row.course.professor?.last_name }}</li>
                                     @if (row.course.groupe_number != 1) {
-                                      <nz-timeline-item>Groupe:
-                                        {{ row?.group }}
-                                      </nz-timeline-item>
+                                      <li class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> Groupe: {{ row?.group }}</li>
                                     }
-                                    <nz-timeline-item>{{ row.salle?.name }}</nz-timeline-item>
-                                    <nz-timeline-item>{{ row.course.service.name }}</nz-timeline-item>
-                                  </nz-timeline>
+                                    <li class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> {{ row.salle?.name }}</li>
+                                    <li class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> {{ row.course.service.name }}</li>
+                                  </ul>
                                 </div>
                               </div>
                             }
                           </div>
                         } @else {
-                          <div class="bg-white rounded-xl m-3 text-center">
-                            <nz-tag [nzColor]="'red'">LIBRE</nz-tag>
+                          <div class="m-2 text-center py-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">LIBRE</span>
                           </div>
                         }
                       </td>
                     }
-                  </tbody>
-                </nz-table>
-              </div>
-            </nz-tab>
-          </nz-tabset>
-        </nz-tab>
-      </nz-tabset>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      }
     </div>
   </div>
 </div>

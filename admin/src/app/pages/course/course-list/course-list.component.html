@@ -14,127 +14,143 @@
       <div class="mb-4">
         <input
           type="text"
-          nzSize="large"
           (input)="search()"
-          nz-input
           placeholder="Recherche un cours..."
           [(ngModel)]="searchValue"
-          class="w-full"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
         />
       </div>
-      <nz-table
-        [nzLoading]="isLoad()"
-        #basicTable
-        [nzData]="courses"
-        [nzBordered]="true"
-        [nzTotal]="response ? response.total : 0"
-        [nzPageSize]="10"
-        [nzFrontPagination]="false"
-        (nzPageIndexChange)="pageChange($event)"
-      >
-        <thead>
-          <tr>
-            <th class="text-center">Code</th>
-            <th class="text-center">Intitulé</th>
-            @if (courseService.isSuperAdmin()) {
-              <th class="text-center">Département</th>
-            }
-            <th class="text-center">Groupe</th>
-            <th class="text-center">Service</th>
-            <th class="text-center">Semestre</th>
-            <th class="text-center">Classe</th>
-            <th class="text-center">Professeur</th>
-            @if (!classe && !setView) {
-              <th class="text-center">Actions</th>
-            }
-          </tr>
-        </thead>
-        <tbody>
-          @for (data of basicTable.data; track data) {
-            <tr>
-              <td>
-                <a
-                  [routerLink]="['/admin/courses/show/' + data.id]"
-                  class="text-primary hover:text-primary-dark hover:underline"
-                >
-                  {{ data.acronym }}
-                </a>
-              </td>
-              <td>{{ data.name }}</td>
-              @if (courseService.isSuperAdmin()) {
-                <td>{{ data.departement.name }}</td>
-              }
-              <td>
-                @if (data.groupe_number == 0) {
-                  <nz-tag [nzColor]="'blue'">Commun</nz-tag>
-                } @else {
-                  {{ data.groupe_number }}
+      <div class="relative">
+        @if (isLoad()) {
+          <div class="absolute inset-0 bg-white/60 z-10 flex items-center justify-center rounded-lg">
+            <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
+          </div>
+        }
+        <div class="overflow-x-auto">
+          <table class="w-full border border-gray-200">
+            <thead>
+              <tr>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Code</th>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Intitulé</th>
+                @if (courseService.isSuperAdmin()) {
+                  <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Département</th>
                 }
-              </td>
-              <td>{{ data.service.name }}</td>
-              <td>{{ data.semester.name }}</td>
-              <td>
-                <a
-                  [routerLink]="['/admin/classes/show/' + data.classe.id]"
-                  class="text-primary hover:text-primary-dark hover:underline"
-                >
-                  {{ data.classe.name }}
-                </a>
-              </td>
-              <td>
-                @if (data.professor != null) {
-                  <a
-                    [routerLink]="['/admin/professeurs/show/' + data.professor.id]"
-                    class="text-primary hover:text-primary-dark hover:underline"
-                  >
-                    {{ data.professor.first_name }} {{ data.professor.last_name }}
-                  </a>
-                } @else {
-                  <nz-tag [nzColor]="'red'" [innerText]="'Non définie'"></nz-tag>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Groupe</th>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Service</th>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Semestre</th>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Classe</th>
+                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Professeur</th>
+                @if (!classe && !setView) {
+                  <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Actions</th>
                 }
-              </td>
-              @if (!classe && !setView) {
-                <td class="p-0">
-                  <div class="flex justify-center items-center gap-2">
-                    @if (can('voir cour')) {
-                      <a [routerLink]="['show/' + data.id]">
-                        <button
-                          nz-button
-                          nzShape="circle"
-                          class="bg-amber-600 border-none hover:bg-amber-700"
-                        >
-                          <i class="text-white" nz-icon nzType="eye"></i>
-                        </button>
+              </tr>
+            </thead>
+            <tbody>
+              @for (data of courses; track data) {
+                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                  <td class="px-4 py-3 text-sm">
+                    <a
+                      [routerLink]="['/admin/courses/show/' + data.id]"
+                      class="text-primary hover:text-primary-dark hover:underline"
+                    >
+                      {{ data.acronym }}
+                    </a>
+                  </td>
+                  <td class="px-4 py-3 text-sm">{{ data.name }}</td>
+                  @if (courseService.isSuperAdmin()) {
+                    <td class="px-4 py-3 text-sm">{{ data.departement.name }}</td>
+                  }
+                  <td class="px-4 py-3 text-sm">
+                    @if (data.groupe_number == 0) {
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">Commun</span>
+                    } @else {
+                      {{ data.groupe_number }}
+                    }
+                  </td>
+                  <td class="px-4 py-3 text-sm">{{ data.service.name }}</td>
+                  <td class="px-4 py-3 text-sm">{{ data.semester.name }}</td>
+                  <td class="px-4 py-3 text-sm">
+                    <a
+                      [routerLink]="['/admin/classes/show/' + data.classe.id]"
+                      class="text-primary hover:text-primary-dark hover:underline"
+                    >
+                      {{ data.classe.name }}
+                    </a>
+                  </td>
+                  <td class="px-4 py-3 text-sm">
+                    @if (data.professor != null) {
+                      <a
+                        [routerLink]="['/admin/professeurs/show/' + data.professor.id]"
+                        class="text-primary hover:text-primary-dark hover:underline"
+                      >
+                        {{ data.professor.first_name }} {{ data.professor.last_name }}
                       </a>
+                    } @else {
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">Non définie</span>
                     }
-                    @if (can('modifier cour')) {
-                      <button
-                        (click)="selectedCourse = data; openEditModal()"
-                        nz-button
-                        nzType="primary"
-                        nzShape="circle"
-                      >
-                        <i nz-icon nzType="edit"></i>
-                      </button>
-                    }
-                    @if (can('supprimer cour')) {
-                      <button
-                        (click)="openDeleteModal(data)"
-                        nz-button
-                        nzDanger
-                        nzType="primary"
-                        nzShape="circle"
-                      >
-                        <i nz-icon nzType="delete"></i>
-                      </button>
-                    }
-                  </div>
-                </td>
+                  </td>
+                  @if (!classe && !setView) {
+                    <td class="px-4 py-3">
+                      <div class="flex justify-center items-center gap-2">
+                        @if (can('voir cour')) {
+                          <a [routerLink]="['show/' + data.id]">
+                            <button
+                              class="w-8 h-8 flex items-center justify-center rounded-full bg-amber-600 hover:bg-amber-700 text-white transition-colors cursor-pointer"
+                            >
+                              <i class="fa-solid fa-eye text-xs"></i>
+                            </button>
+                          </a>
+                        }
+                        @if (can('modifier cour')) {
+                          <button
+                            (click)="selectedCourse = data; openEditModal()"
+                            class="w-8 h-8 flex items-center justify-center rounded-full bg-primary hover:bg-primary-dark text-white transition-colors cursor-pointer"
+                          >
+                            <i class="fa-solid fa-pen text-xs"></i>
+                          </button>
+                        }
+                        @if (can('supprimer cour')) {
+                          <button
+                            (click)="openDeleteModal(data)"
+                            class="w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white transition-colors cursor-pointer"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  }
+                </tr>
               }
-            </tr>
-          }
-        </tbody>
-      </nz-table>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        @if (response && response.total > 0) {
+          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+            <div class="text-sm text-gray-600">
+              Total: {{ response.total }} cours
+            </div>
+            <div class="flex items-center gap-1">
+              <button
+                (click)="pageChange(currentPage() - 1)"
+                [disabled]="currentPage() === 1"
+                class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              >
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <span class="px-3 py-1 text-sm text-gray-700">Page {{ currentPage() }}</span>
+              <button
+                (click)="pageChange(currentPage() + 1)"
+                [disabled]="currentPage() * 10 >= response.total"
+                class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              >
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>

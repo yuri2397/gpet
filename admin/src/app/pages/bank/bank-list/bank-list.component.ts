@@ -1,4 +1,4 @@
-import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Bank } from 'src/app/models/bank';
@@ -9,43 +9,8 @@ import { BankEditComponent } from '../bank-edit/bank-edit.component';
 import { AuthStore } from 'src/app/shared/auth-store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTagModule } from 'ng-zorro-antd/tag';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { NzDrawerModule } from 'ng-zorro-antd/drawer';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzEmptyModule } from 'ng-zorro-antd/empty';
-import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { NzResultModule } from 'ng-zorro-antd/result';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-import { NzTabsModule } from 'ng-zorro-antd/tabs';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
-import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { NzStatisticModule } from 'ng-zorro-antd/statistic';
-import { NzTimelineModule } from 'ng-zorro-antd/timeline';
-import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-bank-list',
@@ -55,44 +20,8 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  NzFormModule,
-  NzInputModule,
-  NzButtonModule,
-  NzTableModule,
-  NzModalModule,
-  NzSelectModule,
-  NzIconModule,
-  NzSpinModule,
-  NzTagModule,
-  NzDropDownModule,
-  NzDividerModule,
-  NzToolTipModule,
-  NzAlertModule,
-  NzPopconfirmModule,
-  NzDrawerModule,
-  NzCardModule,
-  NzAvatarModule,
-  NzEmptyModule,
-  NzPageHeaderModule,
-  NzResultModule,
-  NzSkeletonModule,
-  NzTabsModule,
-  NzCollapseModule,
-  NzDatePickerModule,
-  NzTimePickerModule,
-  NzLayoutModule,
-  NzMenuModule,
-  NzListModule,
-  NzSpaceModule,
-  NzStatisticModule,
-  NzTimelineModule,
-  NzImageModule,
-  NzAutocompleteModule,
-  NzUploadModule,
-  NzStepsModule,
-  NzMessageModule,
-  NzNotificationModule,
   IconComponent,
+  DataTableComponent,
   ],
   templateUrl: './bank-list.component.html',
   styleUrls: ['./bank-list.component.scss'],
@@ -100,13 +29,13 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 export class BankListComponent implements OnInit {
   private bankService = inject(BankService);
   private notification = inject(NotificationService);
-  private modalService = inject(NzModalService);
+  private modalService = inject(ModalService);
   public roleService = inject(RoleService);
   private authStore = inject(AuthStore);
 
   banks = signal<Bank[]>([]);
   isLoad = signal(true);
-  deleteBankRef!: NzModalRef;
+  deleteBankRef!: ModalRef;
   deleteLoad!: boolean;
 
   ngOnInit(): void {
@@ -127,16 +56,12 @@ export class BankListComponent implements OnInit {
   }
 
   openEditModal(bank: Bank) {
-    const modal = this.modalService.create({
-      nzTitle: 'MODIFIER LA BANQUE',
-      nzContent: BankEditComponent,
-      nzData: {
+    const modal = this.modalService.open({
+      title: 'MODIFIER LA BANQUE',
+      component: BankEditComponent,
+      data: {
         bank: this.bankService.clone(bank)
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '40em',
     });
 
     modal.afterClose.subscribe((data: Bank | null) => {
@@ -148,15 +73,10 @@ export class BankListComponent implements OnInit {
 
   openDeleteModal(bank: Bank) {
     this.deleteBankRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé cette banque?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.onDeleteBank(bank),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Voulez-vous supprimé cette banque?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.onDeleteBank(bank),
     });
   }
 
