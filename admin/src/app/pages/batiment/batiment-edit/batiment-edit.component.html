@@ -1,15 +1,14 @@
-<div>
-    <nz-form [nzLayout]="'horizontal'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-form-item class="p-5">
-            <nz-form-label nzRequired nzFor="name">Nom du batiment</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Le nom est requi">
-                <input [(ngModel)]="batiment.name" formControlName="name" nz-input name="name" type="text" id="name">
-            </nz-form-control>
-        </nz-form-item>
-    </nz-form>
+<div class="p-4">
+  <form nz-form [nzLayout]="'vertical'" [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label nzRequired nzFor="name">Nom du batiment</nz-form-label>
+      <nz-form-control nzErrorTip="Le nom est requis">
+        <input [(ngModel)]="batiment.name" formControlName="name" nz-input nzSize="large" placeholder="Nom du batiment" class="!rounded-lg" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
 </div>
-
 <div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-    <button nz-button nzType="primary" (click)="edit()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Modifier</button>
+  <button nz-button (click)="destroyModal(null)">Annuler</button>
+  <button nz-button nzType="primary" (click)="edit()" [disabled]="!validateForm.valid" [nzLoading]="isLoad" class="!rounded-lg">Modifier</button>
 </div>

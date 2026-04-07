@@ -1,46 +1,66 @@
-<div class="container-fluid">
-  <div class="row align-items-center">
-    <div class="col-md-5 col-sm-5 col-xs-12 border shadow login-left">
-      <div style="width: 30em">
-        <div class="text-center">
-          <h2 class="txt-primary">GPET</h2>
-          <p class="card-category txt-primary">Connectez-vous!</p>
-        </div>
-        <div class="my-3 mx-5">
-          <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-            <nz-form-item>
-              <nz-form-control nzErrorTip="Donner votre email!">
-                <nz-form-label [nzSpan]="24" class="text-white" nzFor="email">Adresse email</nz-form-label>
-                <input nzSize="large" type="email" nz-input formControlName="email" id="email"
-                  placeholder="Adresse email" />
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-              <nz-form-control nzErrorTip="Donner votre mot de passe!">
-                <nz-form-label [nzSpan]="24" class="text-white" nzFor="password">Mot de passe</nz-form-label>
-                <input nzSize="large" autocomplete="off" type="password" nz-input formControlName="password"
-                  id="password" placeholder="Password" />
-              </nz-form-control>
-            </nz-form-item>
-            <div class="d-flex my-3 justify-content-between align-items-center">
-              <div>
-                <button nz-button (click)="login()" [nzLoading]="isLoad" class="bg" [disabled]="!validateForm.valid">
-                  Se connecter
-                </button>
-
-              </div>
-              <div>
-                <a class="txt-primary" routerLink="/forgot-password">Mot de passe oublié?</a>
-              </div>
-            </div>
-            <div class="text-center">
-              <span class="version">Version {{ version }}</span>
-            </div>
-          </form>
-        </div>
+<div class="min-h-screen flex">
+  <!-- Left: Login Form -->
+  <div class="w-full lg:w-5/12 flex flex-col items-center justify-center px-8 py-12 bg-gradient-to-br from-slate-50 to-blue-50">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold text-primary tracking-tight">GPET</h1>
+        <p class="mt-2 text-gray-500">Connectez-vous à votre compte</p>
       </div>
-    </div>
-    <div class="col">
-      <img src="/assets/img/login.svg" alt="LOGIN" />
+
+      <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Adresse email</label>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Veuillez entrer votre email">
+              <input
+                nz-input nzSize="large"
+                type="email"
+                formControlName="email"
+                placeholder="nom@exemple.com"
+                class="!rounded-lg"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">Mot de passe</label>
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Veuillez entrer votre mot de passe">
+              <input
+                nz-input nzSize="large"
+                type="password"
+                formControlName="password"
+                placeholder="Votre mot de passe"
+                autocomplete="off"
+                class="!rounded-lg"
+              />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button
+            nz-button nzType="primary" nzSize="large"
+            (click)="login()"
+            [nzLoading]="isLoad"
+            [disabled]="!validateForm.valid"
+            class="!rounded-lg !px-8 !h-11 !font-semibold"
+          >
+            Se connecter
+          </button>
+          <a routerLink="/forgot-password" class="text-sm text-primary hover:text-primary-dark transition-colors">
+            Mot de passe oublie ?
+          </a>
+        </div>
+      </form>
+
+      <p class="mt-12 text-center text-xs text-gray-400">Version {{ version }}</p>
     </div>
   </div>
+
+  <!-- Right: Illustration -->
+  <div class="hidden lg:flex flex-1 items-center justify-center bg-gradient-to-br from-primary to-primary-dark p-12">
+    <img src="/assets/img/login.svg" alt="Illustration" class="max-w-lg w-full opacity-90" />
+  </div>
+</div>

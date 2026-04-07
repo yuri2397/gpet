@@ -1,4 +1,4 @@
-<div class="card car-body shadow-sm">
+<div class="bg-white rounded-xl shadow-sm overflow-hidden p-6">
 
     <nz-divider [nzText]="p_t"></nz-divider>
     <ng-template #p_t>
@@ -8,15 +8,17 @@
         </button>
     </ng-template>
 
-    <div class="row mt-3">
-        <div class="col">
-            <div class="card body m-2 shadow-sm border raduis-sm">
-                <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
-                <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
-                <div class="d-flex justify-content-center my-3 btn-icon">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+        <div>
+            <div class="bg-white rounded-xl m-2 shadow-sm border border-gray-100 raduis-sm">
+                <img [src]="user.avatar" class="user-avatar card-img-top" alt="" />
+                @if (avatarLoad) {
+                    <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
+                }
+                <div class="flex justify-center my-3 btn-icon">
                     <div>
-                        <button mat-fab color="basic" class="shadow" (click)="image.click()">
-              <mat-icon>edit</mat-icon>
+                        <button mat-fab color="basic" class="shadow-lg" (click)="image.click()">
+              <app-icon name="edit" />
               <form enctype="multipart/form-data">
                 <input
                   #image
@@ -29,27 +31,29 @@
             </button>
                     </div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">
+                <div class="p-6">
+                    <h5 class="card-title text-lg font-semibold">
                         <br />
-                        <ng-container *ngIf="user.departement != null">
+                        @if (user.departement != null) {
                             {{ user.departement.name }}
-                        </ng-container>
+                        }
                     </h5>
-                    <nz-divider nzText="Rôles"></nz-divider>
+                    <nz-divider nzText="Roles"></nz-divider>
                     <p class="card-text">
-                        <nz-tag *ngFor="let item of roles" nzType="default" nzColor="blue" nzMode="checkable">
-                            {{ item.name }}
-                        </nz-tag>
+                        @for (item of roles; track item) {
+                            <nz-tag nzType="default" nzColor="blue" nzMode="checkable">
+                                {{ item.name }}
+                            </nz-tag>
+                        }
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card card-body shadow-sm border m-2 raduis-sm">
+        <div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6 m-2 raduis-sm">
                 <nz-divider [nzText]="c_t">
                     <ng-template #c_t>
-                        <h5 class="my-2">Change votre mot de passe</h5>
+                        <h5 class="my-2 text-lg font-semibold">Change votre mot de passe</h5>
                     </ng-template>
                 </nz-divider>
                 <form nz-form [formGroup]="validateForm" class="login-form">

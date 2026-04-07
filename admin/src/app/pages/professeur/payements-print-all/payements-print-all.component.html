@@ -1,7 +1,6 @@
-<div class="container" id="presentionPayement"
->
-    <div class="col text-center">
-        <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="logo">
+<div class="max-w-4xl mx-auto" id="presentionPayement">
+    <div class="flex-1 text-center">
+        <img src="/assets/img/logo.jpg" alt="LOGO UIDT" class="w-[60px] mx-auto">
         <div>
             UNIVERSITE DE THIES <br> UFR SCIENCES ET TECHONOLOGIES <br> {{ departement.name.toUpperCase() }}
         </div> <br>
@@ -9,18 +8,18 @@
             ETAT DES RELEVES DE VACATION</h5>
         <h6>{{ date | date:'dd/M/y' }}</h6>
     </div>
-    <div class="row align-items-start my-3">
-        <div class="col-md-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start my-3">
+        <div>
             <nz-list nzBordered>
                 <nz-list-item>
-                    <span nz-typography><b>PRÉNOM</b></span> {{ professor.first_name }}
+                    <span nz-typography><b>PRENOM</b></span> {{ professor.first_name }}
                 </nz-list-item>
                 <nz-list-item>
                     <span nz-typography><b>NOM</b></span> {{ professor.last_name }}
                 </nz-list-item>
             </nz-list>
         </div>
-        <div class="col-md-6">
+        <div>
             <nz-list nzBordered>
                 <nz-list-item>
                     <span nz-typography><b>NOM DE LA BANQUE</b></span> {{ professor.account.bank.name }}
@@ -35,48 +34,49 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class="text-center bold">SERVICES</th>
-                    <th class="text-center bold">TAUX HORAIRE</th>
-                    <th class="text-center bold">NB HEURES</th>
-                    <th class="text-center bold">MONTANT (FCFA)</th>
-                    <th class="text-center bold">UE</th>
-                    <th class="text-center bold">EC</th>
-                    <th class="text-center bold">CLASSE</th>
+                    <th class="text-center font-bold">SERVICES</th>
+                    <th class="text-center font-bold">TAUX HORAIRE</th>
+                    <th class="text-center font-bold">NB HEURES</th>
+                    <th class="text-center font-bold">MONTANT (FCFA)</th>
+                    <th class="text-center font-bold">UE</th>
+                    <th class="text-center font-bold">EC</th>
+                    <th class="text-center font-bold">CLASSE</th>
                 </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let data of professor.coursesDo">
-                    <tr *ngIf="data.is_paid == true">
-                        <td class="text-center"> {{ data.course.service.name }} </td>
-                        <td class="text-center"> {{ data.course.service.amount}} fcfa</td>
-                        <td class="text-center"> {{ data.total_hours }}heures </td>
-                        <td class="text-center"> {{ data.total_sales}} fcfa</td>
-                        <td class="text-center"> {{ data.course.ec.ue.name }} </td>
-                        <td class="text-center"> {{ data.course.ec.name }} </td>
-                        <td class="text-center"> {{ data.course.classe.name}} </td>
-                    </tr>
-                </ng-container>
-
+                @for (data of professor.coursesDo; track data) {
+                    @if (data.is_paid == true) {
+                        <tr>
+                            <td class="text-center"> {{ data.course.service.name }} </td>
+                            <td class="text-center"> {{ data.course.service.amount}} fcfa</td>
+                            <td class="text-center"> {{ data.total_hours }}heures </td>
+                            <td class="text-center"> {{ data.total_sales}} fcfa</td>
+                            <td class="text-center"> {{ data.course.ec.ue.name }} </td>
+                            <td class="text-center"> {{ data.course.ec.name }} </td>
+                            <td class="text-center"> {{ data.course.classe.name}} </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
         <div class="text-center my-4 mb-5">
             <nz-divider nzText="Signature du Vacataire"></nz-divider>
         </div>
-        <div class="row my-3 mt-5 justify-content-between">
-            <div class="col">
-                Vu pour établir état de paie
+        <div class="flex justify-between my-3 mt-5">
+            <div class="flex-1">
+                Vu pour etablir etat de paie
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                Certifié service fait
+        <div class="flex">
+            <div class="flex-1">
+                Certifie service fait
             </div>
         </div>
-        <div class="row my-3">
-            <div class="col bold">
+        <div class="flex my-3">
+            <div class="flex-1 font-bold">
                 LE CHEF DES SERVICES ADMINISTRATIFS
             </div>
-            <div class="col bold">
+            <div class="flex-1 font-bold">
                 LE DIRECTEUR
             </div>
         </div>

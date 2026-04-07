@@ -2,7 +2,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzNotificationModule, NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { RouterModule, Router } from '@angular/router';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -14,7 +14,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { UserCreateComponent } from './../user-create/user-create.component';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTagModule } from 'ng-zorro-antd/tag';
@@ -43,11 +43,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-user-list',
@@ -94,38 +90,35 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
   users!: User[];
-  isLoad = true;
-  deleteUserLoad: boolean = false;
-  searchValue: any;
-  listOfDisplayData!: User[];
+  isLoad = signal(true);
+  deleteUserLoad = signal(false);
+  searchValue = signal('');
+  listOfDisplayData = signal<User[]>([]);
 
   private userService = inject(UserService);
   private modal = inject(NzModalService);
   private router = inject(Router);
   private notification = inject(NzNotificationService);
+  private authStore = inject(AuthStore);
 
   ngOnInit(): void {
     this.findUsers();
   }
 
   findUsers() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.userService.findByAuthDepartement().subscribe({
       next: (response) => {
-        this.listOfDisplayData = response;
+        this.listOfDisplayData.set(response);
         this.users = response;
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
       error: (errors) => {},
     });
@@ -144,7 +137,7 @@ export class UserListComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    this.deleteUserLoad = true;
+    this.deleteUserLoad.set(true);
     this.userService.delete(user).subscribe({
       next: (response) => {
         this.notification.success(
@@ -164,21 +157,21 @@ export class UserListComponent implements OnInit {
             nzDuration: 5000,
           }
         );
-        this.deleteUserLoad = false;
+        this.deleteUserLoad.set(false);
       },
     });
   }
 
   search(): void {
-    this.listOfDisplayData = this.users.filter((item: User) => {
-      this.searchValue = this.searchValue.toLocaleLowerCase();
+    const sv = this.searchValue().toLocaleLowerCase();
+    this.listOfDisplayData.set(this.users.filter((item: User) => {
       return (
-        item.first_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        (item.first_name.toLocaleLowerCase() + " " + item.last_name.toLocaleLowerCase()).indexOf(this.searchValue) !== -1 ||
-        item.last_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.email.toLocaleLowerCase().indexOf(this.searchValue) !== -1
+        item.first_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        (item.first_name.toLocaleLowerCase() + " " + item.last_name.toLocaleLowerCase()).indexOf(sv) !== -1 ||
+        item.last_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        item.email.toLocaleLowerCase().indexOf(sv) !== -1
       );
-    });
+    }));
   }
 
   showUser(data: User) {
@@ -186,9 +179,6 @@ export class UserListComponent implements OnInit {
   }
 
   can(permission: string) {
-    let p = new Permission();
-    p.name = permission;
-    let test = this.userService.can(p, this.userService.getPermissions());
-    return test;
+    return this.authStore.hasPermission(permission);
   }
 }

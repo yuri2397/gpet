@@ -8,9 +8,10 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { MatIconModule } from '@angular/material/icon';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { Permission } from '../../models/permission';
 import { Role } from '../../models/role';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,10 +45,6 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 declare interface RouteInfo {
   path: string;
@@ -115,11 +112,7 @@ export const ROUTES: RouteInfo[] = [
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   RouterOutlet,
   ],
   templateUrl: './admin.component.html',
@@ -128,15 +121,16 @@ export const ROUTES: RouteInfo[] = [
 export class AdminComponent implements OnInit {
   private router = inject(Router);
   private userService = inject(UserService);
+  private authStore = inject(AuthStore);
 
   isCollapsed = signal(false);
   isLoad = signal(true);
-  roles = signal<Role[]>([]);
-  user = signal<User | null>(null);
+  roles = this.authStore.roles;
+  user = this.authStore.user;
   menuItems = signal<RouteInfo[]>([]);
   title = 'UFR SET - GPET';
   depTitle = signal('');
-  permissions = signal<Permission[]>([]);
+  permissions = this.authStore.permissions;
 
   ngOnInit() {
     this.currentUser();
@@ -146,12 +140,8 @@ export class AdminComponent implements OnInit {
     this.isLoad.set(true);
     this.userService.currentUser().subscribe({
       next: (response: User) => {
-        this.userService.setUser(response);
-        this.userService.setRoles(response.roles);
-        this.user.set(response);
-        this.roles.set(response.roles);
-        this.permissions.set(response.permissions);
-        if (!this.userService.isSuperAdmin()) {
+        this.authStore.updateUser(response);
+        if (!this.authStore.isSuperAdmin()) {
           this.depTitle.set(response.departement.name.toUpperCase());
         }
         this.menuItems.set(ROUTES.filter((menuItem) => menuItem));
@@ -175,11 +165,12 @@ export class AdminComponent implements OnInit {
   }
 
   logout() {
-    this.userService.logout();
+    this.authStore.clearAuth();
+    this.router.navigate(['/']);
   }
 
   canShowItem(item: RouteInfo) {
-    if (item.path === 'semesters' && this.userService.isSuperAdmin()) {
+    if (item.path === 'semesters' && this.authStore.isSuperAdmin()) {
       return false;
     }
     const perms = this.permissions();

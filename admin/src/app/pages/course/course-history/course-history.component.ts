@@ -1,10 +1,6 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
@@ -94,11 +90,7 @@ import { NotificationService } from 'src/app/services/notification.service';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './course-history.component.html',
   styleUrls: ['./course-history.component.scss'],

@@ -1,6 +1,6 @@
 import { Day } from 'src/app/models/day';
 import { DepartementService } from 'src/app/services/departement.service';
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexTitleSubtitle, ApexPlotOptions } from 'ng-apexcharts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -42,13 +42,10 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { StatCardComponent } from 'src/app/shared/ui/stat-card/stat-card.component';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -104,13 +101,10 @@ export type ChartOptions = {
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   LoadComponent,
   NgApexchartsModule,
+  StatCardComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -118,13 +112,13 @@ export type ChartOptions = {
 export class DashboardComponent implements OnInit {
   private departementService = inject(DepartementService);
 
-  dashboard!: any;
-  isLoad = true;
-  isLoadChart = true;
+  dashboard = signal<any>(null);
+  isLoad = signal(true);
+  isLoadChart = signal(true);
   days!: Day[];
-  selectedDay!: number;
-  dayLabel!: String;
-  dashboardLoad = true;
+  selectedDay = signal(0);
+  dayLabel = signal('');
+  dashboardLoad = signal(true);
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
@@ -134,24 +128,24 @@ export class DashboardComponent implements OnInit {
       id: 7,
       name: 'Dimanche',
     });
-    this.selectedDay = new Date().getDay();
-    this.dayLabel = new Date()
+    this.selectedDay.set(new Date().getDay());
+    this.dayLabel.set(new Date()
       .toLocaleDateString('fr-FR', {
         weekday: 'long',
         day: 'numeric',
         month: 'long',
       })
-      .toUpperCase();
+      .toUpperCase());
     this.getDashboard();
   }
 
   updateChart(event: number) {
-    this.dayLabel = this.days[event - 1].name;
+    this.dayLabel.set(this.days[event - 1].name);
     this.getChartData(event);
   }
 
   getChartData(event: number) {
-    this.isLoadChart = true;
+    this.isLoadChart.set(true);
     this.departementService.chartsData(event).subscribe({
       next: (response) => {
         console.log(response);
@@ -167,7 +161,7 @@ export class DashboardComponent implements OnInit {
           },
           colors: [response.all_free ? '#eeeeee' : '#41729f'],
           title: {
-            text: `Disponibilté des salles | ${this.dayLabel}`,
+            text: `Disponibilté des salles | ${this.dayLabel()}`,
             style: {
               fontFamily: 'Poppins',
               fontSize: '20px',
@@ -175,7 +169,7 @@ export class DashboardComponent implements OnInit {
             },
           },
         };
-        this.isLoadChart = false;
+        this.isLoadChart.set(false);
       },
       error: (errors) => {
         console.log(errors);
@@ -184,12 +178,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getDashboard() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.departementService.dashboard().subscribe({
       next: (response) => {
-        this.dashboard = response;
-        this.isLoad = false;
-        this.getChartData(this.selectedDay);
+        this.dashboard.set(response);
+        this.isLoad.set(false);
+        this.getChartData(this.selectedDay());
       },
       error: (errors) => {
         console.log(errors);

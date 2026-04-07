@@ -1,14 +1,13 @@
-<div class="container">
-    <div class="card card-body center">
-        <div>
-            <nz-result nzStatus="404" nzTitle="BIENVENUE SUR GPET" [nzSubTitle]="content">
-            </nz-result>
-        </div>
-    </div>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="bg-white rounded-2xl shadow-lg p-8 max-w-xl w-full">
+    <nz-result nzStatus="info" nzTitle="Bienvenue sur GPET" [nzSubTitle]="content">
+    </nz-result>
+  </div>
 </div>
 
 <ng-template #content>
-    <p>
-        Le module pour la gestion des comptes des professeurs n'est pas encore actif. <br> Un mail vous serra envoyé pour vous informer de l'activation des cette partie. Merci
-    </p>
+  <p class="text-gray-500 leading-relaxed">
+    Le module pour la gestion des comptes des professeurs n'est pas encore actif.
+    Un mail vous sera envoye pour vous informer de l'activation de cette partie. Merci.
+  </p>
 </ng-template>

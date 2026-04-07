@@ -1,13 +1,13 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { Departement } from 'src/app/models/departement';
-import { Permission } from 'src/app/models/permission';
 import { Salle } from 'src/app/models/salle';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SalleService } from 'src/app/services/salle.service';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { SalleCreateComponent } from '../salle-create/salle-create.component';
 import { SalleEditComponent } from '../salle-edit/salle-edit.component';
 import { RouterModule } from '@angular/router';
@@ -47,11 +47,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-salle-list',
@@ -98,11 +94,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './salle-list.component.html',
   styleUrls: ['./salle-list.component.scss']
@@ -111,41 +103,42 @@ export class SalleListComponent implements OnInit {
   private notification = inject(NotificationService);
   private modalService = inject(NzModalService);
   private salleService = inject(SalleService);
+  private authStore = inject(AuthStore);
 
   @Input() salles!: Salle[];
   @Input() setView!: boolean;
   @Input() departement!: Departement;
-  dataLoad = true;
-  isLoad = false;
+  dataLoad = signal(true);
+  isLoad = signal(false);
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
   selectedSalle!: Salle;
-  searchValue = '';
-  visible = false;
-  listOfDisplayData!: Salle[];
+  searchValue = signal('');
+  visible = signal(false);
+  listOfDisplayData = signal<Salle[]>([]);
 
   ngOnInit(): void {
     if (this.salles == null) {
       this.findAll();
     } else {
-      this.listOfDisplayData = this.salles;
+      this.listOfDisplayData.set(this.salles);
     }
   }
 
   isSuperAdmin() {
-    return this.salleService.isSuperAdmin();
+    return this.authStore.isSuperAdmin();
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.salleService.findAll().subscribe({
       next: (salles) => {
         this.salles = salles;
-        this.listOfDisplayData = salles;
-        this.isLoad = false;
+        this.listOfDisplayData.set(salles);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
@@ -226,20 +219,17 @@ export class SalleListComponent implements OnInit {
   }
 
   can(permission: string) {
-    let p = new Permission();
-    p.name = permission;
-    let test = this.salleService.can(p, this.salleService.getPermissions());
-    return test;
+    return this.authStore.hasPermission(permission);
   }
 
   search(): void {
-    this.visible = false;
-    this.listOfDisplayData = this.salles.filter((item: Salle) => {
-      this.searchValue = this.searchValue.toLowerCase();
+    this.visible.set(false);
+    const sv = this.searchValue().toLowerCase();
+    this.listOfDisplayData.set(this.salles.filter((item: Salle) => {
       return (
-        item.name.toLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.number.toLocaleString().indexOf(this.searchValue) !== -1
+        item.name.toLowerCase().indexOf(sv) !== -1 ||
+        item.number.toLocaleString().indexOf(sv) !== -1
       );
-    });
+    }));
   }
 }

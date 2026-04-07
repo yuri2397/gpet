@@ -5,8 +5,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { Course } from 'src/app/models/course';
 import { Syllabus } from 'src/app/models/syllabus';
 import { SyllabusService } from './../../../services/syllabus.service';
@@ -44,9 +43,6 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-syllabus-create',
@@ -93,11 +89,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './syllabus-create.component.html',
   styleUrls: ['./syllabus-create.component.scss'],

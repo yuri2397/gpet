@@ -2,14 +2,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzModalModule, NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { RouterModule, Router } from '@angular/router';
 import { Professor } from './../../../models/professor';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { ProfesseurCreateComponent } from '../professeur-create/professeur-create.component';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -46,11 +46,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-professeur-list',
@@ -97,11 +93,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './professeur-list.component.html',
   styleUrls: ['./professeur-list.component.scss'],
@@ -111,35 +103,36 @@ export class ProfesseurListComponent implements OnInit {
   private notification = inject(NotificationService);
   private modalService = inject(NzModalService);
   private profService = inject(ProfessorService);
+  private authStore = inject(AuthStore);
 
   @Input() professeurs!: Professor[];
   @Input() setView!: boolean;
   selectedProfessor!: Professor;
-  isLoad = false;
+  isLoad = signal(false);
   deleteRestoRef!: NzModalRef;
   deleteLoad!: boolean;
-  searchValue = '';
-  visible = false;
-  listOfDisplayData!: Professor[];
+  searchValue = signal('');
+  visible = signal(false);
+  listOfDisplayData = signal<Professor[]>([]);
 
   ngOnInit(): void {
     if (this.professeurs == null) {
       this.findAll();
     } else {
-      this.listOfDisplayData = this.professeurs;
+      this.listOfDisplayData.set(this.professeurs);
     }
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.profService.findAll().subscribe({
       next: (professeurs) => {
         this.professeurs = professeurs;
-        this.listOfDisplayData = professeurs;
-        this.isLoad = false;
+        this.listOfDisplayData.set(professeurs);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
@@ -204,31 +197,28 @@ export class ProfesseurListComponent implements OnInit {
   }
 
   reset(): void {
-    this.searchValue = '';
+    this.searchValue.set('');
     this.search();
   }
 
   search(): void {
-    this.visible = false;
-    this.listOfDisplayData = this.professeurs.filter((item: Professor) => {
-      this.searchValue = this.searchValue.toLocaleLowerCase();
+    this.visible.set(false);
+    const sv = this.searchValue().toLocaleLowerCase();
+    this.listOfDisplayData.set(this.professeurs.filter((item: Professor) => {
       return (
-        item.registration_number.indexOf(this.searchValue) !== -1 ||
-        item.first_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.last_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.email.toLocaleLowerCase().indexOf(this.searchValue) !== -1
+        item.registration_number.indexOf(sv) !== -1 ||
+        item.first_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        item.last_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        item.email.toLocaleLowerCase().indexOf(sv) !== -1
       );
-    });
+    }));
   }
 
   showProfessor(professeur: Professor) {
     this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.profService.can(p, this.profService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 }

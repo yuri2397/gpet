@@ -43,11 +43,7 @@ import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-resources',
@@ -94,11 +90,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   NzStepsModule,
   NzMessageModule,
   NzNotificationModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatTableModule,
-  MatProgressBarModule,
+  IconComponent,
   ],
   templateUrl: './resources.component.html',
   styleUrls: ['./resources.component.scss'],
