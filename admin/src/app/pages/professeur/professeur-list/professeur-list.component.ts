@@ -43,6 +43,21 @@ export class ProfesseurListComponent implements OnInit {
   searchValue = signal('');
   visible = signal(false);
   listOfDisplayData = signal<Professor[]>([]);
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  countByStatus(status: string): number {
+    if (!this.professeurs) return 0;
+    return this.professeurs.filter(p => p.status === status).length;
+  }
 
   ngOnInit(): void {
     if (this.professeurs == null) {

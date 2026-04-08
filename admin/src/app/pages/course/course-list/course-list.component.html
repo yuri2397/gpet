@@ -1,157 +1,268 @@
-<div class="w-full">
-  <div class="rounded-xl shadow-sm border border-gray-100 overflow-hidden bg-white">
-    <div class="bg-gradient-to-r from-primary to-primary-dark px-6 py-4">
-      <div class="flex justify-between items-center">
-        <h5 class="text-white text-lg font-semibold m-0">Liste des cours</h5>
-        @if (can('creer cour') && !setView) {
-          <button (click)="openCreateModal()" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
-            <app-icon name="add" />
-          </button>
-        }
+<!-- Page header — only when standalone (not inside classe-show) -->
+@if (!classe && !setView) {
+  <div class="mb-6 flex flex-row justify-between gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900 m-0">Cours</h2>
+      <p class="text-sm text-gray-500 mt-1 m-0">Gestion des cours et enseignements</p>
+    </div>
+    @if (can('creer cour')) {
+      <button (click)="openCreateModal()"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl
+               hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5
+               active:translate-y-0 transition-all duration-200 cursor-pointer border-none">
+        <i class="fa-solid fa-plus text-xs"></i>
+        Nouveau cours
+      </button>
+    }
+  </div>
+
+  <!-- Stats cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <i class="fa-solid fa-book-open text-primary text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Total cours</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ response?.total || courses?.length || 0 }}</p>
+        </div>
       </div>
     </div>
-    <div class="p-6">
-      <div class="mb-4">
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+          <i class="fa-solid fa-user-tie text-success text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Avec professeur</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ countWithProfessor() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
+          <i class="fa-solid fa-layer-group text-warning text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Groupes</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ countGroups() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-danger/10 flex items-center justify-center">
+          <i class="fa-solid fa-triangle-exclamation text-danger text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Sans professeur</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ countWithoutProfessor() }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Table card -->
+<div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+  <!-- Search bar -->
+  <div class="px-6 py-4 border-b border-gray-100">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="relative flex-1 max-w-md">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+          <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs"></i>
+        </div>
         <input
           type="text"
           (input)="search()"
-          placeholder="Recherche un cours..."
-          [(ngModel)]="searchValue"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+          [ngModel]="searchValue()"
+          (ngModelChange)="searchValue.set($event)"
+          placeholder="Rechercher un cours..."
+          class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400
+                 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 outline-none"
         />
       </div>
-      <div class="relative">
-        @if (isLoad()) {
-          <div class="absolute inset-0 bg-white/60 z-10 flex items-center justify-center rounded-lg">
-            <i class="fa-solid fa-spinner fa-spin text-primary text-2xl"></i>
-          </div>
+      <div class="flex items-center gap-3">
+        @if (classe && can('creer cour')) {
+          <button (click)="openCreateModal()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl
+                   hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+            <i class="fa-solid fa-plus text-xs"></i>
+            Ajouter
+          </button>
         }
-        <div class="overflow-x-auto">
-          <table class="w-full border border-gray-200">
-            <thead>
-              <tr>
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Code</th>
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Intitulé</th>
-                @if (courseService.isSuperAdmin()) {
-                  <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Département</th>
+        <div class="flex items-center gap-2 text-xs text-gray-400">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>{{ response?.total || courses?.length || 0 }} cours</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="relative">
+    @if (isLoad()) {
+      <div class="absolute inset-0 bg-white/70 z-10 flex items-center justify-center backdrop-blur-[1px]">
+        <div class="flex items-center gap-3 px-5 py-3 bg-white rounded-xl shadow-lg border border-gray-100">
+          <i class="fa-solid fa-spinner fa-spin text-primary"></i>
+          <span class="text-sm text-gray-500 font-medium">Chargement...</span>
+        </div>
+      </div>
+    }
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-700">
+        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <tr>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Code</th>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Intitulé</th>
+            @if (courseService.isSuperAdmin()) {
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Département</th>
+            }
+            <th class="px-6 py-3.5 font-semibold tracking-wider text-center">Groupe</th>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Service</th>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Semestre</th>
+            @if (!classe) {
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Classe</th>
+            }
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Professeur</th>
+            @if (!classe && !setView) {
+              <th class="px-6 py-3.5 font-semibold tracking-wider text-right">Actions</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (data of courses; track data; let odd = $odd) {
+            <tr class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors"
+              [class]="odd ? 'bg-gray-50/50' : 'bg-white'">
+              <td class="px-6 py-3.5">
+                <a [routerLink]="['/admin/courses/show/' + data.id]"
+                  class="text-primary font-semibold hover:text-primary-dark no-underline hover:underline">
+                  {{ data.acronym }}
+                </a>
+              </td>
+              <td class="px-6 py-3.5 font-medium text-gray-800">{{ data.name }}</td>
+              @if (courseService.isSuperAdmin()) {
+                <td class="px-6 py-3.5">{{ data.departement.name }}</td>
+              }
+              <td class="px-6 py-3.5 text-center">
+                @if (data.groupe_number == 0) {
+                  <span class="text-blue-600 font-medium">Commun</span>
+                } @else {
+                  {{ data.groupe_number }}
                 }
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Groupe</th>
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Service</th>
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Semestre</th>
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Classe</th>
-                <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Professeur</th>
-                @if (!classe && !setView) {
-                  <th class="text-center px-4 py-3 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Actions</th>
+              </td>
+              <td class="px-6 py-3.5">{{ data.service.name }}</td>
+              <td class="px-6 py-3.5">{{ data.semester.name }}</td>
+              @if (!classe) {
+                <td class="px-6 py-3.5">
+                  <a [routerLink]="['/admin/classes/show/' + data.classe.id]"
+                    class="text-primary font-medium hover:text-primary-dark no-underline hover:underline">
+                    {{ data.classe.name }}
+                  </a>
+                </td>
+              }
+              <td class="px-6 py-3.5">
+                @if (data.professor != null) {
+                  <a [routerLink]="['/admin/professeurs/show/' + data.professor.id]"
+                    class="text-gray-700 hover:text-primary no-underline hover:underline">
+                    {{ data.professor.first_name }} {{ data.professor.last_name }}
+                  </a>
+                } @else {
+                  <span class="text-red-500 text-xs font-medium">Non assigné</span>
                 }
-              </tr>
-            </thead>
-            <tbody>
-              @for (data of courses; track data) {
-                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                  <td class="px-4 py-3 text-sm">
-                    <a
-                      [routerLink]="['/admin/courses/show/' + data.id]"
-                      class="text-primary hover:text-primary-dark hover:underline"
-                    >
-                      {{ data.acronym }}
-                    </a>
-                  </td>
-                  <td class="px-4 py-3 text-sm">{{ data.name }}</td>
-                  @if (courseService.isSuperAdmin()) {
-                    <td class="px-4 py-3 text-sm">{{ data.departement.name }}</td>
-                  }
-                  <td class="px-4 py-3 text-sm">
-                    @if (data.groupe_number == 0) {
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">Commun</span>
-                    } @else {
-                      {{ data.groupe_number }}
-                    }
-                  </td>
-                  <td class="px-4 py-3 text-sm">{{ data.service.name }}</td>
-                  <td class="px-4 py-3 text-sm">{{ data.semester.name }}</td>
-                  <td class="px-4 py-3 text-sm">
-                    <a
-                      [routerLink]="['/admin/classes/show/' + data.classe.id]"
-                      class="text-primary hover:text-primary-dark hover:underline"
-                    >
-                      {{ data.classe.name }}
-                    </a>
-                  </td>
-                  <td class="px-4 py-3 text-sm">
-                    @if (data.professor != null) {
-                      <a
-                        [routerLink]="['/admin/professeurs/show/' + data.professor.id]"
-                        class="text-primary hover:text-primary-dark hover:underline"
-                      >
-                        {{ data.professor.first_name }} {{ data.professor.last_name }}
-                      </a>
-                    } @else {
-                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">Non définie</span>
-                    }
-                  </td>
-                  @if (!classe && !setView) {
-                    <td class="px-4 py-3">
-                      <div class="flex justify-center items-center gap-2">
+              </td>
+              @if (!classe && !setView) {
+                <td class="px-6 py-3.5">
+                  <div class="relative flex justify-end">
+                    <button (click)="toggleDropdown(data.id, $event)"
+                      class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-all duration-200 cursor-pointer border-none bg-transparent">
+                      <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                    </button>
+                    @if (openDropdownId() === data.id) {
+                      <!-- Backdrop -->
+                      <div class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
+                      <!-- Dropdown menu -->
+                      <div class="absolute right-0 top-full mt-1 z-50 w-44 bg-white rounded-xl border border-gray-100 shadow-lg py-1.5 animate-in fade-in">
                         @if (can('voir cour')) {
-                          <a [routerLink]="['show/' + data.id]">
-                            <button
-                              class="w-8 h-8 flex items-center justify-center rounded-full bg-amber-600 hover:bg-amber-700 text-white transition-colors cursor-pointer"
-                            >
-                              <i class="fa-solid fa-eye text-xs"></i>
-                            </button>
+                          <a [routerLink]="['show/' + data.id]" (click)="closeDropdown()"
+                            class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors no-underline cursor-pointer">
+                            <i class="fa-solid fa-eye text-xs text-gray-400 w-4 text-center"></i>
+                            Voir détails
                           </a>
                         }
                         @if (can('modifier cour')) {
-                          <button
-                            (click)="selectedCourse = data; openEditModal()"
-                            class="w-8 h-8 flex items-center justify-center rounded-full bg-primary hover:bg-primary-dark text-white transition-colors cursor-pointer"
-                          >
-                            <i class="fa-solid fa-pen text-xs"></i>
+                          <button (click)="selectedCourse = data; openEditModal(); closeDropdown()"
+                            class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left">
+                            <i class="fa-solid fa-pen text-xs text-gray-400 w-4 text-center"></i>
+                            Modifier
                           </button>
                         }
                         @if (can('supprimer cour')) {
-                          <button
-                            (click)="openDeleteModal(data)"
-                            class="w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-700 text-white transition-colors cursor-pointer"
-                          >
-                            <i class="fa-solid fa-trash text-xs"></i>
+                          <div class="border-t border-gray-100 my-1"></div>
+                          <button (click)="openDeleteModal(data); closeDropdown()"
+                            class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left">
+                            <i class="fa-solid fa-trash text-xs w-4 text-center"></i>
+                            Supprimer
                           </button>
                         }
                       </div>
-                    </td>
-                  }
-                </tr>
+                    }
+                  </div>
+                </td>
               }
-            </tbody>
-          </table>
-        </div>
-        <!-- Pagination -->
-        @if (response && response.total > 0) {
-          <div class="flex items-center justify-between px-4 py-3 border-t border-gray-200">
-            <div class="text-sm text-gray-600">
-              Total: {{ response.total }} cours
-            </div>
-            <div class="flex items-center gap-1">
-              <button
-                (click)="pageChange(currentPage() - 1)"
-                [disabled]="currentPage() === 1"
-                class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
-              >
-                <i class="fa-solid fa-chevron-left text-xs"></i>
-              </button>
-              <span class="px-3 py-1 text-sm text-gray-700">Page {{ currentPage() }}</span>
-              <button
-                (click)="pageChange(currentPage() + 1)"
-                [disabled]="currentPage() * 10 >= response.total"
-                class="w-8 h-8 flex items-center justify-center rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
-              >
-                <i class="fa-solid fa-chevron-right text-xs"></i>
-              </button>
-            </div>
-          </div>
-        }
-      </div>
+            </tr>
+          }
+          <!-- Empty state -->
+          @if (courses?.length === 0 && !isLoad()) {
+            <tr>
+              <td colspan="20" class="px-6 py-16 text-center">
+                <div class="flex flex-col items-center">
+                  <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-book-open text-2xl text-gray-300"></i>
+                  </div>
+                  <p class="text-gray-500 font-medium m-0">Aucun cours trouvé</p>
+                  <p class="text-xs text-gray-400 mt-1 m-0">Ajoutez un cours ou modifiez votre recherche</p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
+
+    <!-- Pagination -->
+    @if (response && response.total > 0) {
+      <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+        <p class="text-sm text-gray-500 m-0">
+          Page <span class="font-semibold text-gray-700">{{ currentPage() }}</span>
+          <span class="mx-1">·</span>
+          <span class="font-semibold text-gray-700">{{ response.total }}</span> cours au total
+        </p>
+        <div class="flex items-center gap-1">
+          <button
+            (click)="pageChange(currentPage() - 1)"
+            [disabled]="currentPage() === 1"
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500
+                   hover:bg-gray-50 hover:text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed
+                   transition-all duration-200 cursor-pointer">
+            <i class="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          <div class="px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-semibold">
+            {{ currentPage() }}
+          </div>
+          <button
+            (click)="pageChange(currentPage() + 1)"
+            [disabled]="currentPage() * 10 >= response.total"
+            class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500
+                   hover:bg-gray-50 hover:text-gray-700 disabled:opacity-40 disabled:cursor-not-allowed
+                   transition-all duration-200 cursor-pointer">
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+    }
   </div>
 </div>
 

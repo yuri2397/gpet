@@ -61,6 +61,16 @@ export class ProfesseurShowComponent implements OnInit {
   deleteCourseRef!: ModalRef
   updateStatusLoad = false
   activeTab = signal(0)
+  openCourseDropdownId = signal<number | null>(null);
+
+  toggleCourseDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openCourseDropdownId.set(this.openCourseDropdownId() === id ? null : id);
+  }
+
+  closeCourseDropdown() {
+    this.openCourseDropdownId.set(null);
+  }
 
   ngOnInit(): void {
     this.addHourForm = this.fb.group({

@@ -35,9 +35,42 @@ export class DepartementListComponent implements OnInit {
   private authStore = inject(AuthStore);
 
   departements = signal<Departement[]>([]);
+  filteredDepartements = signal<Departement[]>([]);
   selectedDepartement!: Departement;
   isLoad = signal(true);
   deleteLoad!: boolean;
+  searchValue = signal('');
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  totalClasses(): number {
+    return this.departements().reduce((sum, d) => sum + (d.classes_count || 0), 0);
+  }
+
+  averageClasses(): number {
+    const deps = this.departements();
+    if (deps.length === 0) return 0;
+    return Math.round(this.totalClasses() / deps.length);
+  }
+
+  searchDepartements() {
+    const sv = this.searchValue().toLowerCase();
+    if (!sv) {
+      this.filteredDepartements.set(this.departements());
+    } else {
+      this.filteredDepartements.set(this.departements().filter(d =>
+        d.name.toLowerCase().includes(sv)
+      ));
+    }
+  }
 
   ngOnInit(): void {
     this.findAll();
@@ -48,6 +81,7 @@ export class DepartementListComponent implements OnInit {
     this.depService.findAll().subscribe({
       next: (departements) => {
         this.departements.set(departements);
+        this.filteredDepartements.set(departements);
         this.isLoad.set(false);
       },
       error: (errors) => {

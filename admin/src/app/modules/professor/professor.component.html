@@ -1,83 +1,152 @@
 @if (!isLoad()) {
-<div class="flex h-screen overflow-hidden">
-  <!-- Sidebar -->
+<div class="flex h-screen overflow-hidden bg-gray-50">
+
+  <!-- ============  SIDEBAR  ============ -->
   <aside
-    class="bg-sidebar flex flex-col shadow-lg transition-all duration-300 z-20 flex-shrink-0"
-    [style.width]="isCollapsed() ? '80px' : '260px'"
+    class="bg-sidebar flex flex-col z-30 flex-shrink-0 transition-all duration-300 ease-in-out"
+    [style.width]="isCollapsed() ? '78px' : '270px'"
   >
-    <!-- Logo -->
-    <div class="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-      <img src="/assets/img/logo.jpg" alt="logo" class="h-10 w-10 rounded-lg flex-shrink-0" />
+    <!-- Logo area -->
+    <div class="h-[72px] flex items-center gap-3 px-5 border-b border-white/[0.06]">
+      <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+        <img src="/assets/img/logo.jpg" alt="logo" class="w-8 h-8 rounded-lg" />
+      </div>
       @if (!isCollapsed()) {
-        <h1 class="text-white text-lg font-bold tracking-tight m-0 whitespace-nowrap">{{ title }}</h1>
+        <div class="overflow-hidden">
+          <h1 class="text-white text-[15px] font-bold tracking-tight m-0 whitespace-nowrap leading-tight">GPET</h1>
+          <p class="text-white/50 text-[10px] m-0 whitespace-nowrap uppercase tracking-widest">UFR SET</p>
+        </div>
       }
     </div>
 
-    <!-- Menu -->
-    <nav class="mt-4 px-2 flex-1 overflow-y-auto">
-      <ul class="list-none m-0 p-0 space-y-1">
+
+    <br>
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto px-3 scrollbar-thin" [class.pt-4]="isCollapsed()">
+      <ul class="list-none m-0 p-0 space-y-0.5">
         @for (item of menuItems(); track item.path) {
           <li
             (click)="routerLink(item)"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-colors"
-            [ngClass]="selected(item)
-              ? 'bg-primary text-white'
-              : 'text-gray-300 hover:bg-white/10 hover:text-white'"
+            class="group flex items-center gap-3 rounded-xl cursor-pointer transition-all duration-200 relative"
+            [class]="selected(item)
+              ? 'bg-primary text-white shadow-lg shadow-primary/20 py-2.5 px-3'
+              : 'text-white/80 hover:text-white hover:bg-white/[0.08] py-2.5 px-3'"
             [title]="isCollapsed() ? item.title : ''"
           >
-            <app-icon [name]="item.icon" class="text-lg flex-shrink-0" />
+            <!-- Active indicator bar -->
+            @if (selected(item)) {
+              <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-white rounded-r-full -ml-3"></div>
+            }
+
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+              [class]="selected(item) ? 'bg-white/20' : 'bg-transparent group-hover:bg-white/[0.06]'"
+            >
+              <app-icon [name]="item.icon" class="text-sm" />
+            </div>
             @if (!isCollapsed()) {
-              <span class="text-sm font-medium whitespace-nowrap">{{ item.title }}</span>
+              <span class="text-[13px] font-medium whitespace-nowrap">{{ item.title }}</span>
             }
           </li>
         }
       </ul>
     </nav>
 
-    <!-- Logout button at bottom -->
-    <div class="p-4 border-t border-white/10">
+    <!-- User info + Logout -->
+    <div class="border-t border-white/[0.06] p-3">
+      <!-- User card -->
+      @if (!isCollapsed()) {
+        <div class="flex items-center gap-3 px-3 py-2.5 mb-1 rounded-xl bg-white/[0.04]">
+          <div class="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-user text-primary-light text-xs"></i>
+          </div>
+          <div class="overflow-hidden flex-1 min-w-0">
+            <p class="text-white text-xs font-medium m-0 truncate">{{ user()?.first_name }} {{ user()?.last_name }}</p>
+            <p class="text-white/50 text-[10px] m-0 truncate">Professeur</p>
+          </div>
+        </div>
+      }
+
+      <!-- Logout -->
       <button
         (click)="logout()"
-        class="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-red-300 hover:bg-red-500/10 hover:text-red-200 transition-colors cursor-pointer"
+        class="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 cursor-pointer bg-transparent border-none"
+        [title]="isCollapsed() ? 'Déconnexion' : ''"
       >
-        <app-icon name="logout" class="text-lg" />
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+          <i class="fa-solid fa-right-from-bracket text-sm"></i>
+        </div>
         @if (!isCollapsed()) {
-          <span class="text-sm font-medium">Deconnexion</span>
+          <span class="text-[13px] font-medium">Déconnexion</span>
         }
       </button>
     </div>
   </aside>
 
-  <!-- Main area -->
+  <!-- ============  MAIN AREA  ============ -->
   <div class="flex-1 flex flex-col min-w-0">
-    <!-- Header -->
-    <header class="bg-white shadow-sm z-10 flex-shrink-0">
-      <div class="flex items-center justify-between h-16 px-6">
-        <button
-          (click)="isCollapsed.set(!isCollapsed())"
-          class="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-        >
-          <i [class]="isCollapsed() ? 'fa-solid fa-bars' : 'fa-solid fa-bars-staggered'" class="text-xl text-gray-600"></i>
-        </button>
-        <span class="text-lg font-semibold text-primary">{{ depTitle() }}</span>
-        <div></div>
+
+    <!-- Navbar -->
+    <header class="h-[72px] bg-white z-10 flex-shrink-0 border-b border-gray-100">
+      <div class="flex items-center justify-between h-full px-6">
+
+        <!-- Left: Toggle + Breadcrumb -->
+        <div class="flex items-center gap-4">
+          <button
+            (click)="isCollapsed.set(!isCollapsed())"
+            class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200 cursor-pointer bg-transparent border-none group"
+          >
+            <i class="fa-solid fa-bars text-gray-400 group-hover:text-gray-600 transition-colors"></i>
+          </button>
+
+          <!-- Breadcrumb -->
+          <div class="hidden sm:flex items-center gap-2 text-sm">
+            <span class="text-gray-400">
+              <i class="fa-solid fa-house text-xs"></i>
+            </span>
+            <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+            <span class="text-gray-500 font-medium">Espace professeur</span>
+          </div>
+        </div>
+
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-3">
+          <!-- Notifications -->
+          <button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200 cursor-pointer bg-transparent border-none group relative">
+            <i class="fa-solid fa-bell text-gray-400 group-hover:text-gray-600 transition-colors text-sm"></i>
+          </button>
+
+          <!-- Separator -->
+          <div class="w-px h-8 bg-gray-100 mx-1"></div>
+
+          <!-- Profile -->
+          <a [routerLink]="['profile']" class="flex items-center gap-3 px-2 py-1.5 rounded-xl hover:bg-gray-50 transition-all duration-200 no-underline cursor-pointer">
+            <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+              <i class="fa-solid fa-user text-white text-xs"></i>
+            </div>
+            <div class="hidden lg:block">
+              <p class="text-sm font-medium text-gray-700 m-0 leading-tight">{{ user()?.first_name }}</p>
+              <p class="text-[10px] text-gray-400 m-0">Professeur</p>
+            </div>
+          </a>
+        </div>
       </div>
     </header>
 
     <!-- Content -->
-    <main class="flex-1 bg-gray-50 overflow-y-auto">
-      <div class="p-6">
+    <main class="flex-1 overflow-y-auto bg-gray-50/80">
+      <div class="p-6 lg:p-8">
         <router-outlet></router-outlet>
       </div>
     </main>
   </div>
 </div>
 } @else {
+<!-- Loading Screen -->
 <div class="h-screen flex flex-col items-center justify-center bg-gray-50">
   <div class="relative">
     <div class="w-16 h-16 border-4 border-primary/20 rounded-full"></div>
     <div class="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
   </div>
-  <p class="mt-6 text-lg text-gray-500 font-medium">Bienvenue sur <span class="font-bold text-primary">GPET</span>...</p>
+  <p class="mt-6 text-lg text-gray-500 font-medium">Chargement de votre espace...</p>
 </div>
 }

@@ -1,299 +1,449 @@
-@if (!dataLoad) {
-  <div>
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-      <!-- TOP -->
-      @if (!dataLoad) {
-        <div class="bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4">
-          <div class="flex justify-between items-center">
-            <div>
-              <button title="Revenir en arriere" class="mx-2 w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer" (click)="onBack()">
-                <app-icon name="arrow_back" />
-              </button>
-            </div>
-            <div>
-              <div class="flex justify-end items-center">
-                <div class="mx-1">
-                  <button title="Modifier les infos" class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
-                    (click)="openEditModal()">
-                    <app-icon name="edit" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+@if (!dataLoad && !errorServer) {
+<div>
+  <!-- Page header -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <button (click)="onBack()"
+          class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all duration-200 cursor-pointer">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 m-0">{{ professeur.first_name }} {{ professeur.last_name }}</h2>
+          <p class="text-sm text-gray-500 mt-0.5 m-0">{{ professeur.registration_number }} · {{ professeur.departement.name }}</p>
         </div>
-      }
-      <div class="p-6">
-        @if (!dataLoad && !errorServer) {
-          <!-- MIDDLE -->
-          <div class="mt-2">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-              <div class="my-1">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                  <img class="w-full mx-auto" [src]="userProfilePath()" />
-                  <!-- Tabs: Personnel / Professionel -->
-                  <div class="p-4">
-                    <div class="border-b border-gray-200 mb-4">
-                      <nav class="flex gap-4">
-                        <button type="button" (click)="activeTab.set(0)" [class]="activeTab() === 0 ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Personnel</button>
-                        <button type="button" (click)="activeTab.set(1)" [class]="activeTab() === 1 ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Professionel</button>
-                      </nav>
-                    </div>
-                    @if (activeTab() === 0) {
-                      <div class="mb-3">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
-                          {{ professeur.registration_number }}
-                        </span>
-                        {{ professeur.first_name }} {{ professeur.last_name }}
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Email</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ professeur.email }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Date de naissance</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lime-50 text-lime-700">
-                            {{ professeur.born_at | date: "d MMMM y" }}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Lieu de naissance</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700">{{ professeur.born_in }}</span>
-                        </div>
-                      </div>
-                    }
-                    @if (activeTab() === 1) {
-                      <div class="flex justify-between items-center">
-                        <div>Departement</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ professeur.departement.name }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-1 justify-between items-center">
-                        <div>Status</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">{{ professeur.status }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Metier</div>
-                        <div>
-                          <span [class]="professeur.job == null ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700' : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-700'">{{ professeur.job ?? 'Non definie' }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Dernier Diplome</div>
-                        <div>
-                          <span [class]="professeur.last_degree == null ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700' : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-50 text-pink-700'">{{ professeur.last_degree ?? 'Non definie' }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-1 justify-between items-center">
-                        <div>En fonction</div>
-                        <div>
-                          <button (click)="setAccountStatus()" [class]="professeur.is_active ? 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700 cursor-pointer' : 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 cursor-pointer'">{{ professeur.is_active ? 'OUI' : 'NON' }}</button>
-                        </div>
-                      </div>
-                    }
-                  </div>
-                </div>
-                @if (updateStatusLoad) {
-                  <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
-                }
-              </div>
-              <div class="my-1">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                  <div class="grid grid-cols-12 gap-4">
-                    <div class="col-span-12">
-                      <div role="alert" class="rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700 flex items-center gap-2 mb-4">
-                        <app-icon name="info" />
-                        Information du compte
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Banque</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lime-50 text-lime-700">{{ professeur.account.bank.name }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Code de la banque</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">{{ professeur.account.bank.code }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>N de compte</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-700">{{ professeur.account.account_number }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>RIP</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">{{ professeur.account.rip }}</span>
-                        </div>
-                      </div>
-                      <div class="flex my-2 justify-between items-center">
-                        <div>Cle</div>
-                        <div>
-                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ professeur.account.key }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white rounded-lg border border-gray-100 p-6 mt-3">
-            <!-- Tabs: Cours / Historique -->
-            <div class="border-b border-gray-200 mb-4">
-              <nav class="flex gap-4">
-                <button type="button" (click)="activeTab.set(10); getCourses()" [class]="activeTab() === 10 || (activeTab() !== 11) ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Informations sur les cours</button>
-                <button type="button" (click)="activeTab.set(11)" [class]="activeTab() === 11 ? 'px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary' : 'px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700'">Historique des cours</button>
-              </nav>
-            </div>
-            @if (activeTab() !== 11) {
-              <div>
-                <div class="mb-2 flex justify-between">
-                  <div>
-                    <button title="Ajoute un cour" (click)="openAddCourseModal()" class="w-9 h-9 inline-flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
-                      <app-icon name="add" />
-                    </button>
-                    Ajouter un cours
-                  </div>
-                  @if (can('voir payement') && isPayable()) {
-                    <div>
-                      <button title="Historique des paiements" (click)="openPayementPage()" class="w-9 h-9 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors cursor-pointer">
-                        <app-icon name="paid" />
-                      </button>
-                      Ajouter un paiement
-                    </div>
-                  }
-                </div>
-
-                <div class="overflow-x-auto">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                      <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Intitule</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Groupe</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Service</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Semestre</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Classe</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">UE</th>
-                        <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                      @for (data of professeur.courses; track data) {
-                        <tr>
-                          <td class="px-4 py-3 text-sm text-center">{{ data.acronym }}</td>
-                          <td class="px-4 py-3 text-sm text-center">{{ data.name }}</td>
-                          <td class="px-4 py-3 text-sm text-center">
-                            @if (data.groupe_number == 0) {
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">COMMUN</span>
-                            } @else {
-                              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">{{ data.groupe_number }}</span>
-                            }
-                          </td>
-                          <td class="px-4 py-3 text-sm text-center">{{ data.service.name }}</td>
-                          <td class="px-4 py-3 text-sm text-center">{{ data.semester.name }}</td>
-                          <td class="px-4 py-3 text-sm text-center">{{ data.classe.name }}</td>
-                          <td class="px-4 py-3 text-sm text-center">{{ data.ec.name }}</td>
-                          <td class="px-4 py-3 text-sm text-center">
-                            <div class="flex justify-center gap-1">
-                              <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer" (click)="openAddHourModal(data)">
-                                <app-icon name="pending_actions" />
-                              </button>
-                              <button title="Vous pouvez marquer le cours comme termine. Il se retrouvera dans l'onglet historique des cours." class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer" (click)="finishCourse(data)">
-                                <app-icon name="check_circle_outline" />
-                              </button>
-                              <button (click)="openDeleteConf(data)" class="w-8 h-8 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors cursor-pointer">
-                                <app-icon name="delete" />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            }
-            @if (activeTab() === 11) {
-              <app-course-history #courseHistoryComponent [professor]="professeur"></app-course-history>
-            }
-          </div>
+      </div>
+      <div class="flex items-center gap-2">
+        @if (can('voir payement') && isPayable()) {
+          <button (click)="openPayementPage()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-all duration-200 cursor-pointer">
+            <i class="fa-solid fa-receipt text-xs text-gray-400"></i>
+            Paiements
+          </button>
         }
-        @if (errorServer) {
-          <app-error-server></app-error-server>
-        }
+        <button (click)="openEditModal()"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+          <i class="fa-solid fa-pen text-xs"></i>
+          Modifier
+        </button>
       </div>
     </div>
   </div>
-} @else {
-  <div>
-    <div class="bg-white rounded-lg p-6 shadow-sm">
-      <div class="animate-pulse space-y-4">
-        <div class="flex items-center gap-4">
-          <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
-          <div class="flex-1 space-y-2">
-            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+
+  <!-- Profile section: 2 columns -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+    <!-- LEFT: Profile card -->
+    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <!-- Avatar -->
+      <div class="bg-gray-50 p-6 flex flex-col items-center border-b border-gray-100">
+        <img [src]="userProfilePath()" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-3" />
+        <h3 class="text-lg font-bold text-gray-900 m-0">{{ professeur.first_name }} {{ professeur.last_name }}</h3>
+        <p class="text-sm text-gray-500 m-0 mt-0.5">{{ professeur.email }}</p>
+        <div class="flex items-center gap-2 mt-3">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold"
+            [class]="professeur.is_active ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'">
+            <i class="fa-solid fa-circle text-[6px] mr-1.5"></i>
+            {{ professeur.is_active ? 'Actif' : 'Inactif' }}
+          </span>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary">
+            {{ professeur.status }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Segment tabs: Personnel / Professionnel -->
+      <div class="p-4">
+        <div class="inline-flex items-center bg-gray-100 rounded-lg p-1 gap-1 w-full mb-4">
+          <button (click)="activeTab.set(0)"
+            class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none"
+            [class]="activeTab() === 0 ? 'bg-white text-gray-900 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-700'">
+            <i class="fa-solid fa-user text-[10px]" [class]="activeTab() === 0 ? 'text-primary' : 'text-gray-400'"></i>
+            Personnel
+          </button>
+          <button (click)="activeTab.set(1)"
+            class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-md transition-all duration-200 cursor-pointer border-none"
+            [class]="activeTab() === 1 ? 'bg-white text-gray-900 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-700'">
+            <i class="fa-solid fa-briefcase text-[10px]" [class]="activeTab() === 1 ? 'text-primary' : 'text-gray-400'"></i>
+            Professionnel
+          </button>
+        </div>
+
+        @if (activeTab() === 0) {
+          <div class="space-y-3">
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Matricule</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.registration_number }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Email</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.email }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Date de naissance</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.born_at | date: "d MMMM y" }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-sm text-gray-500">Lieu de naissance</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.born_in }}</span>
+            </div>
+          </div>
+        }
+
+        @if (activeTab() === 1) {
+          <div class="space-y-3">
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Département</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.departement.name }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Status</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.status }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Métier</span>
+              <span class="text-sm font-medium" [class]="professeur.job ? 'text-gray-800' : 'text-red-500'">{{ professeur.job ?? 'Non défini' }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Dernier diplôme</span>
+              <span class="text-sm font-medium" [class]="professeur.last_degree ? 'text-gray-800' : 'text-red-500'">{{ professeur.last_degree ?? 'Non défini' }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-sm text-gray-500">En fonction</span>
+              <button (click)="setAccountStatus()"
+                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold cursor-pointer border-none transition-colors"
+                [class]="professeur.is_active ? 'bg-success/10 text-success hover:bg-success/20' : 'bg-danger/10 text-danger hover:bg-danger/20'">
+                {{ professeur.is_active ? 'OUI' : 'NON' }}
+              </button>
+            </div>
+          </div>
+          @if (updateStatusLoad) {
+            <div class="h-1 w-full bg-gray-100 overflow-hidden rounded mt-3">
+              <div class="h-full bg-primary animate-pulse w-1/2"></div>
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- RIGHT: Account info + Stats -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- Stats cards row -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <i class="fa-solid fa-book-open text-primary text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Cours</p>
+              <p class="text-xl font-bold text-gray-900 m-0">{{ professeur.courses?.length || 0 }}</p>
+            </div>
           </div>
         </div>
-        <div class="h-4 bg-gray-200 rounded"></div>
-        <div class="h-4 bg-gray-200 rounded w-5/6"></div>
-        <div class="h-4 bg-gray-200 rounded w-4/6"></div>
-        <div class="h-4 bg-gray-200 rounded"></div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+              <i class="fa-solid fa-clock text-success text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Pointages</p>
+              <p class="text-xl font-bold text-gray-900 m-0">{{ professeur.coursesDo?.length || 0 }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
+              <i class="fa-solid fa-building-columns text-warning text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Département</p>
+              <p class="text-sm font-bold text-gray-900 m-0 truncate">{{ professeur.departement.name }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-danger/10 flex items-center justify-center">
+              <i class="fa-solid fa-id-card text-danger text-sm"></i>
+            </div>
+            <div>
+              <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Type</p>
+              <p class="text-sm font-bold text-gray-900 m-0">{{ professeur.professor_type?.name || '—' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bank info card -->
+      <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-landmark text-primary text-sm"></i>
+            <h3 class="text-sm font-bold text-gray-900 m-0">Informations bancaires</h3>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Banque</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.account.bank.name }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">Code banque</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.account.bank.code }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">N° de compte</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.account.account_number }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2 border-b border-gray-50">
+              <span class="text-sm text-gray-500">RIP</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.account.rip }}</span>
+            </div>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-sm text-gray-500">Clé</span>
+              <span class="text-sm font-medium text-gray-800">{{ professeur.account.key }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Courses section -->
+  <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <!-- Segment tabs: Cours / Historique -->
+    <div class="px-6 pt-5 pb-5 border-b border-gray-100">
+      <div class="flex items-center justify-between">
+        <div class="inline-flex items-center bg-gray-100 rounded-xl p-1 gap-1">
+          <button (click)="activeTab.set(10); getCourses()"
+            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 cursor-pointer border-none"
+            [class]="activeTab() === 10 || activeTab() < 10 ? 'bg-white text-gray-900 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-700'">
+            <i class="fa-solid fa-book-open text-xs" [class]="activeTab() === 10 || activeTab() < 10 ? 'text-primary' : 'text-gray-400'"></i>
+            Cours assignés
+          </button>
+          <button (click)="activeTab.set(11)"
+            class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 cursor-pointer border-none"
+            [class]="activeTab() === 11 ? 'bg-white text-gray-900 shadow-sm' : 'bg-transparent text-gray-500 hover:text-gray-700'">
+            <i class="fa-solid fa-clock-rotate-left text-xs" [class]="activeTab() === 11 ? 'text-primary' : 'text-gray-400'"></i>
+            Historique
+          </button>
+        </div>
+        @if (activeTab() !== 11) {
+          <button (click)="openAddCourseModal()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+            <i class="fa-solid fa-plus text-xs"></i>
+            Ajouter un cours
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Tab: Cours assignés -->
+    @if (activeTab() !== 11) {
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-700">
+          <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Code</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Intitulé</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider text-center">Groupe</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Service</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Semestre</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider">Classe</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider">UE</th>
+              <th class="px-6 py-3.5 font-semibold tracking-wider text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (data of professeur.courses; track data; let odd = $odd) {
+              <tr class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors"
+                [class]="odd ? 'bg-gray-50/50' : 'bg-white'">
+                <td class="px-6 py-3.5 font-semibold text-primary">{{ data.acronym }}</td>
+                <td class="px-6 py-3.5 font-medium text-gray-800">{{ data.name }}</td>
+                <td class="px-6 py-3.5 text-center">
+                  @if (data.groupe_number == 0) {
+                    <span class="text-blue-600 font-medium">Commun</span>
+                  } @else {
+                    {{ data.groupe_number }}
+                  }
+                </td>
+                <td class="px-6 py-3.5">{{ data.service.name }}</td>
+                <td class="px-6 py-3.5">{{ data.semester.name }}</td>
+                <td class="px-6 py-3.5">{{ data.classe.name }}</td>
+                <td class="px-6 py-3.5">{{ data.ec.name }}</td>
+                <td class="px-6 py-3.5">
+                  <div class="relative flex justify-end">
+                    <button (click)="toggleCourseDropdown(data.id, $event)"
+                      class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-all duration-200 cursor-pointer border-none bg-transparent">
+                      <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                    </button>
+                    @if (openCourseDropdownId() === data.id) {
+                      <div class="fixed inset-0 z-40" (click)="closeCourseDropdown()"></div>
+                      <div class="absolute right-0 top-full mt-1 z-50 w-48 bg-white rounded-xl border border-gray-100 shadow-lg py-1.5">
+                        <button (click)="openAddHourModal(data); closeCourseDropdown()"
+                          class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left">
+                          <i class="fa-solid fa-clock text-xs text-gray-400 w-4 text-center"></i>
+                          Pointer heures
+                        </button>
+                        <button (click)="finishCourse(data); closeCourseDropdown()"
+                          class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left"
+                          title="Marquer le cours comme terminé">
+                          <i class="fa-solid fa-circle-check text-xs text-gray-400 w-4 text-center"></i>
+                          Terminer le cours
+                        </button>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <button (click)="openDeleteConf(data); closeCourseDropdown()"
+                          class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left">
+                          <i class="fa-solid fa-trash text-xs w-4 text-center"></i>
+                          Retirer le cours
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (professeur.courses?.length === 0) {
+              <tr>
+                <td colspan="20" class="px-6 py-16 text-center">
+                  <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                      <i class="fa-solid fa-book-open text-2xl text-gray-300"></i>
+                    </div>
+                    <p class="text-gray-500 font-medium m-0">Aucun cours assigné</p>
+                    <p class="text-xs text-gray-400 mt-1 m-0">Cliquez sur "Ajouter un cours" pour commencer</p>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- Tab: Historique -->
+    @if (activeTab() === 11) {
+      <div class="p-6">
+        <app-course-history #courseHistoryComponent [professor]="professeur"></app-course-history>
+      </div>
+    }
+  </div>
+</div>
+}
+
+@if (dataLoad && !errorServer) {
+  <!-- Skeleton loading -->
+  <div class="space-y-6">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-gray-200 rounded-xl animate-pulse"></div>
+      <div class="space-y-2">
+        <div class="h-5 bg-gray-200 rounded-lg w-48 animate-pulse"></div>
+        <div class="h-3 bg-gray-200 rounded-lg w-32 animate-pulse"></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-xl border border-gray-100 p-6 animate-pulse">
+        <div class="flex flex-col items-center">
+          <div class="w-24 h-24 bg-gray-200 rounded-full mb-4"></div>
+          <div class="h-5 bg-gray-200 rounded-lg w-40 mb-2"></div>
+          <div class="h-3 bg-gray-200 rounded-lg w-32 mb-3"></div>
+          <div class="space-y-3 w-full mt-4">
+            <div class="h-3 bg-gray-200 rounded-lg w-full"></div>
+            <div class="h-3 bg-gray-200 rounded-lg w-3/4"></div>
+            <div class="h-3 bg-gray-200 rounded-lg w-5/6"></div>
+            <div class="h-3 bg-gray-200 rounded-lg w-2/3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-2 space-y-6">
+        <div class="grid grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl border border-gray-100 p-4 animate-pulse">
+            <div class="h-10 bg-gray-200 rounded-lg"></div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-4 animate-pulse">
+            <div class="h-10 bg-gray-200 rounded-lg"></div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-4 animate-pulse">
+            <div class="h-10 bg-gray-200 rounded-lg"></div>
+          </div>
+          <div class="bg-white rounded-xl border border-gray-100 p-4 animate-pulse">
+            <div class="h-10 bg-gray-200 rounded-lg"></div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-6 animate-pulse">
+          <div class="space-y-3">
+            <div class="h-4 bg-gray-200 rounded-lg w-1/3"></div>
+            <div class="h-3 bg-gray-200 rounded-lg w-full"></div>
+            <div class="h-3 bg-gray-200 rounded-lg w-5/6"></div>
+            <div class="h-3 bg-gray-200 rounded-lg w-4/6"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 }
 
+@if (errorServer) {
+  <app-error-server></app-error-server>
+}
+
 <!-- ADD HOURS MODAL -->
 @if (addHourModalVisible) {
   <div class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="fixed inset-0 bg-black/50" (click)="addHourModalClose()"></div>
-    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4">
-      <div class="px-6 py-4 border-b border-gray-100">
-        <h3 class="text-lg font-semibold">Pointage des heurs de cours</h3>
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-[2px]" (click)="addHourModalClose()"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4">
+      <div class="px-6 py-5 border-b border-gray-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <i class="fa-solid fa-clock text-primary"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 m-0">Pointage des heures</h3>
+            <p class="text-xs text-gray-500 m-0 mt-0.5">{{ selectedCourse.name }}</p>
+          </div>
+        </div>
       </div>
       <div class="p-6">
         <form [formGroup]="addHourForm" (ngSubmit)="submitAddHourForm()">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="hours">Nombre d'heures <span class="text-red-500">*</span></label>
-              <input [(ngModel)]="hours" formControlName="hours" min="1" max="100" name="hours" type="number" id="hours" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Nombre d'heures <span class="text-red-500">*</span></label>
+              <input [(ngModel)]="hours" formControlName="hours" min="1" max="100" type="number"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="cdDate">Date <span class="text-red-500">*</span></label>
-              <input [(ngModel)]="cdDate" formControlName="cdDate" name="cdDate" type="date" id="cdDate" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Date <span class="text-red-500">*</span></label>
+              <input [(ngModel)]="cdDate" formControlName="cdDate" type="date"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" />
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div class="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Professeur</label>
-              <input [disabled]="true" value="{{ professeur.first_name + ' ' + professeur.last_name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Professeur</label>
+              <input [disabled]="true" value="{{ professeur.first_name + ' ' + professeur.last_name }}"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Cours</label>
-              <input [disabled]="true" value="{{ selectedCourse.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Cours</label>
+              <input [disabled]="true" value="{{ selectedCourse.name }}"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
           </div>
         </form>
       </div>
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
-        <button type="button" (click)="addHourModalClose()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">Annuler</button>
-        <button type="button" (click)="addHour()" [disabled]="!addHourForm.valid" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <button type="button" (click)="addHourModalClose()"
+          class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+          Annuler
+        </button>
+        <button type="button" (click)="addHour()" [disabled]="!addHourForm.valid"
+          class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-dark transition-colors cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed">
           @if (addHourLaod) {
-            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
           }
           Valider
         </button>
@@ -305,55 +455,74 @@
 <!-- ADD COURSE MODAL -->
 @if (addCourseModalVisible) {
   <div class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="fixed inset-0 bg-black/50" (click)="addCourseModalVisible = false"></div>
-    <div class="relative bg-white rounded-xl shadow-xl w-full max-w-3xl mx-4">
-      <div class="px-6 py-4 border-b border-gray-100">
-        <h3 class="text-lg font-semibold">Affectation des cours</h3>
+    <div class="fixed inset-0 bg-black/50 backdrop-blur-[2px]" (click)="addCourseModalVisible = false"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl mx-4">
+      <div class="px-6 py-5 border-b border-gray-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <i class="fa-solid fa-book-open text-primary"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 m-0">Affectation de cours</h3>
+            <p class="text-xs text-gray-500 m-0 mt-0.5">{{ fullName() }}</p>
+          </div>
+        </div>
       </div>
       <div class="p-6">
         <form [formGroup]="addCourForm" (ngSubmit)="submitAddCourseForm()">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Cours <span class="text-red-500">*</span></label>
-              <input type="text" placeholder="Rechercher un cours..." (input)="onCourseSearch($any($event.target).value)" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors mb-2" />
-              <select formControlName="course_id" (ngModelChange)="currentModel($event)" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Cours <span class="text-red-500">*</span></label>
+              <input type="text" placeholder="Rechercher un cours..." (input)="onCourseSearch($any($event.target).value)"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none mb-2" />
+              <select formControlName="course_id" (ngModelChange)="currentModel($event)"
+                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
                 @for (o of courses; track o) {
                   <option [ngValue]="o.id"># {{ o.name }} | {{ o.service.name }}</option>
                 }
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Code</label>
-              <input placeholder="Code" [disabled]="true" value="{{ selectedCourse.acronym }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Code</label>
+              <input [disabled]="true" value="{{ selectedCourse.acronym }}"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div class="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Service</label>
-              <input [disabled]="true" value="{{ selectedCourse.service.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Service</label>
+              <input [disabled]="true" value="{{ selectedCourse.service.name }}"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Montant horaire</label>
-              <input placeholder="Montant horaire" [disabled]="true" value="{{ selectedCourse.service.amount }} (FCFA)" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Montant horaire</label>
+              <input [disabled]="true" value="{{ selectedCourse.service.amount }} (FCFA)"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div class="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Semestre</label>
-              <input placeholder="Semestre" [disabled]="true" value="{{ selectedCourse.semester.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">Semestre</label>
+              <input [disabled]="true" value="{{ selectedCourse.semester.name }}"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">UE</label>
-              <input placeholder="UE" [disabled]="true" value="{{ selectedCourse.ec.ue.name }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-gray-50" />
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">UE</label>
+              <input [disabled]="true" value="{{ selectedCourse.ec.ue.name }}"
+                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500" />
             </div>
           </div>
         </form>
       </div>
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-gray-100">
-        <button type="button" (click)="addCourseModalVisible = false" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">Annuler</button>
-        <button type="button" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <button type="button" (click)="addCourseModalVisible = false"
+          class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer">
+          Annuler
+        </button>
+        <button type="button" (click)="addCourseForProfessor()" [disabled]="!addCourForm.valid"
+          class="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary-dark transition-colors cursor-pointer border-none disabled:opacity-50 disabled:cursor-not-allowed">
           @if (addHourLaod) {
-            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
           }
           Valider
         </button>

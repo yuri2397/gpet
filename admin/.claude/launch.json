@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "gpet-admin",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["-c", "export PATH=/opt/homebrew/Cellar/node/24.5.0/bin:$PATH && npx ng serve --port 4250"],
+      "port": 4250
+    }
+  ]
+}

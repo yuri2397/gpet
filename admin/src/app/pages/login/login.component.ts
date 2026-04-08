@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
 
   validateForm!: FormGroup;
   isLoad = false;
+  showPassword = false;
   version: string = '2.0.1';
 
   submitForm(): void {

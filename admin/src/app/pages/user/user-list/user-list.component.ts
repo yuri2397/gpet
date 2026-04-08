@@ -30,6 +30,16 @@ export class UserListComponent implements OnInit {
   deleteUserLoad = signal(false);
   searchValue = signal('');
   listOfDisplayData = signal<User[]>([]);
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
 
   private userService = inject(UserService);
   private modalService = inject(ModalService);

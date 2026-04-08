@@ -33,10 +33,33 @@ export class BatimentListComponent implements OnInit {
   private authStore = inject(AuthStore);
 
   batiments = signal<Batiment[]>([]);
+  filteredBatiments = signal<Batiment[]>([]);
   selectedBatiment!: Batiment;
   isLoad = signal(true);
   deleteRestoRef!: ModalRef;
   deleteLoad!: boolean;
+  searchValue = signal('');
+  openDropdownId = signal<string | null>(null);
+
+  toggleDropdown(id: string, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  searchBatiments() {
+    const sv = this.searchValue().toLowerCase();
+    if (!sv) {
+      this.filteredBatiments.set(this.batiments());
+    } else {
+      this.filteredBatiments.set(this.batiments().filter(b =>
+        b.name.toLowerCase().includes(sv)
+      ));
+    }
+  }
 
   ngOnInit(): void {
     this.findAll();
@@ -47,6 +70,7 @@ export class BatimentListComponent implements OnInit {
     this.batimentService.findAll().subscribe({
       next: (batiments: Batiment[]) => {
         this.batiments.set(batiments);
+        this.filteredBatiments.set(batiments);
         this.isLoad.set(false);
       },
       error: (errors: any) => {

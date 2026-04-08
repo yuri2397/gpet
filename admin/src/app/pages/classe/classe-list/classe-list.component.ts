@@ -1,6 +1,6 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Component, Input, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
@@ -41,6 +41,24 @@ export class ClasseListComponent implements OnInit {
   private notification = inject(NotificationService);
   private modalService = inject(ModalService);
   classeService = inject(ClasseService);
+
+  totalStudents() {
+    if (!this.classes) return 0;
+    return this.classes.reduce((sum, c) => sum + (c.nb_students || 0), 0);
+  }
+
+  averageStudents() {
+    if (!this.classes || this.classes.length === 0) return 0;
+    return Math.round(this.totalStudents() / this.classes.length);
+  }
+
+  largestClass() {
+    if (!this.classes || this.classes.length === 0) return '-';
+    const max = this.classes.reduce((prev, curr) =>
+      (curr.nb_students || 0) > (prev.nb_students || 0) ? curr : prev
+    );
+    return max.name;
+  }
 
   ngOnInit(): void {
     if (this.classes == null) {

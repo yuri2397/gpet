@@ -6,6 +6,7 @@ import { BankService } from 'src/app/services/bank.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { RoleService } from 'src/app/services/role.service';
 import { BankEditComponent } from '../bank-edit/bank-edit.component';
+import { BankCreateComponent } from '../bank-create/bank-create.component';
 import { AuthStore } from 'src/app/shared/auth-store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -37,6 +38,29 @@ export class BankListComponent implements OnInit {
   isLoad = signal(true);
   deleteBankRef!: ModalRef;
   deleteLoad!: boolean;
+  searchValue = signal('');
+  openDropdownId = signal<number | null>(null);
+  filteredBanks = signal<Bank[]>([]);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  searchBanks() {
+    const sv = this.searchValue().toLowerCase();
+    if (!sv) {
+      this.filteredBanks.set(this.banks());
+    } else {
+      this.filteredBanks.set(this.banks().filter(b =>
+        b.name.toLowerCase().includes(sv) || b.code.toLowerCase().includes(sv)
+      ));
+    }
+  }
 
   ngOnInit(): void {
     this.findAll();
@@ -47,6 +71,7 @@ export class BankListComponent implements OnInit {
     this.bankService.findAll().subscribe({
       next: (response) => {
         this.banks.set(response);
+        this.filteredBanks.set(response);
         this.isLoad.set(false);
       },
       error: (errors) => {
@@ -102,6 +127,20 @@ export class BankListComponent implements OnInit {
           5000
         );
       },
+    });
+  }
+
+  openCreateModal() {
+    const modal = this.modalService.open({
+      title: 'Ajouter une banque',
+      component: BankCreateComponent,
+      data: {},
+    });
+
+    modal.afterClose.subscribe((data: Bank | null) => {
+      if (data != null) {
+        this.findAll();
+      }
     });
   }
 

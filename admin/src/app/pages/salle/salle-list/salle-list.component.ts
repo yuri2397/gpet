@@ -45,6 +45,26 @@ export class SalleListComponent implements OnInit {
   searchValue = signal('');
   visible = signal(false);
   listOfDisplayData = signal<Salle[]>([]);
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  totalCapacity(): number {
+    if (!this.salles) return 0;
+    return this.salles.reduce((sum, s) => sum + (parseInt(s.capacity, 10) || 0), 0);
+  }
+
+  averageCapacity(): number {
+    if (!this.salles || this.salles.length === 0) return 0;
+    return Math.round(this.totalCapacity() / this.salles.length);
+  }
 
   ngOnInit(): void {
     if (this.salles == null) {

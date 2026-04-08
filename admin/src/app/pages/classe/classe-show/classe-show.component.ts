@@ -64,6 +64,11 @@ export class ClasseShowComponent implements OnInit {
   private modalService = inject(ModalService);
   private pdfService = inject(PdfService);
 
+  totalSeances() {
+    if (!this.epts) return 0;
+    return this.epts.reduce((sum, e) => sum + (e.data?.length || 0), 0);
+  }
+
   ngOnInit(): void {
     this.days = this.classeService.DAYS;
     this.route.params.subscribe((params) => {

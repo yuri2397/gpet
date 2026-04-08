@@ -60,6 +60,31 @@ export class CourseListComponent implements OnInit {
   searchValue = signal('');
   currentPage = signal(1);
   pageSize = signal(10);
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  countWithProfessor(): number {
+    if (!this.courses) return 0;
+    return this.courses.filter(c => c.professor != null).length;
+  }
+
+  countWithoutProfessor(): number {
+    if (!this.courses) return 0;
+    return this.courses.filter(c => c.professor == null).length;
+  }
+
+  countGroups(): number {
+    if (!this.courses) return 0;
+    return this.courses.reduce((sum, c) => sum + (c.groupe_number || 0), 0);
+  }
 
   ngOnInit(): void {
     this.canDeleteInit();
