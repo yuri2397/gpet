@@ -122,6 +122,7 @@ export class ProfesseurListComponent implements OnInit {
     const modal = this.modalService.open({
       title: 'AJOUTER UN NOUVEAU PROFESSEUR',
       component: ProfesseurCreateComponent,
+      size: 'xl',
       data: {},
     });
 

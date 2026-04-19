@@ -6,7 +6,6 @@ import { Departement } from 'src/app/models/departement';
 import { DepartementService } from 'src/app/services/departement.service';
 import { Course } from 'src/app/models/course';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
 import { CourseListComponent } from 'src/app/pages/course/course-list/course-list.component';
@@ -23,7 +22,6 @@ import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.comp
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  IconComponent,
   LoadComponent,
   ErrorServerComponent,
   CourseListComponent,

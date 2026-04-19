@@ -8,7 +8,6 @@ import { RoleService } from './../../../services/role.service';
 import { Permission } from 'src/app/models/permission';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 import { ModalService } from 'src/app/shared/services/modal.service';
 
@@ -20,7 +19,6 @@ import { ModalService } from 'src/app/shared/services/modal.service';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  IconComponent,
   LoadComponent,
   ],
   templateUrl: './user-show.component.html',
@@ -149,6 +147,10 @@ export class UserShowComponent implements OnInit {
   reset(): void {
     this.searchValue = '';
     this.search();
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 
   search(): void {

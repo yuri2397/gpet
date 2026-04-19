@@ -9,7 +9,6 @@ import { User } from 'src/app/models/user';
 import { NotificationService } from 'src/app/services/notification.service';
 import { LoginResponse } from 'src/app/models/login-response';
 import { UserService } from 'src/app/services/user.service';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +18,6 @@ import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  IconComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],

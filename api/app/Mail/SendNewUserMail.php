@@ -3,40 +3,36 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\User;
-use Illuminate\Support\Facades\URL;
 
 class SendNewUserMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public  $user;
-    public $password;
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct($user, $password)
+
+    public function __construct(
+        public $user,
+        public $password,
+    ) {}
+
+    public function envelope(): Envelope
     {
-        $this->user = $user;
-        $this->password = $password;
+        return new Envelope(
+            subject: 'Nouveau compte sur GPET',
+        );
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function content(): Content
     {
-        return $this->subject("Nouveau compte sur GPET")
-            ->markdown("emails.on-create-user")->with([
-                "user" => $this->user,
-                "password" => $this->password,
-                "url" => env("WEB_APP_HOST")
-            ]);
+        return new Content(
+            markdown: 'emails.on-create-user',
+            with: [
+                'user' => $this->user,
+                'password' => $this->password,
+                'url' => config('app.frontend_url', env('WEB_APP_HOST')),
+            ],
+        );
     }
 }

@@ -9,6 +9,9 @@ import {
   Type,
   effect,
   HostListener,
+  HostBinding,
+  ElementRef,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -17,47 +20,59 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-[2px]" (click)="close.emit()"></div>
+
+    <!-- Modal card -->
     <div
-      class="fixed inset-0 z-[1000] flex items-center justify-center transition-opacity duration-200"
-      [class.opacity-0]="!visible()"
-      [class.opacity-100]="visible()"
-      [class.pointer-events-none]="!visible()"
+      class="relative bg-white rounded-2xl shadow-2xl transform transition-all duration-200 w-full mx-4"
+      [class.scale-95]="!visible()"
+      [class.scale-100]="visible()"
+      [ngClass]="sizeClass()"
     >
-      <!-- Overlay -->
-      <div class="absolute inset-0 bg-black/50" (click)="close.emit()"></div>
-
-      <!-- Modal card -->
-      <div
-        class="relative bg-white rounded-xl shadow-2xl transform transition-all duration-200 w-full mx-4"
-        [class.scale-95]="!visible()"
-        [class.scale-100]="visible()"
-        [ngClass]="sizeClass()"
-      >
-        <!-- Header -->
-        @if (title()) {
-          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-            <h3 class="text-lg font-semibold text-gray-800 m-0">{{ title() }}</h3>
-            @if (showCloseButton()) {
-              <button
-                (click)="close.emit()"
-                class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-              >
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            }
-          </div>
-        }
-
-        <!-- Body -->
-        <div class="max-h-[70vh] overflow-y-auto">
-          <ng-container #contentContainer></ng-container>
+      <!-- Header -->
+      @if (title()) {
+        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+          <h3 class="text-lg font-bold text-gray-900 m-0">{{ title() }}</h3>
+          @if (showCloseButton()) {
+            <button
+              (click)="close.emit()"
+              class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer border-none bg-transparent"
+            >
+              <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+          }
         </div>
+      }
+
+      <!-- Body -->
+      <div class="modal-body max-h-[70vh] overflow-y-auto p-6">
+        <ng-container #contentContainer></ng-container>
       </div>
     </div>
   `,
-  styles: [`:host { display: contents; }`],
+  styles: [`
+    :host {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
+    }
+    :host.modal-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    :host.modal-visible {
+      opacity: 1;
+    }
+  `],
 })
 export class ModalComponent implements AfterViewInit {
+  private el = inject(ElementRef);
+
   @ViewChild('contentContainer', { read: ViewContainerRef })
   contentContainer!: ViewContainerRef;
 
@@ -67,6 +82,9 @@ export class ModalComponent implements AfterViewInit {
   showCloseButton = signal(true);
   contentComponent = signal<Type<any> | null>(null);
   contentInjector = signal<Injector | null>(null);
+
+  @HostBinding('class.modal-hidden') get isHidden() { return !this.visible(); }
+  @HostBinding('class.modal-visible') get isVisible() { return this.visible(); }
 
   close = output<void>();
 

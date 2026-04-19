@@ -18,6 +18,7 @@ import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
 import { ClasseEditComponent } from '../../classe/classe-edit/classe-edit.component';
 import { RouterModule } from '@angular/router';
 import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { SelectSearchComponent } from 'src/app/shared/ui/select-search/select-search.component';
 import { ModalService, ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
 
 @Component({
@@ -29,6 +30,7 @@ import { ModalService, ModalRef, MODAL_DATA } from 'src/app/shared/services/moda
   ReactiveFormsModule,
   RouterModule,
   IconComponent,
+  SelectSearchComponent,
   ],
   templateUrl: './course-create.component.html',
   styleUrls: ['./course-create.component.scss'],
@@ -59,6 +61,14 @@ export class CourseCreateComponent implements OnInit {
   ecs!: EC[];
   ecLoad = false;
   profLoad = false;
+
+  // Search dropdown state
+  profSearchText = '';
+  ecSearchText = '';
+  selectedProfessor: Professor | null = null;
+  selectedEc: EC | null = null;
+  showProfDropdown = false;
+  showEcDropdown = false;
 
   ngOnInit(): void {
     if (this.nzModalData?.classe) {
@@ -109,24 +119,35 @@ export class CourseCreateComponent implements OnInit {
     return amount + ' FCFA';
   }
 
+  professorLabel = (p: Professor) =>
+    `#${p.registration_number} — ${p.first_name} ${p.last_name}`;
+
+  professorSublabel = (p: Professor) => p.email ?? '';
+
   onProSearch(value: string) {
     this.profLoad = true;
+    this.profService.search(value).subscribe({
+      next: (response) => {
+        this.professors = response;
+        this.profLoad = false;
+      },
+      error: (errors) => {
+        this.notification.createNotification(
+          'error',
+          'Erreur',
+          errors.error.message
+        );
+        this.profLoad = false;
+      },
+    });
+  }
 
-    if (value.trim().length > 4) {
-      this.profService.search(value.trim()).subscribe({
-        next: (response) => {
-          this.professors = response;
-          this.profLoad = false;
-        },
-        error: (errors) => {
-          this.notification.createNotification(
-            'error',
-            'Erreur',
-            errors.error.message
-          );
-          this.profLoad = false;
-        },
-      });
+  onProfessorChange(prof: Professor | null) {
+    this.selectedProfessor = prof;
+    this.course.professor_id = (prof?.id ?? null) as any;
+    this.validateForm.patchValue({ professor_id: prof?.id ?? null });
+    if (!prof) {
+      this.professors = [];
     }
   }
 
@@ -144,8 +165,9 @@ export class CourseCreateComponent implements OnInit {
   }
 
   onECSearch(value: string) {
-    this.ecLoad = true;
     if (value.trim().length > 4) {
+      this.ecLoad = true;
+      this.showEcDropdown = true;
       this.ecService.search(value.trim()).subscribe({
         next: (response) => {
           this.ecs = response;
@@ -161,6 +183,22 @@ export class CourseCreateComponent implements OnInit {
         },
       });
     }
+  }
+
+  selectEc(ec: EC) {
+    this.selectedEc = ec;
+    this.course.ec_id = ec.id;
+    this.validateForm.patchValue({ ec_id: ec.id });
+    this.showEcDropdown = false;
+    this.ecSearchText = '';
+  }
+
+  clearEc() {
+    this.selectedEc = null;
+    this.course.ec_id = null as any;
+    this.validateForm.patchValue({ ec_id: null });
+    this.ecSearchText = '';
+    this.ecs = [];
   }
 
   findSelectableList() {

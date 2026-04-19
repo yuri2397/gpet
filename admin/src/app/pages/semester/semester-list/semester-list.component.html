@@ -1,161 +1,199 @@
 @if (!isLoad) {
-    <div class="pb-3">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4">
-                <div class="flex items-center justify-start">
-                    @if (can('creer semestre')) {
-                        <div class="mx-2">
-                            <button (click)="openCreateSemesterModal()" class="w-9 h-9 rounded-full bg-white text-primary flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-                        <h5 class="text-white mx-2 inline-block text-lg font-semibold">AJOUTER UN SEMESTRE</h5>
-                    }
-                </div>
-            </div>
-            <div class="p-6 border border-gray-100 m-2 bg-white rounded-xl">
-                <!-- Tab navigation -->
-                <div class="border-b border-gray-200 mb-4">
-                    <nav class="flex gap-2 -mb-px" role="tablist">
-                        @for (item of semesters; track item; let i = $index) {
-                            <button
-                                class="px-4 py-2 text-sm font-medium border-b-2 transition-colors cursor-pointer"
-                                [class.border-primary]="i === activeSemesterIndex"
-                                [class.text-primary]="i === activeSemesterIndex"
-                                [class.border-transparent]="i !== activeSemesterIndex"
-                                [class.text-gray-500]="i !== activeSemesterIndex"
-                                [class.hover:text-gray-700]="i !== activeSemesterIndex"
-                                (click)="activeSemesterIndex = i">
-                                {{ item.name.toUpperCase() }}
-                            </button>
-                        }
-                    </nav>
-                </div>
-
-                <!-- Tab content -->
-                @for (item of semesters; track item; let i = $index) {
-                    @if (i === activeSemesterIndex) {
-                        @if (can('modifier semestre') || can('supprimer semestre')) {
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6 m-2">
-                                <div class="flex">
-                                    @if (can('modifier semestre')) {
-                                        <div class="mx-2 flex-1">
-                                            <button class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors cursor-pointer" (click)="openEditSemesterModal(item)">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <span class="text-primary mx-2">MODIFIER LE SEMESTRE</span>
-                                        </div>
-                                    }
-                                    @if (can('supprimer semestre')) {
-                                        <div class="mx-2 flex-1">
-                                            <button class="w-9 h-9 rounded-full bg-danger text-white flex items-center justify-center hover:bg-red-700 transition-colors cursor-pointer" (click)="deleteSemester(item)">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                            <span class="text-primary mx-2">SUPPRIMER LE SEMESTRE</span>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        }
-                        <br />
-                        <hr class="border-gray-200 my-4" />
-                        <div class="flex items-center gap-3 my-4">
-                            <button class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors cursor-pointer" (click)="openCreateModal(item)">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <span class="text-sm font-medium">AJOUTER UN NOUVEAU EC</span>
-                        </div>
-
-                        <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">UE</th>
-                                        <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Element Constitutif</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @for (data of item.ues; track data) {
-                                        <tr>
-                                            <td class="px-6 py-4">
-                                                <div class="flex justify-center items-center">
-                                                    <div class="text-center font-semibold m-0">
-                                                        {{ data.code.toLocaleUpperCase() }}
-                                                    </div>
-                                                    <div class="mx-1">
-                                                        <button class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors cursor-pointer text-xs" (click)="openEditUEModal(data)">
-                                                            <i class="fa-solid fa-pen"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-2 py-2">
-                                                @if (data.ecs && data.ecs.length > 0) {
-                                                    <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                                                        <table class="min-w-full divide-y divide-gray-200">
-                                                            <thead class="bg-gray-50">
-                                                                <tr>
-                                                                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase">Nom</th>
-                                                                    <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase" style="width:200px">Volume Horaire</th>
-                                                                    @if (can('modifier semestre') || can('supprimer semestre')) {
-                                                                        <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase" style="width:100px">Actions</th>
-                                                                    }
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody class="bg-white divide-y divide-gray-200">
-                                                                @for (ec of data.ecs; track ec) {
-                                                                    <tr>
-                                                                        <td class="px-4 py-2 text-sm">{{ ec.code }} - {{ ec.name }}</td>
-                                                                        <td class="px-4 py-2 text-sm text-center">{{ ec.vht }}</td>
-                                                                        <td class="px-2 py-2">
-                                                                            <div class="flex justify-center gap-2">
-                                                                                @if (can('modifier semestre')) {
-                                                                                    <button class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors cursor-pointer text-xs" (click)="openEditModal(ec, item)">
-                                                                                        <i class="fa-solid fa-pen"></i>
-                                                                                    </button>
-                                                                                }
-                                                                                @if (can('supprimer semestre')) {
-                                                                                    <button class="w-8 h-8 rounded-full bg-danger text-white flex items-center justify-center hover:bg-red-700 transition-colors cursor-pointer text-xs" (click)="onDeleteOk(ec, item)">
-                                                                                        <i class="fa-solid fa-trash"></i>
-                                                                                    </button>
-                                                                                }
-                                                                            </div>
-                                                                            @if (ec.deleted) {
-                                                                                <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                } @else {
-                                                    <div class="bg-white rounded-xl p-6 border border-gray-100 text-center">
-                                                        <span class="text-sm text-gray-500">Aucun EC associe a cet UE</span>
-                                                        <div class="my-3">
-                                                            <button class="w-8 h-8 rounded-full bg-danger text-white flex items-center justify-center hover:bg-red-700 transition-colors cursor-pointer text-xs" (click)="deleteUEConfirmed(data)">
-                                                                <i class="fa-solid fa-trash"></i>
-                                                            </button>
-                                                            <span class="mx-2 text-sm">SUPPRIMER L'UE</span>
-                                                        </div>
-                                                        @if (data.deleted) {
-                                                            <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
-                                                        }
-                                                    </div>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
+  <!-- Header -->
+  @if (can('creer semestre')) {
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 m-0">Semestres</h2>
+        <p class="text-sm text-gray-500 mt-0.5 m-0">Gestion des UE et EC par semestre</p>
+      </div>
+      <button (click)="openCreateSemesterModal()"
+        class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+        <i class="fa-solid fa-plus text-xs"></i>
+        Ajouter un semestre
+      </button>
     </div>
+  }
+
+  <!-- Tabs + content card -->
+  <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <nav class="flex gap-1 px-4 border-b border-gray-100 overflow-x-auto" role="tablist">
+      @for (item of semesters; track item; let i = $index) {
+        <button
+          class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap"
+          [class.border-primary]="i === activeSemesterIndex"
+          [class.text-primary]="i === activeSemesterIndex"
+          [class.border-transparent]="i !== activeSemesterIndex"
+          [class.text-gray-500]="i !== activeSemesterIndex"
+          [class.hover:text-gray-700]="i !== activeSemesterIndex"
+          (click)="activeSemesterIndex = i">
+          <i class="fa-solid fa-calendar-days text-xs mr-2"></i>{{ item.name.toUpperCase() }}
+        </button>
+      }
+    </nav>
+
+    @for (item of semesters; track item; let i = $index) {
+      @if (i === activeSemesterIndex) {
+        <div class="p-6">
+          <!-- Semester actions -->
+          @if (can('modifier semestre') || can('supprimer semestre')) {
+            <div class="flex flex-wrap items-center gap-2 mb-5">
+              @if (can('modifier semestre')) {
+                <button (click)="openEditSemesterModal(item)"
+                  class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer">
+                  <i class="fa-solid fa-pen text-[11px] text-gray-400"></i>
+                  Modifier le semestre
+                </button>
+              }
+              @if (can('supprimer semestre')) {
+                <button (click)="deleteSemester(item)"
+                  class="inline-flex items-center gap-2 px-3.5 py-2 bg-danger/10 text-danger text-xs font-semibold rounded-lg hover:bg-danger hover:text-white transition-all duration-200 cursor-pointer border-none">
+                  <i class="fa-solid fa-trash text-[11px]"></i>
+                  Supprimer le semestre
+                </button>
+              }
+              <div class="flex-1"></div>
+              <button (click)="openCreateModal(item)"
+                class="inline-flex items-center gap-2 px-3.5 py-2 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+                <i class="fa-solid fa-plus text-[11px]"></i>
+                Nouveau EC
+              </button>
+            </div>
+          } @else {
+            <div class="flex justify-end mb-5">
+              <button (click)="openCreateModal(item)"
+                class="inline-flex items-center gap-2 px-3.5 py-2 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+                <i class="fa-solid fa-plus text-[11px]"></i>
+                Nouveau EC
+              </button>
+            </div>
+          }
+
+          <!-- UE / EC table -->
+          <div class="overflow-x-auto border border-gray-100 rounded-xl">
+            <table class="min-w-full divide-y divide-gray-100">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-48">UE</th>
+                  <th class="px-6 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Élément Constitutif</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                @for (data of item.ues; track data) {
+                  <tr>
+                    <td class="px-6 py-4 align-top">
+                      <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold">
+                          <i class="fa-solid fa-layer-group text-[10px]"></i>
+                          {{ data.code.toLocaleUpperCase() }}
+                        </span>
+                        <button (click)="openEditUEModal(data)" title="Modifier l'UE"
+                          class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-primary transition-colors cursor-pointer border-none bg-transparent">
+                          <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3">
+                      @if (data.ecs && data.ecs.length > 0) {
+                        <div class="overflow-x-auto border border-gray-100 rounded-lg">
+                          <table class="min-w-full divide-y divide-gray-50">
+                            <thead class="bg-gray-50/50">
+                              <tr>
+                                <th class="px-4 py-2 text-left text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Nom</th>
+                                <th class="px-4 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase tracking-wide" style="width:160px">Volume horaire</th>
+                                @if (can('modifier semestre') || can('supprimer semestre')) {
+                                  <th class="px-4 py-2 text-right text-[10px] font-semibold text-gray-500 uppercase tracking-wide" style="width:100px">Actions</th>
+                                }
+                              </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-50">
+                              @for (ec of data.ecs; track ec) {
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                  <td class="px-4 py-2.5 text-sm text-gray-800">
+                                    <span class="font-semibold text-gray-900">#{{ ec.code }}</span>
+                                    <span class="text-gray-600"> — {{ ec.name }}</span>
+                                  </td>
+                                  <td class="px-4 py-2.5 text-sm text-gray-600 text-center">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[11px] font-semibold">
+                                      <i class="fa-solid fa-clock text-[10px] text-gray-400"></i>
+                                      {{ ec.vht }}h
+                                    </span>
+                                  </td>
+                                  @if (can('modifier semestre') || can('supprimer semestre')) {
+                                    <td class="px-4 py-2.5">
+                                      <div class="flex justify-end gap-1">
+                                        @if (can('modifier semestre')) {
+                                          <button (click)="openEditModal(ec, item)" title="Modifier"
+                                            class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer border-none bg-transparent">
+                                            <i class="fa-solid fa-pen text-[10px]"></i>
+                                          </button>
+                                        }
+                                        @if (can('supprimer semestre')) {
+                                          <button (click)="onDeleteOk(ec, item)" title="Supprimer"
+                                            class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:bg-danger/10 hover:text-danger transition-colors cursor-pointer border-none bg-transparent">
+                                            <i class="fa-solid fa-trash text-[10px]"></i>
+                                          </button>
+                                        }
+                                      </div>
+                                      @if (ec.deleted) {
+                                        <div class="h-0.5 w-full bg-gray-100 overflow-hidden rounded mt-1">
+                                          <div class="h-full bg-primary animate-pulse w-1/2"></div>
+                                        </div>
+                                      }
+                                    </td>
+                                  }
+                                </tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      } @else {
+                        <div class="flex items-center justify-between gap-3 p-4 border border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+                          <div class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fa-solid fa-circle-info text-gray-400"></i>
+                            Aucun EC associé à cet UE
+                          </div>
+                          <button (click)="deleteUEConfirmed(data)"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 bg-danger/10 text-danger text-xs font-semibold rounded-lg hover:bg-danger hover:text-white transition-all duration-200 cursor-pointer border-none">
+                            <i class="fa-solid fa-trash text-[10px]"></i>
+                            Supprimer l'UE
+                          </button>
+                        </div>
+                        @if (data.deleted) {
+                          <div class="h-0.5 w-full bg-gray-100 overflow-hidden rounded mt-2">
+                            <div class="h-full bg-primary animate-pulse w-1/2"></div>
+                          </div>
+                        }
+                      }
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="2" class="px-6 py-12 text-center">
+                      <div class="flex flex-col items-center gap-2 text-gray-400">
+                        <i class="fa-solid fa-layer-group text-3xl"></i>
+                        <p class="text-sm m-0">Aucune UE dans ce semestre</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    }
+
+    @if (!semesters || semesters.length === 0) {
+      <div class="px-6 py-12 text-center">
+        <div class="flex flex-col items-center gap-2 text-gray-400">
+          <i class="fa-solid fa-calendar-days text-3xl"></i>
+          <p class="text-sm m-0">Aucun semestre</p>
+        </div>
+      </div>
+    }
+  </div>
 } @else {
-    <app-load></app-load>
+  <app-load></app-load>
 }
 
 <app-can-delete (close)="deleteError = false" [visible]="deleteError" [title]="deleteTitle" [subtitle]="deleteSub" [erreurs]="erreurs"></app-can-delete>

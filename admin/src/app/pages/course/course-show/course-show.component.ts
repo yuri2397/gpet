@@ -9,7 +9,6 @@ import { EChartsOption } from 'echarts';
 import { Classe } from 'src/app/models/classe';
 import { Syllabus } from 'src/app/models/syllabus';
 import { RessourceService } from 'src/app/services/ressource.service';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
 
@@ -21,7 +20,6 @@ import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-serve
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  IconComponent,
   LoadComponent,
   ErrorServerComponent,
   ],

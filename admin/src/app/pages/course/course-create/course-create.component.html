@@ -1,116 +1,122 @@
 <div>
     <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Row 1: Classe + Professeur -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Classe <span class="text-red-500">*</span></label>
-                    <select formControlName="classe_id" [(ngModel)]="course.classe_id"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
-                        <option [ngValue]="null" disabled>Selectionner la classe</option>
-                        @for (o of classes; track o) {
-                            <option [ngValue]="o.id">{{ o.name }}</option>
-                        }
-                    </select>
-                    @if (isLoadClasse) {
-                        <span class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Chargement...</span>
+                <label>Classe <span class="text-red-500">*</span></label>
+                <select formControlName="classe_id" [(ngModel)]="course.classe_id">
+                    <option [ngValue]="null" disabled>Sélectionner la classe</option>
+                    @for (o of classes; track o) {
+                        <option [ngValue]="o.id">{{ o.name }}</option>
                     }
-                </div>
+                </select>
+                @if (isLoadClasse) {
+                    <span class="text-xs text-gray-400 mt-1 block"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Chargement...</span>
+                }
             </div>
+
             <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Professeur</label>
-                    <input type="text" placeholder="Rechercher un professeur" (input)="onProSearch($any($event.target).value)"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
-                    @if (profLoad) {
-                        <span class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Recherche en cours...</span>
-                    }
-                    @if (professors && professors.length > 0) {
-                        <select formControlName="professor_id" [(ngModel)]="course.professor_id"
-                            class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
-                            <option [ngValue]="null">Aucun</option>
-                            @for (o of professors; track o) {
-                                <option [ngValue]="o.id">#{{ o.registration_number }} - {{ o.first_name }} {{ o.last_name }}</option>
-                            }
-                        </select>
-                    }
-                </div>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Service <span class="text-red-500">*</span></label>
-                    <select formControlName="service_id" [(ngModel)]="course.service_id"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
-                        <option [ngValue]="null" disabled>Selectionner le service</option>
-                        @for (o of services; track o) {
-                            <option [ngValue]="o.id">{{ o.name }}</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Montant Horaire</label>
-                    <input disabled [value]="serviceAmout(course.service_id)"
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-500" />
-                </div>
+                <label>Professeur</label>
+                <app-select-search
+                    [items]="professors || []"
+                    [selected]="selectedProfessor"
+                    [loading]="profLoad"
+                    [minChars]="2"
+                    placeholder="Tapez au moins 2 caractères..."
+                    emptyText="Aucun professeur trouvé"
+                    [displayWith]="professorLabel"
+                    [sublabelWith]="professorSublabel"
+                    (search)="onProSearch($event)"
+                    (selectedChange)="onProfessorChange($event)" />
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Row 2: Service + Montant -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">EC <span class="text-red-500">*</span></label>
-                    <input type="text" placeholder="Rechercher un EC" (input)="onECSearch($any($event.target).value)"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                <label>Service <span class="text-red-500">*</span></label>
+                <select formControlName="service_id" [(ngModel)]="course.service_id">
+                    <option [ngValue]="null" disabled>Sélectionner le service</option>
+                    @for (o of services; track o) {
+                        <option [ngValue]="o.id">{{ o.name }}</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label>Montant Horaire</label>
+                <input type="text" disabled [value]="serviceAmout(course.service_id)" />
+            </div>
+        </div>
+
+        <!-- Row 3: EC + Nb groupe + Département -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+            <div>
+                <label>EC <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                        <input type="text"
+                            placeholder="Tapez au moins 5 caractères..."
+                            (input)="onECSearch($any($event.target).value)"
+                            (focus)="showEcDropdown = true"
+                            [(ngModel)]="ecSearchText"
+                            [ngModelOptions]="{standalone: true}"
+                            style="padding-left: 2.25rem;" />
+                    </div>
                     @if (ecLoad) {
-                        <span class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Recherche en cours...</span>
+                        <span class="text-xs text-gray-400 mt-1 block"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Recherche...</span>
                     }
-                    @if (ecs && ecs.length > 0) {
-                        <select formControlName="ec_id" [(ngModel)]="course.ec_id"
-                            class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
-                            <option [ngValue]="null">Selectionner un EC</option>
-                            @for (o of ecs; track o) {
-                                <option [ngValue]="o.id">#{{ o.code }} - {{ o.name }}</option>
+                    @if (selectedEc) {
+                        <div class="mt-1.5 flex items-center justify-between bg-primary/5 border border-primary/20 rounded-xl px-3 py-2">
+                            <span class="text-sm text-gray-800">#{{ selectedEc.code }} - {{ selectedEc.name }}</span>
+                            <button type="button" (click)="clearEc()" class="text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none p-0 ml-2">
+                                <i class="fa-solid fa-xmark text-xs"></i>
+                            </button>
+                        </div>
+                    }
+                    @if (showEcDropdown && ecs && ecs.length > 0 && !selectedEc) {
+                        <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                            @for (e of ecs; track e.id) {
+                                <div (click)="selectEc(e)"
+                                    class="px-3 py-2.5 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors border-b border-gray-50 last:border-b-0">
+                                    <span class="font-medium">#{{ e.code }}</span> - {{ e.name }}
+                                </div>
                             }
-                        </select>
+                        </div>
                     }
-                    <button type="button" (click)="addEc()" class="mt-1 text-sm text-primary hover:text-primary-dark cursor-pointer">
-                        + Nouveau EC
-                    </button>
                 </div>
+                <button type="button" (click)="addEc()" class="mt-1.5 text-sm text-primary hover:text-primary-dark cursor-pointer bg-transparent border-none p-0">
+                    <i class="fa-solid fa-plus text-xs mr-1"></i>Nouveau EC
+                </button>
             </div>
+
             <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de groupe</label>
-                    <input [(ngModel)]="course.groupe_number" formControlName="groupe_number" name="groupe_number" type="number" id="groupe_number"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
-                </div>
+                <label>Nombre de groupe</label>
+                <input type="number" [(ngModel)]="course.groupe_number" formControlName="groupe_number" />
             </div>
+
             <div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Departement <span class="text-red-500">*</span></label>
-                    <select [attr.disabled]="!courseService.isSuperAdmin() ? '' : null" formControlName="departement_id" [(ngModel)]="course.departement_id"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
-                        <option [ngValue]="null" disabled>Selectionner le departement</option>
-                        @for (o of departements; track o) {
-                            <option [ngValue]="o.id">{{ o.name }}</option>
-                        }
-                    </select>
-                </div>
+                <label>Département <span class="text-red-500">*</span></label>
+                <select [attr.disabled]="!courseService.isSuperAdmin() ? '' : null"
+                    formControlName="departement_id" [(ngModel)]="course.departement_id">
+                    <option [ngValue]="null" disabled>Sélectionner le département</option>
+                    @for (o of departements; track o) {
+                        <option [ngValue]="o.id">{{ o.name }}</option>
+                    }
+                </select>
             </div>
         </div>
     </form>
 </div>
 
-<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+<div class="flex justify-end gap-3">
     <button type="button" (click)="destroyModal(null)"
-        class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors cursor-pointer">
+        class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 cursor-pointer">
         Annuler
     </button>
     <button type="button" (click)="save()" [disabled]="!validateForm.valid"
-        class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-primary hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer">
+        class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary hover:bg-primary-dark border-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer">
         @if (isLoad) {
             <i class="fa-solid fa-spinner fa-spin mr-2"></i>
         }

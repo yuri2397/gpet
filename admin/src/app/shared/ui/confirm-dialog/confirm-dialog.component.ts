@@ -8,25 +8,27 @@ import { Observable, isObservable, from } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="p-6 text-center">
-      <div class="mx-auto mb-4 w-14 h-14 rounded-full bg-amber-50 flex items-center justify-center">
-        <i class="fa-solid fa-triangle-exclamation text-warning text-2xl"></i>
+    <div class="text-center">
+      <div class="mx-auto mb-4 w-14 h-14 rounded-2xl flex items-center justify-center"
+        [ngClass]="data.okDanger ? 'bg-danger/10' : 'bg-warning/10'">
+        <i class="text-2xl"
+          [ngClass]="data.okDanger ? 'fa-solid fa-trash text-danger' : 'fa-solid fa-triangle-exclamation text-warning'"></i>
       </div>
       @if (data.content) {
-        <p class="text-gray-600 mb-6">{{ data.content }}</p>
+        <p class="text-gray-600 mb-6 text-sm">{{ data.content }}</p>
       }
-      <div class="flex items-center justify-center gap-3">
+      <div class="flex items-center justify-center gap-3 pt-2">
         <button
           (click)="cancel()"
           [disabled]="loading()"
-          class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50"
+          class="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200 cursor-pointer disabled:opacity-50"
         >
           {{ data.cancelText }}
         </button>
         <button
           (click)="ok()"
           [disabled]="loading()"
-          class="px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50"
+          class="px-5 py-2.5 text-sm font-semibold text-white rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50 border-none"
           [ngClass]="data.okDanger ? 'bg-danger hover:bg-red-600' : 'bg-primary hover:bg-primary-dark'"
         >
           @if (loading()) {

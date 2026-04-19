@@ -8,7 +8,6 @@ import { Professor } from 'src/app/models/professor';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { CoursesDo } from 'src/app/models/coures-do';
 import { NotificationService } from 'src/app/services/notification.service';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
 import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
 
@@ -20,7 +19,6 @@ import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  IconComponent,
   ErrorServerComponent,
   ],
   templateUrl: './payements.component.html',
@@ -87,6 +85,21 @@ export class PayementsComponent implements OnInit {
 
   onBack() {
     this.location.back();
+  }
+
+  paidCount(): number {
+    return (this.professor.coursesDo || []).filter((c) => c.is_paid).length;
+  }
+
+  pendingCount(): number {
+    return (this.professor.coursesDo || []).filter((c) => !c.is_paid).length;
+  }
+
+  totalAmount(): number {
+    return (this.professor.coursesDo || []).reduce(
+      (sum, c) => sum + (Number(c.total_sales) || 0),
+      0
+    );
   }
 
   printPayment(courseDo: CoursesDo) {

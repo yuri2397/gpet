@@ -1,135 +1,163 @@
 @if (!dataLoad) {
-    <div style="width: 100%">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div class="p-6">
-                @if (showHeader()) {
-                    <div class="flex items-center mb-4">
-                        <button (click)="onBack()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer mr-3">
-                            <app-icon name="arrow_back" />
-                        </button>
-                        <h2 class="text-xl font-semibold text-gray-800">{{ departement.name }}</h2>
-                    </div>
-                }
-
-                <!-- Tabs navigation -->
-                <div class="border-b border-gray-200 mb-4">
-                    <nav class="flex gap-4 -mb-px">
-                        <button (click)="activeTab = 0" [class]="activeTab === 0 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
-                            Vue global
-                        </button>
-                        <button (click)="activeTab = 1" [class]="activeTab === 1 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
-                            Classes
-                        </button>
-                        <button (click)="activeTab = 2" [class]="activeTab === 2 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
-                            Professeurs
-                        </button>
-                        <button (click)="activeTab = 3" [class]="activeTab === 3 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
-                            Cours
-                        </button>
-                        <button (click)="activeTab = 4" [class]="activeTab === 4 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'" class="py-2 px-4 border-b-2 font-medium text-sm transition-colors cursor-pointer">
-                            Semestres
-                        </button>
-                    </nav>
-                </div>
-
-                <!-- Tab: Vue global -->
-                @if (activeTab === 0) {
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="my-2">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                <div class="p-6">
-                                    <div class="flex items-center gap-2 text-gray-500 text-sm mb-1">
-                                        <app-icon name="people" />
-                                        <span>Professeurs</span>
-                                    </div>
-                                    <div class="text-2xl font-bold" style="color: #3F8600">{{ departement.professors.length }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="my-2">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                <div class="p-6">
-                                    <div class="flex items-center gap-2 text-gray-500 text-sm mb-1">
-                                        <app-icon name="school" />
-                                        <span>Classes</span>
-                                    </div>
-                                    <div class="text-2xl font-bold" style="color: #41729f">{{ departement.classes.length }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="my-2">
-                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                                <div class="p-6">
-                                    <div class="flex items-center gap-2 text-gray-500 text-sm mb-1">
-                                        <app-icon name="emoji_objects" />
-                                        <span>Cours</span>
-                                    </div>
-                                    <div class="text-2xl font-bold" style="color: #3F8600">{{ departement.courses.length }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex mx-1 my-2 bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4 rounded-xl shadow-sm border border-gray-100">
-                        <h6 class="text-white font-semibold">LISTE DES SALLES POUR LE DEPARTEMENT</h6>
-                    </div>
-                    <div class="p-6">
-                        <app-data-table [data]="listes" [loading]="dataLoad" #salleTable>
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th class="text-center">Numero</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (data of salleTable.pageData(); track data.id) {
-                                    <tr>
-                                        <td>{{ data.name }}</td>
-                                        <td class="text-center">{{ data.number }}</td>
-                                        <td class="p-0">
-                                            <div class="flex justify-center"></div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </app-data-table>
-                    </div>
-                }
-
-                <!-- Tab: Classes -->
-                @if (activeTab === 1) {
-                    <app-classe-list
-                        [departement]="departement"
-                        [classes]="departement.classes"
-                        [setView]="true"
-                    ></app-classe-list>
-                }
-
-                <!-- Tab: Professeurs -->
-                @if (activeTab === 2) {
-                    <app-professeur-list
-                        [professeurs]="departement.professors"
-                        [setView]="true"
-                    ></app-professeur-list>
-                }
-
-                <!-- Tab: Cours -->
-                @if (activeTab === 3) {
-                    <app-course-list
-                        [(courses)]="departement.courses"
-                        [setView]="true"
-                    ></app-course-list>
-                }
-
-                <!-- Tab: Semestres -->
-                @if (activeTab === 4) {
-                    <app-semester-list [departement]="departement"></app-semester-list>
-                }
-            </div>
+  <!-- Page header -->
+  @if (showHeader()) {
+    <div class="mb-6">
+      <div class="flex items-center gap-3">
+        <button (click)="onBack()" title="Revenir en arrière"
+          class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all duration-200 cursor-pointer">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 m-0">{{ departement.name }}</h2>
+          <p class="text-sm text-gray-500 mt-0.5 m-0">Département</p>
         </div>
+      </div>
     </div>
+  }
+
+  <!-- Tabs navigation -->
+  <div class="bg-white rounded-xl border border-gray-100 mb-6 overflow-hidden">
+    <nav class="flex gap-1 px-4 border-b border-gray-100 overflow-x-auto">
+      <button (click)="activeTab = 0"
+        [class]="activeTab === 0 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
+        class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap">
+        <i class="fa-solid fa-chart-pie text-xs mr-2"></i>Vue globale
+      </button>
+      <button (click)="activeTab = 1"
+        [class]="activeTab === 1 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
+        class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap">
+        <i class="fa-solid fa-school text-xs mr-2"></i>Classes
+      </button>
+      <button (click)="activeTab = 2"
+        [class]="activeTab === 2 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
+        class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap">
+        <i class="fa-solid fa-user-tie text-xs mr-2"></i>Professeurs
+      </button>
+      <button (click)="activeTab = 3"
+        [class]="activeTab === 3 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
+        class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap">
+        <i class="fa-solid fa-book text-xs mr-2"></i>Cours
+      </button>
+      <button (click)="activeTab = 4"
+        [class]="activeTab === 4 ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700'"
+        class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap">
+        <i class="fa-solid fa-calendar-days text-xs mr-2"></i>Semestres
+      </button>
+    </nav>
+  </div>
+
+  <!-- Tab: Vue globale -->
+  @if (activeTab === 0) {
+    <!-- Stat cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-white rounded-xl border border-gray-100 p-5">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 m-0">Professeurs</p>
+            <p class="text-2xl font-bold text-gray-900 m-0">{{ departement.professors.length }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 p-5">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-info/10 text-info">
+            <i class="fa-solid fa-school"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 m-0">Classes</p>
+            <p class="text-2xl font-bold text-gray-900 m-0">{{ departement.classes.length }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-gray-100 p-5">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 flex items-center justify-center rounded-xl bg-success/10 text-success">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 m-0">Cours</p>
+            <p class="text-2xl font-bold text-gray-900 m-0">{{ departement.courses.length }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salles card -->
+    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-door-open text-primary text-sm"></i>
+          <h3 class="text-sm font-semibold text-gray-900 m-0">Salles du département</h3>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-600">
+            {{ listes?.length || 0 }}
+          </span>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <app-data-table [data]="listes" [loading]="dataLoad" #salleTable>
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Nom</th>
+              <th class="px-6 py-3 text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Numéro</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-50">
+            @for (data of salleTable.pageData(); track data.id) {
+              <tr class="hover:bg-gray-50/50 transition-colors">
+                <td class="px-6 py-3 text-sm text-gray-800 font-medium">{{ data.name }}</td>
+                <td class="px-6 py-3 text-sm text-gray-600 text-center">{{ data.number }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="2" class="px-6 py-12 text-center">
+                  <div class="flex flex-col items-center gap-2 text-gray-400">
+                    <i class="fa-solid fa-door-closed text-3xl"></i>
+                    <p class="text-sm m-0">Aucune salle</p>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </app-data-table>
+      </div>
+    </div>
+  }
+
+  <!-- Tab: Classes -->
+  @if (activeTab === 1) {
+    <app-classe-list
+      [departement]="departement"
+      [classes]="departement.classes"
+      [setView]="true"
+    ></app-classe-list>
+  }
+
+  <!-- Tab: Professeurs -->
+  @if (activeTab === 2) {
+    <app-professeur-list
+      [professeurs]="departement.professors"
+      [setView]="true"
+    ></app-professeur-list>
+  }
+
+  <!-- Tab: Cours -->
+  @if (activeTab === 3) {
+    <app-course-list
+      [(courses)]="departement.courses"
+      [setView]="true"
+    ></app-course-list>
+  }
+
+  <!-- Tab: Semestres -->
+  @if (activeTab === 4) {
+    <app-semester-list [departement]="departement"></app-semester-list>
+  }
 } @else {
-    <app-load></app-load>
+  <app-load></app-load>
 }
 @if (errorNetWork) {
-    <app-error-server></app-error-server>
+  <app-error-server></app-error-server>
 }

@@ -1,7 +1,6 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { UEService } from 'src/app/services/ue.service';
 import { UeEditComponent } from '../../ue/ue-edit/ue-edit.component';
 import { SemesterCreateComponent } from '../semester-create/semester-create.component';
@@ -30,7 +29,6 @@ import { NotificationService } from 'src/app/services/notification.service';
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  IconComponent,
   LoadComponent,
   CanDeleteComponent,
   ],

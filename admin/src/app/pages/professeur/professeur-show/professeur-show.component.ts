@@ -220,6 +220,7 @@ export class ProfesseurShowComponent implements OnInit {
     const modal = this.modalService.open({
       title: 'Modifier les information',
       component: ProfesseurEditComponent,
+      size: 'xl',
       data: {
         professor: this.profService.clone(this.professeur),
       },
