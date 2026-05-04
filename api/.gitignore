@@ -3,6 +3,9 @@
 /public/storage
 /storage/*.key
 /vendor
+/database/data
+/composer.json.l8.bak
+/composer.lock.l8.bak
 .env
 .env.backup
 .phpunit.result.cache

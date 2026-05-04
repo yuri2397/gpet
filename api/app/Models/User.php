@@ -14,7 +14,7 @@ class User extends Authenticatable
 
     public string $guard_name = 'api';
 
-    protected $fillable = ['*'];
+    protected $guarded = [];
 
     protected $hidden = [
         'password',

@@ -216,6 +216,7 @@ export class ClasseShowComponent implements OnInit {
     const modal = this.modalService.open({
       title: "Ajoute un cour dans l'emploi du temps.",
       component: EptCreateComponent,
+      size: 'lg',
       data: {
         day: panel,
         classe: this.classe,
