@@ -1,116 +1,200 @@
-<div>
-    <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <!-- Row 1: Classe + Professeur -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-                <label>Classe <span class="text-red-500">*</span></label>
-                <select formControlName="classe_id" [(ngModel)]="course.classe_id">
-                    <option [ngValue]="null" disabled>Sélectionner la classe</option>
-                    @for (o of classes; track o) {
-                        <option [ngValue]="o.id">{{ o.name }}</option>
-                    }
-                </select>
-                @if (isLoadClasse) {
-                    <span class="text-xs text-gray-400 mt-1 block"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Chargement...</span>
-                }
-            </div>
+<div class="px-1">
+    <form [formGroup]="validateForm" (ngSubmit)="submitForm()" class="space-y-5">
 
-            <div>
-                <label>Professeur</label>
-                <app-select-search
-                    [items]="professors || []"
-                    [selected]="selectedProfessor"
-                    [loading]="profLoad"
-                    [minChars]="2"
-                    placeholder="Tapez au moins 2 caractères..."
-                    emptyText="Aucun professeur trouvé"
-                    [displayWith]="professorLabel"
-                    [sublabelWith]="professorSublabel"
-                    (search)="onProSearch($event)"
-                    (selectedChange)="onProfessorChange($event)" />
-            </div>
-        </div>
+        <!-- Section: Identification du cours -->
+        <section class="rounded-2xl border border-gray-100 bg-white p-4">
+            <header class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10 text-primary">
+                    <i class="fa-solid fa-book-bookmark text-xs"></i>
+                </span>
+                <h3 class="text-sm font-semibold text-gray-800 m-0">Identification du cours</h3>
+            </header>
 
-        <!-- Row 2: Service + Montant -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-                <label>Service <span class="text-red-500">*</span></label>
-                <select formControlName="service_id" [(ngModel)]="course.service_id">
-                    <option [ngValue]="null" disabled>Sélectionner le service</option>
-                    @for (o of services; track o) {
-                        <option [ngValue]="o.id">{{ o.name }}</option>
-                    }
-                </select>
-            </div>
-
-            <div>
-                <label>Montant Horaire</label>
-                <input type="text" disabled [value]="serviceAmout(course.service_id)" />
-            </div>
-        </div>
-
-        <!-- Row 3: EC + Nb groupe + Département -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
-            <div>
-                <label>EC <span class="text-red-500">*</span></label>
-                <div class="relative">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- EC -->
+                <div class="md:col-span-2">
+                    <label class="flex items-center gap-1 text-sm font-medium text-gray-700 mb-1">
+                        EC <span class="text-red-500">*</span>
+                    </label>
                     <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                        <input type="text"
-                            placeholder="Tapez au moins 5 caractères..."
-                            (input)="onECSearch($any($event.target).value)"
-                            (focus)="showEcDropdown = true"
-                            [(ngModel)]="ecSearchText"
-                            [ngModelOptions]="{standalone: true}"
-                            style="padding-left: 2.25rem;" />
-                    </div>
-                    @if (ecLoad) {
-                        <span class="text-xs text-gray-400 mt-1 block"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Recherche...</span>
-                    }
-                    @if (selectedEc) {
-                        <div class="mt-1.5 flex items-center justify-between bg-primary/5 border border-primary/20 rounded-xl px-3 py-2">
-                            <span class="text-sm text-gray-800">#{{ selectedEc.code }} - {{ selectedEc.name }}</span>
-                            <button type="button" (click)="clearEc()" class="text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none p-0 ml-2">
-                                <i class="fa-solid fa-xmark text-xs"></i>
-                            </button>
-                        </div>
-                    }
-                    @if (showEcDropdown && ecs && ecs.length > 0 && !selectedEc) {
-                        <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                            @for (e of ecs; track e.id) {
-                                <div (click)="selectEc(e)"
-                                    class="px-3 py-2.5 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors border-b border-gray-50 last:border-b-0">
-                                    <span class="font-medium">#{{ e.code }}</span> - {{ e.name }}
+                        @if (selectedEc) {
+                            <div class="flex items-center justify-between bg-primary/5 border border-primary/20 rounded-xl px-3 py-2.5">
+                                <div class="min-w-0 flex-1">
+                                    <div class="text-sm font-medium text-gray-800 truncate">
+                                        #{{ selectedEc.code }} — {{ selectedEc.name }}
+                                    </div>
+                                    @if (selectedEc.ue?.name) {
+                                        <div class="text-xs text-gray-500 truncate mt-0.5">
+                                            UE: {{ selectedEc.ue?.name }}
+                                        </div>
+                                    }
+                                </div>
+                                <button type="button" (click)="clearEc()" title="Retirer"
+                                    class="text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none p-0 ml-2">
+                                    <i class="fa-solid fa-xmark text-xs"></i>
+                                </button>
+                            </div>
+                        } @else {
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                <input type="text"
+                                    placeholder="Rechercher par code ou nom (5+ caractères)"
+                                    (input)="onECSearch($any($event.target).value)"
+                                    (focus)="showEcDropdown = true"
+                                    [(ngModel)]="ecSearchText"
+                                    [ngModelOptions]="{standalone: true}"
+                                    class="w-full pl-10 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none" />
+                                @if (ecLoad) {
+                                    <i class="fa-solid fa-spinner fa-spin absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                }
+                            </div>
+                            @if (showEcDropdown && ecs && ecs.length > 0) {
+                                <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                                    @for (e of ecs; track e.id) {
+                                        <div (click)="selectEc(e)"
+                                            class="px-3 py-2.5 text-sm cursor-pointer transition-colors border-b border-gray-50 last:border-b-0 hover:bg-primary/5 hover:text-primary">
+                                            <div class="font-medium text-gray-800">#{{ e.code }} — {{ e.name }}</div>
+                                            @if (e.ue?.name) {
+                                                <div class="text-xs text-gray-500 mt-0.5">UE: {{ e.ue?.name }}</div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             }
+                        }
+                    </div>
+                    <button type="button" (click)="addEc()"
+                        class="mt-1.5 inline-flex items-center text-xs font-medium text-primary hover:text-primary-dark cursor-pointer bg-transparent border-none p-0">
+                        <i class="fa-solid fa-plus text-xs mr-1"></i>Nouveau EC
+                    </button>
+                </div>
+
+                <!-- Nb groupe -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de groupe</label>
+                    <input type="number" min="1" [(ngModel)]="course.groupe_number" formControlName="groupe_number"
+                        class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Affectation -->
+        <section class="rounded-2xl border border-gray-100 bg-white p-4">
+            <header class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10 text-primary">
+                    <i class="fa-solid fa-sitemap text-xs"></i>
+                </span>
+                <h3 class="text-sm font-semibold text-gray-800 m-0">Affectation</h3>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Classe -->
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+                        <span>Classe <span class="text-red-500">*</span></span>
+                        @if (classeLocked) {
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide">
+                                <i class="fa-solid fa-lock text-[8px]"></i> Auto
+                            </span>
+                        }
+                    </label>
+                    @if (classeLocked) {
+                        <div class="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5">
+                            <span class="text-sm font-medium text-gray-700 truncate">{{ classeName(course.classe_id) }}</span>
+                            <i class="fa-solid fa-lock text-gray-400 text-xs"></i>
                         </div>
+                    } @else {
+                        <select formControlName="classe_id" [(ngModel)]="course.classe_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-white">
+                            <option [ngValue]="null" disabled>Sélectionner la classe</option>
+                            @for (o of classes; track o) {
+                                <option [ngValue]="o.id">{{ o.name }}</option>
+                            }
+                        </select>
+                        @if (isLoadClasse) {
+                            <span class="text-xs text-gray-400 mt-1 inline-flex items-center gap-1">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Chargement...
+                            </span>
+                        }
                     }
                 </div>
-                <button type="button" (click)="addEc()" class="mt-1.5 text-sm text-primary hover:text-primary-dark cursor-pointer bg-transparent border-none p-0">
-                    <i class="fa-solid fa-plus text-xs mr-1"></i>Nouveau EC
-                </button>
-            </div>
 
-            <div>
-                <label>Nombre de groupe</label>
-                <input type="number" [(ngModel)]="course.groupe_number" formControlName="groupe_number" />
-            </div>
-
-            <div>
-                <label>Département <span class="text-red-500">*</span></label>
-                <select [attr.disabled]="!courseService.isSuperAdmin() ? '' : null"
-                    formControlName="departement_id" [(ngModel)]="course.departement_id">
-                    <option [ngValue]="null" disabled>Sélectionner le département</option>
-                    @for (o of departements; track o) {
-                        <option [ngValue]="o.id">{{ o.name }}</option>
+                <!-- Département -->
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+                        <span>Département <span class="text-red-500">*</span></span>
+                        @if (departementLocked) {
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide">
+                                <i class="fa-solid fa-lock text-[8px]"></i> Auto
+                            </span>
+                        }
+                    </label>
+                    @if (departementLocked) {
+                        <div class="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5">
+                            <span class="text-sm font-medium text-gray-700 truncate">{{ departementName(course.departement_id) }}</span>
+                            <i class="fa-solid fa-lock text-gray-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Déduit automatiquement de l'EC sélectionné.</p>
+                    } @else {
+                        <select [attr.disabled]="!courseService.isSuperAdmin() ? '' : null"
+                            formControlName="departement_id" [(ngModel)]="course.departement_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-white disabled:bg-gray-50 disabled:cursor-not-allowed">
+                            <option [ngValue]="null" disabled>Sélectionner le département</option>
+                            @for (o of departements; track o) {
+                                <option [ngValue]="o.id">{{ o.name }}</option>
+                            }
+                        </select>
                     }
-                </select>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Section: Service & enseignant -->
+        <section class="rounded-2xl border border-gray-100 bg-white p-4">
+            <header class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10 text-primary">
+                    <i class="fa-solid fa-user-tie text-xs"></i>
+                </span>
+                <h3 class="text-sm font-semibold text-gray-800 m-0">Service & enseignant</h3>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Service -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Service <span class="text-red-500">*</span></label>
+                    <select formControlName="service_id" [(ngModel)]="course.service_id"
+                        class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-white">
+                        <option [ngValue]="null" disabled>Sélectionner le service</option>
+                        @for (o of services; track o) {
+                            <option [ngValue]="o.id">{{ o.name }}</option>
+                        }
+                    </select>
+                    @if (course.service_id) {
+                        <p class="text-xs text-gray-500 mt-1">Montant horaire : <span class="font-semibold text-gray-700">{{ serviceAmout(course.service_id) }}</span></p>
+                    }
+                </div>
+
+                <!-- Professeur -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Professeur</label>
+                    <app-select-search
+                        [items]="professors || []"
+                        [selected]="selectedProfessor"
+                        [loading]="profLoad"
+                        [minChars]="2"
+                        placeholder="Tapez au moins 2 caractères..."
+                        emptyText="Aucun professeur trouvé"
+                        [displayWith]="professorLabel"
+                        [sublabelWith]="professorSublabel"
+                        (search)="onProSearch($event)"
+                        (selectedChange)="onProfessorChange($event)" />
+                </div>
+            </div>
+        </section>
     </form>
 </div>
 
-<div class="flex justify-end gap-3">
+<div class="flex justify-end gap-3 px-4 py-3 mt-2 border-t border-gray-100">
     <button type="button" (click)="destroyModal(null)"
         class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 cursor-pointer">
         Annuler

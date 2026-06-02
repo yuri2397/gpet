@@ -2,13 +2,26 @@ import { Day } from 'src/app/models/day';
 import { DepartementService } from 'src/app/services/departement.service';
 import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexTitleSubtitle, ApexPlotOptions } from 'ng-apexcharts';
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexPlotOptions,
+  NgApexchartsModule,
+} from 'ng-apexcharts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { StatCardComponent } from 'src/app/shared/ui/stat-card/stat-card.component';
+import { DashboardData } from './dashboard.types';
+import { DashboardStatGridComponent } from './components/stat-grid.component';
+import { CourseStatusChartComponent } from './components/course-status-chart.component';
+import { WeeklyHoursChartComponent } from './components/weekly-hours-chart.component';
+import { TopProfessorsComponent } from './components/top-professors.component';
+import { TopSallesComponent } from './components/top-salles.component';
+import { RecentCoursesComponent } from './components/recent-courses.component';
+import { DepartmentFilterComponent } from './components/department-filter.component';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -23,14 +36,19 @@ export type ChartOptions = {
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-  CommonModule,
-  FormsModule,
-  ReactiveFormsModule,
-  RouterModule,
-  IconComponent,
-  LoadComponent,
-  NgApexchartsModule,
-  StatCardComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    LoadComponent,
+    NgApexchartsModule,
+    DashboardStatGridComponent,
+    CourseStatusChartComponent,
+    WeeklyHoursChartComponent,
+    TopProfessorsComponent,
+    TopSallesComponent,
+    RecentCoursesComponent,
+    DepartmentFilterComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -38,30 +56,30 @@ export type ChartOptions = {
 export class DashboardComponent implements OnInit {
   private departementService = inject(DepartementService);
 
-  dashboard = signal<any>(null);
+  dashboard = signal<DashboardData | null>(null);
   isLoad = signal(true);
   isLoadChart = signal(true);
   days!: Day[];
   selectedDay = signal(0);
   dayLabel = signal('');
-  dashboardLoad = signal(true);
+  selectedDepartement = signal<number | null>(null);
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
 
   ngOnInit(): void {
     this.days = this.departementService.DAYS;
-    this.days.push({
-      id: 7,
-      name: 'Dimanche',
-    });
+    this.days.push({ id: 7, name: 'Dimanche' });
     this.selectedDay.set(new Date().getDay());
-    this.dayLabel.set(new Date()
-      .toLocaleDateString('fr-FR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-      })
-      .toUpperCase());
+    this.dayLabel.set(
+      new Date()
+        .toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })
+        .toUpperCase()
+    );
+    this.getDashboard();
+  }
+
+  onDepartementChange(id: number | null): void {
+    this.selectedDepartement.set(id);
     this.getDashboard();
   }
 
@@ -74,9 +92,18 @@ export class DashboardComponent implements OnInit {
     this.isLoadChart.set(true);
     this.departementService.chartsData(event).subscribe({
       next: (response) => {
-        const events: any[] = Array.isArray(response) ? response : (response?.events ?? response?.salles_libre ?? []);
-        const series = this.buildHeatmapSeries(events);
-        const allFree = series.every((s) => s.data.every((d: any) => d.y === 0));
+        const preformatted = this.extractPreformattedSeries(response);
+        let series: any[];
+        let allFree: boolean;
+
+        if (preformatted) {
+          series = preformatted;
+          allFree = response?.all_free ?? series.every((s) => s.data.every((d: any) => Number(d.y) <= 10));
+        } else {
+          const events: any[] = Array.isArray(response) ? response : (response?.events ?? []);
+          series = this.buildHeatmapSeries(events);
+          allFree = series.every((s) => s.data.every((d: any) => d.y === 0));
+        }
 
         this.chartOptions = {
           series,
@@ -86,9 +113,7 @@ export class DashboardComponent implements OnInit {
             toolbar: { show: false },
             fontFamily: 'Poppins, sans-serif',
           },
-          dataLabels: {
-            enabled: false,
-          },
+          dataLabels: { enabled: false },
           colors: [allFree ? '#e5e7eb' : '#41729f'],
           plotOptions: {
             heatmap: {
@@ -97,19 +122,15 @@ export class DashboardComponent implements OnInit {
               shadeIntensity: 0.5,
               colorScale: {
                 ranges: [
-                  { from: 0, to: 0, color: '#f3f4f6', name: 'Libre' },
-                  { from: 1, to: 10, color: '#41729f', name: 'Occupée' },
+                  { from: 0, to: 10, color: '#f3f4f6', name: 'Libre' },
+                  { from: 11, to: 100, color: '#41729f', name: 'Occupée' },
                 ],
               },
             },
           },
           title: {
             text: `Disponibilité des salles | ${this.dayLabel()}`,
-            style: {
-              fontFamily: 'Poppins',
-              fontSize: '16px',
-              color: '#111827',
-            },
+            style: { fontFamily: 'Poppins', fontSize: '16px', color: '#111827' },
           },
         };
         this.isLoadChart.set(false);
@@ -126,6 +147,17 @@ export class DashboardComponent implements OnInit {
         this.isLoadChart.set(false);
       },
     });
+  }
+
+  private extractPreformattedSeries(response: any): any[] | null {
+    const candidate = response?.salles_libre ?? response?.series;
+    if (!Array.isArray(candidate) || candidate.length === 0) return null;
+    const first = candidate[0];
+    if (!first || typeof first !== 'object') return null;
+    if (!('name' in first) || !Array.isArray(first.data)) return null;
+    const firstPoint = first.data[0];
+    if (!firstPoint || typeof firstPoint !== 'object' || !('x' in firstPoint) || !('y' in firstPoint)) return null;
+    return candidate;
   }
 
   private buildHeatmapSeries(events: any[]): any[] {
@@ -175,7 +207,7 @@ export class DashboardComponent implements OnInit {
 
   getDashboard() {
     this.isLoad.set(true);
-    this.departementService.dashboard().subscribe({
+    this.departementService.dashboard(this.selectedDepartement()).subscribe({
       next: (response) => {
         this.dashboard.set(response);
         this.isLoad.set(false);
@@ -183,6 +215,7 @@ export class DashboardComponent implements OnInit {
       },
       error: (errors) => {
         console.log(errors);
+        this.isLoad.set(false);
       },
     });
   }

@@ -66,6 +66,7 @@ export class EptService extends BaseHttp {
         course_id: item.course.id,
         day_id: item.day.id,
         group: item.group ?? 1,
+        professor_id: item.professor_id ?? null,
       },
       {
         headers: this.authorizationHeaders,
@@ -86,6 +87,7 @@ export class EptService extends BaseHttp {
         day_id: item.day.id,
         ept_id: item.id,
         group: item.group ?? 1,
+        professor_id: item.professor_id ?? null,
       },
       {
         headers: this.authorizationHeaders,

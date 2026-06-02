@@ -61,6 +61,8 @@ export class CourseCreateComponent implements OnInit {
   ecs!: EC[];
   ecLoad = false;
   profLoad = false;
+  classeLocked = false;
+  departementLocked = false;
 
   // Search dropdown state
   profSearchText = '';
@@ -75,7 +77,7 @@ export class CourseCreateComponent implements OnInit {
       this.classe = this.nzModalData.classe;
     }
     this.findSelectableList();
-      this.findAllClasses();
+    this.findAllClasses();
     this.validateForm = this.fb.group({
       groupe_number: [0, [Validators.required]],
       classe_id: [null, [Validators.required]],
@@ -84,6 +86,24 @@ export class CourseCreateComponent implements OnInit {
       departement_id: [null, [Validators.required]],
       professor_id: [null, null],
     });
+
+    if (this.classe?.id) {
+      this.course.classe_id = this.classe.id;
+      this.validateForm.patchValue({ classe_id: this.classe.id });
+      this.classeLocked = true;
+    }
+  }
+
+  departementName(id: number | null | undefined): string {
+    if (!id || !this.departements) return '';
+    return this.departements.find((d) => d.id == id)?.name ?? '';
+  }
+
+  classeName(id: number | null | undefined): string {
+    if (!id) return '';
+    if (this.classe?.id == id) return this.classe.name;
+    if (!this.classes) return '';
+    return this.classes.find((c) => c.id == id)?.name ?? '';
   }
 
   findAllClasses() {
@@ -191,6 +211,13 @@ export class CourseCreateComponent implements OnInit {
     this.validateForm.patchValue({ ec_id: ec.id });
     this.showEcDropdown = false;
     this.ecSearchText = '';
+
+    const departementId = ec.ue?.departement_id ?? ec.ue?.departement?.id;
+    if (departementId) {
+      this.course.departement_id = departementId;
+      this.validateForm.patchValue({ departement_id: departementId });
+      this.departementLocked = true;
+    }
   }
 
   clearEc() {
@@ -199,6 +226,7 @@ export class CourseCreateComponent implements OnInit {
     this.validateForm.patchValue({ ec_id: null });
     this.ecSearchText = '';
     this.ecs = [];
+    this.departementLocked = false;
   }
 
   findSelectableList() {

@@ -22,8 +22,9 @@ export class DepartementService extends BaseHttp {
     });
   }
 
-  dashboard() {
-    return this.http.get<any>(this.endPointWithSlash + 'dashboard', {
+  dashboard(departementId: number | null = null) {
+    const params = departementId === null ? '' : `?departement=${departementId}`;
+    return this.http.get<any>(this.endPointWithSlash + 'dashboard' + params, {
       headers: this.authorizationHeaders,
     });
   }

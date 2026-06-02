@@ -1,16 +1,27 @@
-@if (!isLoad()) {
+@if (!isLoad() && dashboard(); as data) {
 <div>
-  <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
-
-  <!-- Stats Grid -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-    <app-stat-card label="Professeurs" [value]="dashboard().professors" icon="groups" link="/admin/professeurs" color="orange" />
-    <app-stat-card label="Classes" [value]="dashboard().classes" icon="ballot" link="/admin/classes" color="green" />
-    <app-stat-card label="Salles" [value]="dashboard().salles" icon="meeting_room" link="/admin/salles" color="red" />
-    <app-stat-card label="Cours" [value]="dashboard().courses" icon="history_edu" link="/admin/courses" color="blue" />
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 m-0">Dashboard</h2>
+    <app-dashboard-department-filter (departementChange)="onDepartementChange($event)" />
   </div>
 
-  <!-- Chart -->
+  <app-dashboard-stat-grid [totals]="data.totals" [occupancyRate]="data.salle_occupancy_rate" />
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+    <div class="lg:col-span-2">
+      <app-dashboard-weekly-hours-chart [data]="data.weekly_hours" />
+    </div>
+    <div>
+      <app-dashboard-course-status-chart [data]="data.courses_by_status" />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+    <app-dashboard-top-professors [data]="data.top_professors" />
+    <app-dashboard-top-salles [data]="data.top_salles" />
+    <app-dashboard-recent-courses [data]="data.recent_courses" />
+  </div>
+
   <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
     <div class="mb-4">
       <select (ngModelChange)="updateChart($event)" [(ngModel)]="selectedDay"
@@ -22,7 +33,7 @@
     </div>
     @if (!isLoadChart()) {
       <div id="chart">
-        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!" [colors]="chartOptions.colors!"></apx-chart>
+        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!" [colors]="chartOptions.colors!" [plotOptions]="chartOptions.plotOptions!"></apx-chart>
       </div>
     } @else {
       <app-load></app-load>
