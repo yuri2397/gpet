@@ -1,29 +1,35 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { Course } from 'src/app/models/course';
 import { Syllabus } from 'src/app/models/syllabus';
 import { SyllabusService } from './../../../services/syllabus.service';
-import { Location } from '@angular/common';
-
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-syllabus-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './syllabus-create.component.html',
-  styleUrls: ['./syllabus-create.component.scss']
+  styleUrls: ['./syllabus-create.component.scss'],
 })
 export class SyllabusCreateComponent implements OnInit {
   isLoad = false;
   syllabus = new Syllabus();
   @Input() course!: Course;
 
-  constructor(
-    private syllabusService: SyllabusService,
-    private notification : NzNotificationService,
-    private route: ActivatedRoute,
-    private location: Location,
-    ) { }
+  private syllabusService = inject(SyllabusService);
+  private notification = inject(NotificationService);
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -32,7 +38,7 @@ export class SyllabusCreateComponent implements OnInit {
   }
 
   name = 'Angular 6';
-  config: AngularEditorConfig = {
+  config: any = {
     editable: true,
     spellcheck: true,
     height: '50rem',
@@ -76,7 +82,8 @@ export class SyllabusCreateComponent implements OnInit {
     }, 10000)
     this.syllabusService.create(this.syllabus).subscribe({
       next: (response) => {
-        this.notification.success(
+        this.notification.createNotification(
+          'success',
           'Notification',
           'Syllabus ajouté avec succès.'
         );
@@ -84,11 +91,13 @@ export class SyllabusCreateComponent implements OnInit {
       error: (errors) => {
         this.isLoad = false;
         if (errors.status != 403)
-          this.notification.error('Notification', errors.error.message);
+          this.notification.createNotification(
+            'error',
+            'Notification',
+            errors.error.message
+          );
       },
     });
     this.onBack();
   }
-
-
 }

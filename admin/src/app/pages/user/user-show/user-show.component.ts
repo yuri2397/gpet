@@ -1,18 +1,26 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { UserEditComponent } from './../user-edit/user-edit.component';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { AddPermissionToUserComponent } from './../../roles/add-permission-to-user/add-permission-to-user.component';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { RoleService } from './../../../services/role.service';
 import { Permission } from 'src/app/models/permission';
 import { UserService } from 'src/app/services/user.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { Location } from '@angular/common';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { ModalService } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-user-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  LoadComponent,
+  ],
   templateUrl: './user-show.component.html',
   styleUrls: ['./user-show.component.scss'],
 })
@@ -24,15 +32,12 @@ export class UserShowComponent implements OnInit {
   visible = false;
   listOfDisplayData!: Permission[];
   deleteUserLoad: boolean = false;
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private roleService: RoleService,
-    private message: NzMessageService,
-    private modal: NzModalService,
-    private location: Location,
-    private notification: NzNotificationService
-  ) {}
+
+  private route = inject(ActivatedRoute);
+  private userService = inject(UserService);
+  private roleService = inject(RoleService);
+  private modalService = inject(ModalService);
+  private location = inject(Location);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -47,7 +52,7 @@ export class UserShowComponent implements OnInit {
     this.userService.findSelectedUser(user).subscribe({
       next: (response: User) => {
         this.user = response;
-        
+
         this.listOfDisplayData = this.user.permissions;
         this.userProfilePath();
         this.isLoad = false;
@@ -57,34 +62,38 @@ export class UserShowComponent implements OnInit {
   }
 
   removePermission(permission: Permission) {
-    this.currenPermission = permission;
-    this.roleService.removePermissionForUser(permission, this.user).subscribe({
-      next: (response) => {
-        this.user.permissions.splice(
-          this.user.permissions.indexOf(permission),
-          1
-        );
-        this.reset();
-        this.user.permissions = [...this.user.permissions];
-        this.listOfDisplayData = this.user.permissions;
-        this.message.success('Permission supprimée avec succès.');
-      },
-      error: (errors) => {
-        this.message.error(errors.error.message);
+    this.modalService.confirm({
+      title: 'Confirmation',
+      content: 'Confirmer votre action.',
+      okText: 'Confirmer',
+      okDanger: true,
+      onOk: () => {
+        this.currenPermission = permission;
+        this.roleService.removePermissionForUser(permission, this.user).subscribe({
+          next: (response) => {
+            this.user.permissions.splice(
+              this.user.permissions.indexOf(permission),
+              1
+            );
+            this.reset();
+            this.user.permissions = [...this.user.permissions];
+            this.listOfDisplayData = this.user.permissions;
+          },
+          error: (errors) => {
+          },
+        });
       },
     });
   }
 
   openEditUserModal() {
-    let modal = this.modal.create({
-      nzTitle: 'Modifier les informations',
-      nzContent: UserEditComponent,
-      nzComponentParams: {
+    let modal = this.modalService.open({
+      title: 'Modifier les informations',
+      component: UserEditComponent,
+      data: {
         user: this.userService.clone(this.user),
       },
-      nzWidth: '50%',
-      nzClosable: false,
-      nzMaskClosable: false,
+      size: 'lg',
     });
     modal.afterClose.subscribe((e: User | null) => {
       if (e) {
@@ -101,38 +110,33 @@ export class UserShowComponent implements OnInit {
   }
 
   deleteUser() {
-    this.deleteUserLoad = true;
-    
-    this.userService.delete(this.user).subscribe({
-      next: (response) => {
-        this.notification.success(
-          'Notification',
-          'Utilisateur supprimer avec succès',
-          {
-            nzDuration: 5000,
-          }
-        );
-        this.location.back();
-      },
-      error: (errors) => {
-        this.notification.error('Notification', errors.error.message, {
-          nzDuration: 5000,
+    this.modalService.confirm({
+      title: 'Confirmation',
+      content: 'Confirmer votre action.',
+      okText: 'Confirmer',
+      okDanger: true,
+      onOk: () => {
+        this.deleteUserLoad = true;
+        this.userService.delete(this.user).subscribe({
+          next: (response) => {
+            this.location.back();
+          },
+          error: (errors) => {
+            this.deleteUserLoad = false;
+          },
         });
-        this.deleteUserLoad = false;
       },
     });
   }
 
   openAddPermissionModal() {
-    let m = this.modal.create({
-      nzTitle: 'AJOUTER DE NOUVELLES PERMISSIONS',
-      nzContent: AddPermissionToUserComponent,
-      nzComponentParams: {
+    let m = this.modalService.open({
+      title: 'AJOUTER DE NOUVELLES PERMISSIONS',
+      component: AddPermissionToUserComponent,
+      data: {
         user: this.user,
       },
-      nzClosable: false,
-      nzMaskClosable: false,
-      nzWidth: '60%',
+      size: 'lg',
     });
 
     m.afterClose.subscribe((data) => {
@@ -143,6 +147,10 @@ export class UserShowComponent implements OnInit {
   reset(): void {
     this.searchValue = '';
     this.search();
+  }
+
+  onBack(): void {
+    this.location.back();
   }
 
   search(): void {

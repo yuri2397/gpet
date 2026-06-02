@@ -1,20 +1,16 @@
 <div>
-  <nz-form [nzLayout]="'horizontal'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="6" nzRequired nzFor="name">Nom banque</nz-form-label>
-      <nz-form-control [nzSm]="25" [nzXs]="24" nzErrorTip="Le nom est requi">
-        <input [(ngModel)]="bank.name" formControlName="name" nz-input name="name" type="text" id="name" />
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="6" nzRequired nzFor="code">Code</nz-form-label>
-      <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le code est requi">
-        <input [(ngModel)]="bank.code" formControlName="code" nz-input name="code" type="text" id="code" />
-      </nz-form-control>
-    </nz-form-item>
-  </nz-form>
+  <form [formGroup]="validateForm">
+    <div class="mb-4">
+      <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nom banque <span class="text-red-500">*</span></label>
+      <input [(ngModel)]="bank.name" formControlName="name" name="name" type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+    </div>
+    <div class="mb-4">
+      <label for="code" class="block text-sm font-medium text-gray-700 mb-1">Code <span class="text-red-500">*</span></label>
+      <input [(ngModel)]="bank.code" formControlName="code" name="code" type="text" id="code" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+    </div>
+  </form>
 </div>
-<div *nzModalFooter>
-  <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-  <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Modifier</button>
+<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+  <button type="button" (click)="destroyModal(null)" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Annuler</button>
+  <button type="button" (click)="save()" [disabled]="!validateForm.valid || isLoad" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">@if (isLoad) {<i class="fa-solid fa-spinner fa-spin mr-2"></i>}Modifier</button>
 </div>

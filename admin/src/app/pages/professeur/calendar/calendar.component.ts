@@ -1,23 +1,33 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { EptRow } from 'src/app/models/ept-row';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { EptService } from 'src/app/services/ept.service';
 import { UserService } from 'src/app/services/user.service';
-import { Component, OnInit } from '@angular/core';
 import { Day } from 'src/app/models/day';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-calendar',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
+  private userService = inject(UserService);
+  private profeService = inject(ProfessorService);
+
   days!: Day[];
   dataLoad = true;
   data!: EptRow[];
-  constructor(
-    private userService: UserService,
-    private profeService: ProfessorService
-  ) { }
 
   ngOnInit(): void {
     this.days = this.userService.DAYS
@@ -34,7 +44,7 @@ export class CalendarComponent implements OnInit {
       },
       error: errors => {
         console.log(errors);
-        
+
       }
     })
   }

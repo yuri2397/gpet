@@ -1,24 +1,24 @@
+import { FormsModule, ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ModalService } from 'src/app/shared/services/modal.service';
+import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Role } from './../../models/role';
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
-import {
-  FormBuilder,
-  Validators,
-  FormGroup,
-  FormControl,
-  AbstractControl,
-  ValidationErrors,
-} from '@angular/forms';
 import { NotificationService } from 'src/app/services/notification.service';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { Router } from '@angular/router';
 import { LoginResponse } from 'src/app/models/login-response';
 import { UserService } from 'src/app/services/user.service';
 
-
 @Component({
   selector: 'app-profile',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
@@ -29,14 +29,13 @@ export class ProfileComponent implements OnInit {
   isLoad = false;
   file: any;
   avatarLoad = true;
-  constructor(
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private router: Router,
-    private userService: UserService,
-  ) {}
+
+  private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  private router = inject(Router);
+  private userService = inject(UserService);
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
@@ -135,20 +134,13 @@ export class ProfileComponent implements OnInit {
   }
 
   openModal() {
-     this.modalService.confirm({
-      nzTitle: '<span>Confirmez votre deconnexion</span>',
-      nzOkText: 'Valider',
-      nzOkType: 'primary',
-      nzOkDanger: false,
-      nzOnOk: () =>this.logout(),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.isLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzCentered : true
-
+    this.modalService.confirm({
+      title: 'Confirmez votre deconnexion',
+      okText: 'Valider',
+      okDanger: false,
+      onOk: () => this.logout(),
+      cancelText: 'Annuler',
     });
-
   }
 
   logout(){

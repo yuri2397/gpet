@@ -1,19 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ResultComponent } from '../result/result.component';
 
 @Component({
   selector: 'app-any-permission',
+  standalone: true,
+  imports: [CommonModule, ResultComponent],
   templateUrl: './any-permission.component.html',
-  styleUrls: ['./any-permission.component.scss']
+  styleUrls: ['./any-permission.component.scss'],
 })
-export class AnyPermissionComponent implements OnInit {
-
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-  }
-
-  home(){
-    this.router.navigate(['/']);
-  }
-}
+export class AnyPermissionComponent {}

@@ -1,26 +1,38 @@
-import { Location } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { ChartComponent } from 'ng-apexcharts';
 import { Course } from 'src/app/models/course';
-import { ChartOptions } from 'src/app/modules/admin/admin.component';
 import { CourseService } from 'src/app/services/course.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-course-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  LoadComponent,
+  NgApexchartsModule,
+  ],
   templateUrl: './course-show.component.html',
   styleUrls: ['./course-show.component.scss'],
 })
 export class CourseShowComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private courseService = inject(CourseService);
+  private location = inject(Location);
+
   course = new Course();
   isLoad: boolean = true;
   @ViewChild('chart') chart!: ChartComponent;
   public chartOptions!: any;
-  constructor(
-    private route: ActivatedRoute,
-    private courseService: CourseService,
-    private location: Location
-  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((param) => {

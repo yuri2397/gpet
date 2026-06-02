@@ -1,84 +1,161 @@
-<div>
-    <div class="card shadow raduis-sm">
-        <!-- TOP -->
-        <div *ngIf="!dataLoad" class="card-header bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <button nz-tooltip [nzTooltipTitle]="'Revenir en arrièr'" class="mx-2" (click)="onBack()"
-                        mat-mini-fab color="default">
-                        <mat-icon>arrow_back</mat-icon>
-                    </button>
-                </div>
-                <div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <div class="mx-1">
-                            <button (click)="printAll()" nz-tooltip [nzTooltipTitle]="'Imprimer tous les états'"
-                                mat-mini-fab color="basic">
-                                <mat-icon>print</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+@if (!dataLoad && !errorServer) {
+  <!-- Page header -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <button (click)="onBack()" title="Revenir en arrière"
+          class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all duration-200 cursor-pointer">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 m-0">Paiements</h2>
+          <p class="text-sm text-gray-500 mt-0.5 m-0">
+            @if (professor.first_name) {
+              {{ professor.first_name }} {{ professor.last_name }} · {{ professor.registration_number }}
+            } @else {
+              État des paiements du professeur
+            }
+          </p>
         </div>
-        <!-- LIST OF PAYMENTS -->
-        <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="dataLoad" nzShowPagination [nzPageSize]="5" #courseDoTable
-                [nzData]="professor.coursesDo">
-                <thead>
-                    <tr>
-                        <th> Code </th>
-                        <th><b>Cours</b></th>
-                        <th><b>Classe</b></th>
-                        <th><b>Service</b></th>
-                        <th><b>Nombre d'heures</b></th>
-                        <th><b>Montant</b></th>
-                        <th><b>Status</b></th>
-                        <th><b>Imprimer</b></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of courseDoTable.data">
-                        <td>
-                            <a [routerLink]="['/admin/courses/show/' + data.course.id]">
-                                {{ data.course.acronym }}
-                            </a>
-                        </td>
-                        <td>{{ data.course.name }}</td>
-                        <td>
-                            <a [routerLink]="['/admin/classes/show/' + data.course.classe.id]">
-                                {{ data.course.classe.name }}
-                            </a>
-                        </td>
-                        <td>{{ data.course.service.name }}</td>
-                        <td>{{ data.total_hours}} heures</td>
-                        <td>{{ data.total_sales}} FCFA </td>
-                        <td>
-                            <ng-container *ngIf="data.is_paid; else notPaid">
-                                <nz-tag [nzColor]="'success'">
-                                    Payé
-                                </nz-tag>
-                            </ng-container>
-                            <ng-template #notPaid>
-                                <nz-tag role="button" (click)="openDoPaymentModal(data)" [nzColor]="'error'">
-                                    Non Payé
-                                </nz-tag>
-                            </ng-template>
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <div>
-                                    <button [disabled]="!data.is_paid" (click)="printPayment(data)" mat-mini-fab
-                                        color="warn">
-                                        <mat-icon>print</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-            <app-error-server *ngIf="errorServer"></app-error-server>
-        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button (click)="printAll()" title="Imprimer tous les états"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+          <i class="fa-solid fa-print text-xs"></i>
+          Imprimer tout
+        </button>
+      </div>
     </div>
-</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <i class="fa-solid fa-book text-primary text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Total cours</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ professor.coursesDo?.length || 0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+          <i class="fa-solid fa-circle-check text-success text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Payés</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ paidCount() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
+          <i class="fa-solid fa-clock text-warning text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">En attente</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ pendingCount() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-danger/10 flex items-center justify-center">
+          <i class="fa-solid fa-sack-dollar text-danger text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Montant total</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ totalAmount() }} FCFA</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-100">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Code</th>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Cours</th>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Classe</th>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Service</th>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Heures</th>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Montant</th>
+            <th class="px-4 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Statut</th>
+            <th class="px-4 py-3 text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-50">
+          @for (data of professor.coursesDo; track data) {
+            <tr class="hover:bg-gray-50/50 transition-colors">
+              <td class="px-4 py-3 text-sm">
+                <a [routerLink]="['/admin/courses/show/' + data.course.id]"
+                  class="font-semibold text-primary hover:underline">
+                  {{ data.course.acronym }}
+                </a>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-800">{{ data.course.name }}</td>
+              <td class="px-4 py-3 text-sm">
+                <a [routerLink]="['/admin/classes/show/' + data.course.classe.id]"
+                  class="text-primary hover:underline">
+                  {{ data.course.classe.name }}
+                </a>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-600">{{ data.course.service.name }}</td>
+              <td class="px-4 py-3 text-sm text-gray-800">{{ data.total_hours }}h</td>
+              <td class="px-4 py-3 text-sm font-semibold text-gray-900">{{ data.total_sales }} FCFA</td>
+              <td class="px-4 py-3 text-sm">
+                @if (data.is_paid) {
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-success/10 text-success">
+                    <i class="fa-solid fa-circle-check text-[10px]"></i>
+                    Payé
+                  </span>
+                } @else {
+                  <button (click)="openDoPaymentModal(data)"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-danger/10 text-danger hover:bg-danger/20 transition-colors cursor-pointer border-none">
+                    <i class="fa-solid fa-circle-xmark text-[10px]"></i>
+                    Non payé
+                  </button>
+                }
+              </td>
+              <td class="px-4 py-3 text-sm">
+                <div class="flex justify-center">
+                  <button [disabled]="!data.is_paid" (click)="printPayment(data)" title="Imprimer l'état"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-500">
+                    <i class="fa-solid fa-print text-xs"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="px-4 py-12 text-center">
+                <div class="flex flex-col items-center gap-2 text-gray-400">
+                  <i class="fa-solid fa-inbox text-3xl"></i>
+                  <p class="text-sm m-0">Aucun paiement à afficher</p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+@if (dataLoad) {
+  <div class="flex justify-center items-center py-16">
+    <span class="inline-block w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+  </div>
+}
+
+@if (errorServer) {
+  <app-error-server></app-error-server>
+}

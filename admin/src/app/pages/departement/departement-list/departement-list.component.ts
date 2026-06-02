@@ -1,63 +1,103 @@
-import { DepartementCreateComponent } from './../departement-create/departement-create.component';
-import { Departement } from './../../../models/departement';
-import { DepartementService } from './../../../services/departement.service';
-import { Component, OnInit } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
-import { BatimentCreateComponent } from '../../batiment/batiment-create/batiment-create.component';
-import { BatimentEditComponent } from '../../batiment/batiment-edit/batiment-edit.component';
+import { Departement } from 'src/app/models/departement';
+import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { AuthStore } from 'src/app/shared/auth-store';
+import { DepartementCreateComponent } from '../departement-create/departement-create.component';
 import { DepartementEditComponent } from '../departement-edit/departement-edit.component';
-import { Router } from '@angular/router';
-import { Permission } from 'src/app/models/permission';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-departement-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './departement-list.component.html',
   styleUrls: ['./departement-list.component.scss'],
 })
 export class DepartementListComponent implements OnInit {
-  departements!: Departement[];
-  selectedDepartement!: Departement;
-  isLoad = true;
-  deleteRestoRef!: NzModalRef;
-  deleteLoad!: boolean;
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  private depService = inject(DepartementService);
+  private router = inject(Router);
+  private authStore = inject(AuthStore);
 
-  constructor(
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private depService: DepartementService,
-    private router: Router,
-  ) {}
+  departements = signal<Departement[]>([]);
+  filteredDepartements = signal<Departement[]>([]);
+  selectedDepartement!: Departement;
+  isLoad = signal(true);
+  deleteLoad!: boolean;
+  searchValue = signal('');
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  totalClasses(): number {
+    return this.departements().reduce((sum, d) => sum + (d.classes_count || 0), 0);
+  }
+
+  averageClasses(): number {
+    const deps = this.departements();
+    if (deps.length === 0) return 0;
+    return Math.round(this.totalClasses() / deps.length);
+  }
+
+  searchDepartements() {
+    const sv = this.searchValue().toLowerCase();
+    if (!sv) {
+      this.filteredDepartements.set(this.departements());
+    } else {
+      this.filteredDepartements.set(this.departements().filter(d =>
+        d.name.toLowerCase().includes(sv)
+      ));
+    }
+  }
 
   ngOnInit(): void {
     this.findAll();
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.depService.findAll().subscribe({
       next: (departements) => {
-        this.departements = departements;
-        this.isLoad = false;
+        this.departements.set(departements);
+        this.filteredDepartements.set(departements);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
 
   openEditModal(batiment: Departement) {
     this.selectedDepartement = batiment;
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier le batiment',
-      nzContent: DepartementEditComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'Modifier le batiment',
+      component: DepartementEditComponent,
+      data: {
         departement: this.depService.clone(batiment),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -68,16 +108,12 @@ export class DepartementListComponent implements OnInit {
   }
 
   openDeleteModal(departement: Departement) {
-    this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteDepartement(departement),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+    this.modalService.confirm({
+      title: 'Voulez-vous supprimé ce département?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteDepartement(departement),
+      cancelText: 'Annuler',
     });
   }
 
@@ -92,7 +128,6 @@ export class DepartementListComponent implements OnInit {
           'Dépatement supprimé avec succès.'
         );
         this.findAll();
-        this.deleteRestoRef.destroy();
       },
       error: (errors) => {
         this.deleteLoad = false;
@@ -101,18 +136,14 @@ export class DepartementListComponent implements OnInit {
           'Notification',
           errors.error.message
         );
-        this.deleteRestoRef.destroy();
       },
     });
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Ajouter un département',
-      nzContent: DepartementCreateComponent,
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
+    const modal = this.modalService.open({
+      title: 'Ajouter un département',
+      component: DepartementCreateComponent,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -122,10 +153,7 @@ export class DepartementListComponent implements OnInit {
     });
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.depService.can(p, this.depService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 }

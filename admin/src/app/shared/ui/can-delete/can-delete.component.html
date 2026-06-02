@@ -1,18 +1,22 @@
-<nz-modal [nzClosable]="false" [nzFooter]="null" [nzVisible]="visible" [nzTitle]="'Erreur de suppréssion'" [nzBodyStyle]="{'padding': '10px'}" [nzContent]="content">
-    <ng-template #content>
-        <nz-result nzStatus="error" nzTitle="Erreur de suppression" nzSubTitle="{{ subtitle }}">
-            <div nz-result-extra>
-                <div>
-                    <p *ngFor="let item of erreurs" nz-paragraph>
-                        <i nz-icon nzType="close-circle"></i> {{ item }}
-                    </p>
-                </div>
-
-            </div>
-            <div nz-result-extra>
-                <button (click)="onClose()" nz-button nzType="primary">Fermer</button>
-
-            </div>
-        </nz-result>
-    </ng-template>
-</nz-modal>
+@if (visible) {
+  <div class="fixed inset-0 z-[1000] flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/50" (click)="onClose()"></div>
+    <div class="relative bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <h3 class="text-lg font-semibold text-gray-800 m-0">Erreur de suppression</h3>
+      </div>
+      <div class="p-6">
+        <app-result status="error" title="Erreur de suppression" [subtitle]="subtitle">
+          <div class="space-y-1 text-left mb-4">
+            @for (item of erreurs; track item) {
+              <p class="flex items-center gap-2 text-red-500 text-sm m-0">
+                <i class="fa-solid fa-circle-xmark"></i> {{ item }}
+              </p>
+            }
+          </div>
+          <button (click)="onClose()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">Fermer</button>
+        </app-result>
+      </div>
+    </div>
+  </div>
+}

@@ -9,7 +9,7 @@ import { BaseHttp } from '../shared/base-http';
 })
 export class RessourceService extends BaseHttp {
   
-  protected _baseUrl = 'ressource';
+  protected override _baseUrl = 'ressource';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;

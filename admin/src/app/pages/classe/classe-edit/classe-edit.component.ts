@@ -1,31 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Classe } from 'src/app/models/classe';
 import { Departement } from 'src/app/models/departement';
 import { ClasseService } from 'src/app/services/classe.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-classe-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  IconComponent,
+  ],
   templateUrl: './classe-edit.component.html',
-  styleUrls: ['./classe-edit.component.scss']
+  styleUrls: ['./classe-edit.component.scss'],
 })
 export class ClasseEditComponent implements OnInit {
-
-  @Input() classe!: Classe;
-  @Input() departement!: Departement;
-
+  classe!: Classe;
+  departement!: Departement;
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private modal: NzModalRef,
-    private classeService: ClasseService
-  ) {}
+
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private modal = inject(ModalRef);
+  private classeService = inject(ClasseService);
+  private modalData = inject(MODAL_DATA, { optional: true });
 
   ngOnInit(): void {
+    if (this.modalData) {
+      this.classe = this.modalData.classe;
+      this.departement = this.modalData.departement;
+    }
     this.classe.departement_id = this.departement.id;
     this.validateForm = this.fb.group({
       name: [null, [Validators.required, Validators.min(2)]],
@@ -42,7 +53,6 @@ export class ClasseEditComponent implements OnInit {
     }
   }
 
-
   destroyModal(data: Classe | null): void {
     this.modal.destroy(data);
   }
@@ -55,7 +65,7 @@ export class ClasseEditComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          "Classe modifiée avec succés.",
+          'Classe modifiée avec succés.',
         );
         this.destroyModal(response);
       },
@@ -70,5 +80,4 @@ export class ClasseEditComponent implements OnInit {
       },
     });
   }
-
 }

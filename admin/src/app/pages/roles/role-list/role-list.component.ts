@@ -1,15 +1,32 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Permission } from 'src/app/models/permission';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { RoleService } from './../../../services/role.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Role } from 'src/app/models/role';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
+import { ModalService } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-role-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.scss'],
 })
 export class RoleListComponent implements OnInit {
+  private roleService = inject(RoleService);
+  private modalService = inject(ModalService);
+
   roles!: Role[];
   isLoad: boolean = false;
   searchValue = '';
@@ -17,10 +34,7 @@ export class RoleListComponent implements OnInit {
   listOfDisplayData!: Permission[];
   currentPermissions!: Permission[];
   allIsLoad: boolean = false;
-
-  constructor(private roleService: RoleService, 
-      private notification: NzNotificationService
-    ) {}
+  activeTabIndex = signal(0);
 
   ngOnInit(): void {
     this.findAll();
@@ -36,7 +50,6 @@ export class RoleListComponent implements OnInit {
         this.allIsLoad = false;
       },
       error: (errors) => {
-        this.notification.error("Notification", errors.error.message);
       },
     });
   }
@@ -55,25 +68,33 @@ export class RoleListComponent implements OnInit {
     });
   }
 
-  tabChange(item: Role)
-  {
+  tabChange(item: Role, index: number) {
+    this.activeTabIndex.set(index);
     this.currentPermissions = item.permissions;
     this.listOfDisplayData = item.permissions;
   }
 
-  openCreateModal(role: Role){
-    
+  openCreateModal(role: Role) {
   }
 
-  deletePermissionForRole(permission: Permission, role: Role){
-    this.isLoad = true;
-    this.roleService.deletePermissionToRole(role, permission).subscribe({
-      next: response => {
-        this.findAll();
-        this.isLoad = false;
+  deletePermissionForRole(permission: Permission, role: Role) {
+    this.modalService.confirm({
+      title: 'Confirmation',
+      content: 'Confirmer votre action.',
+      okText: 'Confirmer',
+      okDanger: true,
+      onOk: () => {
+        this.isLoad = true;
+        this.roleService.deletePermissionToRole(role, permission).subscribe({
+          next: response => {
+            this.findAll();
+            this.isLoad = false;
+          },
+          error: errors => {
+            this.isLoad = false;
+          }
+        });
       },
-      error: errors => {
-      }
-    })
+    });
   }
 }

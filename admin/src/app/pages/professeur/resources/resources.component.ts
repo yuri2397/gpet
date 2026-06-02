@@ -1,28 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
-import { Observable, Subscription } from 'rxjs';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Course } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
 import { RessourceService } from 'src/app/services/ressource.service';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-resources',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './resources.component.html',
   styleUrls: ['./resources.component.scss'],
 })
 export class ResourcesComponent implements OnInit {
+  private courseService = inject(CourseService);
+  private resService = inject(RessourceService);
+  private notification = inject(NotificationService);
+
   inputValue!: any;
   options!: Course[];
   searchLoad!: boolean;
   selectedCourse!: Course;
   file!: File;
   fileList!: any[];
-  constructor(
-    private courseService: CourseService,
-    private resService: RessourceService,
-    private msg: NzMessageService
-  ) {}
 
   ngOnInit(): void {}
 
@@ -52,20 +61,13 @@ export class ResourcesComponent implements OnInit {
     }
   }
 
-  upload = (file: NzUploadFile): string | Observable<string> => {
-    return this.resService.uploadUrl(this.selectedCourse)
-  }
-
-  handleChange({ file, fileList }: NzUploadChangeParam): void {
-    const status = file.status;
-    if (status !== 'uploading') {
-      this.fileList = fileList;
-    }
-    if (status === 'done') {
-      this.msg.success(`${file.name} fichier téléchargé avec succès.`);
-    } else if (status === 'error') {
-      this.msg.error(`${file.name} le téléchargement du fichier a échoué.`);
+  onFileSelected(event: any) {
+    const files: FileList = event.target.files;
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        this.file = files[i];
+        // Upload logic would go here using resService
+      }
     }
   }
-  
 }

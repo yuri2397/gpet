@@ -1,29 +1,41 @@
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { SemesterService } from './../../../services/semester.service';
-import { EC } from './../../../models/ec';
-import { UE } from './../../../models/ue';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Semester } from './../../../models/semester';
-import { Component, OnInit, Input } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Semester } from 'src/app/models/semester';
+import { SemesterService } from 'src/app/services/semester.service';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-semester-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './semester-edit.component.html',
   styleUrls: ['./semester-edit.component.scss'],
 })
 export class SemesterEditComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
-  @Input() semester!: Semester;
-  constructor(
-    private modal: NzModalRef,
-    private fb: FormBuilder,
-    private semesterService: SemesterService,
-    private notification: NzNotificationService
-  ) {}
+  semester!: Semester;
+
+  private modal = inject(ModalRef);
+  private fb = inject(FormBuilder);
+  private semesterService = inject(SemesterService);
+  private notification = inject(NotificationService);
+  private modalData = inject(MODAL_DATA, { optional: true });
 
   ngOnInit(): void {
+    if (this.modalData) {
+      this.semester = this.modalData.semester;
+    }
     this.validateForm = this.fb.group({
       name: [this.semester.name, [Validators.required, Validators.min(2)]],
     });
@@ -46,7 +58,8 @@ export class SemesterEditComponent implements OnInit {
     this.isLoad = true;
     this.semesterService.edit(this.semester).subscribe({
       next: (response) => {
-        this.notification.success(
+        this.notification.createNotification(
+          'success',
           'Notification',
           'Semestre modifier avec succès.'
         );
@@ -54,7 +67,7 @@ export class SemesterEditComponent implements OnInit {
       },
       error: (errors) => {
         this.destroyModal(null);
-        this.notification.error('Notification', errors.error.message);
+        this.notification.createNotification('error', 'Notification', errors.error.message);
       },
     });
   }

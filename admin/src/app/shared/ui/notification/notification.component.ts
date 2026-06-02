@@ -1,21 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Notification } from 'src/app/models/shared.model';
+import { MODAL_DATA, ModalRef } from '../../services/modal.service';
 
 @Component({
   selector: 'app-notification',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss']
+  styleUrls: ['./notification.component.scss'],
 })
 export class NotificationComponent implements OnInit {
+  private ref = inject(ModalRef);
+  private modalData = inject(MODAL_DATA);
 
-  @Input('notification') notification!: Notification;
+  notification!: Notification;
 
   ngOnInit(): void {
-    console.log(this.notification);
+    this.notification = this.modalData.notification;
   }
-
-  constructor(private ref: NzModalRef) {}
 
   close(data: any) {
     this.ref.destroy(data);
@@ -24,5 +27,4 @@ export class NotificationComponent implements OnInit {
   downloadFacture() {
     this.close({ download: true });
   }
-
 }

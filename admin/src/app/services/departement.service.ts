@@ -9,7 +9,7 @@ import { Salle } from '../models/salle';
   providedIn: 'root',
 })
 export class DepartementService extends BaseHttp {
-  protected _baseUrl = 'departement';
+  protected override _baseUrl = 'departement';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
@@ -22,8 +22,9 @@ export class DepartementService extends BaseHttp {
     });
   }
 
-  dashboard() {
-    return this.http.get<any>(this.endPointWithSlash + 'dashboard', {
+  dashboard(departementId: number | null = null) {
+    const params = departementId === null ? '' : `?departement=${departementId}`;
+    return this.http.get<any>(this.endPointWithSlash + 'dashboard' + params, {
       headers: this.authorizationHeaders,
     });
   }

@@ -1,27 +1,47 @@
 import { UserService } from 'src/app/services/user.service';
 import { Departement } from 'src/app/models/departement';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { Professor } from 'src/app/models/professor';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+
 @Component({
   selector: 'app-payements-print-all',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './payements-print-all.component.html',
   styleUrls: ['./payements-print-all.component.scss'],
 })
 export class PayementsPrintAllComponent implements OnInit {
+  private ref = inject(ModalRef);
+  private userService = inject(UserService);
+  readonly modalData = inject(MODAL_DATA, { optional: true });
+
   @Input() professor!: Professor;
   departement!: Departement;
   isLoad = false;
-  constructor(private ref: NzModalRef, private userService: UserService) {}
   date = new Date();
+
   ngOnInit(): void {
+    if (this.modalData?.professor) {
+      this.professor = this.modalData.professor;
+    }
     this.departement = this.userService.departement();
   }
 
   destroyModal() {
-    this.ref.destroy(null);
+    this.ref.close(null);
   }
 
   print() {

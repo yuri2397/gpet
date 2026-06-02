@@ -32,7 +32,6 @@ use App\Models\TimesTable;
 use Illuminate\Support\Str;
 
 use Spatie\Permission\Models\Role;
-use Facade\FlareClient\Contracts\ProvidesFlareContext;
 use Illuminate\Support\Facades\Hash;
 
 /**

@@ -1,54 +1,145 @@
-<div class="container-fluid">
-    <div class="card shadow">
-        <div class="card-header p-3 bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h5 class="text-white">Liste des utilisateurs</h5>
-                </div>
-                <div *ngIf="can('creer admin')">
-                    <button (click)="openCreateModal()" mat-mini-fab color="default">
-            <mat-icon>add</mat-icon>
-          </button>
-                </div>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="my-2">
-                <input type="text" nzSize="large" (input)="search()" nz-input placeholder="Prénom ou Nom ou Email ..." [(ngModel)]="searchValue" />
-            </div>
-            <nz-table class="scroll-table" [nzLoading]="isLoad" nzShowSizeChanger [nzPageSizeOptions]="[5,10,20,30]" #basicTable [nzData]="listOfDisplayData" [nzBordered]="true">
-                <thead>
-                    <tr>
-                        <th>Avatar</th>
-                        <th>Prénoms</th>
-                        <th>Nom</th>
-                        <th>Email</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of basicTable.data">
-                        <td>AVATAR</td>
-                        <td>{{ data.first_name }}</td>
-                        <td>{{ data.last_name }}</td>
-                        <td>{{ data.email }}</td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <div *ngIf="can('voir admin')">
-                                    <button (click)="showUser(data)" nz-button nzShape="circle" class="color-orange">
-                    <i class="color" nz-icon nzType="eye"></i>
-                  </button>
-                                </div>
-                                <div class="mx-3" *ngIf="can('supprimer admin')">
-                                    <button nz-popconfirm nzPopconfirmTitle="Confirmer votre action." (nzOnConfirm)="deleteUser(data)" nz-button nzType="primary" nzShape="circle" nzDanger>
-                    <i nz-icon nzType="delete"></i>
-                  </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-        </div>
+<!-- Page header -->
+<div class="mb-6 flex flex-row justify-between gap-4">
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 m-0">Utilisateurs</h2>
+    <p class="text-sm text-gray-500 mt-1 m-0">Gestion des comptes administrateurs</p>
+  </div>
+  @if (can('creer admin')) {
+    <button (click)="openCreateModal()"
+      class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl
+             hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5
+             active:translate-y-0 transition-all duration-200 cursor-pointer border-none">
+      <i class="fa-solid fa-plus text-xs"></i>
+      Nouvel utilisateur
+    </button>
+  }
+</div>
+
+<!-- Stats cards -->
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+  <div class="bg-white rounded-xl border border-gray-100 p-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+        <i class="fa-solid fa-users text-primary text-sm"></i>
+      </div>
+      <div>
+        <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Total</p>
+        <p class="text-xl font-bold text-gray-900 m-0">{{ users?.length || 0 }}</p>
+      </div>
     </div>
+  </div>
+  <div class="bg-white rounded-xl border border-gray-100 p-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+        <i class="fa-solid fa-magnifying-glass text-success text-sm"></i>
+      </div>
+      <div>
+        <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Résultats</p>
+        <p class="text-xl font-bold text-gray-900 m-0">{{ listOfDisplayData().length }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Table card -->
+<div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+  <!-- Search bar -->
+  <div class="px-6 py-4 border-b border-gray-100">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="relative flex-1 max-w-md">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+          <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs"></i>
+        </div>
+        <input
+          type="text"
+          (input)="search()"
+          [ngModel]="searchValue()"
+          (ngModelChange)="searchValue.set($event)"
+          placeholder="Rechercher par nom, prénom ou email..."
+          class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400
+                 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 outline-none"
+        />
+      </div>
+      <div class="flex items-center gap-2 text-xs text-gray-400">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>{{ listOfDisplayData().length }} utilisateur{{ listOfDisplayData().length > 1 ? 's' : '' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="relative">
+    @if (isLoad()) {
+      <div class="absolute inset-0 bg-white/70 z-10 flex items-center justify-center backdrop-blur-[1px]">
+        <div class="flex items-center gap-3 px-5 py-3 bg-white rounded-xl shadow-lg border border-gray-100">
+          <i class="fa-solid fa-spinner fa-spin text-primary"></i>
+          <span class="text-sm text-gray-500 font-medium">Chargement...</span>
+        </div>
+      </div>
+    }
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-700">
+        <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+          <tr>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Prénoms</th>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Nom</th>
+            <th class="px-6 py-3.5 font-semibold tracking-wider">Email</th>
+            <th class="px-6 py-3.5 font-semibold tracking-wider text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (data of listOfDisplayData(); track data; let odd = $odd) {
+            <tr class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors"
+              [class]="odd ? 'bg-gray-50/50' : 'bg-white'">
+              <td class="px-6 py-3.5 font-medium text-gray-800">{{ data.first_name }}</td>
+              <td class="px-6 py-3.5 font-medium text-gray-800">{{ data.last_name }}</td>
+              <td class="px-6 py-3.5 text-gray-500">{{ data.email }}</td>
+              <td class="px-6 py-3.5">
+                <div class="relative flex justify-end">
+                  <button (click)="toggleDropdown(data.id, $event)"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-200 text-gray-400 hover:text-gray-600 transition-all duration-200 cursor-pointer border-none bg-transparent">
+                    <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                  </button>
+                  @if (openDropdownId() === data.id) {
+                    <div class="fixed inset-0 z-40" (click)="closeDropdown()"></div>
+                    <div class="absolute right-0 top-full mt-1 z-50 w-44 bg-white rounded-xl border border-gray-100 shadow-lg py-1.5">
+                      @if (can('voir admin')) {
+                        <button (click)="showUser(data); closeDropdown()"
+                          class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left">
+                          <i class="fa-solid fa-eye text-xs text-gray-400 w-4 text-center"></i>
+                          Voir profil
+                        </button>
+                      }
+                      @if (can('supprimer admin')) {
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <button (click)="deleteUser(data); closeDropdown()"
+                          class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer border-none bg-transparent w-full text-left">
+                          <i class="fa-solid fa-trash text-xs w-4 text-center"></i>
+                          Supprimer
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+          <!-- Empty state -->
+          @if (listOfDisplayData().length === 0 && !isLoad()) {
+            <tr>
+              <td colspan="20" class="px-6 py-16 text-center">
+                <div class="flex flex-col items-center">
+                  <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-users text-2xl text-gray-300"></i>
+                  </div>
+                  <p class="text-gray-500 font-medium m-0">Aucun utilisateur trouvé</p>
+                  <p class="text-xs text-gray-400 mt-1 m-0">Ajoutez un utilisateur ou modifiez votre recherche</p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

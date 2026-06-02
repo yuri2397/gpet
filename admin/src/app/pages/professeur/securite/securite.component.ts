@@ -1,18 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Role } from 'src/app/models/role';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalService } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-securite',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './securite.component.html',
   styleUrls: ['./securite.component.scss']
 })
 export class SecuriteComponent implements OnInit {
+  private authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  private userService = inject(UserService);
 
   user!: User;
   roles!: Role[];
@@ -20,13 +36,6 @@ export class SecuriteComponent implements OnInit {
   isLoad = false;
   file: any;
   avatarLoad = true;
-  constructor(
-    private authService: AuthService,
-    private fb: FormBuilder,
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private userService: UserService,
-  ) {}
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
@@ -91,6 +100,7 @@ export class SecuriteComponent implements OnInit {
         },
       });
   }
+
   onChange(event: any) {
     this.file = event.target.files[0];
     if (this.file != null) {
@@ -125,41 +135,33 @@ export class SecuriteComponent implements OnInit {
   }
 
   openModal() {
-     this.modalService.confirm({
-      nzTitle: '<span>Confirmez votre deconnexion</span>',
-      nzOkText: 'Valider',
-      nzOkType: 'primary',
-      nzOkDanger: false,
-      nzOnOk: () => this.logout(),
-      nzCancelText: 'Annuler',
-      //nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzCentered : true
+    this.modalService.confirm({
+      title: 'Confirmez votre deconnexion',
+      okText: 'Valider',
+      okDanger: false,
+      onOk: () => this.logout(),
     });
   }
 
-  logout(){
+  logout() {
     this.isLoad = true;
     this.authService.logOut().subscribe({
-      next:() => {
+      next: () => {
         this.notification.createNotification(
           'success',
           'Notification',
           'Déconnexion réussie',
         );
       },
-      error:(errors : any) => {
+      error: (errors: any) => {
         this.isLoad = false;
         if (errors.status != 403)
           this.notification.createNotification(
             'erreur',
             'Notification',
-             errors.error.message);
+            errors.error.message);
       },
     });
     this.userService.logout();
   }
-
-
 }

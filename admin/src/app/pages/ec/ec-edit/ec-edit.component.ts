@@ -1,29 +1,44 @@
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ECService } from 'src/app/services/ec.service';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { EC } from 'src/app/models/ec';
 import { Semester } from 'src/app/models/semester';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-ec-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './ec-edit.component.html',
   styleUrls: ['./ec-edit.component.scss'],
 })
 export class EcEditComponent implements OnInit {
   validateForm!: FormGroup;
   isLoad = false;
-  @Input() semester!: Semester;
-  @Input() ec!: EC;
-  constructor(
-    private modal: NzModalRef,
-    private fb: FormBuilder,
-    private notification: NzNotificationService,
-    private ecService: ECService
-  ) {}
+  semester!: Semester;
+  ec!: EC;
+
+  private modal = inject(ModalRef);
+  private fb = inject(FormBuilder);
+  private notification = inject(NotificationService);
+  private ecService = inject(ECService);
+  private modalData = inject(MODAL_DATA, { optional: true });
 
   ngOnInit(): void {
+    if (this.modalData) {
+      this.semester = this.modalData.semester;
+      this.ec = this.modalData.ec;
+    }
     this.validateForm = this.fb.group({
       name: [null, [Validators.required, Validators.min(2)]],
       vht: [null, [Validators.required, Validators.min(0)]],
@@ -50,7 +65,8 @@ export class EcEditComponent implements OnInit {
       next: (response) => {
         this.isLoad = false;
         this.destroyModal(response);
-        this.notification.success(
+        this.notification.createNotification(
+          'success',
           'Notification',
           'Modifications enregistrées avec succès.'
         );

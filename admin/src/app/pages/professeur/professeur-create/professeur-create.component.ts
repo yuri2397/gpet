@@ -2,22 +2,40 @@ import { ProfessorType } from './../../../models/professor_type';
 import { BankService } from './../../../services/bank.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { Professor } from 'src/app/models/professor';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Departement } from 'src/app/models/departement';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Bank } from 'src/app/models/bank';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { BankCreateComponent } from '../../bank/bank-create/bank-create.component';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, ModalService } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-professeur-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './professeur-create.component.html',
   styleUrls: ['./professeur-create.component.scss'],
 })
 export class ProfesseurCreateComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private bankService = inject(BankService);
+  professorService = inject(ProfessorService);
+  private modal = inject(ModalRef);
+  private deptService = inject(DepartementService);
+  private modalService = inject(ModalService);
+
   departements!: Departement[];
   validateForm!: FormGroup;
   isLoad: boolean = false;
@@ -27,16 +45,6 @@ export class ProfesseurCreateComponent implements OnInit {
   banks!: Bank[];
   bankLoad = false;
   professorTypes!: ProfessorType[];
-
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private bankService: BankService,
-    public professorService: ProfessorService,
-    private modal: NzModalRef,
-    private deptService: DepartementService,
-    private drawerService: NzDrawerService
-  ) {}
 
   ngOnInit(): void {
     if (!this.professorService.isSuperAdmin()) {
@@ -65,12 +73,10 @@ export class ProfesseurCreateComponent implements OnInit {
   }
 
   onAddBank() {
-    const drawerRef = this.drawerService.create({
-      nzTitle: 'Ajouter une nouvelle banque',
-      nzContent: BankCreateComponent,
-      nzWidth: '350px',
-      nzClosable: false,
-      nzMaskClosable: false,
+    this.modalService.open({
+      title: 'Ajouter une nouvelle banque',
+      component: BankCreateComponent,
+      data: {},
     });
   }
 
@@ -142,7 +148,7 @@ export class ProfesseurCreateComponent implements OnInit {
   onBornAtChange(date: any) {}
 
   destroyModal(data: Professor | null): void {
-    this.modal.destroy(data);
+    this.modal.close(data);
   }
 
   save() {

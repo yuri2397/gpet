@@ -1,25 +1,31 @@
-import { Batiment } from './../../../models/batiment';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Batiment } from 'src/app/models/batiment';
 import { BatimentService } from 'src/app/services/batiment.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-batiment-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  ],
   templateUrl: './batiment-create.component.html',
   styleUrls: ['./batiment-create.component.scss']
 })
 export class BatimentCreateComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private batimentService = inject(BatimentService);
+  private modal = inject(ModalRef);
+
   batiment: Batiment = new Batiment();
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private batimentService: BatimentService,
-    private modal: NzModalRef
-  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -35,7 +41,6 @@ export class BatimentCreateComponent implements OnInit {
       }
     }
   }
-
 
   destroyModal(data: Batiment | null): void {
     this.modal.destroy(data);
@@ -61,7 +66,6 @@ export class BatimentCreateComponent implements OnInit {
           errors.error.message
         );
         this.destroyModal(null);
-
       },
     });
   }

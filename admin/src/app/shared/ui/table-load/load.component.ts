@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-load',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './load.component.html',
-  styleUrls: ['./load.component.scss']
+  styleUrls: ['./load.component.scss'],
 })
-export class LoadComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class LoadComponent {}

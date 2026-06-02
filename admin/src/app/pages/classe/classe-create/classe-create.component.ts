@@ -1,29 +1,41 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Classe } from 'src/app/models/classe';
 import { Departement } from 'src/app/models/departement';
 import { ClasseService } from 'src/app/services/classe.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-classe-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  IconComponent,
+  ],
   templateUrl: './classe-create.component.html',
-  styleUrls: ['./classe-create.component.scss']
+  styleUrls: ['./classe-create.component.scss'],
 })
 export class ClasseCreateComponent implements OnInit {
   classe: Classe = new Classe();
-  @Input()  departement!: Departement;
+  departement!: Departement;
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private modal: NzModalRef,
-    private classeService: ClasseService
-  ) {}
+
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private modal = inject(ModalRef);
+  private classeService = inject(ClasseService);
+  private modalData = inject(MODAL_DATA, { optional: true });
 
   ngOnInit(): void {
+    if (this.modalData) {
+      this.departement = this.modalData.departement;
+    }
     this.classe.departement_id = this.departement.id;
 
     this.validateForm = this.fb.group({
@@ -41,7 +53,6 @@ export class ClasseCreateComponent implements OnInit {
     }
   }
 
-
   destroyModal(data: Classe | null): void {
     this.modal.destroy(data);
   }
@@ -54,7 +65,7 @@ export class ClasseCreateComponent implements OnInit {
         this.notification.createNotification(
           'success',
           'Notification',
-          "Classe ajouté avec succés.",
+          'Classe ajouté avec succés.',
         );
         this.destroyModal(response);
       },
@@ -69,6 +80,4 @@ export class ClasseCreateComponent implements OnInit {
       },
     });
   }
-
 }
-

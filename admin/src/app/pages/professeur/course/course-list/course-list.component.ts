@@ -1,7 +1,7 @@
-import { ThrowStmt } from '@angular/compiler';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Classe } from 'src/app/models/classe';
 import { Course } from 'src/app/models/course';
 import { Departement } from 'src/app/models/departement';
@@ -9,15 +9,31 @@ import { Professor } from 'src/app/models/professor';
 import { Semester } from 'src/app/models/semester';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalService } from 'src/app/shared/services/modal.service';
+import { ModalRef } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-course-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss']
 })
 export class CourseListComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private professorService = inject(ProfessorService);
+  private route = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+  private profService = inject(ProfessorService);
+  private modalService = inject(ModalService);
+
   @Input() course!: Course[];
   professor = new Professor();
   isLoad = false;
@@ -31,24 +47,11 @@ export class CourseListComponent implements OnInit {
   selectedCourse!: Course;
   professeur!: Professor;
   dataLoad = true;
-  id!:number;
+  id!: number;
   deleteCourseLoad!: boolean;
-  deleteCourseRef!: NzModalRef;
-
-
-
-  constructor(
-    private notification: NotificationService,
-    private professorService :  ProfessorService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private profService: ProfessorService,
-    private modalService: NzModalService,
-
-  ) { }
+  deleteCourseRef!: ModalRef;
 
   ngOnInit(): void {
-
     this.addHourForm = this.fb.group({
       hours: [null, [Validators.required]],
       cdDate: [null, [Validators.required]],
@@ -102,6 +105,7 @@ export class CourseListComponent implements OnInit {
         },
       });
   }
+
   addHourModalClose() {
     this.addHourModalVisible = false;
     this.hours = this.cdDate = null;
@@ -129,20 +133,11 @@ export class CourseListComponent implements OnInit {
 
   openDeleteConf(course: Course) {
     this.selectedCourse = course;
-    this.deleteCourseRef = this.modalService.confirm({
-      nzTitle: 'Attention',
-      nzContent:
-        '<div class="h6">Supprimer le cour de <i>' +
-        course.name +
-        '</i>?</div>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteCourse(course),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteCourseLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+    this.modalService.confirm({
+      title: 'Attention',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteCourse(course),
     });
   }
 
@@ -160,7 +155,6 @@ export class CourseListComponent implements OnInit {
             this.professeur.last_name
         );
         this.deleteCourseLoad = false;
-        this.deleteCourseRef.destroy();
       },
       error: (errors) => {
         this.notification.createNotification(
@@ -170,12 +164,11 @@ export class CourseListComponent implements OnInit {
           5000
         );
         this.deleteCourseLoad = false;
-        this.deleteCourseRef.destroy();
       },
     });
   }
 
-  findCourses(){
+  findCourses() {
     this.isLoad = true;
     this.professorService.profile().subscribe({
       next: (response) => {
@@ -192,7 +185,4 @@ export class CourseListComponent implements OnInit {
       },
     });
   }
-
-
-
 }

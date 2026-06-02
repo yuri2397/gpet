@@ -1,114 +1,219 @@
-<div *ngIf="!dataLoad && !errorNetWork" style="width: 100%">
-  <div class="card shadow">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-12">
-          <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
-            nzTitle="{{ course.acronym }} - {{ course.name }}"></nz-page-header>
+@if (!dataLoad && !errorNetWork) {
+  <!-- Page header -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <button (click)="onBack()" title="Revenir en arrière"
+          class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-all duration-200 cursor-pointer">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 m-0">{{ course.acronym }} — {{ course.name }}</h2>
+          <p class="text-sm text-gray-500 mt-0.5 m-0">
+            {{ course.classe.name }} · {{ course.semester.name }}
+          </p>
         </div>
-        <ng-template #backTemp>
-          <button class="m-2" mat-mini-fab color="primary">
-            <mat-icon>arrow_back</mat-icon>
+      </div>
+      <div class="flex items-center gap-2">
+        @if (course.syllabus == null) {
+          <button (click)="openCreateModal()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+            <i class="fa-solid fa-plus text-xs"></i>
+            Ajouter un syllabus
           </button>
-        </ng-template>
+        } @else {
+          <button (click)="openEditModal()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+            <i class="fa-solid fa-pen text-xs"></i>
+            Modifier le syllabus
+          </button>
+        }
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div class="card card-body">
-              <nz-list nzBordered>
-                <nz-list-item>
-                  <span nz-typography><b>ID</b></span> {{ course.acronym }}
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>COURS</b></span> {{ course.name }}
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>VHT</b></span>
-                  {{ course.ec.vht }} heures
-                </nz-list-item>
-              </nz-list>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card card-body">
-              <nz-list nzBordered>
-                <nz-list-item>
-                  <span nz-typography><b>PROF</b></span>
-                  <ng-container *ngIf="course.professor; else emptyProf">
-                    {{ course.professor.first_name }}
-                    {{ course.professor.last_name.toUpperCase() }}
-                  </ng-container>
-                  <ng-template #emptyProf>
-                    <nz-tag nzColor="error">
-                      <i nz-icon nzType="close-circle"></i>
-                      <span>Non définie</span>
-                    </nz-tag>
-                  </ng-template>
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>CLASSE</b></span>
-                  {{ course.classe.name.toUpperCase() }}
-                </nz-list-item>
-                <nz-list-item>
-                  <span nz-typography><b>SEMESTRE</b></span>
-                  {{ course.semester.name.toUpperCase() }}
-                </nz-list-item>
-              </nz-list>
-            </div>
-          </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <i class="fa-solid fa-clock text-primary text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Volume horaire</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ course.ec.vht }}h</p>
         </div>
       </div>
-      <br>
-      <div class="container">
-        <div class="card card-body shadow-sm border">
-          <nz-divider [nzText]="rs_title"></nz-divider>
-          <ng-template #rs_title>
-            <h5 class="mt-0">Ressources assicies au cours.</h5>
-          </ng-template>
-
-          <div class="row">
-            <div class="col-4 my-1" *ngFor="let item of course.media">
-              <div class="card shodow border">
-                <div class="card-body ">
-                  {{item.name}} ({{ item.mime_type }})
-                </div>
-              <div class="card-footer">
-                <i nz-icon nzType="download" class="me-2" nzTheme="outline"></i>
-                <a href="{{item.original_url}}" target="_blank" rel="noopener noreferrer" download="{{ item.name }}">{{ item.name }}</a>
-              </div>
-              </div>
-              
-            </div>
-          </div>
-          <hr>
-          <div  class="d-flex justify-content-between align-items-center">
-            <div>
-              <h5 class="mt-0">Syllabus du cours</h5>
-            </div>
-            <div>
-              <button *ngIf="course.syllabus == null" (click)="openCreateModal()" mat-mini-fab color="default">
-                <mat-icon>add</mat-icon>
-              </button>
-              <button *ngIf="course.syllabus != null" (click)="openEditModal()" mat-mini-fab color="default">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div *ngIf="course.syllabus" class="card-body">
-            <div [innerHtml]="course.syllabus.description"></div>
-          </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+          <i class="fa-solid fa-user-tie text-success text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Professeur</p>
+          <p class="text-sm font-bold text-gray-900 m-0 truncate">
+            @if (course.professor) {
+              {{ course.professor.first_name }} {{ course.professor.last_name }}
+            } @else {
+              Non assigné
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
+          <i class="fa-solid fa-folder-open text-warning text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Ressources</p>
+          <p class="text-xl font-bold text-gray-900 m-0">{{ course.media?.length || 0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-100 p-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-danger/10 flex items-center justify-center">
+          <i class="fa-solid fa-file-lines text-danger text-sm"></i>
+        </div>
+        <div>
+          <p class="text-[11px] text-gray-400 font-medium uppercase tracking-wide m-0">Syllabus</p>
+          <p class="text-sm font-bold text-gray-900 m-0">
+            {{ course.syllabus ? 'Défini' : 'Non défini' }}
+          </p>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<ng-template #title2>
-  <h5 class="mt-5">Évolution des scéances</h5>
-</ng-template>
+  <!-- Detail cards -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Course info -->
+    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+        <i class="fa-solid fa-book text-primary text-sm"></i>
+        <h3 class="text-sm font-semibold text-gray-900 m-0">Informations du cours</h3>
+      </div>
+      <div class="p-6 space-y-3">
+        <div class="flex justify-between items-center py-2 border-b border-gray-50">
+          <span class="text-sm text-gray-500">Code</span>
+          <span class="text-sm font-semibold text-gray-800">{{ course.acronym }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-gray-50">
+          <span class="text-sm text-gray-500">Libellé</span>
+          <span class="text-sm font-medium text-gray-800">{{ course.name }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-sm text-gray-500">Volume horaire</span>
+          <span class="text-sm font-medium text-gray-800">{{ course.ec.vht }} heures</span>
+        </div>
+      </div>
+    </div>
 
-<ng-container *ngIf="dataLoad && !errorNetWork">
+    <!-- Affectation -->
+    <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+        <i class="fa-solid fa-graduation-cap text-primary text-sm"></i>
+        <h3 class="text-sm font-semibold text-gray-900 m-0">Affectation</h3>
+      </div>
+      <div class="p-6 space-y-3">
+        <div class="flex justify-between items-center py-2 border-b border-gray-50">
+          <span class="text-sm text-gray-500">Professeur</span>
+          @if (course.professor) {
+            <span class="text-sm font-medium text-gray-800">
+              {{ course.professor.first_name }} {{ course.professor.last_name.toUpperCase() }}
+            </span>
+          } @else {
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-danger/10 text-danger">
+              <i class="fa-solid fa-circle-xmark text-[10px]"></i>
+              Non défini
+            </span>
+          }
+        </div>
+        <div class="flex justify-between items-center py-2 border-b border-gray-50">
+          <span class="text-sm text-gray-500">Classe</span>
+          <span class="text-sm font-medium text-gray-800">{{ course.classe.name.toUpperCase() }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-sm text-gray-500">Semestre</span>
+          <span class="text-sm font-medium text-gray-800">{{ course.semester.name.toUpperCase() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ressources -->
+  <div class="bg-white rounded-xl border border-gray-100 overflow-hidden mb-6">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-folder-open text-primary text-sm"></i>
+        <h3 class="text-sm font-semibold text-gray-900 m-0">Ressources associées</h3>
+      </div>
+      <span class="text-xs text-gray-400">{{ course.media?.length || 0 }} fichier(s)</span>
+    </div>
+    <div class="p-6">
+      @if (course.media && course.media.length > 0) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          @for (item of course.media; track item) {
+            <a [href]="item.original_url" target="_blank" rel="noopener noreferrer" [download]="item.name"
+              class="group flex items-center gap-3 p-4 rounded-xl border border-gray-100 hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 cursor-pointer no-underline">
+              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                <i class="fa-solid fa-file text-primary text-sm"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-semibold text-gray-900 truncate m-0">{{ item.name }}</p>
+                <p class="text-xs text-gray-400 truncate m-0 mt-0.5">{{ item.mime_type }}</p>
+              </div>
+              <i class="fa-solid fa-download text-gray-400 text-xs group-hover:text-primary transition-colors"></i>
+            </a>
+          }
+        </div>
+      } @else {
+        <div class="flex flex-col items-center gap-2 py-8 text-gray-400">
+          <i class="fa-solid fa-inbox text-3xl"></i>
+          <p class="text-sm m-0">Aucune ressource disponible</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Syllabus -->
+  <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-file-lines text-primary text-sm"></i>
+        <h3 class="text-sm font-semibold text-gray-900 m-0">Syllabus du cours</h3>
+      </div>
+      @if (course.syllabus == null) {
+        <button (click)="openCreateModal()" title="Ajouter un syllabus"
+          class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer border-none">
+          <i class="fa-solid fa-plus text-xs"></i>
+        </button>
+      } @else {
+        <button (click)="openEditModal()" title="Modifier le syllabus"
+          class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer border-none">
+          <i class="fa-solid fa-pen text-xs"></i>
+        </button>
+      }
+    </div>
+    <div class="p-6">
+      @if (course.syllabus) {
+        <div class="prose prose-sm max-w-none text-gray-700" [innerHtml]="course.syllabus.description"></div>
+      } @else {
+        <div class="flex flex-col items-center gap-2 py-8 text-gray-400">
+          <i class="fa-solid fa-file-circle-plus text-3xl"></i>
+          <p class="text-sm m-0">Aucun syllabus défini</p>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+@if (dataLoad && !errorNetWork) {
   <app-load></app-load>
-</ng-container>
-<app-error-server *ngIf="errorNetWork"></app-error-server>
+}
+@if (errorNetWork) {
+  <app-error-server></app-error-server>
+}

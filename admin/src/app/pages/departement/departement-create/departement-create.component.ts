@@ -1,25 +1,31 @@
-import { DepartementService } from './../../../services/departement.service';
-import { Departement } from './../../../models/departement';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Departement } from 'src/app/models/departement';
+import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-departement-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  ],
   templateUrl: './departement-create.component.html',
   styleUrls: ['./departement-create.component.scss']
 })
 export class DepartementCreateComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private deptService = inject(DepartementService);
+  private modal = inject(ModalRef);
+
   departement: Departement = new Departement();
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private deptService: DepartementService,
-    private modal: NzModalRef
-  ) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -35,7 +41,6 @@ export class DepartementCreateComponent implements OnInit {
       }
     }
   }
-
 
   destroyModal(data: Departement | null): void {
     this.modal.destroy(data);

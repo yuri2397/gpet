@@ -1,65 +1,55 @@
 <div>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <div class="row">
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="number">Numéro de la salle</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                        <input [(ngModel)]="salle.number" formControlName="number" nz-input name="number" type="number" id="number">
-                    </nz-form-control>
-                </nz-form-item>
+    <form [formGroup]="validateForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <div class="mb-4">
+                    <label for="number" class="block text-sm font-medium text-gray-700 mb-1">Numero de la salle <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="salle.number" formControlName="number" name="number" type="number" id="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
             </div>
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzFor="name">Nom de la salle</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24">
-                        <input [(ngModel)]="salle.name" formControlName="name" nz-input name="name" type="text" id="name">
-                    </nz-form-control>
-                </nz-form-item>
+            <div>
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nom de la salle</label>
+                    <input [(ngModel)]="salle.name" formControlName="name" name="name" type="text" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="departement_id">Batiment</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le batiment">
-                        <nz-select formControlName="batiment_id" [(ngModel)]="salle.batiment_id">
-
-                            <ng-container *ngFor="let o of batiments">
-                                <nz-option *ngIf="!isLoadData" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                            </ng-container>
-                            <nz-option nzLabel="{{ salle.batiment }}" nzValue="{{ salle.batiment_id }}" nzHide></nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <div class="mb-4">
+                    <label for="batiment_id" class="block text-sm font-medium text-gray-700 mb-1">Batiment <span class="text-red-500">*</span></label>
+                    <select formControlName="batiment_id" [(ngModel)]="salle.batiment_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        @for (o of batiments; track o) {
+                            @if (!isLoadData) {
+                                <option [value]="o.id">{{ o.name }}</option>
+                            }
+                        }
+                    </select>
+                </div>
             </div>
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                        <nz-select [nzDisabled]="salleService.isEditeur()" formControlName="departement_id" [(ngModel)]="salle.departement_id">
-
-                            <ng-container *ngFor="let o of departements">
-                                <nz-option *ngIf="!isLoadData" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                            </ng-container>
-                            <nz-option nzLabel="{{ salle.departement }}" nzValue="{{ salle.departement_id }}" nzHide></nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
+            <div>
+                <div class="mb-4">
+                    <label for="departement_id" class="block text-sm font-medium text-gray-700 mb-1">Departement <span class="text-red-500">*</span></label>
+                    <select [disabled]="salleService.isEditeur()" formControlName="departement_id" [(ngModel)]="salle.departement_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        @for (o of departements; track o) {
+                            @if (!isLoadData) {
+                                <option [value]="o.id">{{ o.name }}</option>
+                            }
+                        }
+                    </select>
+                </div>
             </div>
         </div>
 
-        <nz-form-item>
-            <nz-form-label nzFor="capacity">Capacité</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="La capacité est requi">
-                <input [(ngModel)]="salle.capacity" formControlName="capacity" value="0" nz-input name="capacity" type="number" id="capacity">
-            </nz-form-control>
-        </nz-form-item>
-    </nz-form>
+        <div class="mb-4">
+            <label for="capacity" class="block text-sm font-medium text-gray-700 mb-1">Capacite</label>
+            <input [(ngModel)]="salle.capacity" formControlName="capacity" value="0" name="capacity" type="number" id="capacity" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+        </div>
+    </form>
 </div>
 
-<div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Ajouter</button>
+<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+    <button type="button" (click)="destroyModal(null)" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Annuler</button>
+    <button type="button" (click)="save()" [disabled]="!validateForm.valid || isLoad" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">@if (isLoad) {<i class="fa-solid fa-spinner fa-spin mr-2"></i>}Ajouter</button>
 </div>

@@ -1,9 +1,5 @@
-<div class="center contaier">
-    <div>
-        <nz-result nzStatus="404" nzTitle="404" nzSubTitle="Désolé, la page que vous avez visitée n'existe pas.">
-            <div nz-result-extra>
-                <button (click)="home()" nz-button nzType="primary">Retourner à l'acceuil</button>
-            </div>
-        </nz-result>
-    </div>
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <app-result status="404" title="404" subtitle="Desole, la page que vous avez visitee n'existe pas.">
+    <button (click)="home()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors cursor-pointer">Retourner a l'accueil</button>
+  </app-result>
 </div>

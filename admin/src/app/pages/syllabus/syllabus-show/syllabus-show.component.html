@@ -1,24 +1,16 @@
-<div class="row">
-  <div class="col-md-12">
-    <nz-page-header
-    class="site-page-header center"
-    class="site-page-header"
-    (nzBack)="onBack()"
-    [nzBackIcon]="backTemp"
-    nzTitle = "Syllabus du cours {{ syllabus.course_id }}"
-    >
-  </nz-page-header>
-  </div>
-  <ng-template #backTemp>
-    <button class="m-2" mat-mini-fab color="primary">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-  </ng-template>
+<div class="flex items-center gap-3 mb-6">
+  <button (click)="onBack()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+    <app-icon name="arrow_back" />
+  </button>
+  <h2 class="text-xl font-semibold text-gray-800">Syllabus du cours {{ syllabus.course_id }}</h2>
 </div>
 
-<div class="card card-body">
-  <angular-editor
-  [placeholder]="this.syllabus.description"
-  [(ngModel)]="syllabus.description"
-  [config]="config"
-></angular-editor>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-6">
+  <textarea
+    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+    rows="15"
+    [placeholder]="syllabus.description"
+    [(ngModel)]="syllabus.description"
+    readonly
+  ></textarea>
+</div>

@@ -1,27 +1,49 @@
-import { Salle } from './../../../models/salle';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { Salle } from 'src/app/models/salle';
 import { Departement } from 'src/app/models/departement';
-import { Location } from '@angular/common';
 import { DepartementService } from 'src/app/services/departement.service';
 import { Course } from 'src/app/models/course';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
+import { CourseListComponent } from 'src/app/pages/course/course-list/course-list.component';
+import { ClasseListComponent } from 'src/app/pages/classe/classe-list/classe-list.component';
+import { ProfesseurListComponent } from 'src/app/pages/professeur/professeur-list/professeur-list.component';
+import { SemesterListComponent } from 'src/app/pages/semester/semester-list/semester-list.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-departement-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  LoadComponent,
+  ErrorServerComponent,
+  CourseListComponent,
+  ClasseListComponent,
+  ProfesseurListComponent,
+  SemesterListComponent,
+  DataTableComponent,
+  ],
   templateUrl: './departement-show.component.html',
   styleUrls: ['./departement-show.component.scss'],
 })
 export class DepartementShowComponent implements OnInit {
+  private deptService = inject(DepartementService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private location = inject(Location);
+
   dataLoad = true;
   errorNetWork = false;
-  listes!:Salle[];
+  listes!: Salle[];
   departement: Departement = new Departement();
-  constructor(
-    private deptService: DepartementService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
-  ) {}
+  activeTab = 0;
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -47,7 +69,6 @@ export class DepartementShowComponent implements OnInit {
       },
       error: (errors) => {
         this.dataLoad = false;
-
       },
     });
   }

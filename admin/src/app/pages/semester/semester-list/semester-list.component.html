@@ -1,146 +1,199 @@
-<ng-container *ngIf="!isLoad; else elseTemplate">
-    <div class="container-fluid pb-3">
-        <div class="card shadow-sm border">
-            <div class="card-header bg-color">
-                <div class="d-flex align-items-center justify-content-start">
-                    <div *ngIf="can('creer semestre')" class="mx-2">
-                        <button (click)="openCreateSemesterModal()" mat-fab color="default">
-              <mat-icon>add</mat-icon>
-            </button>
-                        <h5 class="text-white mx-2 d-inline-block">AJOUTER UN SEMESTRE</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body border m-2 card">
-                <nz-tabset>
-                    <nz-tab [nzTitle]="item.name.toUpperCase()" *ngFor="let item of semesters">
-                        <div class="card card-body shadow-sm m-2 border" *ngIf="can('modifier semestre') || can('supprimer semestre')">
-                            <div class="row">
-                                <div *ngIf="can('modifier semestre')" class="mx-2 col">
-                                    <button nz-button nzType="primary" nzShape="circle" (click)="openEditSemesterModal(item)">
-                    <i nz-icon nzType="edit"></i>
-                  </button>
+@if (!isLoad) {
+  <!-- Header -->
+  @if (can('creer semestre')) {
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 m-0">Semestres</h2>
+        <p class="text-sm text-gray-500 mt-0.5 m-0">Gestion des UE et EC par semestre</p>
+      </div>
+      <button (click)="openCreateSemesterModal()"
+        class="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+        <i class="fa-solid fa-plus text-xs"></i>
+        Ajouter un semestre
+      </button>
+    </div>
+  }
 
-                                    <span class="color-primary mx-2">MODIFIER LE SEMESTRE</span>
-                                </div>
-                                <div *ngIf="can('supprimer semestre')" class="mx-2 col">
-                                    <button nzDanger="true" nz-button nzType="primary" nzShape="circle" nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr de supprimer cette {{
-                      item.name.toLocaleUpperCase()
-                    }}
-                                    ?" (nzOnConfirm)="deleteSemester(item)" nzPopconfirmPlacement="bottom">
-                    <i nz-icon nzType="edit"></i>
-                  </button>
+  <!-- Tabs + content card -->
+  <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <nav class="flex gap-1 px-4 border-b border-gray-100 overflow-x-auto" role="tablist">
+      @for (item of semesters; track item; let i = $index) {
+        <button
+          class="py-3 px-4 border-b-2 font-semibold text-sm transition-colors cursor-pointer bg-transparent whitespace-nowrap"
+          [class.border-primary]="i === activeSemesterIndex"
+          [class.text-primary]="i === activeSemesterIndex"
+          [class.border-transparent]="i !== activeSemesterIndex"
+          [class.text-gray-500]="i !== activeSemesterIndex"
+          [class.hover:text-gray-700]="i !== activeSemesterIndex"
+          (click)="activeSemesterIndex = i">
+          <i class="fa-solid fa-calendar-days text-xs mr-2"></i>{{ item.name.toUpperCase() }}
+        </button>
+      }
+    </nav>
 
-                                    <span class="color-primary mx-2">SUPPRIMER LE SEMESTRE</span>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <nz-divider [nzText]="add_ue"> </nz-divider>
-                        <ng-template #add_ue>
-                            <div>
-                                <button nz-button nzType="primary" nzShape="circle" (click)="openCreateModal(item)">
-                  <i nz-icon nzType="plus"></i>
+    @for (item of semesters; track item; let i = $index) {
+      @if (i === activeSemesterIndex) {
+        <div class="p-6">
+          <!-- Semester actions -->
+          @if (can('modifier semestre') || can('supprimer semestre')) {
+            <div class="flex flex-wrap items-center gap-2 mb-5">
+              @if (can('modifier semestre')) {
+                <button (click)="openEditSemesterModal(item)"
+                  class="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer">
+                  <i class="fa-solid fa-pen text-[11px] text-gray-400"></i>
+                  Modifier le semestre
                 </button>
-                                <span class="ms-3">AJOUTER UN NOUVEAU EC</span>
-                            </div>
-                        </ng-template>
-
-                        <nz-table [nzShowPagination]="false" #basicTable [nzData]="item.ues" [nzBordered]="true">
-                            <thead>
-                                <tr>
-                                    <th class="bold text-center">UE</th>
-                                    <th class="bold text-center">Elément Constitutif</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let data of basicTable.data">
-                                    <td class="p-0">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="text-center h6 m-0">
-                                                {{ data.code.toLocaleUpperCase() }}
-                                            </div>
-                                            <div class="mx-1">
-                                                <button nz-button nzType="primary" nzShape="circle" (click)="openEditUEModal(data)">
-                          <i nz-icon nzType="edit"></i>
-                        </button>
-                                            </div>
-                                            <ng-template #vide_>
-                                                <div class="card p-0 card-body border center raduis-sm">
-                                                    <span class="h6 text-muted">Aucun EC associé à cet UE</span
-                          >
-                          <div class="my-3">
-                            <button
-                              nzDanger
-                              nz-button
-                              nzType="primary"
-                              nzShape="circle"
-                              nz-popconfirm
-                              nzPopconfirmTitle="Êtes-vous sûr de supprimer cet UE
-                                                        ?"
-                              (nzOnConfirm)="deleteUEConfirmed(data)"
-                              nzPopconfirmPlacement="top"
-                            >
-                              <i nz-icon nzType="edit"></i>
-                            </button>
-                            <span class="mx-2">SUPPRIMER L'UE</span>
-                                                </div>
-                                                <mat-progress-bar [color]="'warn'" *ngIf="data.deleted" class="mt-3" mode="indeterminate"></mat-progress-bar>
-                                        </div>
-                                        </ng-template>
+              }
+              @if (can('supprimer semestre')) {
+                <button (click)="deleteSemester(item)"
+                  class="inline-flex items-center gap-2 px-3.5 py-2 bg-danger/10 text-danger text-xs font-semibold rounded-lg hover:bg-danger hover:text-white transition-all duration-200 cursor-pointer border-none">
+                  <i class="fa-solid fa-trash text-[11px]"></i>
+                  Supprimer le semestre
+                </button>
+              }
+              <div class="flex-1"></div>
+              <button (click)="openCreateModal(item)"
+                class="inline-flex items-center gap-2 px-3.5 py-2 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+                <i class="fa-solid fa-plus text-[11px]"></i>
+                Nouveau EC
+              </button>
             </div>
-            </td>
-            <td>
-                <nz-table #ecTable [nzNoResult]="vide_" [nzBordered]="true" [nzShowPagination]="false" [nzData]="data.ecs">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Nom</th>
-                            <th class="text-center" nzWidth="200px">
-                                Volume Horaire
-                            </th>
-                            <th *ngIf="
-                              can('modifier semestre') ||
-                              can('supprimer semestre')
-                            " class="text-center" nzWidth="100px">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let ec of ecTable.data">
-                            <td>{{ ec.code }} - {{ ec.name }}</td>
-                            <td>{{ ec.vht }}</td>
-                            <td class="p-0">
-                                <div class="d-flex justify-content-center">
-                                    <div class="mx-3" *ngIf="can('modifier semestre')">
-                                        <button nz-button nzType="primary" nzShape="circle" (click)="openEditModal(ec, item)">
-                                  <i nz-icon nzType="edit"></i>
-                                </button>
-                                    </div>
-                                    <div class="mx-3" *ngIf="can('supprimer semestre')">
-                                        <button nzDanger nz-button nzType="primary" nzShape="circle" nz-popconfirm nzPopconfirmTitle="Êtes-vous sûr de supprimer cet EC
-                                                                ?" (nzOnConfirm)="onDeleteOk(ec, item)" nzPopconfirmPlacement="top">
-                                  <i nz-icon nzType="delete"></i>
-                                </button>
-                                    </div>
-                                </div>
-                                <mat-progress-bar *ngIf="ec.deleted" [color]="'warn'" class="mt-3" mode="indeterminate"></mat-progress-bar>
-                            </td>
-                        </tr>
-                    </tbody>
-                </nz-table>
-            </td>
-            </tr>
-            </tbody>
-            </nz-table>
-            </nz-tab>
-            </nz-tabset>
+          } @else {
+            <div class="flex justify-end mb-5">
+              <button (click)="openCreateModal(item)"
+                class="inline-flex items-center gap-2 px-3.5 py-2 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-dark transition-all duration-200 cursor-pointer border-none">
+                <i class="fa-solid fa-plus text-[11px]"></i>
+                Nouveau EC
+              </button>
+            </div>
+          }
+
+          <!-- UE / EC table -->
+          <div class="overflow-x-auto border border-gray-100 rounded-xl">
+            <table class="min-w-full divide-y divide-gray-100">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-48">UE</th>
+                  <th class="px-6 py-3 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Élément Constitutif</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                @for (data of item.ues; track data) {
+                  <tr>
+                    <td class="px-6 py-4 align-top">
+                      <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold">
+                          <i class="fa-solid fa-layer-group text-[10px]"></i>
+                          {{ data.code.toLocaleUpperCase() }}
+                        </span>
+                        <button (click)="openEditUEModal(data)" title="Modifier l'UE"
+                          class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-primary transition-colors cursor-pointer border-none bg-transparent">
+                          <i class="fa-solid fa-pen text-[10px]"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3">
+                      @if (data.ecs && data.ecs.length > 0) {
+                        <div class="overflow-x-auto border border-gray-100 rounded-lg">
+                          <table class="min-w-full divide-y divide-gray-50">
+                            <thead class="bg-gray-50/50">
+                              <tr>
+                                <th class="px-4 py-2 text-left text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Nom</th>
+                                <th class="px-4 py-2 text-center text-[10px] font-semibold text-gray-500 uppercase tracking-wide" style="width:160px">Volume horaire</th>
+                                @if (can('modifier semestre') || can('supprimer semestre')) {
+                                  <th class="px-4 py-2 text-right text-[10px] font-semibold text-gray-500 uppercase tracking-wide" style="width:100px">Actions</th>
+                                }
+                              </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-50">
+                              @for (ec of data.ecs; track ec) {
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                  <td class="px-4 py-2.5 text-sm text-gray-800">
+                                    <span class="font-semibold text-gray-900">#{{ ec.code }}</span>
+                                    <span class="text-gray-600"> — {{ ec.name }}</span>
+                                  </td>
+                                  <td class="px-4 py-2.5 text-sm text-gray-600 text-center">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-[11px] font-semibold">
+                                      <i class="fa-solid fa-clock text-[10px] text-gray-400"></i>
+                                      {{ ec.vht }}h
+                                    </span>
+                                  </td>
+                                  @if (can('modifier semestre') || can('supprimer semestre')) {
+                                    <td class="px-4 py-2.5">
+                                      <div class="flex justify-end gap-1">
+                                        @if (can('modifier semestre')) {
+                                          <button (click)="openEditModal(ec, item)" title="Modifier"
+                                            class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer border-none bg-transparent">
+                                            <i class="fa-solid fa-pen text-[10px]"></i>
+                                          </button>
+                                        }
+                                        @if (can('supprimer semestre')) {
+                                          <button (click)="onDeleteOk(ec, item)" title="Supprimer"
+                                            class="w-7 h-7 flex items-center justify-center rounded-lg text-gray-400 hover:bg-danger/10 hover:text-danger transition-colors cursor-pointer border-none bg-transparent">
+                                            <i class="fa-solid fa-trash text-[10px]"></i>
+                                          </button>
+                                        }
+                                      </div>
+                                      @if (ec.deleted) {
+                                        <div class="h-0.5 w-full bg-gray-100 overflow-hidden rounded mt-1">
+                                          <div class="h-full bg-primary animate-pulse w-1/2"></div>
+                                        </div>
+                                      }
+                                    </td>
+                                  }
+                                </tr>
+                              }
+                            </tbody>
+                          </table>
+                        </div>
+                      } @else {
+                        <div class="flex items-center justify-between gap-3 p-4 border border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+                          <div class="flex items-center gap-2 text-gray-500 text-sm">
+                            <i class="fa-solid fa-circle-info text-gray-400"></i>
+                            Aucun EC associé à cet UE
+                          </div>
+                          <button (click)="deleteUEConfirmed(data)"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 bg-danger/10 text-danger text-xs font-semibold rounded-lg hover:bg-danger hover:text-white transition-all duration-200 cursor-pointer border-none">
+                            <i class="fa-solid fa-trash text-[10px]"></i>
+                            Supprimer l'UE
+                          </button>
+                        </div>
+                        @if (data.deleted) {
+                          <div class="h-0.5 w-full bg-gray-100 overflow-hidden rounded mt-2">
+                            <div class="h-full bg-primary animate-pulse w-1/2"></div>
+                          </div>
+                        }
+                      }
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="2" class="px-6 py-12 text-center">
+                      <div class="flex flex-col items-center gap-2 text-gray-400">
+                        <i class="fa-solid fa-layer-group text-3xl"></i>
+                        <p class="text-sm m-0">Aucune UE dans ce semestre</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
-    </div>
-    </div>
-</ng-container>
-<ng-template #elseTemplate>
-    <app-load></app-load>
-</ng-template>
+      }
+    }
+
+    @if (!semesters || semesters.length === 0) {
+      <div class="px-6 py-12 text-center">
+        <div class="flex flex-col items-center gap-2 text-gray-400">
+          <i class="fa-solid fa-calendar-days text-3xl"></i>
+          <p class="text-sm m-0">Aucun semestre</p>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <app-load></app-load>
+}
 
 <app-can-delete (close)="deleteError = false" [visible]="deleteError" [title]="deleteTitle" [subtitle]="deleteSub" [erreurs]="erreurs"></app-can-delete>

@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-forgot-password',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+  ],
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private notification = inject(NotificationService);
+  private router = inject(Router);
+
   validateForm!: FormGroup;
   isLoad = false;
 
@@ -22,26 +35,25 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder,private authService: AuthService, private notification: NotificationService,private router: Router) { }
-
   ngOnInit(): void {
     this.validateForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
     });
   }
 
-  public forgotPassWord(){
+  public forgotPassWord() {
     this.isLoad = true;
     this.authService.forgotPassword(this.validateForm.value.email).subscribe({
       next: (response: any) => {
-
         this.notification.createNotification(
-          'success','Notification','Code de renitialisation envoyer avec succes'
+          'success',
+          'Notification',
+          'Code de renitialisation envoyer avec succes'
         );
         this.isLoad = false;
         this.router.navigate(['/reset-password']);
       },
-      error: (errors:any) => {
+      error: (errors: any) => {
         this.isLoad = false;
         this.notification.createNotification(
           'error',
@@ -51,5 +63,4 @@ export class ForgotPasswordComponent implements OnInit {
       },
     });
   }
-
 }

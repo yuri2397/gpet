@@ -1,78 +1,105 @@
-import { Departement } from 'src/app/models/departement';
-import { number } from 'echarts';
-import { Component, OnInit, Input } from '@angular/core';
-import { filter } from 'jszip';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, Input, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
-import { Permission } from 'src/app/models/permission';
+import { Departement } from 'src/app/models/departement';
 import { Salle } from 'src/app/models/salle';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SalleService } from 'src/app/services/salle.service';
+import { AuthStore } from 'src/app/shared/auth-store';
 import { SalleCreateComponent } from '../salle-create/salle-create.component';
 import { SalleEditComponent } from '../salle-edit/salle-edit.component';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-salle-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './salle-list.component.html',
   styleUrls: ['./salle-list.component.scss']
 })
 export class SalleListComponent implements OnInit {
-  @Input() salles!:Salle[];
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  private salleService = inject(SalleService);
+  private authStore = inject(AuthStore);
+
+  @Input() salles!: Salle[];
   @Input() setView!: boolean;
-  @Input() departement!:Departement;
-  dataLoad = true;
-  isLoad = false;
-  deleteRestoRef!: NzModalRef;
+  @Input() departement!: Departement;
+  dataLoad = signal(true);
+  isLoad = signal(false);
+  deleteRestoRef!: ModalRef;
   deleteLoad!: boolean;
   selectedSalle!: Salle;
-  searchValue = '';
-  visible = false;
-  listOfDisplayData!: Salle[];
-  constructor(
+  searchValue = signal('');
+  visible = signal(false);
+  listOfDisplayData = signal<Salle[]>([]);
+  openDropdownId = signal<number | null>(null);
 
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private salleService: SalleService) { }
-
-  ngOnInit(): void {
-    if(this.salles == null){
-      this.findAll();
-
-    }else{
-      this.listOfDisplayData =this.salles;
-    }
-
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
   }
 
-  isSuperAdmin(){
-    return this.salleService.isSuperAdmin();
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  totalCapacity(): number {
+    if (!this.salles) return 0;
+    return this.salles.reduce((sum, s) => sum + (parseInt(s.capacity, 10) || 0), 0);
+  }
+
+  averageCapacity(): number {
+    if (!this.salles || this.salles.length === 0) return 0;
+    return Math.round(this.totalCapacity() / this.salles.length);
+  }
+
+  ngOnInit(): void {
+    if (this.salles == null) {
+      this.findAll();
+    } else {
+      this.listOfDisplayData.set(this.salles);
+    }
+  }
+
+  isSuperAdmin() {
+    return this.authStore.isSuperAdmin();
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.salleService.findAll().subscribe({
       next: (salles) => {
         this.salles = salles;
-        this.listOfDisplayData = salles;
-        this.isLoad = false;
+        this.listOfDisplayData.set(salles);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
 
   openEditModal(salle: Salle) {
     this.selectedSalle = salle;
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier le salle',
-      nzContent: SalleEditComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'Modifier le salle',
+      component: SalleEditComponent,
+      data: {
         salle: this.salleService.clone(salle),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -84,15 +111,10 @@ export class SalleListComponent implements OnInit {
 
   openDeleteModal(salle: Salle) {
     this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteSalle(salle),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Voulez-vous supprimé ce département?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteSalle(salle),
     });
   }
 
@@ -122,12 +144,10 @@ export class SalleListComponent implements OnInit {
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Ajouter une salle de classe',
-      nzContent: SalleCreateComponent,
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
+    const modal = this.modalService.open({
+      title: 'Ajouter une salle de classe',
+      component: SalleCreateComponent,
+      data: {},
     });
 
     modal.afterClose.subscribe((data: Salle | null) => {
@@ -137,24 +157,18 @@ export class SalleListComponent implements OnInit {
     });
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.salleService.can(p, this.salleService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 
-  search(): void{
-    this.visible = false;
-    this.listOfDisplayData = this.salles.filter((item : Salle) => {
-      this.searchValue = this.searchValue.toLowerCase();
+  search(): void {
+    this.visible.set(false);
+    const sv = this.searchValue().toLowerCase();
+    this.listOfDisplayData.set(this.salles.filter((item: Salle) => {
       return (
-        item.name.toLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.number.toLocaleString().indexOf(this.searchValue)!== -1
+        item.name.toLowerCase().indexOf(sv) !== -1 ||
+        item.number.toLocaleString().indexOf(sv) !== -1
       );
-    });
+    }));
   }
-
-  
-
 }

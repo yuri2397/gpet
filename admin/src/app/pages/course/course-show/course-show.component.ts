@@ -1,20 +1,39 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, Input, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { Course, Media } from 'src/app/models/course';
 import { CourseService } from 'src/app/services/course.service';
-import { Location } from '@angular/common';
 import { NotificationService } from 'src/app/services/notification.service';
 import { EChartsOption } from 'echarts';
 import { Classe } from 'src/app/models/classe';
 import { Syllabus } from 'src/app/models/syllabus';
 import { RessourceService } from 'src/app/services/ressource.service';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
 
 @Component({
   selector: 'app-course-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  LoadComponent,
+  ErrorServerComponent,
+  ],
   templateUrl: './course-show.component.html',
   styleUrls: ['./course-show.component.scss'],
 })
 export class CourseShowComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private location = inject(Location);
+  private notification = inject(NotificationService);
+  private courseService = inject(CourseService);
+  private rsService = inject(RessourceService);
+
   dataLoad = true;
   errorNetWork = false;
   course: Course = new Course();
@@ -34,14 +53,6 @@ export class CourseShowComponent implements OnInit {
       },
     ],
   };
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private notification: NotificationService,
-    private courseService: CourseService,
-    private rsService: RessourceService
-  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -106,7 +117,6 @@ export class CourseShowComponent implements OnInit {
       ],
     };
   }
-
 
   onBack() {
     this.location.back();

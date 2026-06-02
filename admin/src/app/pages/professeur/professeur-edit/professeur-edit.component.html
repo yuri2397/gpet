@@ -1,171 +1,117 @@
 <div>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-tabset>
-            <nz-tab [nzTitle]="'Informations personnel'">
+    <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <!-- Tab navigation -->
+        <div class="border-b border-gray-200 mb-4">
+            <nav class="flex gap-4" aria-label="Tabs">
+                <button type="button" class="px-4 py-2 text-sm font-medium text-primary border-b-2 border-primary" id="edit-tab-personal" onclick="document.getElementById('edit-panel-personal').classList.remove('hidden');document.getElementById('edit-panel-bank').classList.add('hidden');this.classList.add('border-primary','text-primary');document.getElementById('edit-tab-bank').classList.remove('border-primary','text-primary');">Informations personnel</button>
+                <button type="button" class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700" id="edit-tab-bank" onclick="document.getElementById('edit-panel-bank').classList.remove('hidden');document.getElementById('edit-panel-personal').classList.add('hidden');this.classList.add('border-primary','text-primary');document.getElementById('edit-tab-personal').classList.remove('border-primary','text-primary');">Informations bancaire</button>
+            </nav>
+        </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="first_name">Prénom(s)</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                                <input [(ngModel)]="professor.first_name" formControlName="first_name" nz-input name="first_name" type="text" id="first_name">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="last_name">Nom</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <input [(ngModel)]="professor.last_name" formControlName="last_name" nz-input name="last_name" type="text" id="last_name">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="cni">CNI</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le cni est requi">
-                                <input [(ngModel)]="professor.cni" formControlName="cni" nz-input name="cni" type="text" id="cni">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
+        <!-- Personal info tab -->
+        <div id="edit-panel-personal">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="first_name">Prenom(s) <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.first_name" formControlName="first_name" name="first_name" type="text" id="first_name" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
                 </div>
-                <div class="row">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="last_name">Nom <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.last_name" formControlName="last_name" name="last_name" type="text" id="last_name" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="cni">CNI <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.cni" formControlName="cni" name="cni" type="text" id="cni" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="born_in">Lieu de naissance</label>
+                    <input [(ngModel)]="professor.born_in" placeholder="Lieu de naissance" formControlName="born_in" name="born_in" type="text" id="born_in" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="born_at">Date de Naissance <span class="text-red-500">*</span></label>
+                    <input type="date" [(ngModel)]="professor.born_at" formControlName="born_at" name="born_at" id="born_at" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="professor_type_id">Banque <span class="text-red-500">*</span></label>
+                    <select formControlName="professor_type_id" [(ngModel)]="professor.professor_type.id" id="professor_type_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        @for (o of professorTypes; track o) {
+                            <option [ngValue]="o.id">{{ o.name }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="email">Adresse email <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.email" formControlName="email" name="email" type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="phone_number">N telephone <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.phone_number" formControlName="phone_number" name="phone_number" type="text" id="phone_number" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="departement_id">Departement <span class="text-red-500">*</span></label>
+                    <select [disabled]="professorService.isEditeur()" formControlName="departement_id" [(ngModel)]="professor.departement_id" id="departement_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        @for (o of departements; track o) {
+                            <option [ngValue]="o.id">{{ o.name }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="job">Metier <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.job" formControlName="job" name="job" type="text" id="job" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="status">Status <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.status" formControlName="status" name="status" type="text" id="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="last_degree">Dernier Diplome <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.last_degree" formControlName="last_degree" name="last_degree" type="text" id="last_degree" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                </div>
+            </div>
+        </div>
 
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzFor="born_in">Lieu de naissance</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Lieu de naissance est requi">
-                                <input [(ngModel)]="professor.born_in" [placeholder]="'Lieu de naissance'" formControlName="born_in" nz-input name="born_in" type="text" id="born_in">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="born_at">Date de Naissance</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <nz-date-picker class="w-100" [(ngModel)]="professor.born_at" nzFormat="dd-MM-yyyy" name="born_at" id="born_at" formControlName="born_at"></nz-date-picker>
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="professor_type_id">Banque</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le champ est requi">
-                                <nz-select [nzLoading]="isLoadData" formControlName="professor_type_id" [(ngModel)]="professor.professor_type.id">
-                                    <ng-container *ngFor="let o of professorTypes">
-                                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
-                                </nz-select>
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
+        <!-- Bank info tab -->
+        <div id="edit-panel-bank" class="hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="account_number">N de compte <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.account.account_number" formControlName="account_number" name="account_number" type="number" id="account_number" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="email">Adresse email</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                                <input [(ngModel)]="professor.email" formControlName="email" nz-input name="email" type="email" nz-input id="email">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="phone_number">N° téléphone</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <input [(ngModel)]="professor.phone_number" formControlName="phone_number" nz-input name="phone_number" type="text" id="phone_number">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                                <nz-select [nzDisabled]="professorService.isEditeur()" [nzLoading]="isLoadData" formControlName="departement_id" [(ngModel)]="professor.departement_id">
-                                    <ng-container *ngFor="let o of departements">
-                                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
-                                </nz-select>
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="rip">RIP <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.account.rip" formControlName="rip" name="rip" type="number" id="rip" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="job">Métier</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                                <input [(ngModel)]="professor.job" formControlName="job" nz-input name="job" type="text" id="job">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="status">Status</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <input [(ngModel)]="professor.status" formControlName="status" nz-input name="status" type="text" id="status">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-4">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="last_degree">Dernier Diplôme</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Ce champ est requi">
-                                <input [(ngModel)]="professor.last_degree" formControlName="last_degree" nz-input name="last_degree" type="text" id="last_degree">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="key">Cle <span class="text-red-500">*</span></label>
+                    <input [(ngModel)]="professor.account.key" formControlName="key" name="key" type="text" id="key" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
                 </div>
-            </nz-tab>
-            <nz-tab [nzTitle]="'Informations bancaire'">
-                <div class="row">
-                    <div class="col-md-6">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="account_number">N° de compte</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le nom est requi">
-                                <input [(ngModel)]="professor.account.account_number" formControlName="account_number" nz-input name="account_number" type="number" id="account_number">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-6">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="rip">RIP</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24">
-                                <input [(ngModel)]="professor.account.rip" formControlName="rip" nz-input name="rip" type="number" id="rip">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="bank_id">Banque <span class="text-red-500">*</span></label>
+                    <select formControlName="bank_id" [(ngModel)]="professor.account.bank_id" id="bank_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors">
+                        @for (o of banks; track o) {
+                            <option [ngValue]="o.id">{{ o.name }}</option>
+                        }
+                    </select>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="key">Clé</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="La clé est requi">
-                                <input [(ngModel)]="professor.account.key" formControlName="key" nz-input name="key" type="text" id="key">
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                    <div class="col-md-6">
-                        <nz-form-item>
-                            <nz-form-label nzRequired nzFor="bank_id">Banque</nz-form-label>
-                            <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la banque">
-                                <nz-select [nzLoading]="isLoadData" formControlName="bank_id" [(ngModel)]="professor.account.bank_id">
-                                    <ng-container *ngFor="let o of banks">
-                                        <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                                    </ng-container>
-                                </nz-select>
-                            </nz-form-control>
-                        </nz-form-item>
-                    </div>
-                </div>
-            </nz-tab>
-        </nz-tabset>
-    </nz-form>
+            </div>
+        </div>
+    </form>
 </div>
 
-<div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Ajouter</button>
+<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+    <button type="button" (click)="destroyModal(null)" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">Annuler</button>
+    <button type="button" (click)="save()" [disabled]="!validateForm.valid" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isLoad) {
+            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+        }
+        Ajouter
+    </button>
 </div>

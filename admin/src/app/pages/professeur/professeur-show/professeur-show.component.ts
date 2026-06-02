@@ -1,22 +1,44 @@
-import { Course } from './../../../models/course'
-import { ProfessorService } from './../../../services/professor.service'
-import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
-import { Professor } from 'src/app/models/professor'
-import { Location } from '@angular/common'
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal'
-import { NotificationService } from 'src/app/services/notification.service'
-import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component'
-import { CourseService } from 'src/app/services/course.service'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { Permission } from 'src/app/models/permission'
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ProfessorService } from './../../../services/professor.service';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Professor } from 'src/app/models/professor';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
+import { CourseService } from 'src/app/services/course.service';
+import { Permission } from 'src/app/models/permission';
+import { Course } from 'src/app/models/course';
+import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
+import { CourseHistoryComponent } from 'src/app/pages/course/course-history/course-history.component';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-professeur-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ErrorServerComponent,
+  CourseHistoryComponent,
+  ],
   templateUrl: './professeur-show.component.html',
   styleUrls: ['./professeur-show.component.scss'],
 })
 export class ProfesseurShowComponent implements OnInit {
+  private location = inject(Location)
+  private route = inject(ActivatedRoute)
+  private fb = inject(FormBuilder)
+  private courseService = inject(CourseService)
+  private notification = inject(NotificationService)
+  private modalService = inject(ModalService)
+  private profService = inject(ProfessorService)
+  private router = inject(Router)
+
   courses!: Course[]
   coursesLoad = false
   errorServer = false
@@ -36,18 +58,19 @@ export class ProfesseurShowComponent implements OnInit {
   addCourse!: Course
   addCourseModalVisible: boolean = false
   deleteCourseLoad!: boolean
-  deleteCourseRef!: NzModalRef
+  deleteCourseRef!: ModalRef
   updateStatusLoad = false
-  constructor(
-    private location: Location,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private courseService: CourseService,
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private profService: ProfessorService,
-    private router: Router,
-  ) {}
+  activeTab = signal(0)
+  openCourseDropdownId = signal<number | null>(null);
+
+  toggleCourseDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openCourseDropdownId.set(this.openCourseDropdownId() === id ? null : id);
+  }
+
+  closeCourseDropdown() {
+    this.openCourseDropdownId.set(null);
+  }
 
   ngOnInit(): void {
     this.addHourForm = this.fb.group({
@@ -75,16 +98,6 @@ export class ProfesseurShowComponent implements OnInit {
   }
 
   getCourses() {
-    // console.log('HOS')
-    // this.reloadCourse = true
-    // this.courseService.showBy({ professor_id: this.professeur.id }).subscribe({
-    //   next: (response) => (
-    //     (this.professeur.courses = [...response]), (this.reloadCourse = false)
-    //   ),
-    //   error: (error) => {
-    //     console.log(error)
-    //   },
-    // })
   }
 
   submitAddCourseForm() {
@@ -132,13 +145,9 @@ export class ProfesseurShowComponent implements OnInit {
 
   finishCourse(course: Course) {
     this.modalService.confirm({
-      nzTitle: 'Finir un cours',
-      nzContent:
-        '<b class="bold lead">Attention!!!</b> <br> Si vous marquez ce cours comme terminé, il ne sera plus lié à ce professeur.',
-      nzOkText: 'Je confirme',
-      nzCancelText: 'Annuler',
-      nzCentered: true,
-      nzOnOk: () => {
+      title: 'Finir un cours',
+      okText: 'Je confirme',
+      onOk: () => {
         course.updated = true
         this.courseService.finishCourse(course, 'finish').subscribe({
           next: (response) => {
@@ -208,19 +217,16 @@ export class ProfesseurShowComponent implements OnInit {
   }
 
   openEditModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier les information',
-      nzContent: ProfesseurEditComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'Modifier les information',
+      component: ProfesseurEditComponent,
+      size: 'xl',
+      data: {
         professor: this.profService.clone(this.professeur),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '60em',
     })
 
-    modal.afterClose.subscribe((data: Professor | null) => {
+    modal.afterClosed$.subscribe((data: Professor | null) => {
       if (data != null) {
         this.professeur = data
       }
@@ -288,19 +294,10 @@ export class ProfesseurShowComponent implements OnInit {
   openDeleteConf(course: Course) {
     this.selectedCourse = course
     this.deleteCourseRef = this.modalService.confirm({
-      nzTitle: 'Attention',
-      nzContent:
-        '<div class="h6">Supprimer le cour de <i>' +
-        course.name +
-        '</i>?</div>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteCourse(course),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteCourseLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Attention',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteCourse(course),
     })
   }
   fullName() {
@@ -323,7 +320,7 @@ export class ProfesseurShowComponent implements OnInit {
           type: 'success',
         })
         this.deleteCourseLoad = false
-        this.deleteCourseRef.destroy()
+        this.deleteCourseRef.close()
       },
       error: (errors) => {
         this.notification.createNotification(
@@ -333,7 +330,7 @@ export class ProfesseurShowComponent implements OnInit {
           5000,
         )
         this.deleteCourseLoad = false
-        this.deleteCourseRef.destroy()
+        this.deleteCourseRef.close()
       },
     })
   }

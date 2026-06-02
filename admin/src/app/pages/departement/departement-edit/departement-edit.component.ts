@@ -1,30 +1,38 @@
-import { DepartementService } from './../../../services/departement.service';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { Batiment } from 'src/app/models/batiment';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Departement } from 'src/app/models/departement';
-import { BatimentService } from 'src/app/services/batiment.service';
+import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-departement-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  ],
   templateUrl: './departement-edit.component.html',
   styleUrls: ['./departement-edit.component.scss'],
 })
 export class DepartementEditComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private depService = inject(DepartementService);
+  private modal = inject(ModalRef);
+  private modalData = inject(MODAL_DATA, { optional: true });
+
   @Input()
   departement!: Departement;
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private depService: DepartementService,
-    private modal: NzModalRef
-  ) {}
 
   ngOnInit(): void {
+    if (this.modalData?.departement) {
+      this.departement = this.modalData.departement;
+    }
     this.validateForm = this.fb.group({
       name: [null, [Validators.required, Validators.min(2)]],
     });

@@ -1,60 +1,65 @@
-<div class="card car-body shadow">
+<div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100 overflow-hidden">
 
-    <nz-divider [nzText]="p_t"></nz-divider>
-    <ng-template #p_t>
-        <h4 class="m-3">{{ user.first_name }} {{ user.last_name }}</h4>
-        <button Center nz-button nzType="primary" class="bg" (click)="openModal()">
+    <div class="flex items-center justify-center gap-4 py-4 border-b border-gray-200 mb-4">
+        <h4 class="m-0">{{ user.first_name }} {{ user.last_name }}</h4>
+        <button (click)="openModal()" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors">
             Se Deconnecter
         </button>
-    </ng-template>
+    </div>
 
-    <div class="row mt-3">
-        <div class="col">
-            <div class="card body m-2 border raduis-sm">
-                <img class="" [src]="user.avatar" class="user-avatar card-img-top" alt="" />
-                <mat-progress-bar *ngIf="avatarLoad" [mode]="'indeterminate'" color="primary"></mat-progress-bar>
-                <div class="d-flex justify-content-center btn-icon">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+        <div>
+            <div class="bg-white rounded-lg m-2 border border-gray-100 relative">
+                <img [src]="user.avatar" class="w-full mx-auto rounded-t-lg" alt="" />
+                @if (avatarLoad) {
+                    <div class="h-1 w-full bg-gray-200 overflow-hidden rounded"><div class="h-full bg-blue-500 animate-pulse w-1/2"></div></div>
+                }
+                <div class="flex justify-center absolute top-[5px] right-[5px]">
                     <div>
-                        <button mat-fab color="basic" class="shadow" (click)="image.click()">
-                            <mat-icon>edit</mat-icon>
+                        <button class="w-9 h-9 flex items-center justify-center rounded-full bg-white shadow-sm hover:bg-gray-50 transition-colors cursor-pointer" (click)="image.click()">
+                            <app-icon name="edit" />
                             <form enctype="multipart/form-data">
-                                <input #image type="file" nz-input hidden (change)="onChange($event)" />
+                                <input #image type="file" hidden (change)="onChange($event)" />
                             </form>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card card-body border m-2 raduis-sm">
-                <nz-divider [nzText]="c_t">
-                    <ng-template #c_t>
-                        <h5 class="my-2">Change votre mot de passe</h5>
-                    </ng-template>
-                </nz-divider>
-                <form nz-form [formGroup]="validateForm" class="login-form">
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe actuel requi!">
-                            <nz-input-group nzPrefixIcon="unlock">
-                                <input type="password" nz-input formControlName="password" placeholder="Mot de passe courrant" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe requi!">
-                            <nz-input-group nzPrefixIcon="lock">
-                                <input type="password" nz-input formControlName="new_password" placeholder="Nouveau mot de passe" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-control nzErrorTip="Mot de passe requi!">
-                            <nz-input-group nzPrefixIcon="lock">
-                                <input type="password" nz-input formControlName="new_password_conf" placeholder="Confirmer le mot de passe" />
-                            </nz-input-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <button nz-button [disabled]="!validateForm.valid" class="login-form-button login-form-margin shadow-sm" [nzType]="'primary'" (click)="updatepassword()" [nzLoading]="isLoad">
+        <div>
+            <div class="bg-white rounded-lg p-6 border border-gray-100 m-2">
+                <div class="text-center border-b border-gray-200 pb-3 mb-4">
+                    <h3 class="font-semibold text-lg my-2">Change votre mot de passe</h3>
+                </div>
+                <form [formGroup]="validateForm">
+                    <div class="mb-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <app-icon name="lock_open" />
+                            </div>
+                            <input type="password" formControlName="password" placeholder="Mot de passe courrant" class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <app-icon name="lock" />
+                            </div>
+                            <input type="password" formControlName="new_password" placeholder="Nouveau mot de passe" class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <app-icon name="lock" />
+                            </div>
+                            <input type="password" formControlName="new_password_conf" placeholder="Confirmer le mot de passe" class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" />
+                        </div>
+                    </div>
+                    <button [disabled]="!validateForm.valid" (click)="updatepassword()" class="w-full px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        @if (isLoad) {
+                            <span class="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></span>
+                        }
                         Valider
                     </button>
                 </form>

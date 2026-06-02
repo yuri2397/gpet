@@ -1,81 +1,80 @@
 <div>
-    <div class="card shadow raduis-sm">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <!-- TOP -->
-        <div *ngIf="!dataLoad" class="card-header bg-color">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <button nz-tooltip [nzTooltipTitle]="'Revenir en arrièr'" class="mx-2" (click)="onBack()"
-                        mat-mini-fab color="default">
-                        <mat-icon>arrow_back</mat-icon>
-                    </button>
-                </div>
-                <div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <div class="mx-1">
-                            <button (click)="printAll()" nz-tooltip [nzTooltipTitle]="'Imprimer tous les états'"
-                                mat-mini-fab color="basic">
-                                <mat-icon>print</mat-icon>
-                            </button>
+        @if (!dataLoad) {
+            <div class="bg-gradient-to-r from-[#1890ff] to-[#096dd9] px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <button title="Revenir en arriere" (click)="onBack()"
+                            class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                            <app-icon name="arrow_back" />
+                        </button>
+                    </div>
+                    <div>
+                        <div class="flex justify-end items-center">
+                            <div class="mx-1">
+                                <button (click)="printAll()" title="Imprimer tous les etats"
+                                    class="w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer">
+                                    <app-icon name="print" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
         <!-- LIST OF PAYMENTS -->
-        <div class="card-body">
-            <nz-table class="scroll-table" [nzLoading]="dataLoad" nzShowPagination [nzPageSize]="6" #courseDoTable
-                [nzData]="professor.coursesDo">
-                <thead>
-                    <tr>
-                        <th> Code </th>
-                        <th><b>Cours</b></th>
-                        <th><b>Classe</b></th>
-                        <th><b>Service</b></th>
-                        <th><b>Nombre d'heures</b></th>
-                        <th><b>Montant</b></th>
-                        <th><b>Status</b></th>
-                        <th><b>Imprimer</b></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of courseDoTable.data">
-                        <td>
-                            {{ data.course.acronym }}
-                        </td>
-                        <td>{{ data.course.name }}</td>
-                        <td>
-
-                            {{ data.course.classe.name }}
-                        </td>
-                        <td>{{ data.course.service.name }}</td>
-                        <td>{{ data.total_hours}} heures</td>
-                        <td>{{ data.total_sales}} FCFA </td>
-                        <td>
-                            <ng-container *ngIf="data.is_paid; else notPaid">
-                                <nz-tag [nzColor]="'success'">
-                                    Payé
-                                </nz-tag>
-                            </ng-container>
-                            <ng-template #notPaid>
-                                <nz-tag [nzColor]="'error'">
-                                    Non Payé
-                                </nz-tag>
-                            </ng-template>
-                        </td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <div>
-                                    <button [disabled]="!data.is_paid" (click)="printPayment(data)" mat-mini-fab
-                                        color="warn">
-                                        <mat-icon>print</mat-icon>
-                                    </button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-
+        <div class="p-6">
+            @if (dataLoad) {
+                <div class="flex justify-center items-center py-8">
+                    <span class="inline-block w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+                </div>
+            }
+            @if (!dataLoad) {
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cours</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Classe</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Service</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre d'heures</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Montant</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imprimer</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @for (data of professor.coursesDo; track data) {
+                                <tr>
+                                    <td class="px-4 py-3 text-sm">{{ data.course.acronym }}</td>
+                                    <td class="px-4 py-3 text-sm">{{ data.course.name }}</td>
+                                    <td class="px-4 py-3 text-sm">{{ data.course.classe.name }}</td>
+                                    <td class="px-4 py-3 text-sm">{{ data.course.service.name }}</td>
+                                    <td class="px-4 py-3 text-sm">{{ data.total_hours}} heures</td>
+                                    <td class="px-4 py-3 text-sm">{{ data.total_sales}} FCFA</td>
+                                    <td class="px-4 py-3 text-sm">
+                                        @if (data.is_paid) {
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">Paye</span>
+                                        } @else {
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700">Non Paye</span>
+                                        }
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        <div class="flex justify-center">
+                                            <button [disabled]="!data.is_paid" (click)="printPayment(data)"
+                                                class="w-8 h-8 flex items-center justify-center rounded-full text-orange-600 hover:bg-orange-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                                <app-icon name="print" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
     </div>
 </div>

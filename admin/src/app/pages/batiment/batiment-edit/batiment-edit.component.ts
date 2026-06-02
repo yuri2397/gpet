@@ -1,29 +1,39 @@
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Batiment } from 'src/app/models/batiment';
 import { BatimentService } from 'src/app/services/batiment.service';
-import { Batiment } from './../../../models/batiment';
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-batiment-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  ],
   templateUrl: './batiment-edit.component.html',
   styleUrls: ['./batiment-edit.component.scss'],
 })
 export class BatimentEditComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private batimentService = inject(BatimentService);
+  private modal = inject(ModalRef);
+  private data = inject(MODAL_DATA, { optional: true });
+
   @Input()
   batiment!: Batiment;
 
   validateForm!: FormGroup;
   isLoad: boolean = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private batimentService: BatimentService,
-    private modal: NzModalRef
-  ) {}
 
   ngOnInit(): void {
+    if (this.data?.batiment) {
+      this.batiment = this.data.batiment;
+    }
     this.validateForm = this.fb.group({
       name: [null, [Validators.required, Validators.min(2)]],
     });

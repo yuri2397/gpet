@@ -9,7 +9,7 @@ import { BaseHttp } from '../shared/base-http';
 
 export class SyllabusService extends BaseHttp {
 
-  protected _baseUrl = 'syllabus';
+  protected override _baseUrl = 'syllabus';
   constructor(private hc : HttpClient){
     super();
     this.http = hc;

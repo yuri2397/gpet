@@ -1,15 +1,25 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Departement } from 'src/app/models/departement';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { RoleService } from './../../../services/role.service';
 import { Role } from './../../../models/role';
 import { User } from 'src/app/models/user';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 import { UserService } from 'src/app/services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-user-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.scss'],
 })
@@ -22,13 +32,11 @@ export class UserCreateComponent implements OnInit {
   isRolesLoad: boolean = true;
   departements: Departement[] = [];
   disableDep = false;
-  constructor(
-    private userService: UserService,
-    private modalRef: NzModalRef,
-    private fb: FormBuilder,
-    private roleService: RoleService,
-    private notification: NzNotificationService
-  ) {}
+
+  private userService = inject(UserService);
+  private modalRef = inject(ModalRef);
+  private fb = inject(FormBuilder);
+  private roleService = inject(RoleService);
 
   ngOnInit(): void {
     this.findRolesList();
@@ -46,7 +54,6 @@ export class UserCreateComponent implements OnInit {
       departement_id: [[], [Validators.required]],
     });
   }
-  
 
   findDepartements() {
     this.isLoad = true;
@@ -78,12 +85,10 @@ export class UserCreateComponent implements OnInit {
     this.isLoad = true;
     this.userService.create(this.user).subscribe({
       next: (response) => {
-        this.notification.success('Notification', response.message);
         this.modalRef.destroy(response);
         this.isLoad = false;
       },
       error: (errors) => {
-        this.notification.error("Message d'erreur", errors.error.message);
         this.modalRef.destroy(null);
         this.isLoad = false;
       },

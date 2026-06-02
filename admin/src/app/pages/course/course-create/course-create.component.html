@@ -1,114 +1,209 @@
-<div>
-    <nz-form [nzLayout]="'vertical'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <div class="row">
+<div class="px-1">
+    <form [formGroup]="validateForm" (ngSubmit)="submitForm()" class="space-y-5">
 
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="classe_id">Classe</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner la classe">
-                        <nz-select [nzLoading]="isLoadClasse" formControlName="classe_id" [(ngModel)]="course.classe_id">
-                            <ng-container *ngFor="let o of classes">
-                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                            </ng-container>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-            </div>
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzFor="professor_id">Professeur</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le prof">
-                        <nz-select nzPlaceHolder="Rechercher un professeur" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.professor_id" formControlName="professor_id" (nzOnSearch)="onProSearch($event)">
-                            <ng-container *ngFor="let o of professors">
-                                <nz-option *ngIf="!profLoad" [nzValue]="o.id" [nzLabel]="
-                    '#' +
-                    o.registration_number +
-                    ' - ' +
-                    o.first_name +
-                    o.last_name
-                  "></nz-option>
-                            </ng-container>
-                            <nz-option *ngIf="profLoad" nzDisabled nzCustomContent>
-                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-                            </nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="service_id">Service</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le service">
-                        <nz-select [nzLoading]="isLoad" formControlName="service_id" [(ngModel)]="course.service_id">
-                            <ng-container *ngFor="let o of services">
-                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                            </ng-container>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-            </div>
-            <div class="col-md-6">
-                <nz-form-item>
-                    <nz-form-label nzFor="montant">Montant Horaire</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
-                        <input disabled [value]="serviceAmout(course.service_id)" nz-input />
-                    </nz-form-control>
-                </nz-form-item>
-            </div>
-        </div>
+        <!-- Section: Identification du cours -->
+        <section class="rounded-2xl border border-gray-100 bg-white p-4">
+            <header class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10 text-primary">
+                    <i class="fa-solid fa-book-bookmark text-xs"></i>
+                </span>
+                <h3 class="text-sm font-semibold text-gray-800 m-0">Identification du cours</h3>
+            </header>
 
-        <div class="row">
-            <div class="col-md-4">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="ec_id">EC</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le eu">
-                        <nz-select [nzNotFoundContent]="addEC" nzPlaceHolder="Rechercher un EC" nzAllowClear nzShowSearch nzServerSearch [(ngModel)]="course.ec_id" formControlName="ec_id" (nzOnSearch)="onECSearch($event)">
-                            <ng-container *ngFor="let o of ecs">
-                                <nz-option *ngIf="!ecLoad" [nzValue]="o.id" [nzLabel]="'#' + o.code + ' - ' + o.name"></nz-option>
-                            </ng-container>
-                            <nz-option *ngIf="ecLoad" nzDisabled nzCustomContent>
-                                <i nz-icon nzType="loading" class="loading-icon"></i> Rechercher en cours...
-                            </nz-option>
-                        </nz-select>
-                        <ng-template #addEC>
-                            <button nz-button nzType="primary" (click)="addEc()">
-                Nouveau EC
-              </button>
-                        </ng-template>
-                    </nz-form-control>
-                </nz-form-item>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- EC -->
+                <div class="md:col-span-2">
+                    <label class="flex items-center gap-1 text-sm font-medium text-gray-700 mb-1">
+                        EC <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        @if (selectedEc) {
+                            <div class="flex items-center justify-between bg-primary/5 border border-primary/20 rounded-xl px-3 py-2.5">
+                                <div class="min-w-0 flex-1">
+                                    <div class="text-sm font-medium text-gray-800 truncate">
+                                        #{{ selectedEc.code }} — {{ selectedEc.name }}
+                                    </div>
+                                    @if (selectedEc.ue?.name) {
+                                        <div class="text-xs text-gray-500 truncate mt-0.5">
+                                            UE: {{ selectedEc.ue?.name }}
+                                        </div>
+                                    }
+                                </div>
+                                <button type="button" (click)="clearEc()" title="Retirer"
+                                    class="text-gray-400 hover:text-red-500 cursor-pointer bg-transparent border-none p-0 ml-2">
+                                    <i class="fa-solid fa-xmark text-xs"></i>
+                                </button>
+                            </div>
+                        } @else {
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                <input type="text"
+                                    placeholder="Rechercher par code ou nom (5+ caractères)"
+                                    (input)="onECSearch($any($event.target).value)"
+                                    (focus)="showEcDropdown = true"
+                                    [(ngModel)]="ecSearchText"
+                                    [ngModelOptions]="{standalone: true}"
+                                    class="w-full pl-10 pr-9 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none" />
+                                @if (ecLoad) {
+                                    <i class="fa-solid fa-spinner fa-spin absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                }
+                            </div>
+                            @if (showEcDropdown && ecs && ecs.length > 0) {
+                                <div class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                                    @for (e of ecs; track e.id) {
+                                        <div (click)="selectEc(e)"
+                                            class="px-3 py-2.5 text-sm cursor-pointer transition-colors border-b border-gray-50 last:border-b-0 hover:bg-primary/5 hover:text-primary">
+                                            <div class="font-medium text-gray-800">#{{ e.code }} — {{ e.name }}</div>
+                                            @if (e.ue?.name) {
+                                                <div class="text-xs text-gray-500 mt-0.5">UE: {{ e.ue?.name }}</div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                    <button type="button" (click)="addEc()"
+                        class="mt-1.5 inline-flex items-center text-xs font-medium text-primary hover:text-primary-dark cursor-pointer bg-transparent border-none p-0">
+                        <i class="fa-solid fa-plus text-xs mr-1"></i>Nouveau EC
+                    </button>
+                </div>
+
+                <!-- Nb groupe -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de groupe</label>
+                    <input type="number" min="1" [(ngModel)]="course.groupe_number" formControlName="groupe_number"
+                        class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none" />
+                </div>
             </div>
-            <div class="col-md-4">
-                <nz-form-item>
-                    <nz-form-label nzFor="groupe_number">Nombre de groupe</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Le groupe est requi">
-                        <input [(ngModel)]="course.groupe_number" formControlName="groupe_number" nz-input name="groupe_number" type="number" id="groupe_number" />
-                    </nz-form-control>
-                </nz-form-item>
+        </section>
+
+        <!-- Section: Affectation -->
+        <section class="rounded-2xl border border-gray-100 bg-white p-4">
+            <header class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10 text-primary">
+                    <i class="fa-solid fa-sitemap text-xs"></i>
+                </span>
+                <h3 class="text-sm font-semibold text-gray-800 m-0">Affectation</h3>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Classe -->
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+                        <span>Classe <span class="text-red-500">*</span></span>
+                        @if (classeLocked) {
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide">
+                                <i class="fa-solid fa-lock text-[8px]"></i> Auto
+                            </span>
+                        }
+                    </label>
+                    @if (classeLocked) {
+                        <div class="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5">
+                            <span class="text-sm font-medium text-gray-700 truncate">{{ classeName(course.classe_id) }}</span>
+                            <i class="fa-solid fa-lock text-gray-400 text-xs"></i>
+                        </div>
+                    } @else {
+                        <select formControlName="classe_id" [(ngModel)]="course.classe_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-white">
+                            <option [ngValue]="null" disabled>Sélectionner la classe</option>
+                            @for (o of classes; track o) {
+                                <option [ngValue]="o.id">{{ o.name }}</option>
+                            }
+                        </select>
+                        @if (isLoadClasse) {
+                            <span class="text-xs text-gray-400 mt-1 inline-flex items-center gap-1">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Chargement...
+                            </span>
+                        }
+                    }
+                </div>
+
+                <!-- Département -->
+                <div>
+                    <label class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
+                        <span>Département <span class="text-red-500">*</span></span>
+                        @if (departementLocked) {
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[10px] font-semibold uppercase tracking-wide">
+                                <i class="fa-solid fa-lock text-[8px]"></i> Auto
+                            </span>
+                        }
+                    </label>
+                    @if (departementLocked) {
+                        <div class="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5">
+                            <span class="text-sm font-medium text-gray-700 truncate">{{ departementName(course.departement_id) }}</span>
+                            <i class="fa-solid fa-lock text-gray-400 text-xs"></i>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Déduit automatiquement de l'EC sélectionné.</p>
+                    } @else {
+                        <select [attr.disabled]="!courseService.isSuperAdmin() ? '' : null"
+                            formControlName="departement_id" [(ngModel)]="course.departement_id"
+                            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-white disabled:bg-gray-50 disabled:cursor-not-allowed">
+                            <option [ngValue]="null" disabled>Sélectionner le département</option>
+                            @for (o of departements; track o) {
+                                <option [ngValue]="o.id">{{ o.name }}</option>
+                            }
+                        </select>
+                    }
+                </div>
             </div>
-            <div class="col-md-4">
-                <nz-form-item>
-                    <nz-form-label nzRequired nzFor="departement_id">Département</nz-form-label>
-                    <nz-form-control [nzSm]="24" [nzXs]="24" nzErrorTip="Selectionner le département">
-                        <nz-select [nzDisabled]="!courseService.isSuperAdmin()" [nzLoading]="isLoad" formControlName="departement_id" [(ngModel)]="course.departement_id">
-                            <ng-container *ngFor="let o of departements">
-                                <nz-option [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
-                            </ng-container>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
+        </section>
+
+        <!-- Section: Service & enseignant -->
+        <section class="rounded-2xl border border-gray-100 bg-white p-4">
+            <header class="flex items-center gap-2 mb-3">
+                <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10 text-primary">
+                    <i class="fa-solid fa-user-tie text-xs"></i>
+                </span>
+                <h3 class="text-sm font-semibold text-gray-800 m-0">Service & enseignant</h3>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Service -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Service <span class="text-red-500">*</span></label>
+                    <select formControlName="service_id" [(ngModel)]="course.service_id"
+                        class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors outline-none bg-white">
+                        <option [ngValue]="null" disabled>Sélectionner le service</option>
+                        @for (o of services; track o) {
+                            <option [ngValue]="o.id">{{ o.name }}</option>
+                        }
+                    </select>
+                    @if (course.service_id) {
+                        <p class="text-xs text-gray-500 mt-1">Montant horaire : <span class="font-semibold text-gray-700">{{ serviceAmout(course.service_id) }}</span></p>
+                    }
+                </div>
+
+                <!-- Professeur -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Professeur</label>
+                    <app-select-search
+                        [items]="professors || []"
+                        [selected]="selectedProfessor"
+                        [loading]="profLoad"
+                        [minChars]="2"
+                        placeholder="Tapez au moins 2 caractères..."
+                        emptyText="Aucun professeur trouvé"
+                        [displayWith]="professorLabel"
+                        [sublabelWith]="professorSublabel"
+                        (search)="onProSearch($event)"
+                        (selectedChange)="onProfessorChange($event)" />
+                </div>
             </div>
-        </div>
-    </nz-form>
+        </section>
+    </form>
 </div>
 
-<div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal(null)">
-    Annuler
-  </button>
-    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">
-    Ajouter
-  </button>
+<div class="flex justify-end gap-3 px-4 py-3 mt-2 border-t border-gray-100">
+    <button type="button" (click)="destroyModal(null)"
+        class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200 cursor-pointer">
+        Annuler
+    </button>
+    <button type="button" (click)="save()" [disabled]="!validateForm.valid"
+        class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary hover:bg-primary-dark border-none disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer">
+        @if (isLoad) {
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+        }
+        Ajouter
+    </button>
 </div>

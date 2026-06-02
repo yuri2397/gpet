@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #1890ff;
+  --color-primary-dark: #096dd9;
+  --color-primary-light: #40a9ff;
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-danger: #ff4d4f;
+  --color-sidebar: #001529;
+  --color-sidebar-light: #002140;
+}
+
+html, body {
+  @apply h-full m-0 p-0 bg-gray-50 font-sans text-gray-800 antialiased;
+}
+
+::-webkit-scrollbar {
+  @apply w-1.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Modal form styles */
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body input[type="email"],
+.modal-body input[type="password"],
+.modal-body input[type="date"],
+.modal-body input[type="tel"],
+.modal-body textarea,
+.modal-body select {
+  @apply w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 outline-none transition-all duration-200;
+}
+
+.modal-body input:focus,
+.modal-body textarea:focus,
+.modal-body select:focus {
+  @apply bg-white ring-2 ring-primary/20 border-primary;
+}
+
+.modal-body input:disabled,
+.modal-body select:disabled {
+  @apply bg-gray-100 text-gray-500 cursor-not-allowed;
+}
+
+.modal-body label {
+  @apply block text-sm font-medium text-gray-700 mb-1.5;
+}
+
+.modal-body .flex.justify-end {
+  @apply pt-4 mt-2 border-t border-gray-100;
+}
+
+.modal-body .flex.justify-end button {
+  @apply px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 cursor-pointer;
+}

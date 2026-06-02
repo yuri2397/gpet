@@ -9,7 +9,7 @@ import { BankService } from './bank.service';
   providedIn: 'root',
 })
 export class ECService extends BaseHttp {
-  protected _baseUrl = 'ec';
+  protected override _baseUrl = 'ec';
   constructor(protected hc: HttpClient, private bankService: BankService) {
     super();
     this.http = hc;

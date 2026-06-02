@@ -9,7 +9,7 @@ import { Batiment } from '../models/batiment';
 })
 export class SalleService extends BaseHttp{
 
-  protected _baseUrl = 'salle';
+  protected override _baseUrl = 'salle';
   constructor(
     protected hc: HttpClient,
   ) {

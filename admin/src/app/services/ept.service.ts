@@ -1,4 +1,4 @@
-import { Departement } from 'src/app/models/departement';
+import { Departement } from '../models/departement';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Classe } from '../models/classe';
@@ -10,7 +10,7 @@ import { BaseHttp } from '../shared/base-http';
   providedIn: 'root',
 })
 export class EptService extends BaseHttp {
-  protected _baseUrl = 'ept';
+  protected override _baseUrl = 'ept';
   constructor(protected hc: HttpClient) {
     super();
     this.http = hc;
@@ -66,6 +66,7 @@ export class EptService extends BaseHttp {
         course_id: item.course.id,
         day_id: item.day.id,
         group: item.group ?? 1,
+        professor_id: item.professor_id ?? null,
       },
       {
         headers: this.authorizationHeaders,
@@ -86,6 +87,7 @@ export class EptService extends BaseHttp {
         day_id: item.day.id,
         ept_id: item.id,
         group: item.group ?? 1,
+        professor_id: item.professor_id ?? null,
       },
       {
         headers: this.authorizationHeaders,

@@ -1,57 +1,92 @@
-import { BatimentEditComponent } from './../batiment-edit/batiment-edit.component';
-import { Component, OnInit } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { BatimentService } from 'src/app/services/batiment.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { BatimentCreateComponent } from '../batiment-create/batiment-create.component';
-import { Permission } from 'src/app/models/permission';
+import { BatimentEditComponent } from './../batiment-edit/batiment-edit.component';
+import { AuthStore } from 'src/app/shared/auth-store';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-batiment-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './batiment-list.component.html',
   styleUrls: ['./batiment-list.component.scss'],
 })
 export class BatimentListComponent implements OnInit {
-  batiments!: Batiment[];
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  private batimentService = inject(BatimentService);
+  private authStore = inject(AuthStore);
+
+  batiments = signal<Batiment[]>([]);
+  filteredBatiments = signal<Batiment[]>([]);
   selectedBatiment!: Batiment;
-  isLoad = true;
-  deleteRestoRef!: NzModalRef;
+  isLoad = signal(true);
+  deleteRestoRef!: ModalRef;
   deleteLoad!: boolean;
-  constructor(
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private batimentService: BatimentService
-  ) {}
+  searchValue = signal('');
+  openDropdownId = signal<string | null>(null);
+
+  toggleDropdown(id: string, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  searchBatiments() {
+    const sv = this.searchValue().toLowerCase();
+    if (!sv) {
+      this.filteredBatiments.set(this.batiments());
+    } else {
+      this.filteredBatiments.set(this.batiments().filter(b =>
+        b.name.toLowerCase().includes(sv)
+      ));
+    }
+  }
 
   ngOnInit(): void {
     this.findAll();
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.batimentService.findAll().subscribe({
       next: (batiments: Batiment[]) => {
-        this.batiments = batiments;
-        this.isLoad = false;
+        this.batiments.set(batiments);
+        this.filteredBatiments.set(batiments);
+        this.isLoad.set(false);
       },
       error: (errors: any) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
 
   openEditModal(batiment: Batiment) {
     this.selectedBatiment = batiment;
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier le batiment',
-      nzContent: BatimentEditComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'Modifier le batiment',
+      component: BatimentEditComponent,
+      data: {
         batiment: this.batimentService.clone(batiment),
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -63,15 +98,10 @@ export class BatimentListComponent implements OnInit {
 
   openDeleteModal(batiment: Batiment) {
     this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé le batiment?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteBatiment(batiment),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Voulez-vous supprimé le batiment?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteBatiment(batiment),
     });
   }
 
@@ -101,12 +131,9 @@ export class BatimentListComponent implements OnInit {
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Ajouter un batiment',
-      nzContent: BatimentCreateComponent,
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
+    const modal = this.modalService.open({
+      title: 'Ajouter un batiment',
+      component: BatimentCreateComponent,
     });
 
     modal.afterClose.subscribe((data: Batiment | null) => {
@@ -116,11 +143,7 @@ export class BatimentListComponent implements OnInit {
     });
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.batimentService.can(p, this.batimentService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
-
 }

@@ -1,82 +1,167 @@
-<nz-layout *ngIf="!isLoad; else loadingTemplate" class="app-layout">
-    <nz-sider class="menu-sidebar" nzTheme="light" nzCollapsible nzWidth="260px" nzBreakpoint="md" [nzCollapsed]="isCollapsed" [nzTrigger]="null">
-        <div class="sidebar-logo">
-            <img src="/assets/img/logo.jpg" alt="logo" />
-            <h6 *ngIf="!isCollapsed" class="color-geekblue">{{ title }}</h6>
+@if (!isLoad()) {
+<div class="flex h-screen overflow-hidden bg-gray-50 isolate">
+
+  <!-- ============  SIDEBAR  ============ -->
+  <aside
+    class="bg-sidebar flex flex-col z-30 flex-shrink-0 transition-all duration-300 ease-in-out"
+    [style.width]="isCollapsed() ? '78px' : '270px'"
+  >
+    <!-- Logo area -->
+    <div class="h-[72px] flex items-center gap-3 px-5 border-b border-white/[0.06]">
+      <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+        <img src="/assets/img/logo.jpg" alt="logo" class="w-8 h-8 rounded-lg" />
+      </div>
+      @if (!isCollapsed()) {
+        <div class="overflow-hidden">
+          <h1 class="text-white text-[15px] font-bold tracking-tight m-0 whitespace-nowrap leading-tight">GPET</h1>
+          <p class="text-white text-[10px] m-0 whitespace-nowrap uppercase tracking-widest">UFR SET</p>
         </div>
-        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed" class="px-1">
-            <ng-container *ngFor="let item of menuItems">
-                <li class="sider-bar-item" (click)="routerLink(item)" *ngIf="canShowItem(item)" nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTooltipTitle]="isCollapsed ? item.title : ''" [nzSelected]="selected(item)">
-                    <i nz-icon>
-            <mat-icon class="icon">{{ item.icon }}</mat-icon>
-          </i>
-                    <span class="label txt-primary">{{ item.title }}</span>
-                </li>
-            </ng-container>
-        </ul>
-    </nz-sider>
-    <nz-layout>
-        <nz-header>
-            <div class="d-flex app-header justify-content-between align-items-center">
-                <div>
-                    <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
-            <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
-          </span>
-                </div>
-                <span class="bold">{{ depTitle! }}</span>
-                <div class="mx-3">
-                    <a [routerLink]="['profile']" routerLinkActive="router-link-active" style="text-decoration: none">
-                        <button mat-mini-fab color="primary" nzTrigger="click">
-              <mat-icon>account_circle</mat-icon>
-            </button>
-                    </a>
-                    <nz-dropdown-menu #menu="nzDropdownMenu">
-                        <ul nz-menu>
-                            <li nz-menu-item>
-                                <a [routerLink]="['profile']" routerLinkActive="router-link-active">
-                  Profile
-                </a>
-                            </li>
-                            <li (click)="logout()" nz-menu-item>
-                                <a> Déconnexion </a>
-                            </li>
-                        </ul>
-                    </nz-dropdown-menu>
-                </div>
-            </div>
-        </nz-header>
-        <nz-content>
-            <div class="bg-admin inner-content">
-                <router-outlet></router-outlet>
-            </div>
-        </nz-content>
-    </nz-layout>
-</nz-layout>
-<ng-template #loadingTemplate>
-    <div class="center" style="flex-direction: column;">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:transparent;display:block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-        <g transform="translate(50 50) scale(0.8)">
-          <g>
-            <animateTransform attributeName="transform" type="scale" repeatCount="indefinite" calcMode="spline"
-              dur="1.7543859649122806s" values="0.8;0.5;0.8" keyTimes="0;0.5;1" keySplines="0.5 0 0.5 1;0.5 0 0.5 1">
-            </animateTransform>
-            <rect x="-45" y="-45" width="90" height="90" fill="#ffffff" stroke="#41729f" stroke-width="8"
-              stroke-linejoin="round" rx="1" ry="1">
-              <animate attributeName="rx" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
-                keyTimes="0;0.5;1"></animate>
-              <animate attributeName="ry" repeatCount="indefinite" dur="1.7543859649122806s" values="0;50;0"
-                keyTimes="0;0.5;1"></animate>
-              <animate attributeName="stroke-width" repeatCount="indefinite" dur="1.7543859649122806s" values="8;12.8;8"
-                keyTimes="0;0.5;1"></animate>
-              <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite"
-                dur="1.7543859649122806s" values="0 0 0;270 0 0;540 0 0" keyTimes="0;0.5;1" calcMode="spline"
-                keySplines="0.5 0 0.5 1;0.5 0 0.5 1"></animateTransform>
-            </rect>
-          </g>
-        </g>
-      </svg>
-        </div>
-        <h4>Bienvenue sur <span class="bold">GPET</span>...</h4>
+      }
     </div>
-</ng-template>
+    <br>
+
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto px-3 scrollbar-thin" [class.pt-4]="isCollapsed()">
+      <ul class="list-none m-0 p-0 space-y-0.5">
+        @for (item of menuItems(); track item.path) {
+          @if (canShowItem(item)) {
+            <li
+              (click)="routerLink(item)"
+              class="group flex items-center gap-3 rounded-xl cursor-pointer transition-all duration-200 relative"
+              [class]="selected(item)
+                ? 'bg-primary text-white shadow-lg shadow-primary/20 py-2.5 px-3'
+                : 'text-white/80 hover:text-white hover:bg-white/[0.08] py-2.5 px-3'"
+              [title]="isCollapsed() ? item.title : ''"
+            >
+              <!-- Active indicator bar -->
+              @if (selected(item)) {
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-white rounded-r-full -ml-3"></div>
+              }
+
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors"
+                [class]="selected(item) ? 'bg-white/20' : 'bg-transparent group-hover:bg-white/[0.06]'"
+              >
+                <app-icon [name]="item.icon" class="text-sm" />
+              </div>
+              @if (!isCollapsed()) {
+                <span class="text-[13px] font-medium whitespace-nowrap">{{ item.title }}</span>
+              }
+            </li>
+          }
+        }
+      </ul>
+    </nav>
+
+    <!-- User info + Logout -->
+    <div class="border-t border-white/[0.06] p-3">
+      <!-- User card -->
+      @if (!isCollapsed()) {
+        <div class="flex items-center gap-3 px-3 py-2.5 mb-1 rounded-xl bg-white/[0.04]">
+          <div class="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-user text-primary-light text-xs"></i>
+          </div>
+          <div class="overflow-hidden flex-1 min-w-0">
+            <p class="text-white text-xs font-medium m-0 truncate">{{ user()?.first_name }} {{ user()?.last_name }}</p>
+            <p class="text-white/50 text-[10px] m-0 truncate">Administrateur</p>
+          </div>
+        </div>
+      }
+
+      <!-- Logout -->
+      <button
+        (click)="logout()"
+        class="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-white/60 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 cursor-pointer bg-transparent border-none"
+        [title]="isCollapsed() ? 'Déconnexion' : ''"
+      >
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+          <i class="fa-solid fa-right-from-bracket text-sm"></i>
+        </div>
+        @if (!isCollapsed()) {
+          <span class="text-[13px] font-medium">Déconnexion</span>
+        }
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============  MAIN AREA  ============ -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- Navbar -->
+    <header class="h-[72px] bg-white z-10 flex-shrink-0 border-b border-gray-100">
+      <div class="flex items-center justify-between h-full px-6">
+
+        <!-- Left: Toggle + Breadcrumb -->
+        <div class="flex items-center gap-4">
+          <button
+            (click)="isCollapsed.set(!isCollapsed())"
+            class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200 cursor-pointer bg-transparent border-none group"
+          >
+            <i class="fa-solid fa-bars text-gray-400 group-hover:text-gray-600 transition-colors"></i>
+          </button>
+
+          <!-- Breadcrumb -->
+          <div class="hidden sm:flex items-center gap-2 text-sm">
+            <span class="text-gray-400">
+              <i class="fa-solid fa-house text-xs"></i>
+            </span>
+            <i class="fa-solid fa-chevron-right text-[10px] text-gray-300"></i>
+            <span class="text-gray-500 font-medium">Administration</span>
+          </div>
+        </div>
+
+        <!-- Center: Department title -->
+        @if (depTitle()) {
+          <div class="hidden md:flex items-center gap-2.5 px-4 py-1.5 bg-primary/5 rounded-full">
+            <i class="fa-solid fa-building-columns text-primary text-xs"></i>
+            <span class="text-sm font-semibold text-primary">{{ depTitle() }}</span>
+          </div>
+        }
+
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-3">
+          <!-- Search button -->
+          <button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200 cursor-pointer bg-transparent border-none group">
+            <i class="fa-solid fa-magnifying-glass text-gray-400 group-hover:text-gray-600 transition-colors text-sm"></i>
+          </button>
+
+          <!-- Notifications -->
+          <button class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-all duration-200 cursor-pointer bg-transparent border-none group relative">
+            <i class="fa-solid fa-bell text-gray-400 group-hover:text-gray-600 transition-colors text-sm"></i>
+            <span class="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full"></span>
+          </button>
+
+          <!-- Separator -->
+          <div class="w-px h-8 bg-gray-100 mx-1"></div>
+
+          <!-- Profile -->
+          <a [routerLink]="['profile']" class="flex items-center gap-3 px-2 py-1.5 rounded-xl hover:bg-gray-50 transition-all duration-200 no-underline cursor-pointer">
+            <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
+              <i class="fa-solid fa-user text-white text-xs"></i>
+            </div>
+            <div class="hidden lg:block">
+              <p class="text-sm font-medium text-gray-700 m-0 leading-tight">{{ user()?.first_name }}</p>
+              <p class="text-[10px] text-gray-400 m-0">Admin</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto bg-gray-50/80">
+      <div class="p-6 lg:p-8">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+</div>
+} @else {
+<!-- Loading Screen -->
+<div class="h-screen flex flex-col items-center justify-center bg-gray-50">
+  <div class="relative">
+    <div class="w-16 h-16 border-4 border-primary/20 rounded-full"></div>
+    <div class="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
+  </div>
+  <p class="mt-6 text-lg text-gray-500 font-medium">Bienvenue sur <span class="font-bold text-primary">GPET</span>...</p>
+</div>
+}

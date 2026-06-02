@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Batiment } from 'src/app/models/batiment';
 import { Departement } from 'src/app/models/departement';
 import { Salle } from 'src/app/models/salle';
@@ -11,10 +12,23 @@ import { SalleService } from 'src/app/services/salle.service';
 
 @Component({
   selector: 'app-salle-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  ],
   templateUrl: './salle-create.component.html',
   styleUrls: ['./salle-create.component.scss'],
 })
 export class SalleCreateComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  public salleService = inject(SalleService);
+  private modal = inject(ModalRef);
+  private deptService = inject(DepartementService);
+  private batimentService = inject(BatimentService);
+
   batiments!: Batiment[];
   departements!: Departement[];
   validateForm!: FormGroup;
@@ -22,21 +36,13 @@ export class SalleCreateComponent implements OnInit {
   isLoadData = false;
   isLoadDataBat = true;
   salle: Salle = new Salle();
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    public salleService: SalleService,
-    private modal: NzModalRef,
-    private deptService: DepartementService,
-    private batimentService: BatimentService
-  ) {}
 
   ngOnInit(): void {
     this.findBatiment();
     if (this.salleService.isAdmin()) {
       this.findDepartement();
     }
-    else{
+    else {
       this.salle.departement_id = this.salleService.getUser().departement_id;
     }
     this.validateForm = this.fb.group({

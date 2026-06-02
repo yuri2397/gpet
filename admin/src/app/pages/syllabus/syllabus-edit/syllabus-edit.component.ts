@@ -1,31 +1,37 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { Course } from 'src/app/models/course';
 import { Syllabus } from 'src/app/models/syllabus';
 import { NotificationService } from 'src/app/services/notification.service';
 import { SyllabusService } from 'src/app/services/syllabus.service';
-import { Location } from '@angular/common';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { on } from 'events';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 
 @Component({
   selector: 'app-syllabus-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './syllabus-edit.component.html',
   styleUrls: ['./syllabus-edit.component.scss']
 })
 export class SyllabusEditComponent implements OnInit {
-   syllabus = new Syllabus();
-   isLoad: boolean = false;
-   dataLoad = true;
-   errorServer = false;
-   @Input() course!: Course;
+  private syllabusService = inject(SyllabusService);
+  private notification = inject(NotificationService);
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
 
-  constructor(
-    private syllabusService : SyllabusService,
-    private notification: NotificationService,
-    private route: ActivatedRoute,
-    private location: Location,
-  ) { }
+  syllabus = new Syllabus();
+  isLoad: boolean = false;
+  dataLoad = true;
+  errorServer = false;
+  @Input() course!: Course;
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -36,7 +42,7 @@ export class SyllabusEditComponent implements OnInit {
   }
 
   name = 'Angular 6';
-  config: AngularEditorConfig = {
+  config: any = {
     editable: true,
     spellcheck: true,
     height: '50rem',

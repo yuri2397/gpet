@@ -1,30 +1,45 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { ProfessorService } from 'src/app/services/professor.service';
-import { Component, OnInit } from '@angular/core';
 import { Professor } from 'src/app/models/professor';
-import { Location } from '@angular/common';
 import { User } from 'src/app/models/user';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { timeStamp } from 'console';
 import { Bank } from 'src/app/models/bank';
 import { ProfessorType } from 'src/app/models/professor_type';
 import { Departement } from 'src/app/models/departement';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  LoadComponent,
+  ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
+  private profService = inject(ProfessorService);
+  private location = inject(Location);
+  private fb = inject(FormBuilder);
+  private notification = inject(NotificationService);
+  public professorService = inject(ProfessorService);
+
   professeur!: Professor;
   professor!: Professor;
   dataLoad = true;
   errorServer = false;
   avatarLoad = false;
-  modifierleprofe=false;
+  modifierleprofe = false;
   validateForm!: FormGroup;
   file: any;
   isLoad: boolean = false;
@@ -32,19 +47,7 @@ export class ProfileComponent implements OnInit {
   professorTypes!: ProfessorType[];
   departements!: Departement[];
   isLoadData = false;
-  modifierinfobank=false;
-
-
-
-  constructor(
-    private modalService: NzModalService,
-    private profService: ProfessorService,
-    private location: Location,
-    private fb: FormBuilder,
-     private notification: NotificationService,
-     public professorService: ProfessorService,
-
-  ) {}
+  modifierinfobank = false;
 
   ngOnInit(): void {
     this.profile();
@@ -91,9 +94,11 @@ export class ProfileComponent implements OnInit {
     }
     return this.profService.host + 'storage' + this.professeur.avatar;;
   }
+
   onBack() {
     this.location.back();
   }
+
   onChange(event: any) {
     this.file = event.target.files[0];
     if (this.file != null) {
@@ -113,7 +118,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-   submitForm(): void {
+  submitForm(): void {
     for (const i in this.validateForm.controls) {
       if (this.validateForm.controls.hasOwnProperty(i)) {
         this.validateForm.controls[i].markAsDirty();
@@ -121,16 +126,16 @@ export class ProfileComponent implements OnInit {
       }
     }
   }
-  openAddProfModal() {
-    this.modifierleprofe=true;
-    this.professor=this.profService.clone(this.professeur);
-    console.log(this.professor);
 
+  openAddProfModal() {
+    this.modifierleprofe = true;
+    this.professor = this.profService.clone(this.professeur);
+    console.log(this.professor);
   }
 
   openModalbank() {
-    this.modifierinfobank=true;
-    this.professor=this.profService.clone(this.professeur);
+    this.modifierinfobank = true;
+    this.professor = this.profService.clone(this.professeur);
     console.log(this.professor);
   }
 
@@ -142,17 +147,15 @@ export class ProfileComponent implements OnInit {
 
     this.profService.edit(this.professor).subscribe({
       next: (response) => {
-       this.isLoad = false;
+        this.isLoad = false;
         this.notification.createNotification(
           'success',
           'Notification',
           'Information modifié avec succés.'
         );
-        this.modifierleprofe=false;
-        this.modifierinfobank=false;
-        //console.log(response);
-        this.professeur=response;
-
+        this.modifierleprofe = false;
+        this.modifierinfobank = false;
+        this.professeur = response;
       },
       error: (errors) => {
         this.isLoad = false;
@@ -163,7 +166,6 @@ export class ProfileComponent implements OnInit {
           'Erreur',
           errors.error.message
         );
-
       },
     });
   }
@@ -187,5 +189,4 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
-
 }

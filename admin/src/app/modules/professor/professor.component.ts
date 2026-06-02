@@ -1,25 +1,12 @@
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterModule, Router, RouterOutlet } from '@angular/router';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
-import { Permission } from '../../models/permission';
-import { Role } from '../../models/role';
-import {
-  ApexAxisChartSeries,
-  ApexTitleSubtitle,
-  ApexDataLabels,
-  ApexChart
-} from "ng-apexcharts";
-import { ProfUser } from 'src/app/models/prof-user';
+import { AuthStore } from 'src/app/shared/auth-store';
+import { NotificationService } from 'src/app/services/notification.service';
 
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  title: ApexTitleSubtitle;
-  colors: any;
-};
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -27,84 +14,62 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  {
-    path: 'courses',
-    title: 'Mes cours',
-    icon: 'checklist_rtl',
-  },{
-    path: 'profile',
-    title: 'Profile',
-    icon: 'person',
-  },
-  
-  {
-    path: 'timestable',
-    title: 'Emploi du Temps',
-    icon: 'event_note',
-  },
-  {
-    path: 'reliquat',
-    title: 'Comptabilité',
-    icon: 'credit_score',
-  },
-  {
-    path: 'resources',
-    title: 'Ressource',
-    icon: 'description',
-  },
-
-  {
-    path: 'securite',
-    title: 'Securite',
-    icon: 'admin_panel_settings',
-  },
-
+  { path: 'courses', title: 'Mes cours', icon: 'checklist_rtl' },
+  { path: 'profile', title: 'Profile', icon: 'person' },
+  { path: 'timestable', title: 'Emploi du Temps', icon: 'event_note' },
+  { path: 'reliquat', title: 'Comptabilité', icon: 'credit_score' },
+  { path: 'resources', title: 'Ressource', icon: 'description' },
+  { path: 'securite', title: 'Securite', icon: 'admin_panel_settings' },
 ];
+
 @Component({
   selector: 'app-professor',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    RouterOutlet,
+    IconComponent,
+  ],
   templateUrl: './professor.component.html',
-  styleUrls: ['./professor.component.scss']
+  styleUrls: ['./professor.component.scss'],
 })
 export class ProfessorComponent implements OnInit {
+  private router = inject(Router);
+  private userService = inject(UserService);
+  private authStore = inject(AuthStore);
+  private notification = inject(NotificationService);
 
-  isCollapsed = true;
-  isLoad = true;
-  roles!: Role[];
-  user!: User;
-  profuser!:ProfUser;
-  menuItems!: RouteInfo[];
+  isCollapsed = signal(true);
+  isLoad = signal(true);
+  roles = this.authStore.roles;
+  user = this.authStore.user;
+  menuItems = signal<RouteInfo[]>([]);
   title = 'UFR SET - GPET';
-  depTitle!: string;
-  permissions!: Permission[];
-
-  constructor(private router: Router, private userService: UserService, private notification: NzNotificationService) {}
+  depTitle = signal('');
+  permissions = this.authStore.permissions;
 
   ngOnInit() {
-    this.currentUser()
+    this.currentUser();
   }
 
   currentUser() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.userService.currentUser().subscribe({
       next: (response: User) => {
-        this.userService.setUser(response);
-        this.userService.setRoles(response.roles);
-        this.user = response;
-        this.roles = response.roles;
-        this.permissions = response.permissions;
-        this.menuItems = ROUTES.filter((menuItem) => menuItem);
-        this.isLoad = false;
+        this.authStore.updateUser(response);
+        this.menuItems.set(ROUTES.filter((menuItem) => menuItem));
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.notification.error("Notification", errors.error)
-        this.isLoad = false;
+        this.notification.createNotification('error', 'Notification', errors.error);
+        this.isLoad.set(false);
       },
     });
-
   }
 
   selected(item: RouteInfo) {
-    return this.router.url.indexOf(item.path) !== -1 ? true : false;
+    return this.router.url.indexOf(item.path) !== -1;
   }
 
   routerLink(item: RouteInfo) {
@@ -112,6 +77,7 @@ export class ProfessorComponent implements OnInit {
   }
 
   logout() {
-    this.userService.logout();
+    this.authStore.clearAuth();
+    this.router.navigate(['/']);
   }
 }

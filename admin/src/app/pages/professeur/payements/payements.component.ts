@@ -1,39 +1,45 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { PayementsPrintAllComponent } from './../payements-print-all/payements-print-all.component';
 import { PayementsPrintComponent } from './../payements-print/payements-print.component';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { Professor } from 'src/app/models/professor';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { CoursesDo } from 'src/app/models/coures-do';
-import { CourseDoService } from 'src/app/services/course-do.service';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ErrorServerComponent } from 'src/app/shared/ui/error-server/error-server.component';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-payements',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  ErrorServerComponent,
+  ],
   templateUrl: './payements.component.html',
   styleUrls: ['./payements.component.scss'],
 })
 export class PayementsComponent implements OnInit {
+  private location = inject(Location);
+  private route = inject(ActivatedRoute);
+  private professorService = inject(ProfessorService);
+  private modalService = inject(ModalService);
+  private notification = inject(NotificationService);
+
   professor: Professor = new Professor();
   dataLoad = true;
   errorServer = false;
-  deleteRestoRef!: NzModalRef;
+  deleteRestoRef!: ModalRef;
   paymentLoad = false;
   confPayPending = true;
   isProfesseur = false;
-  constructor(
-    private location: Location,
-    private route: ActivatedRoute,
-    private professorService: ProfessorService,
-    private modalService: NzModalService,
-    private notification: NotificationService
-  ) {}
 
   ngOnInit(): void {
-    
     this.route.params.subscribe((params) => {
       this.professor.registration_number = params['register_number'];
       this.findPayments();
@@ -81,54 +87,54 @@ export class PayementsComponent implements OnInit {
     this.location.back();
   }
 
+  paidCount(): number {
+    return (this.professor.coursesDo || []).filter((c) => c.is_paid).length;
+  }
+
+  pendingCount(): number {
+    return (this.professor.coursesDo || []).filter((c) => !c.is_paid).length;
+  }
+
+  totalAmount(): number {
+    return (this.professor.coursesDo || []).reduce(
+      (sum, c) => sum + (Number(c.total_sales) || 0),
+      0
+    );
+  }
+
   printPayment(courseDo: CoursesDo) {
-    let modal = this.modalService.create({
-      nzTitle: "Imprimer l'état de payement",
-      nzContent: PayementsPrintComponent,
-      nzComponentParams: {
+    this.modalService.open({
+      title: "Imprimer l'état de payement",
+      component: PayementsPrintComponent,
+      data: {
         classe: courseDo.course.classe,
         semester: courseDo.course.semester,
         professor: courseDo.professor,
         course: courseDo.course,
         courseDo: courseDo
       },
-      nzClosable: false,
-      nzWidth: "70%",
     });
   }
 
   printAll(){
-    let modal = this.modalService.create({
-      nzTitle: "Imprimer tous les états payés.",
-      nzContent: PayementsPrintAllComponent,
-      nzComponentParams: {
+    this.modalService.open({
+      title: "Imprimer tous les états payés.",
+      component: PayementsPrintAllComponent,
+      data: {
          professor: this.professor
       },
-      nzClosable: false,
-      nzWidth: "80%",
     });
   }
-
-  
 
   openDoPaymentModal(courseDo: CoursesDo) {
     if(this.professorService.isProfesseur()){
       return;
     }
     this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: "<h3>Paiement d'un cour.</h1>",
-      nzContent: `
-        <span>Cette action est irréverssible. Une fois le paiement éffectué, vous ne pourez plus l\'annuler.</span>
-      `,
-      nzOkText: 'Valider le paiement',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.doPayment(courseDo),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.paymentLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzCentered: true
+      title: "Paiement d'un cour.",
+      okText: 'Valider le paiement',
+      okDanger: true,
+      onOk: () => this.doPayment(courseDo),
     });
   }
 }

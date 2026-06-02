@@ -1,19 +1,29 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { find } from 'rxjs/operators';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, Input, OnInit, inject, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { Classe } from 'src/app/models/classe';
 import { Departement } from 'src/app/models/departement';
 import { Permission } from 'src/app/models/permission';
 import { ClasseService } from 'src/app/services/classe.service';
-import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { DepartementCreateComponent } from '../../departement/departement-create/departement-create.component';
 import { ClasseCreateComponent } from '../classe-create/classe-create.component';
 import { ClasseEditComponent } from '../classe-edit/classe-edit.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-classe-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './classe-list.component.html',
   styleUrls: ['./classe-list.component.scss'],
 })
@@ -21,27 +31,41 @@ export class ClasseListComponent implements OnInit {
   @Input() departement!: Departement;
   @Input() setView!: boolean;
   @Input() classes!: Classe[];
-  deleteRestoRef!: NzModalRef;
+  deleteRestoRef!: ModalRef;
   isLoad = false;
   deleteLoad = false;
   searchValue = '';
-  listOfDisplayData!:Classe[];
+  listOfDisplayData!: Classe[];
   visible = false;
 
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  classeService = inject(ClasseService);
 
-  constructor(
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    public classeService: ClasseService
-  ) {}
+  totalStudents() {
+    if (!this.classes) return 0;
+    return this.classes.reduce((sum, c) => sum + (c.nb_students || 0), 0);
+  }
+
+  averageStudents() {
+    if (!this.classes || this.classes.length === 0) return 0;
+    return Math.round(this.totalStudents() / this.classes.length);
+  }
+
+  largestClass() {
+    if (!this.classes || this.classes.length === 0) return '-';
+    const max = this.classes.reduce((prev, curr) =>
+      (curr.nb_students || 0) > (prev.nb_students || 0) ? curr : prev
+    );
+    return max.name;
+  }
 
   ngOnInit(): void {
-    if(this.classes == null){
+    if (this.classes == null) {
       this.find();
-    }else{
-      this.listOfDisplayData = this.classes
+    } else {
+      this.listOfDisplayData = this.classes;
     }
-
   }
 
   find() {
@@ -57,7 +81,7 @@ export class ClasseListComponent implements OnInit {
     this.isLoad = true;
     this.classeService.selectClasses().subscribe({
       next: (response) => {
-        this.listOfDisplayData = response
+        this.listOfDisplayData = response;
         this.classes = response;
         this.isLoad = false;
       },
@@ -87,16 +111,13 @@ export class ClasseListComponent implements OnInit {
   }
 
   openEditModal(classe: Classe) {
-    const modal = this.modalService.create({
-      nzTitle: 'Modifier les informations de la classe',
-      nzContent: ClasseEditComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'Modifier les informations de la classe',
+      component: ClasseEditComponent,
+      data: {
         classe: this.classeService.clone(classe),
         departement: this.departement,
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
     });
 
     modal.afterClose.subscribe((data: Classe | null) => {
@@ -107,16 +128,12 @@ export class ClasseListComponent implements OnInit {
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'Ajouter une classe',
-      nzContent: ClasseCreateComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'Ajouter une classe',
+      component: ClasseCreateComponent,
+      data: {
         departement: this.departement,
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '400px',
     });
 
     modal.afterClose.subscribe((data: Classe | null) => {
@@ -127,16 +144,12 @@ export class ClasseListComponent implements OnInit {
   }
 
   openDeleteModal(classe: Classe) {
-    this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé cette classe?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteClasse(classe),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+    this.modalService.confirm({
+      title: 'Voulez-vous supprimer cette classe?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteClasse(classe),
+      cancelText: 'Annuler',
     });
   }
 
@@ -144,7 +157,6 @@ export class ClasseListComponent implements OnInit {
     this.deleteLoad = true;
     this.classeService.delete(classe).subscribe({
       next: (response) => {
-        this.deleteRestoRef.destroy();
         this.find();
         this.deleteLoad = false;
       },
@@ -166,9 +178,9 @@ export class ClasseListComponent implements OnInit {
     return test;
   }
 
-  search(): void{
+  search(): void {
     this.visible = false;
-    this.listOfDisplayData = this.classes.filter((item : Classe) => {
+    this.listOfDisplayData = this.classes.filter((item: Classe) => {
       this.searchValue = this.searchValue.toLowerCase();
       return (
         item.name.toLowerCase().indexOf(this.searchValue) !== -1

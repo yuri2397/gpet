@@ -36,6 +36,9 @@ class EPTController extends Controller
             "classe_id" => "required|exists:classes,id",
             "course_id" => "required|exists:courses,id",
             "day_id" => "required|exists:days,id",
+            "professor_id" => "nullable|exists:professors,id",
+            "salle_id" => "nullable|exists:salles,id",
+            "group" => "nullable|string",
         ]);
 
         $start = date("H:i", strtotime($request->start));
@@ -47,7 +50,8 @@ class EPTController extends Controller
             ], 409);
         }
         $course = Course::find($request->course_id);
-        if ($course->professor == null) {
+        $professorId = $request->professor_id ?? optional($course->professor)->id;
+        if ($professorId == null) {
             return response()->json([
                 "message" => "Ce cour n'a pas de professeur pour le faire."
             ], 400);
@@ -62,8 +66,10 @@ class EPTController extends Controller
         $end = date("H:i", strtotime($request->end));
         $day = Day::find($request->day_id);
         $classe = Classe::find($request->classe_id ?? 0);
-        $professor = Professor::find($course->professor->id);
+        $professorId = $request->professor_id ?? optional($course->professor)->id;
+        $professor = Professor::find($professorId);
         $salle = Salle::find($request->salle_id);
+        $group = $request->group ?? '1';
 
         $eptForProfessor = TimesTable::whereProfessorId($professor->id)->whereDayId($day->id)->get();
         // si le prof est dispo
@@ -77,8 +83,8 @@ class EPTController extends Controller
                 ], 409);
             }
         }
-        $eptForDay = TimesTable::whereClasseId($classe->id)->whereDayId($day->id)->get();
-        // si la classe sera dispo
+        $eptForDay = TimesTable::whereClasseId($classe->id)->whereDayId($day->id)->whereGroup($group)->get();
+        // si la classe sera dispo (pour le même groupe)
         foreach ($eptForDay as $key => $value) {
             if ($this->hourEmbedHour($start, $end, $value->start, $value->end)) {
                 if ($update && $value->id == $request->ept_id) {
@@ -86,7 +92,7 @@ class EPTController extends Controller
                 }
                 $c = Course::find($value->course_id);
                 return response()->json([
-                    "message" => "Un cour de  " . Str::upper($c->name) . " est programmé pour la classe, le" . Str::upper($day->name) . " de " . $value->start . " À " . $value->end
+                    "message" => "Un cour de  " . Str::upper($c->name) . " est programmé pour la classe (groupe " . $value->group . "), le " . Str::upper($day->name) . " de " . $value->start . " À " . $value->end
                 ], 409);
             }
         }
@@ -111,7 +117,7 @@ class EPTController extends Controller
             $ept->end = date("H:i", strtotime($request->end));
             $ept->classe_id = $request->classe_id;
             $ept->course_id = $request->course_id;
-            $ept->professor_id = $course->professor->id;
+            $ept->professor_id = $professor->id;
             $ept->salle_id = $request->salle_id;
             $ept->day_id = $request->day_id;
             $ept->group = $request->group ?? '1';
@@ -122,7 +128,7 @@ class EPTController extends Controller
             $ept->end = date("H:i", strtotime($request->end));
             $ept->classe_id = $request->classe_id;
             $ept->course_id = $request->course_id;
-            $ept->professor_id = $course->professor->id;
+            $ept->professor_id = $professor->id;
             $ept->salle_id = $request->salle_id;
             $ept->day_id = $request->day_id;
             $ept->group = $request->group ?? '1';
@@ -175,7 +181,10 @@ class EPTController extends Controller
             "classe_id" => "required|exists:classes,id",
             "course_id" => "required|exists:courses,id",
             "day_id" => "required|exists:days,id",
-            "ept_id" => 'required|exists:times_tables,id'
+            "ept_id" => 'required|exists:times_tables,id',
+            "professor_id" => "nullable|exists:professors,id",
+            "salle_id" => "nullable|exists:salles,id",
+            "group" => "nullable|string",
         ]);
         $start = date("H:i", strtotime($request->start));
         $end = date("H:i", strtotime($request->end));
@@ -186,7 +195,8 @@ class EPTController extends Controller
             ], 409);
         }
         $course = Course::find($request->course_id);
-        if ($course->professor == null) {
+        $professorId = $request->professor_id ?? optional($course->professor)->id;
+        if ($professorId == null) {
             return response()->json([
                 "message" => "Ce cour n'a pas de professeur pour le faire."
             ], 400);

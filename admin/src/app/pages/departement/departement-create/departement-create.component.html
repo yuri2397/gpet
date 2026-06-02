@@ -1,15 +1,30 @@
 <div>
-    <nz-form [nzLayout]="'horizontal'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
-        <nz-form-item class="p-5">
-            <nz-form-label nzRequired nzFor="name">Nom du batiment</nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Le nom est requi">
-                <input [(ngModel)]="departement.name" formControlName="name" nz-input name="name" type="text" id="name">
-            </nz-form-control>
-        </nz-form-item>
-    </nz-form>
+    <form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+        <div class="p-5">
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
+                Nom du batiment <span class="text-red-500">*</span>
+            </label>
+            <input
+                [(ngModel)]="departement.name"
+                formControlName="name"
+                name="name"
+                type="text"
+                id="name"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+            >
+            @if (validateForm.get('name')?.invalid && validateForm.get('name')?.dirty) {
+                <span class="text-red-500 text-xs mt-1">Le nom est requi</span>
+            }
+        </div>
+    </form>
 </div>
 
-<div *nzModalFooter>
-    <button nz-button nzType="default" (click)="destroyModal(null)">Annuler</button>
-    <button nz-button nzType="primary" (click)="save()" [disabled]="!validateForm.valid" [nzLoading]="isLoad">Modifier</button>
+<div class="flex justify-end gap-3 px-4 py-3 border-t border-gray-100">
+    <button type="button" (click)="destroyModal(null)" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Annuler</button>
+    <button type="button" (click)="save()" [disabled]="!validateForm.valid || isLoad" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+        @if (isLoad) {
+            <i class="fa-solid fa-spinner fa-spin mr-1"></i>
+        }
+        Modifier
+    </button>
 </div>

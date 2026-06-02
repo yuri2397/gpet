@@ -11,8 +11,11 @@ use App\Models\Batiment;
 use App\Models\Professor;
 use App\Models\TimesTable;
 use App\Models\Departement;
+use App\Models\CourseStatus;
+use App\Models\CoursesHasProfessors;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DepartementController extends Controller
@@ -72,27 +75,144 @@ class DepartementController extends Controller
     }
 
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-
         $user = User::find(auth()->id());
-        if ($user->hasRole("super admin")) {
-            return response()->json([
-                "courses" => count(Course::all()),
-                "professors" => count(Professor::all()),
-                "classes" => count(Classe::all()),
-                "salles" => count(Salle::all()),
-            ]);
-        }
-        $departement = Departement::find($user->departement_id);
+        $isSuperAdmin = $user->hasRole("super admin");
 
-        $restult = [
-            "courses" => count(Course::whereDepartementId($departement->id)->get()),
-            "professors" => count(Professor::whereDepartementId($departement->id)->get()),
-            "classes" => count(Classe::whereDepartementId($departement->id)->get()),
-            "salles" => count(Salle::whereDepartementId($departement->id)->get()),
-        ];
-        return response()->json($restult);
+        if ($request->has('departement')) {
+            $param = $request->input('departement');
+            $departementId = ($param === null || $param === '' || $param === 'null') ? null : (int) $param;
+        } else {
+            $departementId = $isSuperAdmin ? null : ($user->departement_id ?? null);
+        }
+
+        $showAll = $departementId === null;
+
+        $courseQuery = $showAll ? Course::query() : Course::whereDepartementId($departementId);
+        $professorQuery = $showAll ? Professor::query() : Professor::whereDepartementId($departementId);
+        $classeQuery = $showAll ? Classe::query() : Classe::whereDepartementId($departementId);
+        $salleQuery = $showAll ? Salle::query() : Salle::whereDepartementId($departementId);
+
+        $coursesCount = (clone $courseQuery)->count();
+        $professorsCount = (clone $professorQuery)->count();
+        $classesCount = (clone $classeQuery)->count();
+        $sallesCount = (clone $salleQuery)->count();
+
+        $coursesUnassigned = (clone $courseQuery)->whereNull('professor_id')->count();
+        $professorsActive = (clone $professorQuery)->where('is_active', true)->count();
+        $professorsInactive = $professorsCount - $professorsActive;
+
+        $courseIds = (clone $courseQuery)->pluck('id');
+
+        $coursesByStatus = CourseStatus::orderBy('number', 'desc')
+            ->get(['id', 'label', 'code'])
+            ->map(function ($status) use ($courseIds, $showAll) {
+                $q = Course::where('course_status_id', $status->id);
+                if (!$showAll) $q->whereIn('id', $courseIds);
+                return [
+                    'label' => $status->label,
+                    'code' => $status->code,
+                    'count' => $q->count(),
+                ];
+            });
+
+        $chpQuery = CoursesHasProfessors::query();
+        if (!$showAll) $chpQuery->whereIn('course_id', $courseIds);
+
+        $pendingPaymentsAmount = (clone $chpQuery)->where('is_paid', false)->sum('amount');
+        $pendingPaymentsCount = (clone $chpQuery)->where('is_paid', false)->count();
+
+        $sevenDaysAgo = Carbon::now()->subDays(6)->startOfDay();
+        $weeklyRows = (clone $chpQuery)
+            ->where('date', '>=', $sevenDaysAgo->toDateString())
+            ->select('date', DB::raw('SUM(hours) as hours'))
+            ->groupBy('date')
+            ->pluck('hours', 'date');
+
+        $weeklyHours = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $d = Carbon::now()->subDays($i)->toDateString();
+            $weeklyHours[] = [
+                'date' => $d,
+                'hours' => (int) ($weeklyRows[$d] ?? 0),
+            ];
+        }
+
+        $topProfRows = (clone $chpQuery)
+            ->select('professor_id', DB::raw('SUM(hours) as total_hours'), DB::raw('SUM(amount) as total_amount'))
+            ->groupBy('professor_id')
+            ->orderByDesc('total_hours')
+            ->limit(5)
+            ->get();
+
+        $profIds = $topProfRows->pluck('professor_id');
+        $profs = Professor::whereIn('id', $profIds)->get(['id', 'first_name', 'last_name', 'registration_number'])->keyBy('id');
+        $topProfessors = $topProfRows->map(function ($row) use ($profs) {
+            $p = $profs->get($row->professor_id);
+            return [
+                'id' => $row->professor_id,
+                'first_name' => $p->first_name ?? null,
+                'last_name' => $p->last_name ?? null,
+                'registration_number' => $p->registration_number ?? null,
+                'hours' => (int) $row->total_hours,
+                'amount' => (int) $row->total_amount,
+            ];
+        });
+
+        $salleIds = (clone $salleQuery)->pluck('id');
+        $ttQuery = $showAll ? TimesTable::query() : TimesTable::whereIn('salle_id', $salleIds);
+
+        $topSalleRows = (clone $ttQuery)
+            ->select('salle_id', DB::raw('COUNT(*) as usage_count'))
+            ->groupBy('salle_id')
+            ->orderByDesc('usage_count')
+            ->limit(5)
+            ->get();
+
+        $salleMap = Salle::whereIn('id', $topSalleRows->pluck('salle_id'))->get(['id', 'name', 'number'])->keyBy('id');
+        $topSalles = $topSalleRows->map(function ($row) use ($salleMap) {
+            $s = $salleMap->get($row->salle_id);
+            return [
+                'id' => $row->salle_id,
+                'name' => $s->name ?? null,
+                'number' => $s->number ?? null,
+                'usage_count' => (int) $row->usage_count,
+            ];
+        });
+
+        $totalSlots = $sallesCount * count($this->hours) * 6;
+        $usedSlots = (clone $ttQuery)->count();
+        $occupancyRate = $totalSlots > 0 ? round($usedSlots / $totalSlots, 4) : 0;
+
+        $recentCourses = (clone $courseQuery)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get(['id', 'name', 'acronym', 'classe_id', 'professor_id', 'created_at']);
+
+        return response()->json([
+            "courses" => $coursesCount,
+            "professors" => $professorsCount,
+            "classes" => $classesCount,
+            "salles" => $sallesCount,
+            "totals" => [
+                "courses" => $coursesCount,
+                "professors" => $professorsCount,
+                "classes" => $classesCount,
+                "salles" => $sallesCount,
+                "courses_unassigned" => $coursesUnassigned,
+                "professors_active" => $professorsActive,
+                "professors_inactive" => $professorsInactive,
+                "pending_payments_amount" => (int) $pendingPaymentsAmount,
+                "pending_payments_count" => $pendingPaymentsCount,
+            ],
+            "courses_by_status" => $coursesByStatus,
+            "weekly_hours" => $weeklyHours,
+            "top_professors" => $topProfessors,
+            "top_salles" => $topSalles,
+            "salle_occupancy_rate" => $occupancyRate,
+            "recent_courses" => $recentCourses,
+        ]);
     }
 
     public function chartsData(Request $request){

@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ResultComponent } from '../result/result.component';
 
 @Component({
   selector: 'app-not-found',
+  standalone: true,
+  imports: [CommonModule, ResultComponent],
   templateUrl: './not-found.component.html',
-  styleUrls: ['./not-found.component.scss']
+  styleUrls: ['./not-found.component.scss'],
 })
-export class NotFoundComponent implements OnInit {
+export class NotFoundComponent {
+  private router = inject(Router);
 
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-  }
-
-  home(){
+  home() {
     this.router.navigate(['/']);
   }
 }

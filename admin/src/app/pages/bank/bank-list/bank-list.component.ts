@@ -1,59 +1,92 @@
-import { RoleService } from './../../../services/role.service';
-import { Component, OnInit } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Bank } from 'src/app/models/bank';
 import { BankService } from 'src/app/services/bank.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { RoleService } from 'src/app/services/role.service';
 import { BankEditComponent } from '../bank-edit/bank-edit.component';
-import { Permission } from 'src/app/models/permission';
+import { BankCreateComponent } from '../bank-create/bank-create.component';
+import { AuthStore } from 'src/app/shared/auth-store';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-bank-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './bank-list.component.html',
   styleUrls: ['./bank-list.component.scss'],
 })
 export class BankListComponent implements OnInit {
-  banks!: Bank[];
-  isLoad = true;
-  deleteBankRef!: NzModalRef;
-  deleteLoad!: boolean;
+  private bankService = inject(BankService);
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  public roleService = inject(RoleService);
+  private authStore = inject(AuthStore);
 
-  constructor(
-    private bankService: BankService,
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    public roleService: RoleService
-  ) {}
+  banks = signal<Bank[]>([]);
+  isLoad = signal(true);
+  deleteBankRef!: ModalRef;
+  deleteLoad!: boolean;
+  searchValue = signal('');
+  openDropdownId = signal<number | null>(null);
+  filteredBanks = signal<Bank[]>([]);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  searchBanks() {
+    const sv = this.searchValue().toLowerCase();
+    if (!sv) {
+      this.filteredBanks.set(this.banks());
+    } else {
+      this.filteredBanks.set(this.banks().filter(b =>
+        b.name.toLowerCase().includes(sv) || b.code.toLowerCase().includes(sv)
+      ));
+    }
+  }
 
   ngOnInit(): void {
     this.findAll();
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.bankService.findAll().subscribe({
       next: (response) => {
-        this.banks = response;
-        this.isLoad = false;
+        this.banks.set(response);
+        this.filteredBanks.set(response);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
 
   openEditModal(bank: Bank) {
-
-    const modal = this.modalService.create({
-      nzTitle: 'MODIFIER LA BANQUE',
-      nzContent: BankEditComponent,
-      nzComponentParams: {
+    const modal = this.modalService.open({
+      title: 'MODIFIER LA BANQUE',
+      component: BankEditComponent,
+      data: {
         bank: this.bankService.clone(bank)
       },
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '40em',
     });
 
     modal.afterClose.subscribe((data: Bank | null) => {
@@ -65,15 +98,10 @@ export class BankListComponent implements OnInit {
 
   openDeleteModal(bank: Bank) {
     this.deleteBankRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé cette banque?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.onDeleteBank(bank),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Voulez-vous supprimé cette banque?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.onDeleteBank(bank),
     });
   }
 
@@ -102,10 +130,21 @@ export class BankListComponent implements OnInit {
     });
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.roleService.can(p, this.bankService.getPermissions());
-    return test;
+  openCreateModal() {
+    const modal = this.modalService.open({
+      title: 'Ajouter une banque',
+      component: BankCreateComponent,
+      data: {},
+    });
+
+    modal.afterClose.subscribe((data: Bank | null) => {
+      if (data != null) {
+        this.findAll();
+      }
+    });
+  }
+
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 }

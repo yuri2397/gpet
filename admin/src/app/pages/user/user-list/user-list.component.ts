@@ -1,51 +1,71 @@
-import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Router } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { UserCreateComponent } from './../user-create/user-create.component';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
-import { Component, OnInit } from '@angular/core';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
+import { ModalService } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-user-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
   users!: User[];
-  isLoad = true;
-  deleteUserLoad: boolean = false;
-  searchValue: any;
-  listOfDisplayData!: User[];
-  constructor(
-    private userService: UserService,
-    private modal: NzModalService,
-    private router: Router,
-    private notification: NzNotificationService
-  ) {}
+  isLoad = signal(true);
+  deleteUserLoad = signal(false);
+  searchValue = signal('');
+  listOfDisplayData = signal<User[]>([]);
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  private userService = inject(UserService);
+  private modalService = inject(ModalService);
+  private router = inject(Router);
+  private authStore = inject(AuthStore);
 
   ngOnInit(): void {
     this.findUsers();
   }
 
   findUsers() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.userService.findByAuthDepartement().subscribe({
       next: (response) => {
-        this.listOfDisplayData = response;
+        this.listOfDisplayData.set(response);
         this.users = response;
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
       error: (errors) => {},
     });
   }
 
   openCreateModal() {
-    let modal = this.modal.create({
-      nzTitle: 'Ajouter un utilisateur',
-      nzContent: UserCreateComponent,
-      nzClosable: false,nzWidth: "50%"
+    let modal = this.modalService.open({
+      title: 'Ajouter un utilisateur',
+      component: UserCreateComponent,
     });
 
     modal.afterClose.subscribe((data: any) => {
@@ -54,41 +74,35 @@ export class UserListComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    this.deleteUserLoad = true;
-    this.userService.delete(user).subscribe({
-      next: (response) => {
-        this.notification.success(
-          'Notification',
-          'Utilisateur supprimer avec succès',
-          {
-            nzDuration: 5000,
-          }
-        );
-        this.findUsers();
-      },
-      error: (errors) => {
-        this.notification.error(
-          'Notification',
-          errors.error.message,
-          {
-            nzDuration: 5000,
-          }
-        );
-        this.deleteUserLoad = false;
+    this.modalService.confirm({
+      title: 'Confirmation',
+      content: 'Confirmer votre action.',
+      okText: 'Confirmer',
+      okDanger: true,
+      onOk: () => {
+        this.deleteUserLoad.set(true);
+        this.userService.delete(user).subscribe({
+          next: (response) => {
+            this.findUsers();
+          },
+          error: (errors) => {
+            this.deleteUserLoad.set(false);
+          },
+        });
       },
     });
   }
 
   search(): void {
-    this.listOfDisplayData = this.users.filter((item: User) => {
-      this.searchValue = this.searchValue.toLocaleLowerCase();
+    const sv = this.searchValue().toLocaleLowerCase();
+    this.listOfDisplayData.set(this.users.filter((item: User) => {
       return (
-        item.first_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        (item.first_name.toLocaleLowerCase() + " " + item.last_name.toLocaleLowerCase()).indexOf(this.searchValue) !== -1 ||
-        item.last_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.email.toLocaleLowerCase().indexOf(this.searchValue) !== -1
+        item.first_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        (item.first_name.toLocaleLowerCase() + " " + item.last_name.toLocaleLowerCase()).indexOf(sv) !== -1 ||
+        item.last_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        item.email.toLocaleLowerCase().indexOf(sv) !== -1
       );
-    });
+    }));
   }
 
   showUser(data: User) {
@@ -96,9 +110,6 @@ export class UserListComponent implements OnInit {
   }
 
   can(permission: string) {
-    let p = new Permission();
-    p.name = permission;
-    let test = this.userService.can(p, this.userService.getPermissions());
-    return test;
+    return this.authStore.hasPermission(permission);
   }
 }

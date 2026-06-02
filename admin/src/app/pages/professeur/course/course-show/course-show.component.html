@@ -1,82 +1,79 @@
-<div *ngIf="!isLoad" style="width: 100%">
-    <div class="card shadow">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12">
-                    <nz-page-header class="site-page-header" (nzBack)="onBack()" [nzBackIcon]="backTemp"
-                        nzTitle="{{ course.acronym }} - {{ course.name }}"></nz-page-header>
-                </div>
-                <ng-template #backTemp>
-                    <button class="m-2" mat-mini-fab color="primary">
-                        <mat-icon>arrow_back</mat-icon>
-                    </button>
-                </ng-template>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="card card-body">
-                            <nz-list nzBordered>
-                                <nz-list-item>
-                                    <span nz-typography><b>ID</b></span> {{ course.acronym }}
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>COURS</b></span> {{ course.name }}
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>VHT</b></span>
-                                    {{ course.ec.vht }} heures
-                                </nz-list-item>
-                            </nz-list>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card card-body">
-                            <nz-list nzBordered>
-                                <nz-list-item>
-                                    <span nz-typography><b>PROF</b></span>
-                                    <ng-container *ngIf="course.professor; else emptyProf">
-                                        {{ course.professor.first_name }}
-                                        {{ course.professor.last_name.toUpperCase() }}
-                                    </ng-container>
-                                    <ng-template #emptyProf>
-                                        <nz-tag nzColor="error">
-                                            <i nz-icon nzType="close-circle"></i>
-                                            <span>Non définie</span>
-                                        </nz-tag>
-                                    </ng-template>
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>CLASSE</b></span>
-                                    {{ course.classe.name.toUpperCase() }}
-                                </nz-list-item>
-                                <nz-list-item>
-                                    <span nz-typography><b>SEMESTRE</b></span>
-                                    {{ course.semester.name.toUpperCase() }}
-                                </nz-list-item>
-                            </nz-list>
+@if (!isLoad) {
+    <div class="w-full">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-6">
+                <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-12">
+                        <div class="flex items-center gap-3 mb-4">
+                            <button (click)="onBack()" class="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary-dark transition-colors cursor-pointer">
+                                <app-icon name="arrow_back" />
+                            </button>
+                            <h3 class="text-lg font-semibold m-0">{{ course.acronym }} - {{ course.name }}</h3>
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="row">
-                    <div class="col-12">
-                        <div id="courseChart">
-                            <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
-                                [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!"
-                                [colors]="chartOptions.colors!"></apx-chart>
+                <div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="bg-white rounded-lg p-4 border border-gray-100">
+                                <ul class="divide-y divide-gray-200">
+                                    <li class="flex justify-between items-center py-3 px-2">
+                                        <span class="font-bold text-sm">ID</span>
+                                        <span class="text-sm">{{ course.acronym }}</span>
+                                    </li>
+                                    <li class="flex justify-between items-center py-3 px-2">
+                                        <span class="font-bold text-sm">COURS</span>
+                                        <span class="text-sm">{{ course.name }}</span>
+                                    </li>
+                                    <li class="flex justify-between items-center py-3 px-2">
+                                        <span class="font-bold text-sm">VHT</span>
+                                        <span class="text-sm">{{ course.ec.vht }} heures</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="bg-white rounded-lg p-4 border border-gray-100">
+                                <ul class="divide-y divide-gray-200">
+                                    <li class="flex justify-between items-center py-3 px-2">
+                                        <span class="font-bold text-sm">PROF</span>
+                                        @if (course.professor) {
+                                            <span class="text-sm">{{ course.professor.first_name }} {{ course.professor.last_name.toUpperCase() }}</span>
+                                        } @else {
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200">
+                                                <app-icon name="cancel" />
+                                                Non definie
+                                            </span>
+                                        }
+                                    </li>
+                                    <li class="flex justify-between items-center py-3 px-2">
+                                        <span class="font-bold text-sm">CLASSE</span>
+                                        <span class="text-sm">{{ course.classe.name.toUpperCase() }}</span>
+                                    </li>
+                                    <li class="flex justify-between items-center py-3 px-2">
+                                        <span class="font-bold text-sm">SEMESTRE</span>
+                                        <span class="text-sm">{{ course.semester.name.toUpperCase() }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="grid grid-cols-12 gap-4">
+                        <div class="col-span-12">
+                            <div id="courseChart">
+                                <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
+                                    [dataLabels]="chartOptions.dataLabels!" [title]="chartOptions.title!"
+                                    [colors]="chartOptions.colors!"></apx-chart>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
 
-<ng-template #title2>
-    <h5 class="mt-5">Évolution des scéances</h5>
-</ng-template>
-
-<ng-container *ngIf="isLoad">
+@if (isLoad) {
     <app-load></app-load>
-</ng-container>
+}

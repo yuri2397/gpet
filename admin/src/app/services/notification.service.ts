@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { Injectable, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Notification } from '../models/shared.model';
+import { ToastService } from '../shared/services/toast.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private notification: NzNotificationService) {}
+  private toast = inject(ToastService);
 
   createNotification(
     type: string,
@@ -15,10 +15,7 @@ export class NotificationService {
     content: string,
     duration = 3000
   ): void {
-    this.notification.create(type, title, content, {
-      nzAnimate: true,
-      nzDuration: duration,
-    });
+    this.toast.show(type as any, title, content, duration);
   }
 
   private emitChangeSource = new Subject<Notification>();

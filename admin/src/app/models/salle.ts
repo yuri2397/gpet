@@ -1,15 +1,13 @@
-import { Model } from 'echarts';
-import { Departement } from 'src/app/models/departement';
+import { Departement } from './departement';
 import { Batiment } from './batiment';
-export class Salle  {
 
+export class Salle {
   id!: number;
   name!: string;
   number!: number;
-  capacity!: String;
+  capacity!: string;
   batiment_id!: number;
   departement_id!: number;
   departement!: Departement;
   batiment!: Batiment;
-
 }

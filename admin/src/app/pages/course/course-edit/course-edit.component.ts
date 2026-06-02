@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Component, OnInit, Input, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Classe } from 'src/app/models/classe';
 import { Course } from 'src/app/models/course';
 import { Departement } from 'src/app/models/departement';
@@ -13,13 +13,33 @@ import { CourseService } from 'src/app/services/course.service';
 import { ECService } from 'src/app/services/ec.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-course-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './course-edit.component.html',
   styleUrls: ['./course-edit.component.scss'],
 })
 export class CourseEditComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  courseService = inject(CourseService);
+  private modal = inject(ModalRef);
+  private profService = inject(ProfessorService);
+  private classeService = inject(ClasseService);
+  private ecService = inject(ECService);
+  readonly nzModalData = inject(MODAL_DATA, { optional: true });
+
   semesters!: Semester[];
   professors!: Professor[];
   departements!: Departement[];
@@ -34,17 +54,11 @@ export class CourseEditComponent implements OnInit {
   ecLoad = false;
   profLoad = false;
   serviceAmountFCFA = 'MONTANT HORAIRE';
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    public courseService: CourseService,
-    private modal: NzModalRef,
-    private profService: ProfessorService,
-    private classeService: ClasseService,
-    private ecService: ECService
-  ) {}
 
   ngOnInit(): void {
+    if (this.nzModalData?.course) {
+      this.course = this.nzModalData.course;
+    }
     this.findSelectableList();
     this.validateForm = this.fb.group({
       groupe_number: [null, [Validators.required]],

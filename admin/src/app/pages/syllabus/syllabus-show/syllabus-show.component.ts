@@ -1,30 +1,35 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
 import { SyllabusService } from 'src/app/services/syllabus.service';
-import { Location } from '@angular/common';
 import { Course } from 'src/app/models/course';
 import { Syllabus } from 'src/app/models/syllabus';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-syllabus-show',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './syllabus-show.component.html',
-  styleUrls: ['./syllabus-show.component.scss']
+  styleUrls: ['./syllabus-show.component.scss'],
 })
 export class SyllabusShowComponent implements OnInit {
-
   isLoad: boolean = false;
   syllabus = new Syllabus();
   dataLoad = true;
   errorServer = false;
   @Input() course!: Course;
 
-  constructor(
-    private syllabusService: SyllabusService,
-    private route: ActivatedRoute,
-    private location: Location,
-  ) { }
+  private syllabusService = inject(SyllabusService);
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -34,7 +39,7 @@ export class SyllabusShowComponent implements OnInit {
   }
 
   name = 'Angular 6';
-  config: AngularEditorConfig = {
+  config: any = {
     editable: false,
     spellcheck: false,
     showToolbar : false,
@@ -86,6 +91,3 @@ export class SyllabusShowComponent implements OnInit {
     });
   }
 }
-
-
-

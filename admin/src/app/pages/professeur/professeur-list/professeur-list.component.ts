@@ -1,54 +1,82 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
 import { Professor } from './../../../models/professor';
-import { Component, Input, OnInit } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Batiment } from 'src/app/models/batiment';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
 import { ProfesseurEditComponent } from '../professeur-edit/professeur-edit.component';
 import { ProfesseurCreateComponent } from '../professeur-create/professeur-create.component';
-import { Router } from '@angular/router';
-import { Permission } from 'src/app/models/permission';
+import { AuthStore } from 'src/app/shared/auth-store';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { DataTableComponent } from 'src/app/shared/ui/data-table/data-table.component';
 
 @Component({
   selector: 'app-professeur-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  DataTableComponent,
+  ],
   templateUrl: './professeur-list.component.html',
   styleUrls: ['./professeur-list.component.scss'],
 })
 export class ProfesseurListComponent implements OnInit {
+  private router = inject(Router);
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
+  private profService = inject(ProfessorService);
+  private authStore = inject(AuthStore);
+
   @Input() professeurs!: Professor[];
   @Input() setView!: boolean;
   selectedProfessor!: Professor;
-  isLoad = false;
-  deleteRestoRef!: NzModalRef;
+  isLoad = signal(false);
+  deleteRestoRef!: ModalRef;
   deleteLoad!: boolean;
-  searchValue = '';
-  visible = false;
-  listOfDisplayData!: Professor[];
-  constructor(
-    private router: Router,
-    private notification: NotificationService,
-    private modalService: NzModalService,
-    private profService: ProfessorService
-  ) {}
+  searchValue = signal('');
+  visible = signal(false);
+  listOfDisplayData = signal<Professor[]>([]);
+  openDropdownId = signal<number | null>(null);
+
+  toggleDropdown(id: number, event: Event) {
+    event.stopPropagation();
+    this.openDropdownId.set(this.openDropdownId() === id ? null : id);
+  }
+
+  closeDropdown() {
+    this.openDropdownId.set(null);
+  }
+
+  countByStatus(status: string): number {
+    if (!this.professeurs) return 0;
+    return this.professeurs.filter(p => p.status === status).length;
+  }
 
   ngOnInit(): void {
     if (this.professeurs == null) {
       this.findAll();
     } else {
-      this.listOfDisplayData = this.professeurs;
+      this.listOfDisplayData.set(this.professeurs);
     }
   }
 
   findAll() {
-    this.isLoad = true;
+    this.isLoad.set(true);
     this.profService.findAll().subscribe({
       next: (professeurs) => {
         this.professeurs = professeurs;
-        this.listOfDisplayData = professeurs;
-        this.isLoad = false;
+        this.listOfDisplayData.set(professeurs);
+        this.isLoad.set(false);
       },
       error: (errors) => {
-        this.isLoad = false;
+        this.isLoad.set(false);
       },
     });
   }
@@ -58,15 +86,10 @@ export class ProfesseurListComponent implements OnInit {
 
   openDeleteModal(professeur: Professor) {
     this.deleteRestoRef = this.modalService.confirm({
-      nzTitle: '<span>Voulez-vous supprimé ce département?</span>',
-      nzOkText: 'Supprimer',
-      nzOkType: 'primary',
-      nzOkDanger: true,
-      nzOnOk: () => this.deleteProfessor(professeur),
-      nzCancelText: 'Annuler',
-      nzOkLoading: this.deleteLoad,
-      nzMaskClosable: false,
-      nzClosable: false,
+      title: 'Voulez-vous supprimé ce département?',
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => this.deleteProfessor(professeur),
     });
   }
 
@@ -81,7 +104,7 @@ export class ProfesseurListComponent implements OnInit {
           'Dépatement supprimé avec succès.'
         );
         this.findAll();
-        this.deleteRestoRef.destroy();
+        this.deleteRestoRef.close();
       },
       error: (errors) => {
         this.deleteLoad = false;
@@ -90,22 +113,20 @@ export class ProfesseurListComponent implements OnInit {
           'Notification',
           errors.error.message
         );
-        this.deleteRestoRef.destroy();
+        this.deleteRestoRef.close();
       },
     });
   }
 
   openCreateModal() {
-    const modal = this.modalService.create({
-      nzTitle: 'AJOUTER UN NOUVEAU PROFESSEUR',
-      nzContent: ProfesseurCreateComponent,
-      nzCentered: true,
-      nzMaskClosable: false,
-      nzClosable: false,
-      nzWidth: '60em',
+    const modal = this.modalService.open({
+      title: 'AJOUTER UN NOUVEAU PROFESSEUR',
+      component: ProfesseurCreateComponent,
+      size: 'xl',
+      data: {},
     });
 
-    modal.afterClose.subscribe((data: Batiment | null) => {
+    modal.afterClosed$.subscribe((data: Batiment | null) => {
       if (data != null) {
         this.findAll();
       }
@@ -113,31 +134,28 @@ export class ProfesseurListComponent implements OnInit {
   }
 
   reset(): void {
-    this.searchValue = '';
+    this.searchValue.set('');
     this.search();
   }
 
   search(): void {
-    this.visible = false;
-    this.listOfDisplayData = this.professeurs.filter((item: Professor) => {
-      this.searchValue = this.searchValue.toLocaleLowerCase();
+    this.visible.set(false);
+    const sv = this.searchValue().toLocaleLowerCase();
+    this.listOfDisplayData.set(this.professeurs.filter((item: Professor) => {
       return (
-        item.registration_number.indexOf(this.searchValue) !== -1 ||
-        item.first_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.last_name.toLocaleLowerCase().indexOf(this.searchValue) !== -1 ||
-        item.email.toLocaleLowerCase().indexOf(this.searchValue) !== -1
+        item.registration_number.indexOf(sv) !== -1 ||
+        item.first_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        item.last_name.toLocaleLowerCase().indexOf(sv) !== -1 ||
+        item.email.toLocaleLowerCase().indexOf(sv) !== -1
       );
-    });
+    }));
   }
 
   showProfessor(professeur: Professor) {
     this.router.navigate(['/admin/professeurs/show/' + professeur.id]);
   }
 
-  can(permission: string){
-    let p = new Permission();
-    p.name = permission;
-    let test = this.profService.can(p, this.profService.getPermissions());
-    return test;
+  can(permission: string) {
+    return this.authStore.hasPermission(permission);
   }
 }

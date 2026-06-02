@@ -37,20 +37,6 @@ export class Course extends Model<Course> {
     this.semester = new Semester();
     this.service = new Service();
   }
-
-  myIndex(arrays: Course[]): number {
-    let res = -1;
-    arrays.forEach((course: Course, index: number) => {
-      if (course.id === this.id) res = index;
-    });
-    return res;
-  }
-
-  some(arrays: Course[]): Course | null {
-    let res = this.myIndex(arrays);
-    if (res != -1) return arrays[res];
-    return null;
-  }
 }
 
 export interface CourseResponse {

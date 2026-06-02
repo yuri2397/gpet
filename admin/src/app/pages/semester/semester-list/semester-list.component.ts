@@ -1,24 +1,37 @@
-import { UEService } from './../../../services/ue.service';
-import { UeEditComponent } from './../../ue/ue-edit/ue-edit.component';
-import { SemesterCreateComponent } from './../semester-create/semester-create.component';
-import { EcEditComponent } from './../../ec/ec-edit/ec-edit.component';
-import { SemesterEditComponent } from './../semester-edit/semester-edit.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UEService } from 'src/app/services/ue.service';
+import { UeEditComponent } from '../../ue/ue-edit/ue-edit.component';
+import { SemesterCreateComponent } from '../semester-create/semester-create.component';
+import { EcEditComponent } from '../../ec/ec-edit/ec-edit.component';
+import { SemesterEditComponent } from '../semester-edit/semester-edit.component';
 import { ECService } from 'src/app/services/ec.service';
-import { EcCreateComponent } from './../../ec/ec-create/ec-create.component';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { EcCreateComponent } from '../../ec/ec-create/ec-create.component';
 import { EC } from 'src/app/models/ec';
-import { SemesterResponse } from './../../../models/semester-response';
-import { Component, Input, OnInit } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { SemesterResponse } from 'src/app/models/semester-response';
 import { Departement } from 'src/app/models/departement';
 import { Semester } from 'src/app/models/semester';
 import { SemesterService } from 'src/app/services/semester.service';
-import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { Permission } from 'src/app/models/permission';
 import { UE } from 'src/app/models/ue';
+import { LoadComponent } from 'src/app/shared/ui/table-load/load.component';
+import { CanDeleteComponent } from 'src/app/shared/ui/can-delete/can-delete.component';
+import { RouterModule } from '@angular/router';
+import { ModalService, ModalRef } from 'src/app/shared/services/modal.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-semester-list',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  LoadComponent,
+  CanDeleteComponent,
+  ],
   templateUrl: './semester-list.component.html',
   styleUrls: ['./semester-list.component.scss'],
 })
@@ -31,18 +44,15 @@ export class SemesterListComponent implements OnInit {
   deleteSub = 'Impossible de supprimer le semestre';
   erreurs: string[] = [];
   semesters!: Semester[];
-  deleteECRef!: NzModalRef;
   deleteLoad = false;
   deleteUELoad = false;
+  activeSemesterIndex = 0;
 
-  constructor(
-    private notification: NzNotificationService,
-    private semesterService: SemesterService,
-    private modalService: NzModalService,
-    private drawerService: NzDrawerService,
-    private ecService: ECService,
-    private ueService: UEService
-  ) {}
+  private notification = inject(NotificationService);
+  private semesterService = inject(SemesterService);
+  private modalService = inject(ModalService);
+  private ecService = inject(ECService);
+  private ueService = inject(UEService);
 
   ngOnInit(): void {
     if (!this.departement) {
@@ -67,34 +77,39 @@ export class SemesterListComponent implements OnInit {
 
   deleteSemester(semester: Semester) {
     this.deleteError = false;
-    this.semesterService.delete(semester).subscribe({
-      next: (response) => {
-        this.notification.success(
-          'Notification',
-          'Vous avez supprimé le semetre avec succès.'
-        );
-        this.findByDepartement(this.semesterService.departement());
-      },
-      error: (errors) => {
-        this.deleteError = true;
-        this.erreurs.push(errors.error.message);
+    this.modalService.confirm({
+      title: `Etes-vous sur de supprimer ${semester.name.toLocaleUpperCase()} ?`,
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => {
+        this.semesterService.delete(semester).subscribe({
+          next: (response) => {
+            this.notification.createNotification(
+              'success',
+              'Notification',
+              'Vous avez supprimé le semetre avec succès.'
+            );
+            this.findByDepartement(this.semesterService.departement());
+          },
+          error: (errors) => {
+            this.deleteError = true;
+            this.erreurs.push(errors.error.message);
+          },
+        });
       },
     });
   }
 
   openEditSemesterModal(semester: Semester) {
-    const drawerRef = this.modalService.create({
-      nzTitle: 'Modifier le nom du semestre',
-      nzContent: SemesterEditComponent,
-      nzComponentParams: {
+    const modalRef = this.modalService.open({
+      title: 'Modifier le nom du semestre',
+      component: SemesterEditComponent,
+      data: {
         semester: this.semesterService.clone(semester),
       },
-      nzWidth: '500px',
-      nzClosable: false,
-      nzMaskClosable: false,
     });
 
-    drawerRef.afterClose.subscribe((data) => {
+    modalRef.afterClose.subscribe((data) => {
       if (data) {
         this.findByDepartement(this.departement);
       }
@@ -102,19 +117,16 @@ export class SemesterListComponent implements OnInit {
   }
 
   openCreateModal(semester: Semester) {
-    const drawerRef = this.drawerService.create({
-      nzTitle: 'Ajouter un nouveau EC',
-      nzContent: EcCreateComponent,
-      nzContentParams: {
+    const modalRef = this.modalService.open({
+      title: 'Ajouter un nouveau EC',
+      component: EcCreateComponent,
+      data: {
         semesters: [...[], semester],
         departements: [this.departement],
       },
-      nzWidth: '500px',
-      nzClosable: false,
-      nzMaskClosable: false,
     });
 
-    drawerRef.afterClose.subscribe((data) => {
+    modalRef.afterClose.subscribe((data) => {
       if (data) {
         this.findByDepartement(this.departement);
       }
@@ -122,15 +134,15 @@ export class SemesterListComponent implements OnInit {
   }
 
   openEditUEModal(ue: UE) {
-    let modal = this.modalService.create({
-      nzTitle: "MODIFIER L'UE",
-      nzContent: UeEditComponent,
-      nzComponentParams: {
+    let modalRef = this.modalService.open({
+      title: "MODIFIER L'UE",
+      component: UeEditComponent,
+      data: {
         ue: this.ueService.clone(ue),
       },
     });
 
-    modal.afterClose.subscribe((data: UE | null) => {
+    modalRef.afterClose.subscribe((data: UE | null) => {
       if (data) {
         this.findByDepartement(this.departement);
       }
@@ -138,33 +150,38 @@ export class SemesterListComponent implements OnInit {
   }
 
   deleteUEConfirmed(ue: UE) {
-    ue.deleted = true;
-    this.ueService.delete(ue).subscribe({
-      next: (response) => {
-        this.notification.success('Notification', 'UE supprimé avec succès.');
-        this.findByDepartement(this.departement);
-        ue.deleted = false;
-      },
-      error: (errors) => {
-        console.log(errors);
-        ue.deleted = false;
-        this.notification.error('Notification', errors.error.message);
+    this.modalService.confirm({
+      title: "Etes-vous sur de supprimer cet UE ?",
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => {
+        ue.deleted = true;
+        this.ueService.delete(ue).subscribe({
+          next: (response) => {
+            this.notification.createNotification('success', 'Notification', 'UE supprimé avec succès.');
+            this.findByDepartement(this.departement);
+            ue.deleted = false;
+          },
+          error: (errors) => {
+            console.log(errors);
+            ue.deleted = false;
+            this.notification.createNotification('error', 'Notification', errors.error.message);
+          },
+        });
       },
     });
   }
 
   openEditModal(item: EC, semester: Semester) {
-    let modal = this.modalService.create({
-      nzTitle: 'Modifier les informations',
-      nzContent: EcEditComponent,
-      nzComponentParams: {
+    let modalRef = this.modalService.open({
+      title: 'Modifier les informations',
+      component: EcEditComponent,
+      data: {
         semester: semester,
         ec: this.ecService.clone(item),
       },
-      nzClosable: false,
-      nzCentered: true,
     });
-    modal.afterClose.subscribe((data: EC | null) => {
+    modalRef.afterClose.subscribe((data: EC | null) => {
       if (data) {
         this.findByDepartement(this.departement);
       }
@@ -172,29 +189,35 @@ export class SemesterListComponent implements OnInit {
   }
 
   onDeleteOk(item: EC, semester: Semester) {
-    item.deleted = true;
-    this.ecService.delete(item).subscribe({
-      next: (response) => {
-        this.findByDepartement(this.semesterService.departement());
-        this.notification.success('Suppression', 'EC supprimé avec succès.');
-      },
-      error: (errors) => {
-        this.notification.error('Suppression', errors.error.message);
+    this.modalService.confirm({
+      title: "Etes-vous sur de supprimer cet EC ?",
+      okText: 'Supprimer',
+      okDanger: true,
+      onOk: () => {
+        item.deleted = true;
+        this.ecService.delete(item).subscribe({
+          next: (response) => {
+            this.findByDepartement(this.semesterService.departement());
+            this.notification.createNotification('success', 'Suppression', 'EC supprimé avec succès.');
+          },
+          error: (errors) => {
+            this.notification.createNotification('error', 'Suppression', errors.error.message);
+          },
+        });
       },
     });
   }
 
   openCreateSemesterModal() {
-    let modal = this.modalService.create({
-      nzTitle: 'AJOUTER UN NOUVEAU SEMESTRE',
-      nzContent: SemesterCreateComponent,
-      nzComponentParams: {
+    let modalRef = this.modalService.open({
+      title: 'AJOUTER UN NOUVEAU SEMESTRE',
+      component: SemesterCreateComponent,
+      data: {
         departement: this.departement,
       },
-      nzClosable: false,
     });
 
-    modal.afterClose.subscribe((data: Semester | null) => {
+    modalRef.afterClose.subscribe((data: Semester | null) => {
       if (data) {
         this.findByDepartement(this.departement);
       }

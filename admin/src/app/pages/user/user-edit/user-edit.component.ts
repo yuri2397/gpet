@@ -1,15 +1,25 @@
+import { Component, OnInit, Input, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { RoleService } from './../../../services/role.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/app/models/user';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { UserService } from 'src/app/services/user.service';
 import { Role } from 'src/app/models/role';
 import { Departement } from 'src/app/models/departement';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-user-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss'],
 })
@@ -24,15 +34,16 @@ export class UserEditComponent implements OnInit {
   disableDep = false;
   selectedRoles: string[] = [];
 
-  constructor(
-    private userService: UserService,
-    private modalRef: NzModalRef,
-    private fb: FormBuilder,
-    private roleService: RoleService,
-    private notification: NzNotificationService
-  ) {}
+  private userService = inject(UserService);
+  private modalRef = inject(ModalRef);
+  private fb = inject(FormBuilder);
+  private roleService = inject(RoleService);
+  readonly modalData = inject(MODAL_DATA, { optional: true });
 
   ngOnInit(): void {
+    if (this.modalData?.user) {
+      this.user = this.modalData.user;
+    }
     this.formatRoles();
 
     this.findRolesList();
@@ -75,7 +86,6 @@ export class UserEditComponent implements OnInit {
         this.isRolesLoad = false;
       },
       error: (errors) => {
-        this.notification.error("Notification", errors.error.message)
       },
     });
   }
@@ -86,15 +96,13 @@ export class UserEditComponent implements OnInit {
 
   save() {
     this.isLoad = true;
-    
+
     this.userService.edit(this.user, this.selectedRoles).subscribe({
       next: (response) => {
-        this.notification.success('Notification', 'Les modifications sont enregistrées avec succès.');
         this.modalRef.destroy(response);
         this.isLoad = false;
       },
       error: (errors) => {
-        this.notification.error("Message d'erreur", errors.error.message);
         this.modalRef.destroy(null);
         this.isLoad = false;
       },

@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Bank } from 'src/app/models/bank';
 import { Departement } from 'src/app/models/departement';
 import { Professor } from 'src/app/models/professor';
@@ -9,13 +9,32 @@ import { BankService } from 'src/app/services/bank.service';
 import { DepartementService } from 'src/app/services/departement.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProfessorService } from 'src/app/services/professor.service';
+import { RouterModule } from '@angular/router';
+import { IconComponent } from 'src/app/shared/ui/icon/icon.component';
+import { ModalRef, MODAL_DATA } from 'src/app/shared/services/modal.service';
 
 @Component({
   selector: 'app-professeur-edit',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  IconComponent,
+  ],
   templateUrl: './professeur-edit.component.html',
   styleUrls: ['./professeur-edit.component.scss']
 })
 export class ProfesseurEditComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private bankService = inject(BankService);
+  professorService = inject(ProfessorService);
+  private modal = inject(ModalRef);
+  private deptService = inject(DepartementService);
+  readonly modalData = inject(MODAL_DATA, { optional: true });
+
   @Input() professor!: Professor;
   departements!: Departement[];
   validateForm!: FormGroup;
@@ -25,16 +44,10 @@ export class ProfesseurEditComponent implements OnInit {
   banks!: Bank[];
   professorTypes!: ProfessorType[];
 
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private bankService: BankService,
-    public professorService: ProfessorService,
-    private modal: NzModalRef,
-    private deptService: DepartementService
-  ) {}
-
   ngOnInit(): void {
+    if (this.modalData?.professor) {
+      this.professor = this.modalData.professor;
+    }
     this.findSelectableList();
     this.validateForm = this.fb.group({
       first_name: [null, [Validators.required]],
@@ -86,7 +99,7 @@ export class ProfesseurEditComponent implements OnInit {
   }
 
   destroyModal(data: Professor | null): void {
-    this.modal.destroy(data);
+    this.modal.close(data);
   }
 
   save() {

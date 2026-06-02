@@ -5,14 +5,15 @@ import { BaseHttp } from '../shared/base-http';
 import { Router } from '@angular/router';
 import { Professor } from '../models/professor';
 import { ProfUser } from '../models/prof-user';
+import { AuthStore } from '../shared/auth-store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService extends BaseHttp {
 
-  protected _baseUrl = 'user';
-  constructor(protected hc: HttpClient, private router: Router) {
+  protected override _baseUrl = 'user';
+  constructor(protected hc: HttpClient, private router: Router, private authStore: AuthStore) {
     super();
     this.http = hc;
   }
@@ -31,8 +32,7 @@ export class UserService extends BaseHttp {
   }
 
   logout() {
-    sessionStorage.clear();
-    sessionStorage.clear();
+    this.authStore.clearAuth();
     this.router.navigate(['/']);
   }
 

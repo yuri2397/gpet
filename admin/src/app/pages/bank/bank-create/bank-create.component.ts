@@ -1,25 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzDrawerRef } from 'ng-zorro-antd/drawer';
+import { ModalRef } from 'src/app/shared/services/modal.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Bank } from 'src/app/models/bank';
 import { BankService } from 'src/app/services/bank.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-bank-create',
+  standalone: true,
+  imports: [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  ],
   templateUrl: './bank-create.component.html',
   styleUrls: ['./bank-create.component.scss'],
 })
 export class BankCreateComponent implements OnInit {
+  private notification = inject(NotificationService);
+  private fb = inject(FormBuilder);
+  private bankService = inject(BankService);
+  private modalRef = inject(ModalRef);
+
   bank: Bank = new Bank();
   validateForm!: FormGroup;
   isLoad = false;
-  constructor(
-    private notification: NotificationService,
-    private fb: FormBuilder,
-    private bankService: BankService,
-    private drawerRef: NzDrawerRef
-  ) {}
 
   ngOnInit() {
     this.validateForm = this.fb.group({
@@ -38,20 +44,20 @@ export class BankCreateComponent implements OnInit {
   }
 
   destroyModal(data: Bank | null): void {
-    this.drawerRef.close(data);
+    this.modalRef.close(data);
   }
 
   save() {
     this.isLoad = true;
     this.bankService.create(this.bank).subscribe({
       next: response => {
-        this.isLoad=false;
+        this.isLoad = false;
         this.notification.createNotification(
           'success',
           'Notification',
           "Nouvelle banque ajoutée avec succès."
         );
-        this.drawerRef.close(response)
+        this.modalRef.close(response);
       },
       error: errors => {
         this.isLoad = false;
@@ -61,10 +67,10 @@ export class BankCreateComponent implements OnInit {
           errors.error.message
         );
       }
-    })
+    });
   }
 
   close() {
-    this.drawerRef.close(null);
+    this.modalRef.close(null);
   }
 }

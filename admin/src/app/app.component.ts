@@ -1,36 +1,40 @@
-import { Component } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Notification } from './models/shared.model';
 import { NotificationService } from './services/notification.service';
 import { NotificationComponent } from './shared/ui/notification/notification.component';
+import { ModalService } from './shared/services/modal.service';
+import { ToastContainerComponent } from './shared/ui/toast/toast-container.component';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    RouterOutlet,
+    ToastContainerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public version: string = "2.0.1";
+  readonly version = '2.0.1';
+  private notification = inject(NotificationService);
+  private modalService = inject(ModalService);
 
-  constructor(private notification: NotificationService, private modal: NzModalService){
+  constructor() {
     this.notification.notification$.subscribe((data: Notification) => {
       this.showModal(data);
     });
   }
+
   private showModal(data: Notification) {
-    this.modal.create({
-      nzTitle: '',
-      nzContent: NotificationComponent,
-      nzCentered: true,
-      nzFooter: null,
-      nzComponentParams: {
-        notification: data
-      },
-      nzClosable: false,
-      nzBodyStyle:{
-        padding: '0px'
-      }
-      
-    })
+    this.modalService.open({
+      title: '',
+      component: NotificationComponent,
+      data: { notification: data },
+    });
   }
 }
